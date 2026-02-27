@@ -1,0 +1,3 @@
+[submodule "themes/journey"]
+	path = themes/journey
+	url = git@github.com:tacticaldoll/journey.git
