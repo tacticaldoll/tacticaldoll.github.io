@@ -1,3 +1,52 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Project'
+baseURL = 'https://tacticaldoll.github.io/'
+languageCode = 'zh-tw'
+title = 'tech-notes-journey'
+theme = 'journey'
+disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
+
+[outputFormats]
+  [outputFormats.JSON]
+    mediaType = 'application/json'
+    baseName = 'index'
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ["HTML", "JSON", "SEARCHINDEX"]
+  page = ["HTML", "JSON"]
+  section = ["HTML", "JSON"]
+  taxonomy = ["JSON"]
+  term = ["JSON"]
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+  series = 'series'
+
+[menus]
+  [[menus.main]]
+    name = '最新文章'
+    pageRef = '/'
+    weight = 10
+
+  [[menus.main]]
+    name = '文章分類'
+    pageRef = '/series'
+    weight = 20
+
+  [[menus.main]]
+    name = '主題標籤'
+    pageRef = '/tags'
+    weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  description = "紀錄技術、自動化與一些擱置靈感的實踐筆記"
+  author = "Journey Tinkerer"
+
+  [params.social]
+    github = "https://github.com/tacticaldoll"

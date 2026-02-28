@@ -1,0 +1,1 @@
+{{- (partial "get-single-data.html" .) | jsonify (dict "indent" " ") -}}
