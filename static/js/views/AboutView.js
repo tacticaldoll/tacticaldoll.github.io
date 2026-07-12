@@ -1,8 +1,8 @@
 // Site override of Slotify's AboutView. The only behavioral difference is the
 // config-driven author tab panel; the surrounding view and slot seams remain
 // aligned with the theme component.
-const { ref } = Vue;
-const { useRoute } = VueRouter;
+const { ref, watch } = Vue;
+const { useRoute, useRouter } = VueRouter;
 import StateFeedback from '../components/StateFeedback.js';
 import BaseSurface from '../components/BaseSurface.js';
 import SocialLinks from '../components/SocialLinks.js';
@@ -90,14 +90,43 @@ export default {
   `,
   async setup() {
     const route = useRoute();
+    const router = useRouter();
     const { pageData, pageTitle, error, siteConfig, fetchData } = useAbout();
     const authorTab = ref(null);
 
     await fetchData(route.path);
 
-    if (pageData.value?.authors?.length) {
-      authorTab.value = pageData.value.authors[0].id;
+    const authors = pageData.value?.authors || [];
+    const authorIDs = new Set(authors.map(({ id }) => id));
+    const authorFromHash = () => {
+      const raw = (route.hash || '').replace(/^#/, '');
+      try {
+        return decodeURIComponent(raw);
+      } catch {
+        return raw;
+      }
+    };
+
+    if (authors.length) {
+      const hashID = authorFromHash();
+      authorTab.value = authorIDs.has(hashID) ? hashID : authors[0].id;
     }
+
+    // Back/forward navigation and direct #author links select the matching tab.
+    watch(() => route.hash, () => {
+      const hashID = authorFromHash();
+      if (authorIDs.has(hashID) && authorTab.value !== hashID) {
+        authorTab.value = hashID;
+      }
+    });
+
+    // Only visible tab interaction writes the hash; a single-author /about/
+    // remains clean while /about/#id continues to be a valid deep link.
+    watch(authorTab, (id) => {
+      if (!pageData.value?.showAuthorTabs || !authorIDs.has(id)) return;
+      const hash = `#${encodeURIComponent(id)}`;
+      if (route.hash !== hash) router.replace({ hash });
+    });
 
     return { pageData, pageTitle, error, siteConfig, authorTab };
   }

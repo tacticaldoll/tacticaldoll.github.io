@@ -67,6 +67,7 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
   [[params.about.authors]]
     id = "ttl0"
     name = "TTL:0"
+    byline = "TTL::0"
 
   [params.social]
     github = "https://github.com/tacticaldoll"

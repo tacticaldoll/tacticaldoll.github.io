@@ -16,8 +16,25 @@
 {{- if lt .Date.Unix (sub now.Unix $three_years) -}}
   {{- $is_outdated = true -}}
 {{- end -}}
+{{- /* Resolve the stable author id from config; display names are not slugs. */ -}}
+{{- $authorName := .Params.author | default site.Params.author -}}
+{{- $authorID := "" -}}
+{{- $aboutConfig := site.Params.about | default dict -}}
+{{- $authorConfigs := index $aboutConfig "authors" | default slice -}}
+{{- range $authorConfigs -}}
+  {{- $byline := index . "byline" | default (index . "name") -}}
+  {{- if eq $byline $authorName -}}
+    {{- $authorID = index . "id" -}}
+  {{- end -}}
+{{- end -}}
+{{- $authorURL := "" -}}
+{{- with $authorID -}}
+  {{- $authorURL = printf "/about/#%s" . -}}
+{{- end -}}
 {{- $extra := dict
-  "author" (.Params.author | default site.Params.author)
+  "author" $authorName
+  "authorId" $authorID
+  "authorUrl" $authorURL
   "readingTime" .ReadingTime
   "wordCount" .WordCount
   "content" .Content
