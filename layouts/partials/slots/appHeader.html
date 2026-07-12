@@ -1,0 +1,220 @@
+<!--
+  Site override: slots/appHeader.html  (Slotify.slots.appHeader)
+
+  Full navigation-chrome rebuild from base components (NO theme fork). Replaces
+  the theme's <app-header>/<app-drawer> so the LANGUAGE switcher is a dropdown
+  MENU (mirroring the personality selector) instead of the stock one-click cycle.
+  Because <app-header> is monolithic (the cycle button is baked in with no slot
+  to swap), the whole bar + drawer are rebuilt here with Vuetify primitives,
+  driven entirely by the forwarded ctx handlers — responsive: desktop bar +
+  mobile drawer both carry every control, including language.
+
+  ctx: { siteConfig, route, t, currentPersonality, isDark, personalities,
+         currentLocale, drawer, setPersonality, setDark, setLocale, toggleDrawer,
+         setDrawer }.
+
+  NOTES
+  - ctx.t is NAMESPACE-SCOPED (Slotify.slots.appHeader). It cannot read base i18n
+    keys (menu.*, ui.*), so nav labels, tooltips AND personality names/icons all
+    live in the styles/nav/ui block below — in en/zh/ja so they follow language.
+  - <personality-list> is NOT globally registered, so the personality list is
+    rebuilt inline (v-list + ctx.personalities + ctx.t('styles.<id>.*')). The same
+    namespaced i18n also feeds the rebuilt drawer list.
+  - Locales are inlined as a Vue array; KEEP IN SYNC with [[params.locales]] in
+    hugo.toml (en/zh/ja). Vue mustaches are Hugo-escaped ({{ "{{" }}…{{ "}}" }}).
+-->
+<script type="application/json" data-slotify-i18n="Slotify.slots.appHeader">
+{
+  "en": {
+    "nav": { "home": "Home", "series": "Series", "tags": "Tags", "about": "About" },
+    "ui": { "switchLanguage": "Switch Language", "themeStyle": "Theme Style", "switchToLight": "Switch to Light Mode", "switchToDark": "Switch to Dark Mode", "search": "Search" },
+    "styles": {
+      "p1":   { "name": "Green", "icon": "mdi-console-line" },
+      "p3":   { "name": "Amber", "icon": "mdi-television-classic" },
+      "cyan": { "name": "Cyan",  "icon": "mdi-monitor" },
+      "ice":  { "name": "Ice",   "icon": "mdi-snowflake" }
+    }
+  },
+  "zh": {
+    "nav": { "home": "首頁", "series": "系列", "tags": "標籤", "about": "關於" },
+    "ui": { "switchLanguage": "切換語言", "themeStyle": "主題風格", "switchToLight": "切換到淺色模式", "switchToDark": "切換到深色模式", "search": "搜尋" },
+    "styles": {
+      "p1":   { "name": "綠磷光", "icon": "mdi-console-line" },
+      "p3":   { "name": "琥珀",   "icon": "mdi-television-classic" },
+      "cyan": { "name": "青藍",   "icon": "mdi-monitor" },
+      "ice":  { "name": "冰白",   "icon": "mdi-snowflake" }
+    }
+  },
+  "ja": {
+    "nav": { "home": "ホーム", "series": "シリーズ", "tags": "タグ", "about": "私について" },
+    "ui": { "switchLanguage": "言語を切り替える", "themeStyle": "テーマスタイル", "switchToLight": "ライトモードに切り替える", "switchToDark": "ダークモードに切り替える", "search": "検索" },
+    "styles": {
+      "p1":   { "name": "グリーン", "icon": "mdi-console-line" },
+      "p3":   { "name": "アンバー", "icon": "mdi-television-classic" },
+      "cyan": { "name": "シアン",   "icon": "mdi-monitor" },
+      "ice":  { "name": "アイス",   "icon": "mdi-snowflake" }
+    }
+  }
+}
+</script>
+
+<script type="text/x-template" id="slot-appHeader-template">
+  <v-app-bar flat class="glass-panel px-md-10 sticky-nav" style="top: 0;">
+    <!-- Mobile hamburger -->
+    <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="ctx.toggleDrawer"></v-app-bar-nav-icon>
+
+    <v-app-bar-title class="font-weight-black text-h5">
+      <router-link to="/" class="text-primary" style="text-decoration: none; cursor: pointer;">{{ "{{" }} ctx.siteConfig.title || '' {{ "}}" }}</router-link>
+    </v-app-bar-title>
+
+    <v-spacer></v-spacer>
+
+    <!-- Desktop nav — site menu items, labels MULTILINGUAL via this slot's i18n
+         (nav.*), so they follow the EN/zh/ja switch. -->
+    <div class="hidden-sm-and-down">
+      <v-btn
+        v-for="item in [{ key: 'home', to: '/' }, { key: 'series', to: '/series/' }, { key: 'tags', to: '/tags/' }, { key: 'about', to: '/about/' }]"
+        :key="item.key"
+        :to="item.to"
+        variant="text"
+        class="font-weight-bold"
+      >{{ "{{" }} ctx.t('nav.' + item.key) {{ "}}" }}</v-btn>
+    </div>
+
+    <v-divider vertical class="mx-2 my-auto hidden-sm-and-down" style="height: 24px"></v-divider>
+
+    <!-- Language switcher MENU (mirrors the personality selector) -->
+    <v-menu transition="scale-transition">
+      <template v-slot:activator="{ props }">
+        <v-btn variant="text" v-bind="props" class="font-weight-bold mx-1" :title="ctx.t('ui.switchLanguage')">
+          <v-icon start>mdi-translate</v-icon>
+          {{ "{{" }} ([{ code: 'en', label: 'EN' }, { code: 'zh', label: '繁' }, { code: 'ja', label: '日' }].find(l => l.code === ctx.currentLocale) || {}).label || ctx.currentLocale {{ "}}" }}
+        </v-btn>
+      </template>
+      <v-list class="glass-panel">
+        <v-list-item
+          v-for="loc in [{ code: 'en', label: 'EN' }, { code: 'zh', label: '繁' }, { code: 'ja', label: '日' }]"
+          :key="loc.code"
+          :active="loc.code === ctx.currentLocale"
+          color="primary"
+          @click="ctx.setLocale(loc.code)"
+        >
+          <v-list-item-title class="font-weight-medium">{{ "{{" }} loc.label {{ "}}" }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <v-divider vertical class="mx-2 my-auto" style="height: 24px"></v-divider>
+
+    <!-- Personality selector menu (desktop) -->
+    <v-menu transition="scale-transition">
+      <template v-slot:activator="{ props }">
+        <v-btn icon v-bind="props" :title="ctx.t('ui.themeStyle')" class="hidden-sm-and-down">
+          <v-icon>mdi-palette-outline</v-icon>
+        </v-btn>
+      </template>
+      <v-list class="glass-panel">
+        <!-- Curated set: only our custom CRT keys are shown (theme's 6 defaults
+             exist in the palette but are hidden here). Order = display order. -->
+        <v-list-item
+          v-for="pid in ['p1', 'p3', 'cyan', 'ice']"
+          :key="pid"
+          :active="pid === ctx.currentPersonality"
+          color="primary"
+          @click="ctx.setPersonality(pid)"
+        >
+          <template v-slot:prepend>
+            <v-icon :icon="ctx.t('styles.' + pid + '.icon')"></v-icon>
+          </template>
+          <v-list-item-title class="font-weight-medium">{{ "{{" }} ctx.t('styles.' + pid + '.name') {{ "}}" }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <!-- Light/Dark toggle -->
+    <v-btn icon @click="ctx.setDark(!ctx.isDark)" :title="ctx.isDark ? ctx.t('ui.switchToLight') : ctx.t('ui.switchToDark')">
+      <v-icon>{{ "{{" }} ctx.isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' {{ "}}" }}</v-icon>
+    </v-btn>
+
+    <!-- Search -->
+    <v-btn icon to="/search/" :title="ctx.t('ui.search')">
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
+  </v-app-bar>
+
+  <!-- Mobile drawer (rebuilt: nav + language + personality, all responsive) -->
+  <v-navigation-drawer
+    :model-value="ctx.drawer"
+    @update:model-value="ctx.setDrawer"
+    temporary
+    class="glass-panel"
+  >
+    <v-list class="mt-4">
+      <v-list-item
+        v-for="item in [{ key: 'home', to: '/', icon: 'mdi-home' }, { key: 'series', to: '/series/', icon: 'mdi-bookshelf' }, { key: 'tags', to: '/tags/', icon: 'mdi-tag-multiple' }, { key: 'about', to: '/about/', icon: 'mdi-account-outline' }]"
+        :key="item.key"
+        :to="item.to"
+        :prepend-icon="item.icon"
+        :title="ctx.t('nav.' + item.key)"
+        @click="ctx.setDrawer(false)"
+      ></v-list-item>
+    </v-list>
+
+    <v-divider class="my-4"></v-divider>
+
+    <v-list>
+      <!-- Language group -->
+      <v-list-group value="Language">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props" prepend-icon="mdi-translate" :title="ctx.t('ui.switchLanguage')"></v-list-item>
+        </template>
+        <v-list-item
+          v-for="loc in [{ code: 'en', label: 'EN' }, { code: 'zh', label: '繁' }, { code: 'ja', label: '日' }]"
+          :key="loc.code"
+          :active="loc.code === ctx.currentLocale"
+          color="primary"
+          @click="ctx.setLocale(loc.code); ctx.setDrawer(false)"
+        >
+          <v-list-item-title class="font-weight-medium">{{ "{{" }} loc.label {{ "}}" }}</v-list-item-title>
+        </v-list-item>
+      </v-list-group>
+
+      <!-- Personality group -->
+      <v-list-group value="Themes">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props" prepend-icon="mdi-palette" :title="ctx.t('ui.themeStyle')"></v-list-item>
+        </template>
+        <v-list-item
+          v-for="pid in ['p1', 'p3', 'cyan', 'ice']"
+          :key="pid"
+          :active="pid === ctx.currentPersonality"
+          color="primary"
+          @click="ctx.setPersonality(pid); ctx.setDrawer(false)"
+        >
+          <template v-slot:prepend>
+            <v-icon :icon="ctx.t('styles.' + pid + '.icon')"></v-icon>
+          </template>
+          <v-list-item-title class="font-weight-medium">{{ "{{" }} ctx.t('styles.' + pid + '.name') {{ "}}" }}</v-list-item-title>
+        </v-list-item>
+      </v-list-group>
+    </v-list>
+  </v-navigation-drawer>
+</script>
+
+<!--
+  Default-personality guard. The theme picks the initial personality from the
+  FULL palette (first key after Hugo's alphabetical sort), which can be one of
+  the hidden theme defaults — or a returning visitor's stored hidden key. Snap
+  the active personality into our curated CRT set so the bar never sits on a
+  hidden one (no highlighted switcher item / off-brand colors).
+-->
+<script>
+  (() => {
+    const KEYS = ['p1', 'p3', 'cyan', 'ice'];
+    window.addEventListener('slotify:slot', (e) => {
+      const d = e.detail;
+      if (!d || d.id !== 'Slotify.slots.appHeader' || !d.ctx) return;
+      if (!KEYS.includes(d.ctx.currentPersonality)) d.ctx.setPersonality(KEYS[0]);
+    });
+  })();
+</script>

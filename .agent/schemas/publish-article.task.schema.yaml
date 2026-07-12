@@ -1,0 +1,25 @@
+# Publish Article Task SSOT Schema
+# 本 Schema 負責規範 AI 在執行 publish-article 工作流時的物理任務追蹤標準。
+
+task_tracking:
+  description: "AI 在開始執行工作流前，必須將 template 的內容無條件複製到工作區的 task.md 中作為執行 SSOT。"
+  template: |
+    # 任務追蹤：Publish Article 管線執行
+    
+    ## Stage 1: 發佈前置驗證
+    - `[ ]` 確認 `.agent-scratch/<session_id>/handoff.posts.json` 已存在，且由 `/init-handoff` 產出並經人類審查。
+    - `[ ]` 確認 `.agent-scratch/<session_id>/handoff.terms.json` 已存在，且所有 `locked.description` 均已完成補寫。
+    - `[ ]` 確認 `handoff.posts.json` 的 `status` 為 `refined`，使發布管線只能消費已凍結的 Handoff。
+    
+    ## Stage 1.5: 凍結狀態檢查
+    - `[ ]` 檢查 `handoff.terms.json`，確認不存在 `TODO`、`PENDING_REFINEMENT`、空白描述或其他 placeholder。
+    - `[ ]` 確認一般 `tags` 已由 `/init-handoff` 完成，AI 領域標籤仍由管線掃描接管。
+    
+    ## Stage 2: 終極生產流水線
+    - `[ ]` 執行 `python3 .agent/scripts/workflows/generate-article/pipeline.py <session_id> --mode ultimate` 進行基準生成、敘事昇華與術語錨定。
+    - `[ ]` 檢查終端輸出，確認 **安全審計 (Safety Audit)** 顯示為 `PASS`。
+        - *若審計失敗，請修正問題後使用 `--mode finish` 重新執行，切勿使用 ultimate 覆蓋草稿。*
+    
+    ## Stage 2.5: 終端出口閘門 (Terminal Gate)
+    - `[ ]` **無條件強制執行** `python3 .agent/scripts/domain/terminology/manage.py --promote` 以確認心智終態。
+    - `[ ]` 進行物理驗證：檢查 `.agent/lexicon-core/databases/terminology.json` 確保術語草稿已成功晉升，並無任何隱性殘留。

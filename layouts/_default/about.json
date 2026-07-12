@@ -1,0 +1,88 @@
+{{- /* Reuse the shared card shape (SSOT), then layer the about-page-only fields. */ -}}
+{{- $card := partial "func/card-data.html" . -}}
+{{- /* Link Preview Crawler for [[src]] array */ -}}
+{{- $crawledSrc := slice -}}
+{{- range (.Params.src | default slice) -}}
+  {{- $name := .name -}}
+  {{- $desc := .desc -}}
+  {{- $image := .image | default "" -}}
+  {{- $url := .url -}}
+  {{- $demo := .demo -}}
+  {{- $doc := .doc -}}
+  {{- $category := index . "category" | default "Others" -}}
+  {{- $noPreview := index . "no_preview" | default false -}}
+  {{- if not $noPreview -}}
+    {{- /* Crawl target URLs to fill in missing data. Priority: doc -> url */ -}}
+    {{- $targets := slice -}}
+    {{- if and $doc (hasPrefix $doc "http") -}}{{- $targets = $targets | append $doc -}}{{- end -}}
+    {{- if and $url (hasPrefix $url "http") -}}{{- $targets = $targets | append $url -}}{{- end -}}
+    {{- range $crawlTarget := $targets -}}
+      {{- if or (not $name) (not $desc) (not $image) -}}
+        {{- with try (resources.GetRemote $crawlTarget) -}}
+          {{- with .Err -}}
+            {{- warnf "Crawler preview error fetching %s: %s" $crawlTarget . -}}
+          {{- else with .Value -}}
+            {{- $html := .Content -}}
+            {{- if not $name -}}
+              {{- $titleMatch := findRESubmatch "(?i)<title.*?>(.*?)</title>" $html 1 -}}
+              {{- if $titleMatch -}}{{- $name = index (index $titleMatch 0) 1 | htmlUnescape -}}{{- end -}}
+              {{- if hasPrefix $crawlTarget "https://github.com/" -}}
+                {{- $name = replaceRE "^GitHub - ([^:]+).*" "$1" $name -}}
+              {{- end -}}
+            {{- end -}}
+            {{- if not $desc -}}
+              {{- $descMatch := findRESubmatch "(?i)<meta.*?name=[\"']description[\"'].*?content=[\"'](.*?)[\"']" $html 1 -}}
+              {{- if $descMatch -}}
+                {{- $desc = index (index $descMatch 0) 1 | htmlUnescape -}}
+              {{- else -}}
+                {{- $ogDescMatch := findRESubmatch "(?i)<meta.*?property=[\"']og:description[\"'].*?content=[\"'](.*?)[\"']" $html 1 -}}
+                {{- if $ogDescMatch -}}{{- $desc = index (index $ogDescMatch 0) 1 | htmlUnescape -}}{{- end -}}
+              {{- end -}}
+              {{- if hasPrefix $crawlTarget "https://github.com/" -}}
+                {{- $desc = replaceRE "(?i) - [^ ]+/[^ ]+$" "" $desc -}}
+              {{- end -}}
+            {{- end -}}
+            {{- if not $image -}}
+              {{- $ogImageMatch := findRESubmatch "(?i)<meta.*?property=[\"']og:image[\"'].*?content=[\"'](.*?)[\"']" $html 1 -}}
+              {{- if $ogImageMatch -}}
+                {{- $image = index (index $ogImageMatch 0) 1 | htmlUnescape -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $crawledSrc = $crawledSrc | append (dict "name" $name "url" $url "desc" $desc "image" $image "demo" $demo "doc" $doc "category" $category) -}}
+{{- end -}}
+
+{{- /* Pre-group by category to avoid complex JS in Vue templates */ -}}
+{{- $uniqueCategories := slice -}}
+{{- range $crawledSrc -}}
+  {{- $cat := index . "category" -}}
+  {{- if not (in $uniqueCategories $cat) -}}
+    {{- $uniqueCategories = $uniqueCategories | append $cat -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $srcGroups := slice -}}
+{{- range $cat := $uniqueCategories -}}
+  {{- $items := slice -}}
+  {{- range $crawledSrc -}}
+    {{- if eq (index . "category") $cat -}}
+      {{- $items = $items | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $srcGroups = $srcGroups | append (dict "category" $cat "items" $items) -}}
+{{- end -}}
+
+{{- $extra := dict
+  "author" (.Params.author | default site.Params.author)
+  "readingTime" .ReadingTime
+  "wordCount" .WordCount
+  "content" .Content
+  "src" $crawledSrc
+  "srcGroups" $srcGroups
+  "layout_check" "single"
+-}}
+{{- merge $card $extra | jsonify (dict "indent" "  ") -}}

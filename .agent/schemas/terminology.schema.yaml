@@ -1,0 +1,62 @@
+# Terminology Database Schema Definition
+# 此檔案定義了專案術語庫 (terminology.json) 的絕對結構。
+# 所有自動化腳本或人工編輯都必須遵守此結構，嚴禁寫入未定義之屬性。
+
+# 核心檔案位置: .agent/lexicon-core/databases/terminology.json
+
+type: array
+description: "術語清單陣列"
+items:
+  type: object
+  required:
+    - zh
+    - en
+    - description
+    - forbidden
+  properties:
+    zh:
+      type: string
+      description: "中文主術語 (主鍵)"
+    en:
+      type: array
+      items:
+        type: string
+      description: "對應的英文術語陣列（第一個為主譯名）"
+    description:
+      type: string
+      description: "該術語在專案上下文中的具體定義與語境"
+    forbidden:
+      type: array
+      items:
+        type: string
+      description: "嚴禁在此專案中使用的近似詞或區域方言（如：智能體、程序員）。"
+    category:
+      type: string
+      description: "所屬技術領域或分類 (選填)"
+    tags:
+      type: array
+      items:
+        type: string
+      description: "關聯標記 (選填)"
+
+# 術語庫維護規約 (Content Governance)
+# ---------------------------------------------------------------------------------
+# NLP 代理在執行「知識萃取」或「手動補完」時，必須遵循以下技術準則：
+
+maintenance_rules:
+  format:
+    - "雙語對齊：description 描述中若提及術語，必須使用『中文（English）』格式。"
+    - "解析度優先：定義必須具備學術解析度，嚴禁使用曖昧不明的口語描述。"
+  de-projectification:
+    - "強制脫敏：術語定義中必須移除所有專案專屬路徑、Commit ID 與日期。"
+    - "通用化限制：定義應描述『技術本質』，使其可遷移至其他專案使用。"
+  maturity_levels:
+    - "Level 1: 專案私有邏輯或實驗性命名。"
+    - "Level 2: 已在特定模組中穩定使用的局部技術標準。"
+    - "Level 3: 通用於本專案所有組件的核心架構術語。"
+    - "Level 4: 具備跨專案通用價值的技術實踐規範。"
+    - "Level 5: 業界公認或標準化的通用技術名詞。"
+  forbidden_criteria:
+    - "區域方言：嚴禁使用非專業之區域慣用語（如：程序員 -> 工程師）。"
+    - "語意坍縮：嚴禁使用容易產生岐義的簡稱。"
+# ---------------------------------------------------------------------------------

@@ -1,0 +1,28 @@
+# Handoff Terms SSOT (Single Source of Truth) Schema
+# Reference Spec: ../reference/agent-operating-guideline.md
+# 
+# 階段與流程規約 (Workflow Governance):
+# 1. [Stage 0]: AI (NLP) 寫入 `declared` 陣列，定義本 Session 所需保護的專業詞彙。
+# 2. [Stage 0.5]: `.agent/scripts/workflows/generate-article/prepare_handoff.py` 掃描內文，填充 `discovered`、`existing` 與 `forbidden_found` 陣列。
+# 3. [Stage 0.5]: `.agent/scripts/workflows/generate-article/refine_handoff.py` 晉升術語至 `locked`，並攔截缺失描述。
+# 4. [Retire & Auto-Replenish]: 當文章在 Stage 2 通過審計發佈後，管線將自動 Replenish 全域庫並自動刪除此檔案。禁止手動刪除。
+#    ⚠️ AI/User 嚴禁手動寫入或同步 terminology.json；Replenish 行為由 pipeline.py 全自動執行。
+# Ownership:
+# - `declared`: NLP-owned，由 `/init-handoff` 寫入，享有 declaration immunity。
+# - `existing`, `discovered`, `forbidden_found`: script-managed，由 prepare_handoff.py 寫入。
+# - `locked`: script-initialized、NLP-completed，description 不得含 placeholder。
+
+session_id: "[必填] 格式為 YYYY-MM-DD"
+
+terms:
+  # AI (NLP) 在 Stage 0 手動聲明的術語
+  declared:
+    - zh: "[選填] 中文詞彙"
+      en: "[選填] 英文翻譯 (必須使用 Title Case 正規化格式，例如: Driving Model)"
+      description: "[選填] 精煉描述。若缺失或空白，自動標記為 PENDING_REFINEMENT"
+      
+  # 以下欄位由系統腳本 (.agent/scripts/workflows/generate-article/prepare_handoff.py) 管理，嚴禁 AI 下載後手動寫入或修改
+  existing: []        # 已存在於全域庫的詞彙
+  discovered: []      # 掃描發現的新詞彙
+  forbidden_found: [] # 發現的禁用詞
+  locked: []          # [核心] 最終確認需在貼文中執行雙語錨定的詞彙清單

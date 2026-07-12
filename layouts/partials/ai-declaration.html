@@ -1,0 +1,69 @@
+<div class="ai-declaration-wrapper my-8 pa-6 border-thin glass-panel bg-surface rounded-lg elevation-2"
+    style="border: 1px dashed rgba(var(--v-theme-primary), 0.3) !important;">
+    <div class="d-flex align-center mb-2">
+        <i class="mdi mdi-robot-outline text-primary mr-2" style="font-size: 1.5rem;"></i>
+        <span class="text-subtitle-1 font-weight-bold text-primary">AI 內容說明 (AI Declaration)</span>
+    </div>
+    <div class="text-body-2 opacity-90 mb-4">
+        {{- if and .Params.ai_info.generation .Params.ai_info.refinement -}}
+        本文內容由 AI 協助生成並經優化處理。我們致力於確保技術準確性，但敘事結構與語句呈現經過 AI 調整。
+        {{- else if .Params.ai_info.generation -}}
+        本文內容由 AI 協助生成。我們致力於確保技術準確性與架構完整性，但敘事結構由 AI 產出。
+        {{- else if .Params.ai_info.refinement -}}
+        本文內容由人工撰寫並經 AI 優化處理，以提升敘事結構與語句呈現的品質。
+        {{- end -}}
+    </div>
+    <hr class="mb-4 opacity-10" style="border: 0; border-top: 1px solid currentColor;">
+
+    <div class="d-flex flex-wrap gap-y-4">
+        {{ with .Params.ai_info.generation }}
+        {{ if or .model .agent }}
+        <div class="mr-8">
+            <div class="text-caption font-weight-bold opacity-60 mb-1">生成階段 (Generation)</div>
+            <div class="text-caption d-flex align-center flex-wrap">
+                {{ if .model }}
+                <div class="d-flex align-center">
+                    <span class="mr-1 opacity-80">模型:</span> {{ .model }}
+                </div>
+                {{ end }}
+
+                {{ if and .model .agent }}
+                <div class="mx-3 opacity-20" style="width: 1px; height: 12px; background-color: currentColor;"></div>
+                {{ end }}
+
+                {{ if .agent }}
+                <div class="d-flex align-center">
+                    <span class="mr-1 opacity-80">代理人:</span> {{ .agent }}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+
+        {{ with .Params.ai_info.refinement }}
+        {{ if or .model .agent }}
+        <div>
+            <div class="text-caption font-weight-bold opacity-60 mb-1">修飾階段 (Refinement)</div>
+            <div class="text-caption d-flex align-center flex-wrap">
+                {{ if .model }}
+                <div class="d-flex align-center">
+                    <span class="mr-1 opacity-80">模型:</span> {{ .model }}
+                </div>
+                {{ end }}
+
+                {{ if and .model .agent }}
+                <div class="mx-3 opacity-20" style="width: 1px; height: 12px; background-color: currentColor;"></div>
+                {{ end }}
+
+                {{ if .agent }}
+                <div class="d-flex align-center">
+                    <span class="mr-1 opacity-80">代理人:</span> {{ .agent }}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+    </div>
+</div>

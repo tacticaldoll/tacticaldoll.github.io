@@ -1,0 +1,85 @@
+<!--
+  Site override: slots/postView/bottom.html — Disqus integration.
+
+  UI mirrors the theme's Giscus reference (exampleSite): the thread sits in the
+  theme's glass card (glass-panel + --radius-lg) with a translatable <h2> heading
+  and a divider, so it reads as a deliberate "Comments" section matching the
+  article surface above (SKILL §7) — pure HTML/CSS, never the BaseSurface Vue
+  component (not slot-registered).
+
+  Timing is decided by the theme's own `slotify:slot` window event
+  (detail = { id, phase, ctx, el }); we (re)initialize on a fresh `mount` only —
+  PostView is keyed by route, so every article navigation remounts this slot.
+
+  Disqus is a SINGLE global embed.js: it must load AT MOST ONCE per SPA session,
+  then DISQUS.reset() re-targets the thread on later navigations. Re-injecting the
+  script would double-load Disqus (this is the key delta from Giscus, which gets a
+  fresh iframe per mount).
+
+  IMPORTANT — Hugo context: slot x-templates are rendered inside a `range` in the
+  theme's baseof.html, so `.` is NOT the Page and `.Site.Params...` resolves empty.
+  Use the GLOBAL `site` function (`site.Params...`), as every theme slot reference
+  does — `.Site` here silently yields "" and Disqus never initializes.
+-->
+<!-- Slot-scoped i18n (§12/§13): the heading lives WITH the slot under its
+     namespace, so ctx.t resolves it without a theme edit. -->
+<script type="application/json" data-slotify-i18n="Slotify.slots.postView.bottom">
+{ "en": { "title": "Comments" }, "zh": { "title": "討論" } }
+</script>
+
+<script type="text/x-template" id="slot-postView-bottom-template">
+  <!-- Surface-first (SKILL §7): glass card via documented CSS, mirroring the
+       Giscus reference. The Vue mustache is Hugo-escaped ({{ "{{" }}…{{ "}}" }})
+       so Hugo emits it for Vue to evaluate. -->
+  <div class="mt-12 glass-panel pa-6 pa-sm-8" style="border-radius: var(--radius-lg);">
+    <h2 class="text-h6 font-weight-bold mb-3">{{ "{{" }} ctx.t('title') {{ "}}" }}</h2>
+    <v-divider class="mb-6"></v-divider>
+    <div id="disqus_thread"></div>
+  </div>
+</script>
+
+<script>
+  (() => {
+    let injected = false; // embed.js loads once per SPA session
+
+    window.addEventListener('slotify:slot', (event) => {
+      const { id, phase, ctx, el } = event.detail;
+      if (id !== 'Slotify.slots.postView.bottom') return; // only this slot
+      if (phase !== 'mount') return;                      // (re)init on a fresh mount only
+
+      const shortname = '{{ site.Params.disqus.shortname | default "" }}';
+      const scope = {{ site.Params.disqus.scope | default (slice "/posts/") | jsonify | safeJS }};
+      if (!shortname) return; // opt-in guard
+
+      const pageIdentifier = (ctx && ctx.pageIdentifier) || window.location.pathname;
+      const pageUrl = window.location.href;
+      const isEnabled = scope.some((prefix) => pageIdentifier.startsWith(prefix));
+
+      // Hide the whole slot (the glass card), not just the inner thread, so an
+      // out-of-scope post shows no empty card. `el` is the slot's root wrapper.
+      if (el) el.style.display = isEnabled ? '' : 'none';
+      if (!isEnabled) return;
+
+      // Latest page wins: the single embed.js (whenever it resolves) and every
+      // reset read this, so navigating mid-load still resolves to the post on screen.
+      window.disqus_config = function () {
+        this.page.identifier = pageIdentifier;
+        this.page.url = pageUrl;
+      };
+
+      if (window.DISQUS) {                                // re-init on navigation
+        window.DISQUS.reset({ reload: true, config: window.disqus_config });
+        return;
+      }
+      if (injected) return;                               // load already in flight
+      injected = true;
+
+      const s = document.createElement('script');        // first load
+      s.src = `https://${shortname}.disqus.com/embed.js`;
+      s.setAttribute('data-timestamp', String(Date.now()));
+      s.async = true;
+      s.onerror = () => { injected = false; };            // allow retry on transient failure
+      document.head.appendChild(s);
+    });
+  })();
+</script>

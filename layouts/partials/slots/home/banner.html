@@ -1,0 +1,99 @@
+<script type="text/x-template" id="slot-home-banner-template">
+<div class="mb-10 w-100">
+<svg v-if="$vuetify.display.smAndDown" width="100%" height="100%" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="background: rgb(var(--v-theme-background)); border-radius: 0px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(var(--v-theme-primary), 0.35);">
+  <defs>
+    <filter id="mobile-dynamic-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <pattern id="mobile-scanlines" width="100" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="100" y2="0" style="stroke: rgb(var(--v-theme-background)); stroke-width: 1.5; opacity: 0.4;" />
+    </pattern>
+  </defs>
+
+  <g id="mobile-window-header">
+    <rect width="600" height="35" fill="rgb(var(--v-theme-surface))" />
+    <circle cx="25" cy="17.5" r="6" fill="#ff5f56" opacity="0.8" />
+    <circle cx="45" cy="17.5" r="6" fill="#ffbd2e" opacity="0.8" />
+    <circle cx="65" cy="17.5" r="6" fill="#27c93f" opacity="0.8" />
+    <text x="300" y="22" font-family="'IBM Plex Mono', 'IBM Plex Sans TC', ui-monospace, monospace" font-size="14" fill="rgb(var(--v-theme-primary))" font-weight="bold" opacity="0.4" text-anchor="middle">last-hop:~</text>
+  </g>
+
+  <g transform="translate(0, 35)">
+    <rect width="600" height="225" fill="rgb(var(--v-theme-background))" />
+    <g font-family="'IBM Plex Mono', 'IBM Plex Sans TC', ui-monospace, monospace" font-weight="bold" filter="url(#mobile-dynamic-glow)">
+      <text x="300" y="72" font-size="21" text-anchor="middle" fill="rgb(var(--v-theme-primary))">[SOURCE]──[RELAY]──<tspan fill="rgb(var(--v-theme-secondary))">[LAST HOP]</tspan></text>
+      <text x="25" y="165" font-size="17">
+        <tspan fill="rgb(var(--v-theme-primary))">guest@last-hop</tspan>:<tspan fill="rgb(var(--v-theme-secondary))">~</tspan>$ <tspan fill="rgb(var(--v-theme-primary))">cat welcome.md </tspan><tspan class="terminal-cursor" fill="rgb(var(--v-theme-primary))">▌</tspan>
+      </text>
+    </g>
+    <rect width="600" height="225" fill="url(#mobile-scanlines)" pointer-events="none" />
+  </g>
+</svg>
+
+<svg v-else width="100%" height="100%" viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" style="background: rgb(var(--v-theme-background)); border-radius: 0px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(var(--v-theme-primary), 0.35);">
+  <defs>
+    <filter id="dynamic-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <pattern id="scanlines" width="100" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="100" y2="0" style="stroke: rgb(var(--v-theme-background)); stroke-width: 1.5; opacity: 0.4;" />
+    </pattern>
+  </defs>
+
+  <g id="window-header">
+    <rect width="1000" height="35" fill="rgb(var(--v-theme-surface))" />
+    <circle cx="25" cy="17.5" r="6" fill="#ff5f56" opacity="0.8" />
+    <circle cx="45" cy="17.5" r="6" fill="#ffbd2e" opacity="0.8" />
+    <circle cx="65" cy="17.5" r="6" fill="#27c93f" opacity="0.8" />
+    <text x="500" y="22" font-family="'IBM Plex Mono', 'IBM Plex Sans TC', ui-monospace, monospace" font-size="14" fill="rgb(var(--v-theme-primary))" font-weight="bold" opacity="0.4" text-anchor="middle">bash - guest@{{ "{{" }} (ctx.siteConfig.title || 'retro-hub').replace(/\s+/g, '-') {{ "}}" }}:~</text>
+  </g>
+
+  <g transform="translate(0, 35)">
+    <!-- 已經移除 CRT 閃爍動畫，以避免造成畫面上下的視覺震動 -->
+
+    <rect width="1000" height="345" fill="rgb(var(--v-theme-background))" />
+
+    <g font-size="20" font-family="'IBM Plex Mono', 'IBM Plex Sans TC', ui-monospace, monospace" fill="rgb(var(--v-theme-primary))" filter="url(#dynamic-glow)" style="letter-spacing: 0px;">
+      
+      <text x="30" y="40" fill="rgb(var(--v-theme-primary))" opacity="0.5">Last login: {{ "{{" }} new Date().toString().slice(0, 24) {{ "}}" }} on ttys001</text>
+      
+      <text x="30" y="85">
+        <tspan fill="rgb(var(--v-theme-primary))" font-weight="bold">guest@{{ "{{" }} (ctx.siteConfig.title || 'retro-hub').replace(/\s+/g, '-') {{ "}}" }}</tspan>:<tspan fill="rgb(var(--v-theme-secondary))">~</tspan>$ cat site_info.txt
+      </text>
+
+      <g font-size="16" font-weight="bold" fill="rgb(var(--v-theme-primary))" style="white-space: pre; font-family: 'IBM Plex Mono', 'IBM Plex Sans TC', ui-monospace, monospace; letter-spacing: 0px;">
+        <text x="50" y="145">[SOURCE]</text>
+        <text x="50" y="170" opacity="0.55">   |</text>
+        <text x="50" y="195">[RELAY]</text>
+        <text x="50" y="220" opacity="0.55">   |</text>
+        <text x="50" y="245" fill="rgb(var(--v-theme-secondary))">[LAST HOP]</text>
+      </g>
+
+      <g transform="translate(220, 0)">
+        <text x="0" y="130" font-size="28" font-weight="bold" fill="rgb(var(--v-theme-primary))" style="filter: drop-shadow(0 0 2px rgb(var(--v-theme-primary)));">{{ "{{" }} (ctx.siteConfig.title || 'RETRO_BLOG').toUpperCase() {{ "}}" }}</text>
+        <text x="0" y="160" fill="rgb(var(--v-theme-primary))" opacity="0.5">-------------------------</text>
+        <text x="0" y="195" font-size="18"><tspan fill="rgb(var(--v-theme-primary))" font-weight="bold">&gt;</tspan> OS: Hugo v{{ hugo.Version }}</text>
+        <text x="0" y="225" font-size="18"><tspan fill="rgb(var(--v-theme-primary))" font-weight="bold">&gt;</tspan> THEME: Slotify (Vue SPA)</text>
+        <text x="0" y="255" font-size="18"><tspan fill="rgb(var(--v-theme-primary))" font-weight="bold">&gt;</tspan> HOST: GitHub Pages</text>
+      </g>
+
+      <text x="30" y="320">
+        <tspan fill="rgb(var(--v-theme-primary))" font-weight="bold">guest@{{ "{{" }} (ctx.siteConfig.title || 'retro-hub').replace(/\s+/g, '-') {{ "}}" }}</tspan>:<tspan fill="rgb(var(--v-theme-secondary))">~</tspan>$ <tspan fill="rgb(var(--v-theme-primary))" style="filter: drop-shadow(0 0 2px rgb(var(--v-theme-primary)));">cat welcome.md </tspan><tspan class="terminal-cursor" fill="rgb(var(--v-theme-primary))">▌</tspan>
+      </text>
+    </g>
+
+    <rect width="1000" height="345" fill="url(#scanlines)" pointer-events="none" />
+
+  </g>
+</svg>
+</div>
+</script>

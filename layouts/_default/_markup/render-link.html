@@ -1,0 +1,12 @@
+{{- $destination := .Destination -}}
+{{- $isExternal := or (hasPrefix $destination "http://") (hasPrefix $destination "https://") (hasPrefix $destination
+"mailto:") (hasPrefix $destination "//") -}}
+{{- $isAnchor := hasPrefix $destination "#" -}}
+
+{{- if and (not $isExternal) (not $isAnchor) -}}
+{{- $absDest := path.Join .Page.RelPermalink $destination -}}
+<a href="/?p={{ $absDest | safeURL }}" {{ with .Title }}title="{{ . }}" {{ end }}>{{ .Text | safeHTML }}</a>
+{{- else -}}
+<a href="{{ $destination }}" {{ with .Title }}title="{{ . }}" {{ end }}{{ if $isExternal }} target="_blank"
+    rel="noopener noreferrer" {{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}

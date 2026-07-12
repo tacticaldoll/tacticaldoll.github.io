@@ -1,0 +1,9 @@
+public/
+.vscode/
+.DS_Store
+.report/
+tmp/
+__pycache__/
+
+# Re-fetchable CJK font source woff2 (the committed asset is the subset under static/fonts/).
+tools/plexsrc/

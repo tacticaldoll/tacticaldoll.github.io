@@ -1,0 +1,307 @@
+/* ===========================================================================
+   site.css — Retro Terminal skin (site-level override, no theme edits)
+   Loaded via [params] customCSS AFTER themes/slotify/static/css/slotify.css,
+   so :root overrides win by cascade order without !important.
+
+   Colors come ENTIRELY from the active personality's Vuetify theme tokens
+   (rgb(var(--v-theme-*))) so switching personality re-tints the whole terminal
+   aesthetic (green phosphor -> amber -> cyan ...). No hardcoded feature colors.
+   =========================================================================== */
+
+/* Using Google Fonts for modern terminal hacker style: JetBrains Mono (Latin) + Noto Sans TC (CJK) */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+:root {
+  /* 1. Typography — JetBrains Mono + Noto Sans TC. Latin/digits/code +
+        headings go JetBrains Mono; CJK uses Noto Sans TC. Body leads with the CJK face
+        for long-form readability. */
+  --font-mono: 'JetBrains Mono', 'Noto Sans TC', ui-monospace, 'Courier New', monospace;
+  --font-heading: var(--font-mono);
+  --font-body: 'Noto Sans TC', 'JetBrains Mono', system-ui, -apple-system, sans-serif;
+  --letter-spacing-base: 0;       /* mono / CJK need no negative tracking */
+  --letter-spacing-heading: 0;
+
+  /* 2. Sharp — square corners */
+  --radius-lg: 0px;
+  --radius-md: 0px;
+  --radius-sm: 0px;
+  --radius-pill: 2px;             /* chips: near-square, 2px guards aliasing */
+
+  /* 3. Kill glassmorphism — solid panels with a phosphor hairline border */
+  --glass-blur: 0px;
+  --glass-bg-opacity: 1;
+  --glass-border: rgba(var(--v-theme-primary), 0.35);
+
+  /* 4. Shadows — Aligned with Banner's deep drop shadow and CRT edge */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(var(--v-theme-primary), 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(var(--v-theme-primary), 0.22);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(var(--v-theme-primary), 0.35); /* Banner match */
+  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(var(--v-theme-primary), 0.5);
+}
+
+/* 5. Subtle phosphor glow on text — follows the active personality's primary. */
+body {
+  text-shadow: 0 0 1px rgba(var(--v-theme-primary), 0.10);
+}
+
+/* 6. CRT scanline overlay. Fixed top media overlay (neutral black/transparent, not
+      a feature color — allowed under the Visual Boundary). pointer-events:none keeps
+      the UI fully clickable. Static (no flicker), so it honors reduced-motion.
+      Kept at 4% so it reads as ambient CRT texture, not as lines over body text:
+      because the article body lives INSIDE the (opaque) post card, a top overlay
+      can't cleanly skip just the text, so the lever here is opacity, not exclusion. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.04) 3px
+  );
+}
+
+/* 7. True Terminal Selection. Inverts text and background colors when highlighting. */
+::selection {
+  background: rgba(var(--v-theme-primary), 0.99) !important;
+  color: rgb(var(--v-theme-background)) !important;
+  text-shadow: none;
+}
+
+/* 8. Theme Cards Terminalization (Option A: Pure CRT Hacker) */
+
+/* Force cards to match the Banner's surface and border */
+.v-card:not(.v-app-bar):not(.sticky-nav):not(.v-navigation-drawer):not(.v-footer), 
+.glass-panel:not(.v-app-bar):not(.sticky-nav):not(.v-navigation-drawer):not(.v-footer) {
+  background-color: rgb(var(--v-theme-background)) !important;
+  border: 1px solid rgba(var(--v-theme-primary), 0.35) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important; /* Align with banner shadow */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease !important;
+  border-radius: 0px !important;
+  position: relative;
+}
+
+
+/* CRT Micro-flicker Animation */
+@keyframes crt-flicker {
+  0% { opacity: 0.97; }
+  25% { opacity: 1; }
+  50% { opacity: 0.98; }
+  75% { opacity: 0.97; }
+  100% { opacity: 0.97; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v-card, .glass-panel {
+    animation: crt-flicker 0.2s infinite;
+  }
+}
+
+/* Terminal cursor blink (home banner). Uses CSS keyframes rather than SMIL
+   <animate>, which does not reliably start inside the Vue-injected SVG template. */
+@keyframes terminal-blink {
+  0%, 49% { opacity: 1; fill-opacity: 1; }
+  50%, 100% { opacity: 0; fill-opacity: 0; }
+}
+.terminal-cursor {
+  animation: terminal-blink 1.06s step-end infinite;
+}
+
+/* Slot info-cards — shared skeleton for the postView (outdated / AI-declaration)
+   and taxonomyView (term glossary) slot cards. The global .glass-panel rule above
+   already owns the base look (background, 0px radius); the ONLY thing that varies
+   per card is the accent border, so that is all this extracts. Defined AFTER
+   .glass-panel and marked !important so the accent wins the same-specificity tie.
+   Per-card colour comes from the --slot-card-accent custom property (a theme RGB
+   triplet, e.g. var(--v-theme-warning)); it defaults to primary. */
+.slot-card {
+  border: 1px solid rgba(var(--slot-card-accent, var(--v-theme-primary)), 0.4) !important;
+}
+.slot-card--dashed { border-style: dashed !important; }
+
+/* Hover state: Phosphor glow and physical lift (ONLY for operable elements) */
+.v-card--hover-lift:hover, .base-surface--link:hover, a.v-card:hover {
+  border-color: rgba(var(--v-theme-primary), 1) !important;
+  box-shadow: 0 0 15px rgba(var(--v-theme-primary), 0.2), 0 25px 50px rgba(0,0,0,0.5) !important;
+  background-color: rgba(var(--v-theme-primary), 0.03) !important;
+  transform: translateY(-2px);
+}
+
+/* Typography Overrides: Force monospace and primary colors */
+.v-card-title {
+  font-family: var(--font-heading) !important;
+  font-weight: bold !important;
+  color: rgb(var(--v-theme-primary)) !important;
+  /* Enhanced glow matching the banner */
+  text-shadow: 0 0 2px rgba(var(--v-theme-primary), 0.8), 0 0 8px rgba(var(--v-theme-primary), 0.4);
+}
+
+/* --- Removed Terminal Prompt and Cursor from .v-card-title for better readability --- */
+
+
+/* Secondary text: dim primary instead of gray */
+.v-card-subtitle, .v-card-text {
+  color: rgba(var(--v-theme-primary), 0.75) !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Article prose should use the body stack: CJK resolves to IBM Plex Sans TC,
+   while Latin/code-heavy UI chrome keeps the terminal mono treatment above. */
+.post-content-surface .markdown-body {
+  font-family: var(--font-body) !important;
+}
+
+.post-content-surface .markdown-body h1,
+.post-content-surface .markdown-body h2,
+.post-content-surface .markdown-body h3,
+.post-content-surface .markdown-body h4,
+.post-content-surface .markdown-body h5,
+.post-content-surface .markdown-body h6 {
+  font-family: var(--font-heading) !important;
+}
+
+/* Kill default gray emphasis classes inside cards */
+.v-card .text-medium-emphasis, .v-card .text-high-emphasis, .v-card .text-disabled {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Text links inside card body (to avoid breaking v-list-item and other structural anchors) */
+.v-card-text a:not(.v-btn), .v-card-subtitle a:not(.v-btn) {
+  color: rgb(var(--v-theme-primary)) !important;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+}
+.v-card-text a:not(.v-btn):hover, .v-card-subtitle a:not(.v-btn):hover {
+  color: rgb(var(--v-theme-background)) !important;
+  background-color: rgb(var(--v-theme-primary)) !important;
+}
+
+/* 9. App Header Terminalization */
+.v-app-bar.v-toolbar {
+  background-color: rgb(var(--v-theme-background)) !important;
+  border-bottom: 1px solid rgba(var(--v-theme-primary), 0.35) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: none !important;
+}
+
+/* 10. Footer Terminalization */
+.v-footer {
+  background-color: rgb(var(--v-theme-background)) !important;
+  border-top: 1px solid rgba(var(--v-theme-primary), 0.35) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+/* 11. Pagination Terminalization */
+.v-pagination .v-btn {
+  background-color: rgb(var(--v-theme-background)) !important;
+  border: 1px solid rgba(var(--v-theme-primary), 0.35) !important;
+  color: rgb(var(--v-theme-primary)) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.v-pagination .v-btn:hover {
+  background-color: rgba(var(--v-theme-primary), 0.1) !important;
+  border-color: rgba(var(--v-theme-primary), 1) !important;
+  box-shadow: 0 0 8px rgba(var(--v-theme-primary), 0.3) !important;
+}
+
+.v-pagination .v-pagination__item--is-active .v-btn {
+  background-color: rgb(var(--v-theme-primary)) !important;
+  color: rgb(var(--v-theme-background)) !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+}
+
+/* 12. Code & pre → IBM Plex Mono. The theme hardcodes Consolas/Monaco for code
+       blocks (slotify.css), which breaks the terminal mono unity. site.css loads
+       after the theme, so these equal-specificity selectors win by source order. */
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body samp,
+.markdown-body pre,
+.markdown-body .highlight pre code {
+  font-family: var(--font-mono);
+}
+
+/* ========================================= 
+   13. Advanced Retro Terminal Customizations 
+   ========================================= */
+
+/* Markdown Elements */
+.markdown-body blockquote {
+  border-left: 4px solid rgb(var(--v-theme-primary)) !important;
+  background-color: rgba(var(--v-theme-primary), 0.05) !important;
+  border-radius: 0 !important;
+  color: rgba(var(--v-theme-primary), 0.9) !important;
+}
+
+.markdown-body hr {
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px dashed rgb(var(--v-theme-primary)) !important;
+  height: 0;
+  margin: 2em 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse !important;
+  border: 1px solid rgb(var(--v-theme-primary)) !important;
+  background: transparent !important;
+}
+.markdown-body table th, .markdown-body table td {
+  border: 1px solid rgba(var(--v-theme-primary), 0.35) !important;
+  background: transparent !important;
+}
+.markdown-body table tr {
+  background-color: transparent !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(var(--v-theme-background));
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--v-theme-primary));
+  border-radius: 0;
+  border: 2px solid rgb(var(--v-theme-background));
+}
+::-webkit-scrollbar-corner {
+  background-color: rgb(var(--v-theme-background));
+}
+
+/* Buttons (General) */
+.v-btn:not(.v-pagination__item .v-btn) {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+.v-btn--variant-elevated, .v-btn--variant-flat {
+  background-color: rgb(var(--v-theme-background)) !important;
+  color: rgb(var(--v-theme-primary)) !important;
+  border: 1px solid rgb(var(--v-theme-primary)) !important;
+  box-shadow: none !important;
+}
+.v-btn:hover {
+  background-color: rgb(var(--v-theme-primary)) !important;
+  color: rgb(var(--v-theme-background)) !important;
+}
+
+/* Inputs */
+input, textarea, .v-field {
+  caret-color: rgb(var(--v-theme-primary)) !important;
+  border-radius: 0 !important;
+}
+

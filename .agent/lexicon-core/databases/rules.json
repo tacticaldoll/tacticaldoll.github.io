@@ -1,0 +1,44 @@
+{
+  "de_bilingual_headers": [
+    "背景",
+    "發現",
+    "決策總覽",
+    "決議",
+    "補充知識",
+    "關鍵教訓",
+    "技術啟示",
+    "導言",
+    "分析",
+    "反思",
+    "實務對比",
+    "結論",
+    "結語",
+    "問題",
+    "調查"
+  ],
+  "header_normalization": {
+    "Introduction": "背景",
+    "Analysis": "分析",
+    "Reflection": "省思",
+    "Conclusion": "結論"
+  },
+  "markdown_anchors": {
+    "protected_alert_patterns": [
+      "^>\\s*\\[!.*?\\]",
+      "^>\\s*\\*\\*.*?\\*\\*\\s*[\\(（](.*?)[\\)）]:?"
+    ],
+    "anchor_regex": "<!--\\s*anchor:.*?\\s*-->"
+  },
+  "_comment_zh_tw_usage": "正體中文維護防線 (GUIDE §3.1 特定地區慣用語)。forbidden = 大陸慣用詞且 zh-TW 無歧義對應，由 Lexicon.lint() 硬性攔截術語的 zh/description。context_review = 視語境之詞 (合法用法如『作業程序』『適用對象』故不硬攔)，僅供人工複審參考。",
+  "zh_tw_forbidden_usage": {
+    "代碼": "程式碼",
+    "運行": "執行",
+    "函數": "函式",
+    "調用": "呼叫"
+  },
+  "zh_tw_context_review": {
+    "程序": "程式（軟體義）／程序（作業、法律程序義保留）",
+    "文檔": "文件",
+    "對象": "物件（OOP 義）／對象（受眾、適用對象義保留）"
+  }
+}

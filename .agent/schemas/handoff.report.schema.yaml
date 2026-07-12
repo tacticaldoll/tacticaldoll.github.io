@@ -1,0 +1,110 @@
+# Handoff Report Schema
+# 這是 crystallize-report 管線的中介資料格式。
+# AI 的職責是輸出此結構的 JSON 檔案 (`handoff.report.json`)，後續由 pipeline.py 進行渲染與排版。
+
+type: object
+required:
+  - front_matter
+  - structure_type
+  - sections
+
+properties:
+  front_matter:
+    type: object
+    required: [date, model, agent, source]
+    properties:
+      date:
+        type: string
+        description: "產出時間 (YYYY-MM-DDTHH:MM)"
+      model:
+        type: string
+        description: "誠實宣告負責產出本報告的實際 AI 模型"
+      agent:
+        type: string
+        description: "誠實宣告負責產出本報告的實際代理平台或 IDE 與版本號"
+      source:
+        type: string
+        enum: ["conversation", "reconstruction"]
+        description: "內容來源"
+      tags:
+        type: array
+        items:
+          type: string
+        description: "SEO 描述與分類標籤 (選填)"
+
+  structure_type:
+    type: string
+    enum: ["experience_report", "analytical_essay", "technical_note"]
+    description: "決定使用的報告結構模板"
+
+  sections:
+    type: array
+    description: "報告各章節內容。章節名稱與要求應對應 structure_type 的定義。"
+    items:
+      type: object
+      required: [title, prose]
+      properties:
+        title:
+          type: string
+          description: "章節標題 (例如: '背景 (Background)')"
+        prose:
+          type: array
+          description: "文字段落陣列，不包含決策或程式碼區塊。"
+          items:
+            type: string
+        decisions:
+          type: array
+          description: "發生在此章節的具體決策點 (Decision Points)"
+          items:
+            type: object
+            required: [decision, alternatives, outcome]
+            properties:
+              decision:
+                type: string
+                description: "做出的決策內容"
+              alternatives:
+                type: string
+                description: "評估過的替代方案"
+              outcome:
+                type: string
+                description: "決策的結果與折衷"
+        code_snippets:
+          type: array
+          description: "程式碼片段"
+          items:
+            type: object
+            required: [language, code]
+            properties:
+              language:
+                type: string
+              code:
+                type: string
+        mermaid_diagrams:
+          type: array
+          description: "Mermaid 圖表原始碼"
+          items:
+            type: string
+
+  deploy_kit:
+    type: object
+    description: "如果具備可遷移的工具或機制，宣告在此"
+    properties:
+      tools:
+        type: array
+        items:
+          type: object
+          required: [name, type, description, content]
+          properties:
+            name:
+              type: string
+              description: "工具名稱 (用作檔名)"
+            type:
+              type: string
+              enum: ["skill", "rule"]
+              description: "是 Claude Skill 還是 Rule"
+            description:
+              type: string
+              description: "簡短描述"
+            content:
+              type: string
+              description: "腳本或規則的完整內容"

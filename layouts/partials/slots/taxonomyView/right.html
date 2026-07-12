@@ -1,0 +1,57 @@
+<!--
+  Site override: slots/taxonomyView/right.html  (Slotify.slots.taxonomyView.right)
+
+  Right rail of a Tag/Series page. Renders a TERM DEFINITION card on a single
+  tag's page when the build resolved that tag to the lexicon SSOT and shipped the
+  definition in the term JSON (see layouts/_default/term.json + func/glossary-*).
+
+  Data contract: ctx = { pageData, taxonomy } (plus ambient siteConfig/route/t
+  merged by Slot.js). pageData is the fetched term JSON; pageData.glossary, when
+  present, is an ARRAY of { zh, en, description } — a bilingual pairing +
+  definition (usually one entry; >1 if a zh collides in the lexicon, shown as
+  stacked blocks). No internal lexicon fields (key / level) are shipped. The card
+  shows only on the tag taxonomy and only when a definition exists — series pages
+  and unmatched tags (genres / AI-domains / drifted tags) render an empty rail.
+
+  Bilingual display: zh is always shown; the English line is suppressed when it is
+  identical to zh (e.g. "API-First"), so an ASCII term isn't printed twice.
+
+  Pure HTML/CSS over theme tokens; shares the .slot-card skeleton with the
+  postView slot cards (see static/css/site.css), never a Vue surface component.
+-->
+<script type="application/json" data-slotify-i18n="Slotify.slots.taxonomyView.right">
+{
+  "en": { "title": "Term Definition" },
+  "zh": { "title": "術語定義" },
+  "ja": { "title": "用語の定義" }
+}
+</script>
+<script type="text/x-template" id="slot-taxonomyView-right-template">
+  <div
+    v-if="ctx.taxonomy === 'tag' && ctx.pageData && ctx.pageData.glossary && ctx.pageData.glossary.length"
+    class="glossary-card pa-6 glass-panel bg-surface elevation-2 slot-card"
+    style="position: sticky; top: 88px;"
+  >
+    <div class="d-flex align-center mb-3">
+      <i class="mdi mdi-book-alphabet text-primary mr-2" style="font-size: 1.4rem;"></i>
+      <span class="text-subtitle-1 font-weight-bold text-primary" v-text="ctx.t('title')"></span>
+    </div>
+
+    <template v-for="(g, i) in ctx.pageData.glossary" :key="i">
+      <hr v-if="i > 0" class="my-4 opacity-10" style="border: 0; border-top: 1px solid currentColor;">
+
+      <!-- 中英對照: term in both languages; English hidden when same as zh. -->
+      <div class="mb-3">
+        <div class="text-subtitle-1 font-weight-bold" :class="{ 'mb-1': g.en && g.en !== g.zh }" v-text="g.zh"></div>
+        <div
+          v-if="g.en && g.en !== g.zh"
+          class="text-caption font-weight-medium opacity-70"
+          style="letter-spacing: 0.04em;"
+          v-text="g.en"
+        ></div>
+      </div>
+
+      <div class="text-body-2 opacity-90" style="line-height: 1.7;" v-text="g.description"></div>
+    </template>
+  </div>
+</script>

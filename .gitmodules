@@ -1,0 +1,6 @@
+[submodule "themes/slotify"]
+	path = themes/slotify
+	url = https://github.com/tacticaldoll/slotify.git
+[submodule ".agent-scratch"]
+	path = .agent-scratch
+	url = https://github.com/tacticaldoll/agent-distillates.git

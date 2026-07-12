@@ -1,0 +1,6 @@
+{
+    "extraPaths": [
+        ".agent/scripts",
+        ".agent/lexicon-core/scripts"
+    ]
+}

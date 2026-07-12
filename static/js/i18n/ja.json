@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "home": "ホーム",
+    "posts": "記事",
+    "tags": "タグ",
+    "series": "シリーズ",
+    "search": "検索",
+    "about": "概要"
+  },
+  "ui": {
+    "readMore": "続きを読む",
+    "loadingFailed": "読み込み失敗",
+    "notFoundText": "要求されたページが見つからないか、サーバーエラーが発生しました。",
+    "backToHome": "ホームに戻る",
+    "searchHint": "記事やタグを検索...",
+    "noResults": "結果が見つかりませんでした",
+    "author": "著者",
+    "readingTime": "約 {min} 分で読めます",
+    "words": "{count} 文字",
+    "searchPrompt": "上にキーワードを入力して検索を開始します。",
+    "switchLanguage": "言語を切り替える",
+    "switchColorScheme": "カラースキームを切り替える：{name}",
+    "switchToLight": "ライトモードに切り替える",
+    "switchToDark": "ダークモードに切り替える",
+    "themeStyle": "テーマスタイル",
+    "lightboxImage": "ライトボックス画像",
+    "copyCode": "コピー",
+    "copiedCode": "コピーしました！",
+    "copyCodeFailed": "エラー",
+    "mermaidError": "ダイアグラムを描画できませんでした（構文エラー）"
+  },
+  "home": {
+    "latestArticles": "最新の記事"
+  }
+}

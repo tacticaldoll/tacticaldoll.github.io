@@ -1,0 +1,125 @@
+<!--
+  slots/aboutView/contentBottom.html  (Slotify.slots.aboutView.contentBottom)
+-->
+<script type="application/json" data-slotify-i18n="Slotify.slots.aboutView.contentBottom">
+{
+  "en": {
+    "title": "Experiments / Projects",
+    "noDesc": "No description provided.",
+    "all": "All",
+    "demo": "Example Site",
+    "source": "Repository",
+    "document": "Document"
+  },
+  "zh": {
+    "title": "實驗與專案",
+    "noDesc": "無提供描述。",
+    "all": "全部",
+    "demo": "範例網站",
+    "source": "專案庫",
+    "document": "閱讀文件"
+  },
+  "ja": {
+    "title": "実験とプロジェクト",
+    "noDesc": "説明がありません。",
+    "all": "すべて",
+    "demo": "サンプルサイト",
+    "source": "リポジトリ",
+    "document": "ドキュメント"
+  }
+}
+</script>
+
+<script type="text/x-template" id="slot-aboutView-contentBottom-template">
+  <div v-if="ctx.pageData && ctx.pageData.srcGroups && ctx.pageData.srcGroups.length" class="mt-10">
+    <div class="text-h5 font-weight-bold mb-4" style="font-family: var(--font-heading)" v-text="ctx.t('title')"></div>
+
+    <v-tabs
+      v-model="ctx.pageData.projectTab"
+      color="primary"
+      show-arrows
+      class="mb-5"
+      aria-label="Project categories"
+    >
+      <v-tab value="all" v-text="ctx.t('all')"></v-tab>
+      <v-tab
+        v-for="group in ctx.pageData.srcGroups"
+        :key="group.category"
+        :value="group.category"
+        v-text="group.category"
+      ></v-tab>
+    </v-tabs>
+
+    <v-window v-model="ctx.pageData.projectTab">
+      <v-window-item
+        v-for="group in [{ category: 'all', items: ctx.pageData.src }, ...ctx.pageData.srcGroups]"
+        :key="group.category"
+        :value="group.category"
+      >
+      <v-row dense class="mb-2">
+        <v-col v-for="(item, i) in group.items" :key="i" cols="12">
+          <v-card
+          variant="outlined"
+          class="d-flex flex-column flex-sm-row transition-fast"
+          style="border-color: rgba(var(--v-theme-on-surface), 0.12); overflow: hidden; animation: none !important;"
+        >
+          <!-- Thumbnail (Left on desktop, top on mobile) -->
+          <v-img
+            v-if="item.image"
+            :src="item.image"
+            cover
+            class="bg-surface-variant flex-grow-0 flex-shrink-0"
+            :style="{ width: $vuetify.display.smAndUp ? '200px' : '100%', height: $vuetify.display.smAndUp ? '100%' : '140px', minHeight: $vuetify.display.smAndUp ? '140px' : 'auto' }"
+          ></v-img>
+          
+          <!-- Content & Actions -->
+          <div class="d-flex flex-column flex-grow-1 pa-4">
+            <div class="text-subtitle-1 font-weight-bold mb-2" style="line-height: 1.3;" v-text="item.name || item.url"></div>
+            <div class="text-body-2 opacity-80 mb-3" style="line-height: 1.5;" v-text="item.desc || ctx.t('noDesc')"></div>
+            <v-spacer></v-spacer>
+            <div class="d-flex gap-2 flex-wrap">
+              <v-btn
+                v-if="item.doc"
+                :href="item.doc"
+                target="_blank"
+                rel="noopener"
+                color="primary"
+                variant="flat"
+                size="small"
+                prepend-icon="mdi-file-document"
+                class="text-none font-weight-bold"
+                v-text="ctx.t('document')"
+              ></v-btn>
+              <v-btn
+                v-if="item.demo"
+                :href="item.demo"
+                target="_blank"
+                rel="noopener"
+                color="primary"
+                variant="flat"
+                size="small"
+                prepend-icon="mdi-open-in-new"
+                class="text-none font-weight-bold"
+                v-text="ctx.t('demo')"
+              ></v-btn>
+              <v-btn
+                v-if="item.url && item.url !== '#'"
+                :href="item.url"
+                target="_blank"
+                rel="noopener"
+                color="primary"
+                variant="flat"
+                size="small"
+                prepend-icon="mdi-github"
+                class="text-none font-weight-bold"
+                v-text="ctx.t('source')"
+              ></v-btn>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+      </v-row>
+      </v-window-item>
+    </v-window>
+  </div>
+</script>

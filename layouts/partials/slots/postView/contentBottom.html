@@ -1,0 +1,83 @@
+<script type="application/json" data-slotify-i18n="Slotify.slots.postView.contentBottom">
+{
+  "en": {
+    "aiDeclarationTitle": "AI Content Declaration",
+    "aiBoth": "This content was generated with AI assistance and refined by humans. We strive for technical accuracy, but the narrative structure and phrasing have been adjusted by AI.",
+    "aiGenOnly": "This content was generated with AI assistance. We strive for technical accuracy and structural integrity, but the narrative structure was produced by AI.",
+    "aiRefineOnly": "This content was written by a human and refined by AI to improve narrative structure and phrasing quality.",
+    "genPhase": "Generation Phase",
+    "refinePhase": "Refinement Phase",
+    "model": "Model:",
+    "agent": "Agent:"
+  },
+  "zh": {
+    "aiDeclarationTitle": "AI 內容說明 (AI Declaration)",
+    "aiBoth": "本文內容由 AI 協助生成並經優化處理。我們致力於確保技術準確性，但敘事結構與語句呈現經過 AI 調整。",
+    "aiGenOnly": "本文內容由 AI 協助生成。我們致力於確保技術準確性與架構完整性，但敘事結構由 AI 產出。",
+    "aiRefineOnly": "本文內容由人工撰寫並經 AI 優化處理，以提升敘事結構與語句呈現的品質。",
+    "genPhase": "生成階段 (Generation)",
+    "refinePhase": "修飾階段 (Refinement)",
+    "model": "模型:",
+    "agent": "代理人:"
+  }
+}
+</script>
+<script type="text/x-template" id="slot-postView-contentBottom-template">
+  <div v-if="ctx.pageData">
+    <!-- AI Declaration -->
+    <div v-if="ctx.pageData.ai_info && (ctx.pageData.ai_info.generation || ctx.pageData.ai_info.refinement)" class="ai-declaration-wrapper my-8 pa-6 glass-panel bg-surface elevation-2 slot-card slot-card--dashed">
+        <div class="d-flex align-center mb-2">
+            <i class="mdi mdi-robot-outline text-primary mr-2" style="font-size: 1.5rem;"></i>
+            <span class="text-subtitle-1 font-weight-bold text-primary" v-text="ctx.t('aiDeclarationTitle')"></span>
+        </div>
+        <div class="text-body-2 opacity-90 mb-4">
+            <template v-if="ctx.pageData.ai_info.generation && ctx.pageData.ai_info.refinement">
+              <span v-text="ctx.t('aiBoth')"></span>
+            </template>
+            <template v-else-if="ctx.pageData.ai_info.generation">
+              <span v-text="ctx.t('aiGenOnly')"></span>
+            </template>
+            <template v-else-if="ctx.pageData.ai_info.refinement">
+              <span v-text="ctx.t('aiRefineOnly')"></span>
+            </template>
+        </div>
+        <hr class="mb-4 opacity-10" style="border: 0; border-top: 1px solid currentColor;">
+
+        <div class="d-flex flex-wrap gap-y-4">
+            <template v-if="ctx.pageData.ai_info.generation">
+            <div v-if="ctx.pageData.ai_info.generation.model || ctx.pageData.ai_info.generation.agent" class="mr-8">
+                <div class="text-caption font-weight-bold opacity-60 mb-1" v-text="ctx.t('genPhase')"></div>
+                <div class="text-caption d-flex align-center flex-wrap">
+                    <div v-if="ctx.pageData.ai_info.generation.model" class="d-flex align-center">
+                        <span class="mr-1 opacity-80" v-text="ctx.t('model')"></span> <span v-text="ctx.pageData.ai_info.generation.model"></span>
+                    </div>
+
+                    <div v-if="ctx.pageData.ai_info.generation.model && ctx.pageData.ai_info.generation.agent" class="mx-3 opacity-20" style="width: 1px; height: 12px; background-color: currentColor;"></div>
+
+                    <div v-if="ctx.pageData.ai_info.generation.agent" class="d-flex align-center">
+                        <span class="mr-1 opacity-80" v-text="ctx.t('agent')"></span> <span v-text="ctx.pageData.ai_info.generation.agent"></span>
+                    </div>
+                </div>
+            </div>
+            </template>
+
+            <template v-if="ctx.pageData.ai_info.refinement">
+            <div v-if="ctx.pageData.ai_info.refinement.model || ctx.pageData.ai_info.refinement.agent">
+                <div class="text-caption font-weight-bold opacity-60 mb-1" v-text="ctx.t('refinePhase')"></div>
+                <div class="text-caption d-flex align-center flex-wrap">
+                    <div v-if="ctx.pageData.ai_info.refinement.model" class="d-flex align-center">
+                        <span class="mr-1 opacity-80" v-text="ctx.t('model')"></span> <span v-text="ctx.pageData.ai_info.refinement.model"></span>
+                    </div>
+
+                    <div v-if="ctx.pageData.ai_info.refinement.model && ctx.pageData.ai_info.refinement.agent" class="mx-3 opacity-20" style="width: 1px; height: 12px; background-color: currentColor;"></div>
+
+                    <div v-if="ctx.pageData.ai_info.refinement.agent" class="d-flex align-center">
+                        <span class="mr-1 opacity-80" v-text="ctx.t('agent')"></span> <span v-text="ctx.pageData.ai_info.refinement.agent"></span>
+                    </div>
+                </div>
+            </div>
+            </template>
+        </div>
+    </div>
+  </div>
+</script>

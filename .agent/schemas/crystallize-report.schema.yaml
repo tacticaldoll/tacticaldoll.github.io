@@ -1,0 +1,148 @@
+# Crystallize Report SSOT (Single Source of Truth) Schema Template
+# 此檔案定義了專案在產出「結晶報告」時的絕對結構邊界與排版規範。
+# 執行 `/crystallize-report` 工作流時，Agent 必須讀取此處定義的 Front Matter 與各結構寫作細則，
+# 以避免提示詞污染 (Prompt Pollution) 影響敘事決策。
+
+CRITICAL_INSTRUCTION: |
+  Any output failing to exact-match these section headers or failing to adhere to the
+  TARGET_PATH (.agent-scratch/<YYYY-MM-DD>/<topic-slug>/report.zh-TW.md) must be aborted.
+  This is a rigid Schema. DO NOT skip required sections.
+
+  EXCEPTION — Re-crystallization mode (recrystallize-post-series workflow): when invoked by
+  that workflow, the authoritative layout is .agent-scratch/recrystal-<YYYY-MM-DD>-<suffix>/
+  (recrystal- prefix dir; series-map.md and guide.zh-TW.md are valid products, reports live
+  under <report-slug>/report.zh-TW.md). That layout and the `recrystal_only` block below
+  OVERRIDE this TARGET_PATH and MUST NOT trigger abort.
+
+  SCOPE RULE — All invocations apply `principles` and `quality_gate` (the shared lists).
+  ONLY the recrystallize-post-series workflow additionally applies the `recrystal_only`
+  block. A generic executor (e.g. /crystallize-report) MUST ignore `recrystal_only`; the
+  shared lists contain NO recrystal-specific entries, so blind application stays correct.
+
+front_matter:
+  # 目錄結構隔離要求：
+  # 每份報告的最終產出路徑必須為：.agent-scratch/<YYYY-MM-DD>/<topic-slug>/report.zh-TW.md
+  # 嚴禁將報告直接放在日期根目錄下，且檔名必須為 report.zh-TW.md（或 report.en.md）。
+  
+  # 每份報告標題下方必須包含以下後設資料區塊。
+  # 以 HTML 註腳包裹，且鍵值格式必須嚴格吻合。
+  template: |
+    <!-- front matter -->
+    **Structure**: [必填] 從 Experience Report / Analytical Essay / Technical Note 中擇一
+    **Date**: [必填] 填寫當前產出時間 (YYYY-MM-DDTHH:MM)
+    **Model**: [必填] 誠實宣告負責產出本報告的實際 AI 模型 (例如 Gemini 3.5 Flash (Low))
+    **Agent**: [必填] 誠實宣告負責產出本報告的實際代理平台或 IDE 與版本號
+    **Source**: [必填] 從 conversation / reconstruction 中擇一
+
+structures:
+  experience_report:
+    name: "經驗報告 (Experience Report)"
+    description: "記錄多階段的過程以及其中的決策（時序與因果導向）"
+    sections:
+      - title: "背景 (Background)"
+        requirement: "建立「起始狀態」與觸發原因。採用「成果狀態即起始點（outcome state as starting condition）」敘事，避免繁雜的歷史過程交代。"
+      - title: "發現 (Discovery)"
+        requirement: |
+          按時間線描述多階段過程，包含 trial-and-error 與失效分析。必須嵌入「決策點（Decision Point）」子模式。
+          決策點密度管理（Density Management）：
+          - 2-4 個決策：標準 Callout 區塊（`> **Decision Point**: ... \n > — Alternatives: ... \n > — Outcome: ...`）
+          - 5-7 個決策：選擇性呈現。關鍵決策用 Callout，次要決策採用「敘事融合（narrative-woven）」格式
+          - ≥ 8 個決策：敘事優先。大部分決策融入散文，僅保留 2-3 個最關鍵決策為 Callout 區塊
+          - 連續 Callout 限制：禁止連續出現超過 2 個 Full Callout 區塊，中間必須間隔至少一個敘事段落（≥ 2 句）
+          小節開頭必須包含「轉場句（transition sentence）」連結前後小節。
+      - title: "決策總覽 (Decisions)"
+        requirement: "自適應顯示：當決策點 ≥ 3 時提供一鍵式摘要表格。若決策點 < 3 則完全省略此章節。內容不得與發現中的 Callout 逐字重複。"
+      - title: "補充知識 (Supplementary)"
+        requirement: "對應高密度之新概念 (選填)。只有在內容實質且有深度時保留。"
+      - title: "關鍵教訓 (Key Lessons)"
+        requirement: "可遷移的實戰洞察與根因分析。從具體經驗中提煉出的普適性軟體工程或架構原理。"
+
+  analytical_essay:
+    name: "分析論文 (Analytical Essay)"
+    description: "從觀察中推導分析，最後昇華為通用原理（論證與原理導向）"
+    sections:
+      - title: "導言 (Introduction)"
+        requirement: "具體觸發點與明確的問題陳述（Problem Statement）。建立論點張力。"
+      - title: "分析 (Analysis)"
+        requirement: "套用理論框架、數據或 Mermaid 圖表解決問題。所有圖表與清單前必須有引導文字，後有解讀文字。"
+      - title: "反思 (Reflection)"
+        requirement: "深度討論架構張力、極限案例與邊界效應，包含未來啟示。"
+      - title: "實務對比 (Practical Contrastive Examples) [REQUIRED]"
+        requirement: "提供具備高對比度的實施範例（錯誤 vs 正確），鎖定語意邊界以對抗抽象漂移。"
+      - title: "結論 (Conclusion)"
+        requirement: "將具體操作昇華為通用化、可遷移的通用原理。不可指向其他報告，需閉合自身因果鏈。"
+
+  technical_note:
+    name: "技術隨筆 (Technical Note)"
+    description: "記錄具體的技術發現或調查診斷過程（問題與方案導向）"
+    sections:
+      - title: "問題 (Problem)"
+        requirement: "所遇到的具體技術挑戰、錯誤代碼或系統崩潰上下文。"
+      - title: "調查 (Investigation)"
+        requirement: "嘗試過的方法、實驗日誌與觸發問題的關鍵代碼上下文。忠實還原診斷推理鏈。"
+      - title: "發現 (Finding)"
+        requirement: "核心技術洞察與解決方案。包含代碼碎片（Code Snippet）或流程圖以對抗摘要坍縮。"
+      - title: "應用 (Application)"
+        requirement: "說明如何將此技術發現應用於目前專案或同類問題中 (選填)。"
+
+# 寫作質量基準 (Writing Quality Gate)
+# ---------------------------------------------------------------------------------
+principles:
+  terminology:
+    - "首次使用法則：新術語首次出現必須使用『中文（English）』雙語格式（例如：單一真相來源（single source of truth））。"
+    - "術語對齊：強制對齊 .agent/lexicon-core/databases/taxonomy.json (或 terminology.json) 的定義。"
+    - "術語稀釋：單一散文段落引進新術語不得超過 2 個。"
+    - "架橋段落 (Bridging Paragraphs)：當連續多個段落都在引入新術語時，中間必須插入一個僅使用已建立詞彙的過渡段落，舒緩讀者認知張力。"
+  narrative:
+    - "高解析度去專案化：禁止保留特定路徑（如 .agent-scratch）或 Commit ID，須替換為抽象技術術語（除非未啟動 --generalize）。"
+    - "句子概念上限 (Complexity Limit)：單一散文句子包含的主從子句或獨立概念不得超過 2 個。嚴禁 nested parenthetical 雙重巢狀括號。"
+    - "抗摘要化：所有圖表、清單或 Callout 前後必須有『連結組織（Connective Tissue）』敘事文字（前導引言 + 後置解讀）。"
+    - "主動增益：若素材體量不足，應透過『技術外推』或『重建辯證路徑』提供解析度，嚴禁填充空洞文字 (Fluff)。"
+    - "完全自包含 (Self-contained)：每篇報告必須能獨立閱讀。嚴禁在報告內文中使用「前一篇報告」、「下一章節」或「系列二」等外部關聯詞彙，相關概念需在報告內就地解釋。"
+  integrity:
+    - "對比範例：涉及架構決策時，必須包含『實務對比』以鎖定語意邊界。"
+    - "雙語同步：若有 --generalize 旗標，應產出完整的英文版 (report.en.md)；deploy 中的 skills/rules/README 預設必須使用英文以確保跨專案高可攜性。"
+
+deploy_kit:
+  eligibility:
+    - "成熟度三顆星 (Maturity ★★★)：工具/機制在專案中經過多次實測，設計穩定。"
+    - "自包含性 (Self-contained)：該工具不需要報告的脈絡即可被第三方理解並正確運作。"
+    - "通用性 (Generalizable)：專案特有名稱可完全被抽象化或配置變數取代。"
+  dual_track:
+    - "Plugin 軌道 (Skills)：輸出至 `deploy/skills/<name>/SKILL.md`，自動根據 front matter 生成 `.codex-plugin/plugin.json`，支援 Codex Plugin 規範。"
+    - "手動軌道 (Rules)：輸出至 `deploy/rules/<name>.md`，採用可移植的 Markdown 規則片段。"
+    - "排除 Command 軌道：不使用 legacy 的 `commands/` 規格。"
+    - "部署指南 (README.md)：自動生成包含 dual-track 部署說明的 Markdown，提供精準安裝指令。"
+
+quality_gate:
+  - "小節包含 < 2 個實質知識點 -> 與相鄰小節合併"
+  - "小節內容與其他章節重複 -> 執行去重"
+  - "報告總體實質章節 < 3 個 -> 誠實拒絕結晶 (Honest Decline)"
+  - "段落結構化線條 > 敘事文字 -> 加入實質敘事脈絡"
+  - "背景對齊審查：背景中提及的歷史，若在 Discovery 中未被使用或無關，必須刪除；Discovery 預設的上下文若背景未交代，必須補上。"
+
+# 再結晶 / 重鑄模式專用 (Re-crystallization-only Overrides)
+# ---------------------------------------------------------------------------------
+# 機械式隔離：本區塊僅由 recrystallize-post-series workflow 套用。
+# 一般 /crystallize-report 執行器只跑 shared 的 principles 與 quality_gate，不得讀取本區塊；
+# 因此 shared 清單中「沒有」任何再結晶限定條目，盲套 shared 清單仍然正確。
+recrystal_only:
+  target_path: ".agent-scratch/recrystal-<YYYY-MM-DD>-<suffix>/（series-map.md 於根目錄；報告於 <report-slug>/report.zh-TW.md；guide.zh-TW.md 僅 2+ 報告時）。覆寫 CRITICAL_INSTRUCTION 的 TARGET_PATH，不觸發 abort。"
+  principles:
+    - "密度下限（保護證成因果）：每個核心主張至少具備三要件——(1) 因果機制（為何成立，而非斷言成立）、(2) 邊界條件（不適用或易被誤用之處）、(3) 一個反例或失敗案例（主張被違反時會發生什麼）。缺一視為密度不足。"
+    - "壓縮下限（保護緣起因果）：重寫後因果鏈必須覆蓋反推卡記下的每一條『緣起因果』與『具體案例』（問題當初如何發生的觸發事故、症狀、真實路徑）。被刪／併／抽象者須逐筆進『損失帳本』附理由，靜默丟棄視為未完成。去重只消除重複陳述，不得丟棄緣起與案例。與擴張上限對稱：一端防膨脹、一端防吞掉。"
+    - "展開下限（主動增益）：原素材的描述是種子與下限，不是天花板。被壓成一句的潛在深度、未證成前提、暗藏的多核心問題，凡可回溯至系列問題域者，必須實際展開成段落／附錄／另一報告；因 terse 而停在原文深度與因膨脹而失焦同屬缺陷。沿用 shared『主動增益』，嚴禁空洞填充。"
+    - "個案主軸與回推因果：預設 Analytical Essay（個案驅動）。每個核心主張盡可能以具體個案為起點與骨幹，論證自個案結果回推成因（causal back-inference）、再昇華為通用原理，非主張先行配裝飾例。達期刊論文層級的『論證嚴謹度』——嚴謹指通用化由回推因果與個案賺得，非學術腔或形式章節堆疊（可讀性護欄照常生效）。"
+    - "結構化（條件性）：僅當主張涉及流程、契約、邊界、狀態或因果傳播時，才必須附 Mermaid 或 example code；純概念或定性主張不得為形式而硬塞圖表（圖／碼前後仍須有連結組織敘事）。"
+    - "擴張上限：報告可超出素材範圍以補足因果與展開潛在深度，但每段新增論證必須能回溯至『系列問題域』（非回溯至原文寫過的範圍），或為使報告自包含所需的就地前提重述。無法回溯者不得膨脹主文，應移入後續 backlog。展開下限與擴張上限的分界是『可否回溯至系列問題域』。"
+  quality_gate:
+    - "核心主張缺因果機制／邊界條件／反例任一 -> 補足，否則降為非核心論點"
+    - "反推卡的緣起因果步驟未在報告中以具體形式存活，且未進損失帳本附理由 -> 視為靜默吞掉，補回或補記，不得放行"
+    - "具體案例以『重複』為由被去重或壓縮成一句帶過 -> 還原；殊途同歸的多個事故皆為證據多樣性，須保留"
+    - "緣起因果不適用 shared『背景對齊審查：未使用即刪除』；在本模式下未使用 -> 進損失帳本判定，不得逕刪（覆寫該 shared gate）"
+    - "主張涉及流程／契約／邊界／狀態／因果傳播卻僅以散文呈現 -> 改為 Mermaid 或 example code（純概念或定性主張不在此限）"
+    - "新增論證無法回溯至素材問題域或自包含所需前提 -> 移出主文，移入後續 backlog"
+    - "潛在子問題／未證成前提／暗藏多核心可回溯至系列問題域，卻僅照原文深度一句帶過 -> 展開成段落／附錄／另一報告，不得讓既有描述當深度天花板"
+    - "一篇素材暗藏多個核心問題 -> 拆成多份報告，而非預設一篇對一報告"
+    - "核心主張無具體個案支撐，或採『主張先行＋裝飾性例子』 -> 改為『個案→回推因果→主張』順序；確屬純概念主張至少補密度下限反例"
+# ---------------------------------------------------------------------------------

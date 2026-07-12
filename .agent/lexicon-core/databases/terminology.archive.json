@@ -1,0 +1,52 @@
+{
+  "Chaos": {
+    "zh": "遺產腳本模式",
+    "en": [
+      "Chaos"
+    ],
+    "description": "指程式碼庫中零散、未經分層且直接呼叫作業系統路徑的命令式程序化腳本執行模式。",
+    "forbidden": [],
+    "level": 2,
+    "archived_reason": "removed via LexiconManager.remove"
+  },
+  "WhatIs": {
+    "zh": "當前系統契約",
+    "en": [
+      "What Is"
+    ],
+    "description": "代表系統當前真實執行與支援之功能與資料結構的合約狀態。",
+    "forbidden": [],
+    "level": 2,
+    "archived_reason": "removed via LexiconManager.remove"
+  },
+  "Governance": {
+    "zh": "領域驅動模式",
+    "en": [
+      "Governance"
+    ],
+    "description": "指採用領域驅動架構，將邏輯與行為封裝於自描述領域實體中的結構化治理模式。",
+    "forbidden": [],
+    "level": 2,
+    "archived_reason": "removed via LexiconManager.remove"
+  },
+  "Precipitate": {
+    "zh": "知識沉澱工具",
+    "en": [
+      "Precipitate"
+    ],
+    "description": "將知識沉澱到專案文件或知識庫的過程或工具",
+    "forbidden": [],
+    "level": 2,
+    "archived_reason": "removed via LexiconManager.remove"
+  },
+  "Scripts": {
+    "zh": "行為",
+    "en": [
+      "Scripts"
+    ],
+    "description": "在物件導向或領域驅動架構中，物件或實體所具備的方法與邏輯運算。",
+    "forbidden": [],
+    "level": 3,
+    "archived_reason": "removed via LexiconManager.remove"
+  }
+}

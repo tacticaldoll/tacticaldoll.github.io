@@ -1,0 +1,26 @@
+{{- /*
+  func/glossary-lookup.html — resolve a tag's display title to its lexicon entry.
+  Context (.) is the term page Title, e.g. "版本漂移 (Version Drift)".
+
+  Strategy: strip the trailing parenthetical, match the index by zh first; on a
+  miss, fall back to the English alias inside the parens. Returns the ARRAY of
+  matching entries (usually one; >1 when a zh collides across lexicon entries), or
+  an EMPTY slice on no match — genres / AI-domains live in taxonomy.json (not the
+  lexicon), and drifted or malformed tags simply won't resolve, so the slot
+  renders nothing. Matching by display text is intentionally lossy; fixing drift
+  (繁簡 / wording) belongs to the reanchor pipeline, not this read path.
+*/ -}}
+{{- $title := . -}}
+{{- $idx := partialCached "func/glossary-index.html" . -}}
+{{- /* Keys are lowercased in the index (see glossary-index.html), so lookups
+       lowercase too — a no-op for CJK, required for ASCII zh like "API-First". */ -}}
+{{- $zh := lower (trim (replaceRE `[ 　]*[（(][^）)]*[）)]\s*$` "" $title) " 　") -}}
+{{- $entries := index $idx $zh -}}
+{{- if not $entries -}}
+  {{- $par := findRE `[（(][^）)]*[）)]\s*$` $title 1 -}}
+  {{- with $par -}}
+    {{- $en := lower (trim (replaceRE `[（()）]` "" (index . 0)) " 　") -}}
+    {{- if $en -}}{{- $entries = index $idx $en -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return ($entries | default slice) -}}

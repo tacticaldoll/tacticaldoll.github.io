@@ -1,0 +1,25 @@
+<script type="application/json" data-slotify-i18n="Slotify.slots.postView.contentTop">
+{
+  "en": {
+    "outdatedTitle": "Outdated Content Warning",
+    "outdatedDesc": "The information in this article may be outdated. Its publication date is more than 3 years ago. Please refer to its technical implementations and recommendations with caution."
+  },
+  "zh": {
+    "outdatedTitle": "過時內容提醒 (Outdated Content Warning)",
+    "outdatedDesc": "這篇文章的資訊可能已過時。其發布日期已超過 3 年，請謹慎參考其技術實作與建議。"
+  }
+}
+</script>
+<script type="text/x-template" id="slot-postView-contentTop-template">
+  <div>
+    <!-- Outdated Warning -->
+    <div v-if="ctx.pageData && ctx.pageData.is_outdated" class="outdated-warning-wrapper my-8 pa-6 glass-panel bg-surface elevation-2 slot-card"
+        style="--slot-card-accent: var(--v-theme-warning); background: rgba(var(--v-theme-warning), 0.05) !important;">
+        <div class="d-flex align-center mb-2">
+            <i class="mdi mdi-alert-circle-outline text-warning mr-2" style="font-size: 1.5rem;"></i>
+            <span class="text-subtitle-1 font-weight-bold text-warning" v-text="ctx.t('outdatedTitle')"></span>
+        </div>
+        <div class="text-body-2 opacity-90" v-text="ctx.t('outdatedDesc')"></div>
+    </div>
+  </div>
+</script>

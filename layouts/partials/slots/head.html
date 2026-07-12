@@ -1,0 +1,30 @@
+<!--
+  Site override: slots/head.html — web font preloads for the Retro Terminal skin.
+  Replaces the theme's empty default (theme file untouched). Injected verbatim
+  into the document <head>. Fonts are SELF-HOSTED (no CDN) and declared via
+  @font-face in static/css/site.css:
+    - IBM Plex Mono   : Latin / digits / code / headings (terminal feel)
+    - IBM Plex Sans TC: Traditional-Chinese (zh-tw), content-subset, unicode-ranged
+  Same superfamily → coherent Latin/CJK pairing. Rebuild CJK subset with
+  tools/build-cjk-subset.py when new posts add characters.
+-->
+<link rel="preload" as="font" type="font/woff2" href="{{ "fonts/IBMPlexMono-Regular.woff2" | relURL }}" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{{ "fonts/IBMPlexSansTC-Regular.subset.woff2" | relURL }}" crossorigin>
+
+<!--
+  Splash pre-paint font. The theme's baseof.html sets `html, body { font-family:
+  'Inter' }` in an inline <style> earlier in <head>; this slot is injected after
+  it, so this same-selector rule wins by source order and the loading screen
+  uses the self-hosted IBM Plex skin instead of flashing a system fallback.
+  (This is why the site no longer needs to fork baseof.html for the font.)
+-->
+<style>
+  html, body { font-family: 'IBM Plex Sans TC', 'IBM Plex Mono', system-ui, -apple-system, sans-serif; }
+</style>
+
+{{- /* No dark-mode anti-flash script here on purpose: the first-visit default is
+       now [params] defaultColorMode = "dark" (hugo.toml). The theme's baseof
+       splash adds .v-theme--dark before first paint and slotify.css keys
+       --splash-bg off it, so dark paints with no flash — and nothing writes
+       localStorage on first visit, so the config default stays authoritative
+       (a script that hardcoded "<theme>-dark" here would shadow it). */ -}}

@@ -1,0 +1,86 @@
+{
+  "genres": {
+    "Analytical Essay": "分析論述",
+    "Technical Note": "技術筆記",
+    "Experience Report": "經驗報告",
+    "Case Study": "案例研究",
+    "analytical-essay": "分析論述",
+    "technical-note": "技術筆記",
+    "experience-report": "經驗報告",
+    "case-study": "案例研究"
+  },
+  "ai_taxonomy": {
+    "categories": [
+      "AI 代理人 (AI Agent)",
+      "大型語言模型 (LLM)",
+      "AI"
+    ],
+    "detection_keywords": {
+      "AI": [
+        "artificial intelligence",
+        "ai",
+        "人工智慧",
+        "人工智能"
+      ],
+      "AI 代理人 (AI Agent)": [
+        "agent",
+        "governance",
+        "orchestrat",
+        "reasoning",
+        "react",
+        "autonomous",
+        "antigravity",
+        "代理",
+        "治理",
+        "編排",
+        "智能體",
+        "自律",
+        "決策點",
+        "決策流",
+        "思考迴圈",
+        "ReAct",
+        "Chain-of-Thought",
+        "CoT",
+        "工具調用",
+        "Tool Use",
+        "Function Calling",
+        "MCP",
+        "驅動模型",
+        "技能驅動",
+        "規格驅動",
+        "準則驅動",
+        "行為偶然化",
+        "層疊共存",
+        "BDD",
+        "行為驅動",
+        "領域驅動"
+      ],
+      "大型語言模型 (LLM)": [
+        "llm",
+        "transformer",
+        "attention",
+        "token",
+        "prompt",
+        "inference",
+        "quantiz",
+        "gpt",
+        "claude",
+        "gemini",
+        "llama",
+        "deepseek",
+        "model",
+        "模型",
+        "大型語言模型",
+        "提示詞",
+        "推理",
+        "生成",
+        "預訓練",
+        "微調",
+        "Fine-tuning",
+        "RAG",
+        "Vector Database",
+        "向量資料庫"
+      ]
+    }
+  }
+}

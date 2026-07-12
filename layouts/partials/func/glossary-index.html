@@ -1,0 +1,43 @@
+{{- /*
+  func/glossary-index.html — reverse-lookup index over the lexicon SSOT
+  (.agent/lexicon-core/databases/terminology.json). Hugo only READS the file
+  (os.ReadFile), never writes, so the lexicon stays single-source — the publish /
+  reanchor pipeline remains the only writer.
+
+  Keyed by BOTH the canonical zh display string AND every lowercased English
+  alias, so a tag page can resolve its definition by either (zh drifts less than
+  English, but the English parenthetical is a useful fallback). Built once per
+  run behind partialCached.
+
+  Returns: { "<zh|en-alias>": [ { zh, en, description }, ... ] }. The value is an
+  ARRAY, not a single object: two lexicon entries can legitimately share a zh (a
+  quality gate should prevent it, but we present the data faithfully rather than
+  silently dropping a collision the way an overwriting merge would). Only the
+  public-facing bilingual pairing + definition is exposed — internal-only fields
+  (the PascalCase `key`, the curation `level`) are deliberately NOT shipped, since
+  the term JSON is a public endpoint.
+*/ -}}
+{{- $raw := os.ReadFile ".agent/lexicon-core/databases/terminology.json" | transform.Unmarshal -}}
+{{- $idx := dict -}}
+{{- range $key, $e := $raw -}}
+  {{- $en := "" -}}{{- with $e.en -}}{{- $en = index . 0 -}}{{- end -}}
+  {{- $entry := dict "zh" $e.zh "en" $en "description" $e.description -}}
+  {{- /* Index under the zh AND every English alias. KEYS are lowercased
+         explicitly (the entry VALUE keeps original case for display): Hugo's
+         `merge` lowercases map keys anyway, so the lookup must match that —
+         normalising both sides here makes it robust regardless of merge's quirk.
+         lower() is a no-op on CJK, so only ASCII zh (e.g. "API-First") is
+         affected. */ -}}
+  {{- $aliases := slice (lower (trim $e.zh " ")) -}}
+  {{- range $e.en -}}
+    {{- $a := lower (trim . " ") -}}
+    {{- if $a -}}{{- $aliases = $aliases | append $a -}}{{- end -}}
+  {{- end -}}
+  {{- /* uniq: when an entry's zh equals one of its en aliases after lowercasing
+         (e.g. "API-First"), the key would otherwise receive this entry twice. */ -}}
+  {{- range $k := (uniq $aliases) -}}
+    {{- $cur := index $idx $k | default slice -}}
+    {{- $idx = merge $idx (dict $k ($cur | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $idx -}}

@@ -1,0 +1,134 @@
+baseURL = "https://tacticaldoll.github.io/"
+languageCode = "zh-tw"
+defaultContentLanguage = "zh-tw"
+title = "last hop"
+theme = "slotify"
+disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
+
+[outputFormats]
+  [outputFormats.JSON]
+    mediaType = "application/json"
+    baseName = "index"
+    isPlainText = true
+    notAlternative = true
+
+[outputFormats.SEARCHINDEX]
+  mediaType = "application/json"
+  baseName = "search-index"
+  isPlainText = true
+  notAlternative = true
+
+[outputs]
+  home = ["HTML", "JSON", "SEARCHINDEX"]
+  page = ["HTML", "JSON"]
+  section = ["HTML", "JSON"]
+  taxonomy = ["HTML", "JSON"]
+  term = ["HTML", "JSON"]
+
+# Match the theme example: only tags + series. The SPA auto-generates a route
+# per declared taxonomy (routes.js, from .Site.Taxonomies), so an unused
+# taxonomy would ship a reachable-but-empty term page.
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+# NOTE: no [menus] block. The SPA's nav is owned by the appHeader slot's own
+# item list (layouts/partials/slots/appHeader.html) + routes.js navigationItems;
+# .Site.Menus.main is built into siteConfig.menu but has no consumer, so a
+# [menus] block here would be inert (and its labels would silently drift from
+# what's actually shown).
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  description = "exists. occasionally transmits."
+  author = "TTL::0"
+  customCSS = ["/css/site.css"]
+  # First-visit colour mode (no stored user choice). The theme resolves this in
+  # both the pre-paint splash (baseof adds .v-theme--dark before first paint, and
+  # slotify.css keys --splash-bg #121212 off it → no light flash) and
+  # window.__SLOTIFY_DEFAULT_MODE__ (config/themes.js), so dark is the single
+  # config-driven default. "light" | "dark" | "auto" (follow OS).
+  defaultColorMode = "dark"
+  # Build-time (static) pagination: Hugo emits a real document per page at
+  # /page/N/ (home) and /tags/<term>/page/N/ (term) — crawlable HTML seobody +
+  # an index.json with just that page's cards plus a pagerCurrent/pagerTotal
+  # cursor. The SPA navigates between them. pagerSize defaults to 10.
+  paginationMode = "static"
+
+  [params.social]
+    github = "https://github.com/tacticaldoll"
+    twitter = ""
+    linkedin = ""
+    facebook = ""
+
+  [params.disqus]
+    shortname = "mikanmimi"
+    scope = ["/posts/"]
+
+# ── UI languages (chrome only). Replaces the theme's data/locales.json default
+# (arrays don't deep-merge, so all locales are restated here). First = default.
+# Each needs a matching static/js/i18n/<code>.json. ja is added by this site. ──
+[[params.locales]]
+  code = "en"
+  label = "EN"
+[[params.locales]]
+  code = "zh"
+  label = "繁"
+[[params.locales]]
+  code = "ja"
+  label = "日"
+
+# ── Retro Terminal palette: 4 CUSTOM-KEY personalities (CRT phosphor types) ──
+# These keys (p1/p3/cyan/ice) are ADDED to the theme palette via deep-merge; the
+# theme's 6 default keys still exist in the merged set but are HIDDEN by the
+# appHeader slot override (it renders only this curated list). theme data is
+# untouched. All values self-verified vs the theme gate math (WCAG AA >= 4.5:1
+# vs surface AND background; primary/secondary CIEDE2000 >= 18).
+# Keep the shown set + display names + order in sync with layouts/partials/slots/appHeader.html.
+[params.palette.p1.light]    # P1 green phosphor
+  background = "#F2F6EE"
+  surface    = "#FFFFFF"
+  primary    = "#15803D"
+  secondary  = "#0F6E7A"
+[params.palette.p1.dark]
+  background = "#050A06"
+  surface    = "#0C150E"
+  primary    = "#33FF66"
+  secondary  = "#19E0E0"
+
+[params.palette.p3.light]    # P3 amber
+  background = "#FBF5EC"
+  surface    = "#FFFFFF"
+  primary    = "#B45309"
+  secondary  = "#C0184E"
+[params.palette.p3.dark]
+  background = "#0A0703"
+  surface    = "#14100A"
+  primary    = "#FFB000"
+  secondary  = "#FF5E3A"
+
+[params.palette.cyan.light]  # Cyan CRT
+  background = "#EEF3F5"
+  surface    = "#FFFFFF"
+  primary    = "#0A6F7E"
+  secondary  = "#6D28D9"
+[params.palette.cyan.dark]
+  background = "#04080A"
+  surface    = "#0A1014"
+  primary    = "#22E5FF"
+  secondary  = "#B36BFF"
+
+[params.palette.ice.light]   # Ice / paper-white CRT
+  background = "#F0F4F7"
+  surface    = "#FFFFFF"
+  primary    = "#1E3A4C"
+  secondary  = "#41748A"
+[params.palette.ice.dark]
+  background = "#060A0D"
+  surface    = "#0D141A"
+  primary    = "#CDEEFF"
+  secondary  = "#5B8AA8"

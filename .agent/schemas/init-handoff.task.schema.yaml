@@ -1,0 +1,45 @@
+# Init-Handoff Task Specification
+# 在開始執行 /init-handoff 之前，請將以下 template 區塊的內容複製到對話的 `task.md` 中。
+# 必須嚴格按照順序逐項完成並打勾，確保 NLP 萃取與交接的完整性。
+
+template: |
+  # Init-Handoff 執行追蹤清單
+  
+  ## 階段一：宏觀解析 (Macro Context)
+  - `[ ]` **Task 1: 系列判別 (Series Determination)**
+    - 掃描 `.agent-scratch/<session_id>/` 目錄。必須以 `guide.*.md` 的「實體存在」為唯一判別基準設定 `metadata.is_series`。嚴禁僅因存在多份報告而擅自將 `is_series` 設為 `true`。若無導讀檔，多份報告必須以獨立貼文 (Standalone Posts) 處理。
+  - `[ ]` **Task 2: 提取貼文順序 (Extract Post Order)**
+    - 若為系列，詳讀 `guide.md` 中的閱讀順序，為後續的發佈排序建立絕對基準。
+  - `[ ]` **Task 3: 系列名稱精煉 (Series Name Refinement)**
+    - 若為系列，攔截空泛標題（如「XX 系列」）。
+    - 強制產出 `[核心主題]：[自由發揮的敘事化副標題]` 風格之標題，寫入 `metadata.series`。
+  
+  ## 階段二：微觀解析 (Micro Extraction)
+  - `[ ]` **Task 4: 單篇元數據萃取與強制排序 (Post Metadata & Forcing Order)**
+    - 為每篇文章提取 `title`、生成標準化 `slug` 與濃縮精華的 SEO `description`。
+    - **強制排序**：依據 Task 2 的順序，為各篇文章的 `date` 欄位加上秒數差距（例如 `+1s`, `+2s`），強制鎖定時序，確保發佈順序。
+  - `[ ]` **Task 5: AI 資訊提取 (Extract AI Info)**
+    - 掃描每份 `report.*.md` 的頭部，提取 `**Model**:` 與 `**Agent**:` 資訊，寫入 `ai_info.generation`。
+  - `[ ]` **Task 6: 文章語氣修飾與脫敏 (Tone & Redactions)**
+    - 擷取內文中生硬的過渡句（如「在這份報告中」）或內部專案代號，轉化為泛用技術語氣，寫入 `rules.sublimations` 與 `rules.redactions`。
+  
+  ## 階段三：術語與標籤 (Terminology & Tags)
+  - `[ ]` **Task 7: 自動術語掃描與收割 (Automated Term Extraction & Harvest)**
+    - 在終端機執行 `python3 .agent/scripts/workflows/generate-article/prepare_handoff.py <session_id>`。腳本會掃描雙語/粗體詞彙，並收割 `series-map*.md` / `guide*.md` 的 `## Metadata` TOML `tags`（`[METADATA HARVEST]`）作為高信心候選。
+  - `[ ]` **Task 8: 自動鎖定與精煉 (Refine & Lock)**
+    - 執行 `python3 .agent/scripts/workflows/generate-article/refine_handoff.py <session_id>` 將候選移入 `locked` 陣列。此時腳本應會拋出 `PENDING terms need description` 的錯誤中斷。
+    - **零術語守門**：若印出 `[WARNING] 0 locked terms`，代表報告無任何標記也無 metadata 可收割。**嚴禁零術語交接**——必須親自閱讀報告，將核心術語以 `zh / en / description` 寫入 `declared` 後重跑。
+  - `[ ]` **Task 9: NLP 補寫 en + 描述與純化 (NLP en/Description Injection & Refinement)**
+    - 開啟 `handoff.terms.json`，為標記為 `PENDING_REFINEMENT` 的所有術語補寫真實的 `description`；收割自 metadata tags 的詞 `en` 為空，須一併補上正規化的 `en`（Title Case）。
+    - **純化與離手原則**：確保術語為「純淨名詞」（無過渡贅字）。若有贅字請直接在 `handoff.terms.json` 中修改 `zh` 欄位為純淨名詞，**嚴禁修改原始的 `.md` 報告檔案**。只要純化的名詞是原文字串的子字串即可通過。
+  - `[ ]` **Task 10: 確認精煉通關 (Pass Quality Gate)**
+    - 再次執行 `python3 .agent/scripts/workflows/generate-article/refine_handoff.py <session_id>`，確認無 `PENDING terms need description` 與 `0 locked terms` 警告，全部術語鎖定成功。
+  - `[ ]` **Task 11: 篩選術語標籤 (Tag Filtering)**
+    - 依據 1+1+6 協議標籤為每篇文章配置 `tags`（文體分類 + 核心領域 + 最多 6 個技術細節）。
+    - **嚴禁** AI 手動填寫 `domain_tag`，保留預設值或留空。
+  
+  ## 階段四：封裝交接 (Handoff & Halt)
+  - `[ ]` **Task 12: 實體驗證與停機 (Finalize & Halt)**
+    - 驗證 `handoff.posts.json` 與 `handoff.terms.json` 格式符合 Schemas。
+    - 儲存檔案。
+    - **強制停機**，並輸出提示：「✅ 交接檔已就緒。請人類審查系列名稱、順序、標籤與術語宣告。確認無誤後，請手動執行 `/publish-article`」。

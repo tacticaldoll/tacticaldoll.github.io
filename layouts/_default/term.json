@@ -1,0 +1,49 @@
+{{- /*
+  _default/term.json — Site override for a SINGLE taxonomy term's JSON endpoint
+  (Kind "term", e.g. /tags/<term>/index.json). Hugo prefers this over the theme's
+  generic _default/list.json for term pages, so the term-cloud (Kind "taxonomy")
+  and section lists keep using the theme template untouched.
+
+  Mirrors the theme list.json's term branches (client + static) via the shared
+  func/pagination-config + func/feed-pages partials — so it tracks the theme's
+  pagination contract instead of hand-rolling its own collection/fallback logic —
+  then layers ONE site-only field: `glossary` — an ARRAY of { zh, en, description }
+  (usually one entry; >1 if a zh collides in the lexicon). For the `tags` taxonomy
+  we resolve the term's display title against the lexicon SSOT
+  (func/glossary-lookup.html) and, on a hit, ship the definition array — the
+  taxonomyView/right slot reads ctx.pageData.glossary to render a definition card.
+  Series terms and unmatched tags ship no glossary key.
+
+  STATIC mode: this template renders once per pager page (/tags/x/, /tags/x/page/2/,
+  …). The theme's list.html paginates the SAME collection (func/feed-pages) at the
+  SAME size, so /page/N/index.html and /page/N/index.json never disagree. Re-sync
+  the pagination branches if the theme's list.json term handling changes upstream.
+*/ -}}
+{{- $pc := partial "func/pagination-config.html" . -}}
+{{- $mode := $pc.mode -}}
+{{- $size := $pc.size -}}
+{{- $list := slice -}}
+{{- $payload := dict "title" .Title -}}
+{{- if and (eq $mode "static") (eq .Kind "term") -}}
+  {{- $paginator := .Paginate (partial "func/feed-pages.html" .) $size -}}
+  {{- range $paginator.Pages -}}
+    {{- $list = $list | append (partial "func/card-data.html" .) -}}
+  {{- end -}}
+  {{- $payload = merge $payload (dict
+      "list" $list
+      "paginationMode" "static"
+      "pagerCurrent" $paginator.PageNumber
+      "pagerTotal" $paginator.TotalPages) -}}
+{{- else -}}
+  {{- range (partial "func/feed-pages.html" .) -}}
+    {{- $list = $list | append (partial "func/card-data.html" .) -}}
+  {{- end -}}
+  {{- $payload = merge $payload (dict "list" $list "paginate" $size "paginationMode" "client") -}}
+{{- end -}}
+{{- if eq .Data.Plural "tags" -}}
+  {{- $entries := partial "func/glossary-lookup.html" .Title -}}
+  {{- if gt (len $entries) 0 -}}
+    {{- $payload = merge $payload (dict "glossary" $entries) -}}
+  {{- end -}}
+{{- end -}}
+{{- $payload | jsonify (dict "indent" "  ") -}}
