@@ -59,6 +59,15 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
   # cursor. The SPA navigates between them. pagerSize defaults to 10.
   paginationMode = "static"
 
+  # About author presentation. "auto" derives the UI from author count:
+  # one author renders directly; two or more authors render as tabs.
+  [params.about]
+    authorLayout = "auto" # "auto" | "tabs" | "single"
+
+  [[params.about.authors]]
+    id = "ttl0"
+    name = "TTL:0"
+
   [params.social]
     github = "https://github.com/tacticaldoll"
     twitter = ""

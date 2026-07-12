@@ -76,11 +76,39 @@
   {{- $srcGroups = $srcGroups | append (dict "category" $cat "items" $items) -}}
 {{- end -}}
 
+{{- /* Author presentation: config owns identity/order while the current
+      About Markdown remains the single content source. */ -}}
+{{- $aboutConfig := site.Params.about | default dict -}}
+{{- $authorLayout := index $aboutConfig "authorLayout" | default "auto" -}}
+{{- $authorConfigs := index $aboutConfig "authors" | default slice -}}
+{{- $authors := slice -}}
+{{- range $authorConfigs -}}
+  {{- $authors = $authors | append (dict
+    "id" .id
+    "name" .name
+    "content" $.Content
+  ) -}}
+{{- end -}}
+{{- if not $authors -}}
+  {{- $authors = $authors | append (dict
+    "id" "default"
+    "name" (.Params.author | default site.Params.author)
+    "content" .Content
+  ) -}}
+{{- end -}}
+{{- $showAuthorTabs := or
+  (eq $authorLayout "tabs")
+  (and (eq $authorLayout "auto") (gt (len $authors) 1))
+-}}
+
 {{- $extra := dict
   "author" (.Params.author | default site.Params.author)
   "readingTime" .ReadingTime
   "wordCount" .WordCount
   "content" .Content
+  "authors" $authors
+  "authorLayout" $authorLayout
+  "showAuthorTabs" $showAuthorTabs
   "src" $crawledSrc
   "srcGroups" $srcGroups
   "layout_check" "single"
