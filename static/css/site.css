@@ -85,20 +85,6 @@ body::after {
 }
 
 
-/* CRT Micro-flicker Animation */
-@keyframes crt-flicker {
-  0% { opacity: 0.97; }
-  25% { opacity: 1; }
-  50% { opacity: 0.98; }
-  75% { opacity: 0.97; }
-  100% { opacity: 0.97; }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .v-card, .glass-panel {
-    animation: crt-flicker 0.2s infinite;
-  }
-}
 
 /* Terminal cursor blink (home banner). Uses CSS keyframes rather than SMIL
    <animate>, which does not reliably start inside the Vue-injected SVG template. */
