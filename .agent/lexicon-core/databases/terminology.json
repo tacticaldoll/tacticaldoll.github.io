@@ -170,6 +170,15 @@
     "forbidden": [],
     "level": 2
   },
+  "OrganizationalComplementarity": {
+    "zh": "技術與組織互補",
+    "en": [
+      "Organizational Complementarity"
+    ],
+    "description": "技術能力必須搭配流程重排與技能調整才形成產出的互補關係。",
+    "forbidden": [],
+    "level": 2
+  },
   "DualLayerSpec": {
     "zh": "雙層規格結構",
     "en": [
@@ -671,6 +680,15 @@
       "Elastic Weight Consolidation"
     ],
     "description": "依參數對舊任務的重要性施加懲罰，以減緩遺忘的正則化方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SociotechnicalSystem": {
+    "zh": "社會技術系統",
+    "en": [
+      "Sociotechnical System"
+    ],
+    "description": "由技術元件與組織安排共同構成、必須整體運作才產生價值的系統。",
     "forbidden": [],
     "level": 2
   },
@@ -1463,6 +1481,15 @@
       "Performative Prediction"
     ],
     "description": "模型輸出影響人類行動，進而改變後續資料分佈的回饋情形。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DiscountedCashFlow": {
+    "zh": "折現現金流",
+    "en": [
+      "Discounted Cash Flow"
+    ],
+    "description": "將未來現金流以資金成本折算為現值的估值方法。",
     "forbidden": [],
     "level": 2
   },
@@ -3131,6 +3158,24 @@
     "forbidden": [],
     "level": 2
   },
+  "HumanCompensation": {
+    "zh": "人工補償",
+    "en": [
+      "Human Compensation"
+    ],
+    "description": "以人力審核與例外處理填補模型不可靠之處，使系統整體達到可交付品質的做法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ContributionMargin": {
+    "zh": "貢獻利益",
+    "en": [
+      "Contribution Margin"
+    ],
+    "description": "收入扣除隨使用量變動的成本後，可用以覆蓋固定支出的餘額。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3452,6 +3497,33 @@
       "Thin Product"
     ],
     "description": "對某件事保有權威、但刻意不擁有周邊職責的克制型核心。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Anthropomorphism": {
+    "zh": "擬人化",
+    "en": [
+      "Anthropomorphism"
+    ],
+    "description": "以人的意圖、知識或意志描述系統行為的傾向，不必然預設使用者相信系統具有人格。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Reflexivity": {
+    "zh": "反身性",
+    "en": [
+      "Reflexivity"
+    ],
+    "description": "描述未來的敘事改變參與者行動，行動再改變被描述的現實，形成互相決定的迴圈。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Autoregressive": {
+    "zh": "自回歸",
+    "en": [
+      "Autoregressive"
+    ],
+    "description": "逐步以先前輸出作為後續輸入條件的生成方式，使完成時間與輸出長度相關。",
     "forbidden": [],
     "level": 2
   },
