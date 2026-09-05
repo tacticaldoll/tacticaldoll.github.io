@@ -23,8 +23,6 @@ series = ["模型能力如何失效：在歸咎模型之前，先固定比較條
         agent = "Claude Code VSCode Extension 2.1.261"
 +++
 
----
-
 <!--more-->
 
 ## 導言

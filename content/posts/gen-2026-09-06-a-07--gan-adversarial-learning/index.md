@@ -25,8 +25,6 @@ series = ["統計模型如何學習：同一套骨架，如何長出不同的參
         agent = "Claude Code VSCode Extension 2.1.261"
 +++
 
----
-
 <!--more-->
 
 ## 導言

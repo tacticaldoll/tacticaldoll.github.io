@@ -23,8 +23,6 @@ series = ["智慧敘事如何進入現實：不是市場受騙，而是敘事協
         agent = "Claude Code VSCode Extension 2.1.261"
 +++
 
----
-
 <!--more-->
 
 ## 導言
