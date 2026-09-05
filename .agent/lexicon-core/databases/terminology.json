@@ -665,6 +665,15 @@
     "forbidden": [],
     "level": 2
   },
+  "ElasticWeightConsolidation": {
+    "zh": "彈性權重固化",
+    "en": [
+      "Elastic Weight Consolidation"
+    ],
+    "description": "依參數對舊任務的重要性施加懲罰，以減緩遺忘的正則化方法。",
+    "forbidden": [],
+    "level": 2
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -1436,6 +1445,24 @@
       "Reparameterization Trick"
     ],
     "description": "把隨機取樣改寫為與參數無關之噪聲的可微形式，使梯度得以穿過取樣步驟。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CatastrophicForgetting": {
+    "zh": "災難性遺忘",
+    "en": [
+      "Catastrophic Forgetting"
+    ],
+    "description": "針對新任務更新參數後，先前任務表現急劇下降的現象。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PerformativePrediction": {
+    "zh": "表演性預測",
+    "en": [
+      "Performative Prediction"
+    ],
+    "description": "模型輸出影響人類行動，進而改變後續資料分佈的回饋情形。",
     "forbidden": [],
     "level": 2
   },
@@ -3059,6 +3086,51 @@
     "forbidden": [],
     "level": 2
   },
+  "GradientInterference": {
+    "zh": "梯度干涉",
+    "en": [
+      "Gradient Interference"
+    ],
+    "description": "不同任務的梯度方向相衝，使一方的更新提高另一方損失的情形。",
+    "forbidden": [],
+    "level": 2
+  },
+  "KnowledgeDistillation": {
+    "zh": "知識蒸餾",
+    "en": [
+      "Knowledge Distillation"
+    ],
+    "description": "以較大模型的輸出分佈為目標，訓練較小模型重新估計其行為的壓縮方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DistributionShift": {
+    "zh": "分佈漂移",
+    "en": [
+      "Distribution Shift"
+    ],
+    "description": "部署資料的分佈偏離訓練分佈，使模型在參數不變下失去效用的現象。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CreditAssignment": {
+    "zh": "信用分配",
+    "en": [
+      "Credit Assignment"
+    ],
+    "description": "判定某個結果應歸因於哪些參數或決策步驟的問題。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DataNoise": {
+    "zh": "資料雜訊",
+    "en": [
+      "Data Noise"
+    ],
+    "description": "標註錯誤或量測誤差造成的標籤與特徵偏差。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3677,6 +3749,24 @@
       "Generalization"
     ],
     "description": "模型在訓練樣本以外的資料上維持表現的能力。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Quantization": {
+    "zh": "量化",
+    "en": [
+      "Quantization"
+    ],
+    "description": "以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Pruning": {
+    "zh": "剪枝",
+    "en": [
+      "Pruning"
+    ],
+    "description": "移除模型中影響較小的連接或結構，以縮減規模的壓縮方法。",
     "forbidden": [],
     "level": 2
   }
