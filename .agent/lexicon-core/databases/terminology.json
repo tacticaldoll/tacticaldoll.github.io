@@ -134,6 +134,42 @@
     "forbidden": [],
     "level": 2
   },
+  "RecurrentNeuralNetwork": {
+    "zh": "遞迴式神經網路",
+    "en": [
+      "Recurrent Neural Network"
+    ],
+    "description": "重複套用同一狀態轉換，把可變長度序列映射為固定維度隱藏狀態的網路。",
+    "forbidden": [],
+    "level": 2
+  },
+  "LongShortTermMemory": {
+    "zh": "長短期記憶網路",
+    "en": [
+      "Long Short-Term Memory"
+    ],
+    "description": "以門控結構調節資訊與梯度路徑的遞迴網路變體。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ScaledDotProductAttention": {
+    "zh": "縮放點積注意力",
+    "en": [
+      "Scaled Dot-Product Attention"
+    ],
+    "description": "以查詢與鍵的點積除以維度平方根作為關聯分數的注意力計算方式。",
+    "forbidden": [],
+    "level": 2
+  },
+  "VariationalAutoencoder": {
+    "zh": "變分自動編碼器",
+    "en": [
+      "Variational Autoencoder"
+    ],
+    "description": "學習潛在變數的條件分佈，並以證據下界同時訓練編碼器與解碼器的生成模型。",
+    "forbidden": [],
+    "level": 2
+  },
   "DualLayerSpec": {
     "zh": "雙層規格結構",
     "en": [
@@ -608,6 +644,24 @@
       "Context Least Privilege"
     ],
     "description": "限制 agent 帶著哪些上下文去行動的安全原則；相對於只限制 process 能碰哪些檔案、網路的傳統最小權限，它管控的是模型推理前所載入的語境狀態。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ConvolutionalNeuralNetwork": {
+    "zh": "卷積神經網路",
+    "en": [
+      "Convolutional Neural Network"
+    ],
+    "description": "以局部連接與權重共享處理格狀資料的網路架構，把空間鄰近性寫進模型結構。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GenerativeAdversarialNetwork": {
+    "zh": "生成對抗網路",
+    "en": [
+      "Generative Adversarial Network"
+    ],
+    "description": "由生成器與判別器相互競爭、以隱式方式逼近資料分佈的架構。",
     "forbidden": [],
     "level": 2
   },
@@ -1355,6 +1409,33 @@
       "Consumer Trilemma"
     ],
     "description": "界定元件範圍時，無消費者則無契約、單一消費者則耦合、多消費者則稀釋成需求並集的三難困境。",
+    "forbidden": [],
+    "level": 2
+  },
+  "TranslationEquivariance": {
+    "zh": "平移等變性",
+    "en": [
+      "Translation Equivariance"
+    ],
+    "description": "輸入平移時輸出隨之平移的性質，由卷積的權重共享自然產生。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SelfAttention": {
+    "zh": "自我注意力",
+    "en": [
+      "Self-Attention"
+    ],
+    "description": "讓序列中任一位置直接以內容相依的權重聚合其他位置表示的機制。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ReparameterizationTrick": {
+    "zh": "重參數技巧",
+    "en": [
+      "Reparameterization Trick"
+    ],
+    "description": "把隨機取樣改寫為與參數無關之噪聲的可微形式，使梯度得以穿過取樣步驟。",
     "forbidden": [],
     "level": 2
   },
@@ -2897,6 +2978,87 @@
     "forbidden": [],
     "level": 2
   },
+  "DiffusionModel": {
+    "zh": "擴散模型",
+    "en": [
+      "Diffusion Model"
+    ],
+    "description": "以前向加噪與反向去噪的多步轉移建立生成程序的模型族。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ModeCollapse": {
+    "zh": "模式坍縮",
+    "en": [
+      "Mode Collapse"
+    ],
+    "description": "生成器只覆蓋資料分佈中少數模式，導致樣本多樣性不足的失效現象。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GradientDescent": {
+    "zh": "梯度下降",
+    "en": [
+      "Gradient Descent"
+    ],
+    "description": "沿損失函數負梯度方向反覆更新參數的最佳化方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Backpropagation": {
+    "zh": "反向傳播",
+    "en": [
+      "Backpropagation"
+    ],
+    "description": "以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MachineLearning": {
+    "zh": "機器學習",
+    "en": [
+      "Machine Learning"
+    ],
+    "description": "先界定可選函數的範圍，再以資料估計其中參數的建模方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "LossFunction": {
+    "zh": "損失函數",
+    "en": [
+      "Loss Function"
+    ],
+    "description": "把模型輸出與目標之間的差距量化為單一數值的評分函數。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PositionalEncoding": {
+    "zh": "位置編碼",
+    "en": [
+      "Positional Encoding"
+    ],
+    "description": "為本身不含順序資訊的注意力模型補入序列位置的表示方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "EvidenceLowerBound": {
+    "zh": "證據下界",
+    "en": [
+      "Evidence Lower Bound"
+    ],
+    "description": "對數邊際似然的可最佳化下界，由重建項與 KL 正則項組成。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PosteriorCollapse": {
+    "zh": "後驗坍縮",
+    "en": [
+      "Posterior Collapse"
+    ],
+    "description": "近似後驗退化為先驗、潛在變數不再攜帶輸入資訊的失效現象。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3506,6 +3668,15 @@
       "Depend"
     ],
     "description": "元件之間產生的耦合關係，一方改動會強制影響另一方。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Generalization": {
+    "zh": "泛化",
+    "en": [
+      "Generalization"
+    ],
+    "description": "模型在訓練樣本以外的資料上維持表現的能力。",
     "forbidden": [],
     "level": 2
   }
