@@ -34,6 +34,8 @@ front_matter:
     **Agent**: [必填] 誠實宣告負責產出本報告的實際代理平台或 IDE 與版本號
     **Source**: [必填] 從 conversation / reconstruction 中擇一
 
+    ---
+
 structures:
   experience_report:
     name: "經驗報告 (Experience Report)"
@@ -102,6 +104,7 @@ principles:
   integrity:
     - "對比範例：涉及架構決策時，必須包含『實務對比』以鎖定語意邊界。"
     - "雙語同步：若有 --generalize 旗標，應產出完整的英文版 (report.en.md)；deploy 中的 skills/rules/README 預設必須使用英文以確保跨專案高可攜性。"
+    - "數學式相容性：Markdown 行內公式使用 `$...$`，區塊公式使用獨立行的 `$$...$$` 或 `math` code block；禁止使用 GitHub 不渲染的 `\\(...\\)` 與 `\\[...\\]`。"
 
 deploy_kit:
   eligibility:
