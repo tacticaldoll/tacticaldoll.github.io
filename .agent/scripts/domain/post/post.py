@@ -39,7 +39,13 @@ class HugoPost:
                 content = content[match.end():]
             else:
                 break
-        
+
+        # 1.5 Strip the horizontal rule that closes the report's front-matter block.
+        # Without this it survives into the post body and, being neither a heading
+        # nor an alert, blocks relocate_alerts_after_more() from lifting the first
+        # section past <!--more-->, leaving a stray <hr> as the whole summary.
+        content = re.sub(r'^\s*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n', '', content)
+
         body = content.strip()
         
         # 2. Extract metadata

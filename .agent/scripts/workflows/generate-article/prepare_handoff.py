@@ -362,7 +362,12 @@ class HandoffPreparer:
         # Find all Level 1 terms in the body
         body_text = content
         lexicon = self.engine.lexicon
+        # Section labels (導言/反思/實務對比…) are structural, never article tags.
+        # rules.de_bilingual_headers is the project's SSOT for those names.
+        generic_headers = set(lexicon.rules.get("de_bilingual_headers", []))
         for zh in lexicon.mapping:
+            if zh in generic_headers:
+                continue
             if lexicon.levels.get(zh, 1) < 3:
                 if zh in body_text:
                     tags.append(zh)
@@ -394,9 +399,15 @@ class HandoffPreparer:
         
         generic_keywords = ["導讀", "介紹", "前言", "總覽"]
         if any(kw in raw_title for kw in generic_keywords) or raw_title.startswith("Session "):
+            # A guide H1 like "統計模型如何學習：批次導讀" still carries the real
+            # subject; strip the generic trailing segment instead of borrowing a
+            # post title, which would name the series after one of its members.
+            head = re.split(r'[：:]', raw_title)[0].strip()
+            if head and not any(kw in head for kw in generic_keywords):
+                return head
             if self.handoff["metadata"]["posts"]:
                 raw_title = self.handoff["metadata"]["posts"][0]["title"]
-                
+
         return raw_title
 
     def determine_series_and_posts(self):
@@ -413,7 +424,11 @@ class HandoffPreparer:
                     title_match = re.search(r'^#[ \t]*(.*)', guide_content, re.MULTILINE)
                     if title_match:
                         series_title = title_match.group(1).strip()
-                        self.handoff["metadata"]["series"] = series_title
+                        # Only seed from the guide H1 when no series name exists yet.
+                        # /init-handoff Task 3 refines this by NLP; re-running prepare
+                        # must not clobber that refinement.
+                        if not self.handoff["metadata"].get("series"):
+                            self.handoff["metadata"]["series"] = series_title
             except Exception as e:
                 log_error(f"Failed to parse guide file: {e}")
         else:
@@ -484,6 +499,8 @@ class HandoffPreparer:
                             p = para.strip()
                             if not p or p.startswith(('#', '<', '<!--')): continue
                             if re.match(r'^\*\*.*?\*\*:', p): continue
+                            # A front-matter separator is structure, not prose.
+                            if re.fullmatch(r'[-*_]{3,}', p): continue
                             extracted_desc = p.replace('\n', ' ')[:200]
                             break
             except Exception as e:

@@ -219,6 +219,33 @@ class TerminologyRefiner:
                 
             remaining_discovered.append(d)
 
+        # Declared terms are an explicit NLP declaration (init-handoff Task 8:
+        # "將核心術語以 zh / en / description 寫入 declared 陣列後重跑精煉").
+        # Immunity alone cannot satisfy that contract once `discovered` is empty,
+        # so lock them directly and keep the description the author already wrote.
+        for t in declared_terms:
+            if not isinstance(t, dict) or "zh" not in t:
+                continue
+            if t["zh"] in locked_zh:
+                continue
+            en_val = t.get("en")
+            if isinstance(en_val, list) and en_val:
+                en_primary = en_val[0]
+            elif isinstance(en_val, str):
+                en_primary = en_val
+            else:
+                en_primary = ""
+            new_locked.append({
+                "zh": t["zh"],
+                "en": en_primary,
+                "level": t.get("level", 1),
+                "session_id": self.session_id,
+                "description": t.get("description") or "PENDING_REFINEMENT",
+            })
+            locked_zh.add(t["zh"])
+            promoted_count += 1
+            log_info(f"  - [DECLARED] '{t['zh']}' (Locked from NLP declaration)")
+
         # Self-Clean Locked Terms (Remove pseudo-terms that were manually/previously locked)
         final_locked = []
         for l in locked + new_locked:
