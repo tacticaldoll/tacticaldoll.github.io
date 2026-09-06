@@ -34,8 +34,6 @@ front_matter:
     **Agent**: [必填] 誠實宣告負責產出本報告的實際代理平台或 IDE 與版本號
     **Source**: [必填] 從 conversation / reconstruction 中擇一
 
-    ---
-
 structures:
   experience_report:
     name: "經驗報告 (Experience Report)"
