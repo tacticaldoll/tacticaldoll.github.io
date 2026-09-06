@@ -86,11 +86,7 @@ AI 協作把一個老問題放大了：專案知識到底應該放在哪裡？�
 - 當規格、就近 README 與歷史知識衝突時，依查找順序處理。
 ```
 
-**差異**（Delta） <!-- term:Delta -->不在於第二份比較短，而在於它保留了入口的職責。入口只讓下一步可判斷，不試圖替代所有下游文件。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+差異不在於第二份比較短，而在於它保留了入口的職責。入口只讓下一步可判斷，不試圖替代所有下游文件。
 
 ### 知識層級：耐久性、可見性與消費者
 
@@ -110,7 +106,7 @@ flowchart TB
     R --> M --> C
 ```
 
-這個模型的重點不是排名，而是責任差異 <!-- term:Delta -->。倉庫層 <!-- term:RepoCommitted -->承擔團隊共享知識；個人記憶承擔使用者互動模式；對話層 <!-- term:ConversationContext -->承擔當下探索。把程式碼結構寫進個人記憶，會讓記憶在下一次重構後變成錯誤來源。把長期架構決策只留在對話裡，會讓它在**上下文壓縮**（Context Compression） <!-- term:ContextCompression -->後變成殘缺摘要。把個人偏好提交成團隊規則，則會把一個人的工作方式誤升格為制度。
+這個模型的重點不是排名，而是責任差異。倉庫層 <!-- term:RepoCommitted -->承擔團隊共享知識；個人記憶承擔使用者互動模式；對話層 <!-- term:ConversationContext -->承擔當下探索。把程式碼結構寫進個人記憶，會讓記憶在下一次重構後變成錯誤來源。把長期架構決策只留在對話裡，會讓它在**上下文壓縮**（Context Compression） <!-- term:ContextCompression -->後變成殘缺摘要。把個人偏好提交成團隊規則，則會把一個人的工作方式誤升格為制度。
 
 > [!IMPORTANT]
 > **上下文壓縮** <!-- term:ContextCompression --> (Context Compression): AI 對話中因長度限制而自動摘要上下文的機制 <!-- anchor:ContextCompression -->
@@ -160,14 +156,18 @@ flowchart TD
 
 格式化規則是典型例子。如果團隊遵循某個 lint 預設，治理文件逐條重寫 spacing、punctuation、layout 規則，會同時造成三種浪費。第一，它消耗 agent context。第二，它增加同步成本。第三，它讓 agent 面對兩個權威：真正的 lint 規則，以及 markdown 裡可能過期的人類重述。
 
-預設委派把治理文件從「教科書」改成「政策聲明」。**教科書模型**（Textbook Model） <!-- term:TextbookModel -->試圖讓文件本身成為完整知識來源；**政策聲明模型**（Policy Declaration Model） <!-- term:PolicyDeclarationModel -->只說明遵循誰、偏離哪裡、何時不適用。這不是把責任推給外部，而是承認權威已經存在，專案只需要治理自己的差異 <!-- term:Delta -->。
+預設委派把治理文件從「教科書」改成「政策聲明」。**教科書模型**（Textbook Model） <!-- term:TextbookModel -->試圖讓文件本身成為完整知識來源；**政策聲明模型**（Policy Declaration Model） <!-- term:PolicyDeclarationModel -->只說明遵循誰、偏離哪裡、何時不適用。這不是把責任推給外部，而是承認權威已經存在，專案只需要治理自己的差異。
 
 > [!IMPORTANT]
 > **教科書模型** <!-- term:TextbookModel --> (Textbook Model): 治理文件設計的角色模型之一。文件本身作為完整且獨立的知識來源，讀者無需查閱外部資源，但代價是需要手動與權威來源同步，容易導致內容滯後與冗餘。 <!-- anchor:TextbookModel -->
 > **政策聲明模型** <!-- term:PolicyDeclarationModel --> (Policy Declaration Model): 治理文件設計的角色模型之一。文件僅宣告遵循外部權威並記錄偏離項目。該模型能讓 AI Agent 直接呼叫其預訓練知識，從而大幅減少 Context Token 的消耗。 <!-- anchor:PolicyDeclarationModel -->
 
 
-委派必須有邊界。格式化可以委派給 lint，但行為語意不能因為某個 lint rule 存在就自動改寫。`==` 是否能改成 `===`，未使用參數是否能刪除，可能牽涉遺留 API、型別轉換或外部契約。這些不是格式權威能決定的事。安全的委派聲明必須同時寫出「委派範圍」與「禁止泛化範圍」。
+委派必須有邊界。格式化可以委派給 lint，但行為語意不能因為某個 lint rule 存在就自動改寫。`==` 是否能改成 `===`，未使用參數是否能刪除，可能牽涉遺留 API、型別轉換或外部契約。這些不是格式權威能決定的事。安全的委派聲明必須同時寫出「委派範圍」與「禁止**泛化**（Generalization） <!-- term:Generalization -->範圍」。
+
+> [!IMPORTANT]
+> **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
+
 
 這個模式可推廣到多個生態。若權威是穩定標準，文件列偏離項。若權威同時是可執行工具，最好讓工具成為真正的 gate。若權威不存在，才需要由專案文件定義完整規則。治理成熟度的一個標誌，就是知道什麼不該由自然語言文件維護。
 
@@ -205,7 +205,7 @@ flowchart LR
 
 ### 多 Agent 與多工具：入口網關不是能力補丁
 
-多工具環境讓入口治理更重要，但也更容易被誤解。AGENTS.md 或類似標準可以作為人類對 agent 的社會契約：宣告邊界、指向權威、定義載入路徑、隔離不該碰的區域。它不能讓一個 CLI agent 突然獲得另一個 IDE 的向量搜尋、**依賴圖**（Dependency Graph） <!-- term:DependencyGraph -->或專有檢索能力。它解決的是語意入口問題，不是工具執行層能力差異 <!-- term:Delta -->。
+多工具環境讓入口治理更重要，但也更容易被誤解。AGENTS.md 或類似標準可以作為人類對 agent 的社會契約：宣告邊界、指向權威、定義載入路徑、隔離不該碰的區域。它不能讓一個 CLI agent 突然獲得另一個 IDE 的向量搜尋、**依賴圖**（Dependency Graph） <!-- term:DependencyGraph -->或專有檢索能力。它解決的是語意入口問題，不是工具執行層能力差異。
 
 > [!IMPORTANT]
 > **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網絡，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->

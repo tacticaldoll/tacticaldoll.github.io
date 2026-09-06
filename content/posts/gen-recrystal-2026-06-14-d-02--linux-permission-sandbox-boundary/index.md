@@ -43,7 +43,11 @@ series = ["結構與邊界：當權威必須落成程式與核心都會拒絕的
 
 ## 分析
 
-最小詞彙要從四個詞開始：主體 <!-- term:Subject -->、客體 <!-- term:Object -->、能力、邊界。主體 <!-- term:Subject -->是發起操作的一方，在 Linux 中通常是 process 及其 credentials。客體 <!-- term:Object -->是被操作的目標，例如 path 上的 inode、Unix socket endpoint、device node 或 daemon API。能力是主體 <!-- term:Subject -->此刻可用來通過檢查的權限材料，例如 effective UID、supplementary groups、capabilities 或已經開好的 file descriptor。邊界是限制主體 <!-- term:Subject -->與客體 <!-- term:Object -->互動的政策組合。
+最小詞彙要從四個詞開始：主體 <!-- term:Subject -->、客體 <!-- term:Object -->、能力、邊界。主體 <!-- term:Subject -->是發起操作的一方，在 Linux 中通常是 process 及其 credentials。客體 <!-- term:Object -->是被操作的目標，例如 path 上的 inode、Unix socket endpoint、device node 或 daemon API。能力是主體 <!-- term:Subject -->此刻可用來通過檢查的權限材料，例如 effective UID、supplementary groups、capabilities 或已經開好的 file descriptor。邊界是限制主體 <!-- term:Subject -->與客體 <!-- term:Object -->互動的政策**組合**（Compose） <!-- term:Compose -->。
+
+> [!IMPORTANT]
+> **組合** <!-- term:Compose --> (Compose): 將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。 <!-- anchor:Compose -->
+
 
 這四個詞能把很多表面不同的問題放回同一張圖：
 
@@ -80,11 +84,7 @@ Process credentials 是第一個容易誤解的地方。一般命令列使用者
 
 Credentials 不是單一 UID。Real UID 保留起源身份；effective UID 通常是特權判斷的主要輸入；saved-set UID 決定能不能切回舊權限；filesystem UID 參與 VFS 檔案系統檢查。Groups 與 supplementary groups 會影響 group 權限。Capabilities 又把傳統 root 權力拆成較細的特權種類，例如綁定低 port、切換 UID、管理網路或繞過某些檔案權限。
 
-這解釋了「暫時降權」與「永久降權」的**差異**（Delta） <!-- term:Delta -->。只呼叫 `seteuid(getuid())` 可能只是把 effective UID 放下來，saved-set UID 仍保留復權路徑。若 process 之後處理外部輸入，攻擊者一旦劫持控制流，就可能要求 process 把特權拿回來。更強的做法是清 supplementary groups，接著用 `setresgid` 與 `setresuid` 把 real、effective、saved 欄位一起降到服務身份，最後驗證不能再復權。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+這解釋了「暫時降權」與「永久降權」的差異。只呼叫 `seteuid(getuid())` 可能只是把 effective UID 放下來，saved-set UID 仍保留復權路徑。若 process 之後處理外部輸入，攻擊者一旦劫持控制流，就可能要求 process 把特權拿回來。更強的做法是清 supplementary groups，接著用 `setresgid` 與 `setresuid` 把 real、effective、saved 欄位一起降到服務身份，最後驗證不能再復權。
 
 ```c
 setgroups(1, &gid);
@@ -96,7 +96,7 @@ if (setresuid(0, 0, 0) == 0) {
 }
 ```
 
-這段 pseudo-code 的意義不是教所有程式都照抄，而是凸顯承諾差異 <!-- term:Delta -->：**最小權限**（Least Privilege） <!-- term:LeastPrivilege -->不是「現在看起來不是 root」，而是「未來也不能偷偷回到不必要的特權」。
+這段 pseudo-code 的意義不是教所有程式都照抄，而是凸顯承諾差異：**最小權限**（Least Privilege） <!-- term:LeastPrivilege -->不是「現在看起來不是 root」，而是「未來也不能偷偷回到不必要的特權」。
 
 > [!IMPORTANT]
 > **最小權限** <!-- term:LeastPrivilege --> (Least Privilege): 讓 process 在每個生命週期階段只保留必要能力的設計原則，透過 capabilities、namespace、seccomp、LSM 與 cgroup 等層共同收斂權限邊界。 <!-- anchor:LeastPrivilege -->
@@ -160,7 +160,7 @@ flowchart TD
 
 這裡的安全價值是時間切分。特權不是永遠禁止，而是不讓它陪著 process 經過最危險的外部輸入處理階段。若服務需要某個受保護資源，可以在初始化打開 fd，再降權後使用 fd；若只需要綁定 80 或 443 port，可以評估 `CAP_NET_BIND_SERVICE`，而不是長期 root。
 
-Container 與 sandbox 則把這個模型擴成邊界組合。Namespace 改變 process 看見的世界：mount namespace 控制 filesystem 視角，PID namespace 控制看見哪些 process，network namespace 控制網路介面與 port，user namespace 控制 UID/GID 對映。Capabilities 控制特權種類。Seccomp 收窄 syscall 面。LSM 提供額外政策裁判。Cgroup 控制資源用量。Mount options 與 host object exposure 又決定 process 能碰到哪些實體入口。
+Container 與 sandbox 則把這個模型擴成邊界組合 <!-- term:Compose -->。Namespace 改變 process 看見的世界：mount namespace 控制 filesystem 視角，PID namespace 控制看見哪些 process，network namespace 控制網路介面與 port，user namespace 控制 UID/GID 對映。Capabilities 控制特權種類。Seccomp 收窄 syscall 面。LSM 提供額外政策裁判。Cgroup 控制資源用量。Mount options 與 host object exposure 又決定 process 能碰到哪些實體入口。
 
 這些層沒有任何一層單獨等於安全。Container 裡的 root 不必然等於 host root，特別是在 user namespace 正確對映且 capabilities 被收窄時。但 container 也不必然安全。如果掛進 `/var/run/docker.sock`、掛進 host root filesystem、使用 `--privileged`、加入 `CAP_SYS_ADMIN`、使用 host PID 或 host network，namespace 的隔離價值就會大幅下降。
 
@@ -183,7 +183,7 @@ flowchart TD
     HostObj --> Boundary
 ```
 
-這張圖也修正一個常見說法：sandbox 不是權限開關，而是邊界組合。它限制 process 是誰、看見什麼、還握有哪些能力、能呼叫哪些 kernel 入口、能消耗多少資源，以及能不能接觸宿主機上的敏感 object。任何一格太寬，都可能讓其他格的限制被繞過或失去意義。
+這張圖也修正一個常見說法：sandbox 不是權限開關，而是邊界組合 <!-- term:Compose -->。它限制 process 是誰、看見什麼、還握有哪些能力、能呼叫哪些 kernel 入口、能消耗多少資源，以及能不能接觸宿主機上的敏感 object。任何一格太寬，都可能讓其他格的限制被繞過或失去意義。
 
 把這套模型放回 Agent 執行安全，重點就很直接。Agent 不應被想像成純文字智慧體，而應被想像成會透過工具落地成 process 行為的系統。當 Agent 執行 shell、改檔、呼叫 package manager、開 dev server 或連本機 socket 時，它進入 Linux 權限 <!-- term:LinuxPermissions -->模型。此時安全問題不是「Agent 答不答應」而已，而是它實際 process 能不能做、sandbox 有沒有擋、host object 有沒有暴露、工具 escalation 有沒有外部授權。
 
@@ -193,7 +193,7 @@ flowchart TD
 
 這個主題最重要的張力，是便利抽象與安全語意之間的落差。Unix 把許多東西都放進 file descriptor 世界，讓程式可以用一致 API 操作檔案、socket、pipe 與 device。Container 把多層 kernel 機制包成一個部署單位，讓人用一行命令取得隔離感。Agent 工具又把 shell、filesystem 與外部服務包成高階能力，讓人用自然語言觸發行動。
 
-這些抽象都很有價值，但它們會隱藏權限語意。`write(fd, ...)` 不告訴你 fd 背後是 regular file 還是高權限 daemon socket。`root in container` 不告訴你它是否對映到 host root。`permission denied` 不告訴你是 path mode、capability、LSM、seccomp 還是 daemon protocol 拒絕。`sandbox enabled` 也不告訴你邊界組合是否真的覆蓋了危險 object。
+這些抽象都很有價值，但它們會隱藏權限語意。`write(fd, ...)` 不告訴你 fd 背後是 regular file 還是高權限 daemon socket。`root in container` 不告訴你它是否對映到 host root。`permission denied` 不告訴你是 path mode、capability、LSM、seccomp 還是 daemon protocol 拒絕。`sandbox enabled` 也不告訴你邊界組合 <!-- term:Compose -->是否真的覆蓋了危險 object。
 
 所以，好的權限推理不是背更多命令，而是保持問題的**形狀**（Data Shape） <!-- term:DataShape -->。每次遇到失敗或設計邊界，都回到主體 <!-- term:Subject -->、客體 <!-- term:Object -->、能力、邊界。誰在做？碰什麼？憑什麼能力？穿過哪些政策？是否有另一個高權限 daemon 代執行？是否有 host object 被掛進看似隔離的世界？
 
@@ -209,4 +209,4 @@ Linux 權限 <!-- term:LinuxPermissions -->與 sandbox 的核心，是把每一�
 
 這個模型能避免幾個常見誤判：登入者不等於 process；最後檔案 mode 不等於整條 path 可達；socket file 不等於普通資料檔；能 connect 不等於完整授權；container root 不等於單一風險判斷；sandbox 不等於一個開關。
 
-對 Agent 時代的工程實務而言，這些不是低階冷知識，而是安全協作的地基。AI 可以生成命令與程式碼，但執行時仍然落在作業系統的權限模型中。讓 Agent 安全可用，不只是讓模型更聽話，也不是把所有動作都禁掉；更精確的目標是把它放進一個可描述、可檢查、可縮小、可審計的邊界組合裡。只有當這個邊界成立，生成式能力才有安全展開的空間。
+對 Agent 時代的工程實務而言，這些不是低階冷知識，而是安全協作的地基。AI 可以生成命令與程式碼，但執行時仍然落在作業系統的權限模型中。讓 Agent 安全可用，不只是讓模型更聽話，也不是把所有動作都禁掉；更精確的目標是把它放進一個可描述、可檢查、可縮小、可審計的邊界組合 <!-- term:Compose -->裡。只有當這個邊界成立，生成式能力才有安全展開的空間。

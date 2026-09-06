@@ -2670,7 +2670,7 @@
     ],
     "description": "在 1:N 協作拓撲中，將 Agent 分配為生成者與審查者等不同職責角色進行協作，藉由職能分工與視角差異來發現設計缺陷。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "KnowledgeBlindSpot": {
     "zh": "知識盲區",
@@ -3858,7 +3858,7 @@
     ],
     "description": "特定變更的契約，用於驅動實作並作為驗證實作的基準對象。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Background": {
     "zh": "背景",

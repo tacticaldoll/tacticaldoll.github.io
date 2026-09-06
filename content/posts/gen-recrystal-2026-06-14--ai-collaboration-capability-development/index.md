@@ -8,7 +8,6 @@ description = "AI 協作真正的瓶頸不是工具知識，而是判斷力。�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
-    "分析論文", # term:AnalyticalEssay
     "人機協作", # term:HumanAiCollaboration
     "觀念化能力", # term:ConceptualSkill
     "團隊擴散", # term:TeamDiffusion
@@ -82,17 +81,14 @@ AI 協作依賴文字介質來跨越一個基本落差：人類協作需要狀�
 > **驗證能力** <!-- term:VerificationSkill --> (Verification Skill): 分辨 AI 產出是自洽、正確、可信或仍不確定的能力。可被工具輔助，但核心仍依賴領域經驗；它是人機協作真正的產能瓶頸，因為 AI 擴充的是生成產能而非驗證產能。 <!-- anchor:VerificationSkill -->
 
 
-其中最容易被低估的是觀念化能力 <!-- term:ConceptualSkill -->。它不是知道某個 AI 工具有哪些參數，而是在提問前預測 Agent 可能怎麼展開，判斷哪些 context 會污染方向，並校準問題的範圍與結構。這種**設問式操作**（Socratic Prompting） <!-- term:SocraticPrompting -->看起來像 prompt 技巧，實際上是即時建模能力。它依賴當下 context、任務風險、系統歷史與模型行為的綜合判斷，無法被有限規則完全覆蓋。
+其中最容易被低估的是觀念化能力 <!-- term:ConceptualSkill -->。它不是知道某個 AI 工具有哪些參數，而是在提問前預測 Agent 可能怎麼展開，判斷哪些 context 會污染方向，並**校準**（Calibration） <!-- term:Calibration -->問題的範圍與結構。這種**設問式操作**（Socratic Prompting） <!-- term:SocraticPrompting -->看起來像 prompt 技巧，實際上是即時建模能力。它依賴當下 context、任務風險、系統歷史與模型行為的綜合判斷，無法被有限規則完全覆蓋。
 
 > [!IMPORTANT]
+> **校準** <!-- term:Calibration --> (Calibration): 模型輸出機率與實際正確率的一致程度。 <!-- anchor:Calibration -->
 > **設問式操作** <!-- term:SocraticPrompting --> (Socratic Prompting): 在向 AI 提問前先模擬其可能的回應，並據此校準問題的措辭、範圍與結構，以引導 context 沿著最小必要方向展開的即時心智校準與操作能力。 <!-- anchor:SocraticPrompting -->
 
 
-觀念化能力 <!-- term:ConceptualSkill -->通常經過四個階段形成：無意識的無能、有意識的無能、有意識的能力、無意識的能力。最關鍵的是第二階段：人開始看見自己與高品質操作者之間的**差異**（Delta） <!-- term:Delta -->，並意識到差異 <!-- term:Delta -->不在模板，而在思維方式。團隊能做的不是把這條路壓縮到零，而是創造足夠多安全、具體、可比較的判斷場景。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+觀念化能力 <!-- term:ConceptualSkill -->通常經過四個階段形成：無意識的無能、有意識的無能、有意識的能力、無意識的能力。最關鍵的是第二階段：人開始看見自己與高品質操作者之間的差異，並意識到差異不在模板，而在思維方式。團隊能做的不是把這條路壓縮到零，而是創造足夠多安全、具體、可比較的判斷場景。
 
 這也解釋了為什麼團隊擴散 <!-- term:TeamDiffusion -->不能只靠統一培訓。同一套 AI 工具交到不同人手上，效果可能相反。技術深度足夠的人能把 AI 當加速器，因為他知道哪些地方要驗證；技術深度不足的人可能被 AI 的專業外觀說服。高模糊耐受的人上手快，但也容易放過 95% 正確的陷阱；低模糊耐受的人起步慢，但可能有更強的審查紀律。探索型的人需要護欄，計畫型的人需要可靠性框架。
 
@@ -170,7 +166,7 @@ AI 協作要求人先定義狀態機、權威來源、錯誤語義、**冪等**�
 
 ## 結論
 
-AI 協作的可持續性取決於人類判斷力的培育，而不是 AI 採用率。文字 artifacts 有失真預算，外化規則有報酬遞減，團隊擴散 <!-- term:TeamDiffusion -->有個體差異 <!-- term:Delta -->，AI 使用有不適用邊界，人才培育有不可跳過的經驗階梯。忽略這些限制，組織會得到更多生成、更厚文件與更漂亮報表，卻未必得到更可靠的系統。
+AI 協作的可持續性取決於人類判斷力的培育，而不是 AI 採用率。文字 artifacts 有失真預算，外化規則有報酬遞減，團隊擴散 <!-- term:TeamDiffusion -->有個體差異，AI 使用有不適用邊界，人才培育有不可跳過的經驗階梯。忽略這些限制，組織會得到更多生成、更厚文件與更漂亮報表，卻未必得到更可靠的系統。
 
 真正成熟的人機協作 <!-- term:HumanAiCollaboration -->，不是讓人少判斷，而是讓人把判斷用在更關鍵的位置。AI 負責展開，人負責邊界；AI 負責候選答案，人負責裁決；AI 負責提高成功路徑的速度，人負責想像失敗路徑。手寫能力、配對討論、故障注入、成本可視化與不用 AI 的正當性，都是為了守住這個分工。
 

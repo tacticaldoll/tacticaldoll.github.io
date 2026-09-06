@@ -75,19 +75,19 @@ flowchart TD
 > **確定性邊界** <!-- term:DeterministicTrustBoundary --> (Deterministic Trust Boundary): 在系統設計中，劃分確定性執行層（如腳本、CI）與統計推論層（如大語言模型）的介面契約，以確保關鍵操作的 100% 正確性。 <!-- anchor:DeterministicTrustBoundary -->
 
 
-若把這兩層混在一起，AI 就會開始自己生成、自己解釋、自己審查、自己批准。這不是自動化成熟，而是**閉環自洽**（Closed-Loop Self-Consistency） <!-- term:ClosedLoopSelfConsistency -->：同一個敘事系統把風險寫成可接受，把不確定性寫成已處理，最後把授權變成一句看似專業的「looks good」。
+若把這兩層混在一起，AI 就會開始自己生成、自己解釋、自己審查、自己批准。這不是自動化成熟，而是**閉環自洽**（Closed-Loop Self-Consistency） <!-- term:ClosedLoopSelfConsistency -->：同一個敘事系統把風險寫成可接受，把**不確定性**（Uncertainty） <!-- term:Uncertainty -->寫成已處理，最後把授權變成一句看似專業的「looks good」。
 
 > [!IMPORTANT]
 > **閉環自洽** <!-- term:ClosedLoopSelfConsistency --> (Closed-Loop Self-Consistency): LLM 自己生成、解釋、檢查並批准行動，使防禦退化成同源語境內的自我說服，缺乏可打斷流暢性的外部阻力。 <!-- anchor:ClosedLoopSelfConsistency -->
+> **不確定性** <!-- term:Uncertainty --> (Uncertainty): 估計值因抽樣與執行變異而帶有的波動範圍，是判定分數差異是否顯著的前提。 <!-- anchor:Uncertainty -->
 
 
 ## 地基會動：模型漂移讓驗證基準失穩
 
-信任問題的第一個緣起，是底層模型行為會變。傳統工具鏈升級通常有明確版本、changelog、breaking change 與 regression suite。LLM 作為開發工具的核心引擎時，情況不同：同一份 prompt、同一組 skill、同一份團隊指引，在**不同模型**（Different Models） <!-- term:DifferentModels -->版本下可能產生微妙但全面的行為**差異**（Delta） <!-- term:Delta -->。
+信任問題的第一個緣起，是底層模型行為會變。傳統工具鏈升級通常有明確版本、changelog、breaking change 與 regression suite。LLM 作為開發工具的核心引擎時，情況不同：同一份 prompt、同一組 skill、同一份團隊指引，在**不同模型**（Different Models） <!-- term:DifferentModels -->版本下可能產生微妙但全面的行為**差異**。
 
 > [!IMPORTANT]
 > **不同模型** <!-- term:DifferentModels --> (Different Models): 在 1:N 協作拓撲中，指使用具備不同權重、上下文或隨機種子的模型進行交叉 Review，以利用其注意力分佈的差異來展開單一模型可能遺漏的盲區。 <!-- anchor:DifferentModels -->
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
 
 
 一個**規格驅動開發**（Spec-Driven Development） <!-- term:SpecDrivenDevelopment -->團隊曾把一組規格生成、差量同步與驗證 skill 調校到穩定狀態。底層模型更替後，沒有單一功能立刻壞掉，卻出現一連串分散漂移：生成的規格多了先前沒有的章節標題，差量同步變得更保守而保留更多舊內容，驗證**警告**（Warning） <!-- term:Warning -->變多，使團隊逐漸習慣忽略警告 <!-- term:Warning -->。每個變化單獨看都在容忍範圍內；累積起來，規格品質基準已經下移。
@@ -190,7 +190,7 @@ const count = input ?? 10;
 
 AI 容易生成前者，因為訓練資料中更常見；reviewer 也容易放過前者，因為它是慣用寫法。類似問題出現在 truthy / falsy、`==`、optional chaining、隱式回傳、magic number 與過度壓縮的條件式裡。語法合法，語意卻依賴未明說的前提。
 
-再深一層是版本與**依賴契約漂移**（Dependency Contract Drift） <!-- term:DependencyContractDrift -->。同一段語法在不同 runtime 可能不存在或行為不同；看似相容的函式庫替換，可能在邊界輸入、錯誤處理或 strict mode 上有不同契約。從 moment.js 換到 dayjs，日期解析的寬鬆度就可能成為差異 <!-- term:Delta -->來源。工具能攔住「函式不存在」，很難攔住「相同 API 名稱在邊界語意上不同」。
+再深一層是版本與**依賴契約漂移**（Dependency Contract Drift） <!-- term:DependencyContractDrift -->。同一段語法在不同 runtime 可能不存在或行為不同；看似相容的函式庫替換，可能在邊界輸入、錯誤處理或 strict mode 上有不同契約。從 moment.js 換到 dayjs，日期解析的寬鬆度就可能成為差異來源。工具能攔住「函式不存在」，很難攔住「相同 API 名稱在邊界語意上不同」。
 
 > [!IMPORTANT]
 > **依賴契約漂移** <!-- term:DependencyContractDrift --> (Dependency Contract Drift): 專案升級或替換第三方套件時，因 API 在邊界輸入或異常處理上的未明示契約差異導致的行為偏差。 <!-- anchor:DependencyContractDrift -->
@@ -229,7 +229,7 @@ AI 容易生成前者，因為訓練資料中更常見；reviewer 也容易放�
 
 | 條件 | 原因 |
 | :--- | :--- |
-| 問題屬於公開或通用知識範圍 | 注意力差異 <!-- term:Delta -->能補遺漏，而不是共同猜私有事實。 |
+| 問題屬於公開或通用知識範圍 | 注意力差異能補遺漏，而不是共同猜私有事實。 |
 | review 維度可預先指定 | 各 agent 檢查不同面向，避免自由發揮製造噪音。 |
 | 人有能力仲裁矛盾 | 否則只是把驗證負擔改寫成仲裁負擔。 |
 | 產出量在消化容量內 | 更多 review 不等於更可信；過量意見本身會成為債務。 |
@@ -238,7 +238,11 @@ AI 容易生成前者，因為訓練資料中更常見；reviewer 也容易放�
 
 ## 知識蒸餾：回收理解，也可能固化錯誤
 
-AI 不只生成程式，也生成知識資產：摘要、報告、表格、Mermaid 圖、runbook、決策紀錄。這些產物很有價值，因為一次探索往往買到的不只是答案，還有分類、排除路徑、反例、未解問題、判斷順序與語彙校準。若不回收，下次遇到相似問題就要重跑一次探索。
+AI 不只生成程式，也生成知識資產：摘要、報告、表格、Mermaid 圖、runbook、決策紀錄。這些產物很有價值，因為一次探索往往買到的不只是答案，還有分類、排除路徑、反例、未解問題、判斷順序與語彙**校準**（Calibration） <!-- term:Calibration -->。若不回收，下次遇到相似問題就要重跑一次探索。
+
+> [!IMPORTANT]
+> **校準** <!-- term:Calibration --> (Calibration): 模型輸出機率與實際正確率的一致程度。 <!-- anchor:Calibration -->
+
 
 但知識回收的 ROI 不是自動為正：
 
@@ -256,7 +260,7 @@ AI 不只生成程式，也生成知識資產：摘要、報告、表格、Merma
 > **蒸餾** <!-- term:Distill --> (Distill): 從長對話或大量開發脈絡中萃取關鍵資訊的處理過程。 <!-- anchor:Distill -->
 
 
-這裡的信任問題在於：結構化文字會製造權威感。段落順了、表格齊了、圖有箭頭了，不確定性很容易從版面上消失。原本對話中的「可能」「待查」「版本差異 <!-- term:Delta -->」「要實測」進入報告後，可能被寫成平滑結論。讀者感到理解順暢，便誤以為可信度也提高。
+這裡的信任問題在於：結構化文字會製造權威感。段落順了、表格齊了、圖有箭頭了，不確定性 <!-- term:Uncertainty -->很容易從版面上消失。原本對話中的「可能」「待查」「版本差異」「要實測」進入報告後，可能被寫成平滑結論。讀者感到理解順暢，便誤以為可信度也提高。
 
 健康的蒸餾 <!-- term:Distill -->需要兩層防禦。第一層是主題可信度預估：公開、成熟、可驗證、一手資料密度高的主題，可以先把蒸餾 <!-- term:Distill -->結果當學習地圖；封閉、快速變動、私有或高風險主題，只能把蒸餾 <!-- term:Distill -->結果當假設整理。第二層是內容懷疑：基礎定義、心智模型、API 細節、安全結論、操作建議、新推論，各自需要不同程度的查證、實驗或 owner 判斷。
 
@@ -317,7 +321,11 @@ flowchart TD
     C --> D
 ```
 
-不同工作流需要不同裁決者。知識蒸餾 <!-- term:Distill -->需要主題可信度、人類校驗與一手資料。長跑 agent 需要 context isolation、tool allowlist 與高風險確認。Code review 需要 owner 對需求、架構與風險授權。部署需要 CI、policy、權限邊界與 rollback plan。安全判斷需要威脅模型 owner、實測與獨立審查。
+不同工作流需要不同裁決者。**知識蒸餾**（Knowledge Distillation） <!-- term:KnowledgeDistillation -->需要主題可信度、人類校驗與一手資料。長跑 agent 需要 context isolation、tool allowlist 與高風險確認。Code review 需要 owner 對需求、架構與風險授權。部署需要 CI、policy、權限邊界與 rollback plan。安全判斷需要威脅模型 owner、實測與獨立審查。
+
+> [!IMPORTANT]
+> **知識蒸餾** <!-- term:KnowledgeDistillation --> (Knowledge Distillation): 以較大模型的輸出分佈為目標，訓練較小模型重新估計其行為的壓縮方法。 <!-- anchor:KnowledgeDistillation -->
+
 
 外部裁決 <!-- term:ExternalArbitration -->的核心不是「反 AI」，而是把 AI 放在正確位置：AI 產生候選、展開風險、提高檢查密度；非同源機制決定信任狀態。可信工作流不應追求全程順滑。它要在高風險位置故意留下摩擦：要求證據、要求測試、要求權限、要求 owner、要求重驗。
 
@@ -346,6 +354,6 @@ AI 協作中的信任問題，不是單純要求模型更聰明，也不是把�
 授權必須來自能拒絕的非同源機制。
 ```
 
-模型漂移讓信任基準移動，技能幻覺 <!-- term:SkillIllusion -->讓驗證者可能沒有基準，速度陷阱 <!-- term:SpeedTrap -->讓未驗證語意債務堆積，靜默語意偏差 <!-- term:SilentSemanticDeviation -->讓 95% 正確的產物穿過局部檢查，拓撲補償 <!-- term:TopologyCompensation -->只能補注意力盲區 <!-- term:AttentionBlindSpot -->，知識蒸餾 <!-- term:Distill -->會同時回收理解與固化錯誤，AI code review 能提高觀察面但不能授權 merge。
+模型漂移讓信任基準移動，技能幻覺 <!-- term:SkillIllusion -->讓驗證者可能沒有基準，速度陷阱 <!-- term:SpeedTrap -->讓未驗證語意債務堆積，靜默語意偏差 <!-- term:SilentSemanticDeviation -->讓 95% 正確的產物穿過局部檢查，拓撲補償 <!-- term:TopologyCompensation -->只能補注意力盲區 <!-- term:AttentionBlindSpot -->，知識蒸餾 <!-- term:KnowledgeDistillation -->會同時回收理解與固化錯誤，AI code review 能提高觀察面但不能授權 merge。
 
 因此，可信 AI 工作流的核心不是讓 LLM 自己變成裁判，而是讓 LLM 生成候選結構，讓測試、policy、權限邊界、獨立 verifier 與有責任的 owner 授權信任狀態。自動化的價值在於提高候選密度；治理的價值在於決定哪些候選可以進入世界。

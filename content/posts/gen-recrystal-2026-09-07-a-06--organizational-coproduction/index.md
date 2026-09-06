@@ -86,11 +86,7 @@ flowchart LR
 
 ### 可重現的機制隔離
 
-接下來這段程式固定模型品質，操弄流程適配，並加入技能異質性。觀察量是平均產出及群組**差異**（Delta） <!-- term:Delta -->。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+接下來這段程式固定模型品質，操弄流程適配，並加入技能異質性。觀察量是平均產出及群組差異。
 
 ```python
 def output(model_quality, process_fit, skill, alpha=0.5):

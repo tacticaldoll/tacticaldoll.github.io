@@ -10,7 +10,6 @@ tags = [
     "AI 代理人", # term:AiAgent
     "分佈漂移", # term:DistributionShift
     "表演性預測", # term:PerformativePrediction
-    "差異", # term:Delta
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
@@ -33,11 +32,7 @@ series = ["模型能力失效：從一句「模型變差了」到可被推翻的
 > **表演性預測** <!-- term:PerformativePrediction --> (Performative Prediction): 模型輸出影響人類行動，進而改變後續資料分佈的回饋情形。 <!-- anchor:PerformativePrediction -->
 
 
-資料漂移實驗顯示，高維兩樣本偵測的效力取決於表示、樣本量與漂移型態，偵測到統計**差異**（Delta） <!-- term:Delta -->也不等同任務損失增加。[Failing Loudly](https://papers.neurips.cc/paper_files/paper/2019/file/846c260d715e5b854ffad5f70a516c88-Paper.pdf) 表演性預測 <!-- term:PerformativePrediction -->則形式化了模型決策改變後續資料分佈的情況。[表演性預測 <!-- term:PerformativePrediction -->](https://proceedings.mlr.press/v119/perdomo20a.html)
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+資料漂移實驗顯示，高維兩樣本偵測的效力取決於表示、樣本量與漂移型態，偵測到統計差異也不等同任務損失增加。[Failing Loudly](https://papers.neurips.cc/paper_files/paper/2019/file/846c260d715e5b854ffad5f70a516c88-Paper.pdf) 表演性預測 <!-- term:PerformativePrediction -->則形式化了模型決策改變後續資料分佈的情況。[表演性預測 <!-- term:PerformativePrediction -->](https://proceedings.mlr.press/v119/perdomo20a.html)
 
 ## 分析
 
@@ -100,7 +95,7 @@ for generation in range(runs.shape[1]):
 
 操弄變因是是否以當代估計完全取代來源分佈；控制樣本數與抽樣器；觀察罕見事件機率。某次抽到零後，後代無法自行恢復。這不能證明所有合成資料有害；保留真實資料、擴大樣本、標示來源或主動補尾端都會改變結果。
 
-驗證契約：資料保存來源、時間、介入策略與生成代次；時間切分禁止未來洩漏；seed 為 0–19；指標含任務風險、切片錯誤、兩樣本統計量、罕見事件覆蓋與回饋彈性；控制模型版本和評測；操弄決策政策、真實資料保留率及生成替代率；若 $P$ 的差異 <!-- term:Delta -->不改變風險，則反駁有害漂移；若隨機化或自然實驗顯示決策不影響後續資料，則反駁表演性路徑；當最小有害差異 <!-- term:Delta -->的區間被排除或監測預算到達時停止。
+驗證契約：資料保存來源、時間、介入策略與生成代次；時間切分禁止未來洩漏；seed 為 0–19；指標含任務風險、切片錯誤、兩樣本統計量、罕見事件覆蓋與回饋彈性；控制模型版本和評測；操弄決策政策、真實資料保留率及生成替代率；若 $P$ 的差異不改變風險，則反駁有害漂移；若隨機化或自然實驗顯示決策不影響後續資料，則反駁表演性路徑；當最小有害差異的區間被排除或監測預算到達時停止。
 
 ## 反思
 

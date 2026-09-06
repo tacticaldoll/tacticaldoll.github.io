@@ -8,7 +8,6 @@ description = "用 AI agent 做元件開發時，你要一個薄核，生成端�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
-    "分析論文", # term:AnalyticalEssay
     "封裝邊界", # term:EncapsulationBoundary
     "過度生成", # term:OverGeneration
     "提示空缺", # term:PromptGap

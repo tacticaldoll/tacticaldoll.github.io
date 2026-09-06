@@ -15,6 +15,13 @@ class BlockProtector:
         
         # 1. Code blocks
         content = re.sub(r'^```[\s\S]*?^```', replacer, body, flags=re.MULTILINE)
+
+        # 2. Math. LaTeX is not prose: an EN alias in lexicon.terms_regex is
+        # word-boundaried, and \b holds between the backslash and the letter, so
+        # `\Delta` matched the term "Delta" and was rewritten to `\差異` —
+        # corrupting the formula. Display math first, then single-line inline math.
+        content = re.sub(r'\$\$[\s\S]*?\$\$', replacer, content)
+        content = re.sub(r'(?<!\$)\$(?!\$)[^\n$]+?\$(?!\$)', replacer, content)
         
         def comment_replacer(match):
             comment = match.group(0)
@@ -24,7 +31,7 @@ class BlockProtector:
             return f"__PROTECTED_BLOCK_{len(blocks)-1}__"
         content = re.sub(r'<!--[\s\S]*?-->', comment_replacer, content)
         
-        # 3. Decision Points and Alerts (Special physical structures, excluding anchor/term alerts)
+        # 4. Decision Points and Alerts (Special physical structures, excluding anchor/term alerts)
         def alert_replacer(match):
             alert = match.group(0)
             if "<!-- anchor:" in alert or "<!-- term:" in alert:

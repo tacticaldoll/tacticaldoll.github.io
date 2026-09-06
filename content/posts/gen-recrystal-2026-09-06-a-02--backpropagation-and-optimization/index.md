@@ -12,7 +12,6 @@ tags = [
     "梯度下降", # term:GradientDescent
     "條件數", # term:ConditionNumber
     "泛化", # term:Generalization
-    "差異", # term:Delta
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
 [ai_info]
@@ -99,11 +98,7 @@ for learning_rate in (0.05, 0.1, 0.5):
     print(learning_rate, path[-1], "max_loss", max(v for _, v in path))
 ```
 
-梯度誤差應接近浮點精度，這支持求導實作。三條路徑若隨學習率出現收縮、振盪與發散**差異**（Delta） <!-- term:Delta -->，則支持步幅—曲率機制。若數值梯度不吻合，必須先停止討論最佳化；若梯度吻合但所有路徑都穩定，則目前學習率沒有跨越這個資料的穩定界線。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+梯度誤差應接近浮點精度，這支持求導實作。三條路徑若隨學習率出現收縮、振盪與發散差異，則支持步幅—曲率機制。若數值梯度不吻合，必須先停止討論最佳化；若梯度吻合但所有路徑都穩定，則目前學習率沒有跨越這個資料的穩定界線。
 
 ### 訊號還要穿過表示
 

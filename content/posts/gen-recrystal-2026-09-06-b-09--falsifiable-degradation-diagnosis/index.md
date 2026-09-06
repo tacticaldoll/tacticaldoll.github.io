@@ -12,7 +12,6 @@ tags = [
     "行為切片", # term:BehavioralSlice
     "不確定性", # term:Uncertainty
     "損失函數", # term:LossFunction
-    "差異", # term:Delta
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
@@ -45,11 +44,7 @@ $$
 v=(\theta,P,c,m,s),
 $$
 
-其中 $s$ 是 seed、抽樣順序與其他隨機狀態。若 $v_0$ 與 $v_1$ 有三個座標同時改變，單一 $\**差異**（Delta） <!-- term:Delta --> S$ 無法識別各因素。最小診斷單位是混合版本：每次只替換一項，並在同一個體上成對比較。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+其中 $s$ 是 seed、抽樣順序與其他隨機狀態。若 $v_0$ 與 $v_1$ 有三個座標同時改變，單一 $\差異 S$ 無法識別各因素。最小診斷單位是混合版本：每次只替換一項，並在同一個體上成對比較。
 
 下列程式先把不可識別狀態顯式化，再生成所需對照。操弄變因是版本軸；控制其餘欄位；觀察量是 changed axes。
 
@@ -102,7 +97,7 @@ flowchart TD
 > **行為切片** <!-- term:BehavioralSlice --> (Behavioral Slice): 依輸入屬性切出的評測子集，用來揭露被整體平均掩蓋的局部損失。 <!-- anchor:BehavioralSlice -->
 
 
-完整驗證契約：資料包含不可變參考集、最新部署樣本與預先定義風險切片；時間、來源與個體層級避免洩漏；seed 至少 10 個；指標含逐樣本損失、翻轉率、最差切片、**校準**（Calibration） <!-- term:Calibration -->與成對信賴區間；控制版本向量其餘座標；觀察主效應與交互效應；若差異 <!-- term:Delta -->落回抽樣區間、無法在第二快照重現，或單軸替換不復現症狀，則反駁目前歸因；當區間可排除最小實務差異 <!-- term:Delta -->、所有預註冊假說已判定，或時間預算用盡時停止。
+完整驗證契約：資料包含不可變參考集、最新部署樣本與預先定義風險切片；時間、來源與個體層級避免洩漏；seed 至少 10 個；指標含逐樣本損失、翻轉率、最差切片、**校準**（Calibration） <!-- term:Calibration -->與成對信賴區間；控制版本向量其餘座標；觀察主效應與交互效應；若差異落回抽樣區間、無法在第二快照重現，或單軸替換不復現症狀，則反駁目前歸因；當區間可排除最小實務差異、所有預註冊假說已判定，或時間預算用盡時停止。
 
 > [!IMPORTANT]
 > **校準** <!-- term:Calibration --> (Calibration): 模型輸出機率與實際正確率的一致程度。 <!-- anchor:Calibration -->
@@ -116,7 +111,7 @@ flowchart TD
 > **損失函數** <!-- term:LossFunction --> (Loss Function): 把模型輸出與目標之間的差距量化為單一數值的評分函數。 <!-- anchor:LossFunction -->
 
 
-反例是固定所有已知座標後差異 <!-- term:Delta -->仍在，但真正原因是未版本化的 GPU kernel。這不是參數退化的證明，而是版本向量不完整。另一邊界是多個因素真有交互；逐軸替換都不復現，完整**組合**（Compose） <!-- term:Compose -->卻復現，此時不能以「單軸皆無效」宣稱沒有問題。
+反例是固定所有已知座標後差異仍在，但真正原因是未版本化的 GPU kernel。這不是參數退化的證明，而是版本向量不完整。另一邊界是多個因素真有交互；逐軸替換都不復現，完整**組合**（Compose） <!-- term:Compose -->卻復現，此時不能以「單軸皆無效」宣稱沒有問題。
 
 > [!IMPORTANT]
 > **組合** <!-- term:Compose --> (Compose): 將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。 <!-- anchor:Compose -->
@@ -130,7 +125,7 @@ flowchart TD
 
 ## 結論
 
-**退化診斷**（Degradation Diagnosis） <!-- term:DegradationDiagnosis -->必須回答四個明確問題：哪個版本座標改變、哪個行為切片 <!-- term:BehavioralSlice -->承受損失、差異 <!-- term:Delta -->是否超出抽樣與 seed 不確定性 <!-- term:Uncertainty -->、什麼結果會推翻歸因。可重放版本提供反事實，成對切片提供定位，停止條件防止追逐噪聲。只有這四項閉合，下降才從警報升格為有邊界的因果主張。
+**退化診斷**（Degradation Diagnosis） <!-- term:DegradationDiagnosis -->必須回答四個明確問題：哪個版本座標改變、哪個行為切片 <!-- term:BehavioralSlice -->承受損失、差異是否超出抽樣與 seed 不確定性 <!-- term:Uncertainty -->、什麼結果會推翻歸因。可重放版本提供反事實，成對切片提供定位，停止條件防止追逐噪聲。只有這四項閉合，下降才從警報升格為有邊界的因果主張。
 
 > [!IMPORTANT]
 > **退化診斷** <!-- term:DegradationDiagnosis --> (Degradation Diagnosis): 把能力下降的警報轉成可反駁機制歸因的程序。 <!-- anchor:DegradationDiagnosis -->

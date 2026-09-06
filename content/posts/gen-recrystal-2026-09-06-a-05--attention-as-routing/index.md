@@ -12,7 +12,6 @@ tags = [
     "縮放點積注意力", # term:ScaledDotProductAttention
     "位置編碼", # term:PositionalEncoding
     "持久記憶", # term:PersistentMemory
-    "差異", # term:Delta
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
 [ai_info]
@@ -177,11 +176,7 @@ print("outputs", (a @ value_rows).item(), (b @ value_rows).item())
 
 ## 實務對比
 
-錯誤做法是把熱圖中最高權重 token 標成「造成答案的理由」。較可靠的做法先遮蔽或替換該 token，再比較輸出；同時尋找是否存在**差異**（Delta） <!-- term:Delta -->很大的權重分布卻維持相同預測。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+錯誤做法是把熱圖中最高權重 token 標成「造成答案的理由」。較可靠的做法先遮蔽或替換該 token，再比較輸出；同時尋找是否存在差異很大的權重分布卻維持相同預測。
 
 另一個錯誤是比較長文本模型時同時改窗口、位置編碼 <!-- term:PositionalEncoding -->、資料與參數量。正確對照會固定模型與資料，只操弄關鍵資訊的位置，畫出準確率對相對距離的曲線。這能測路由的距離效應，卻仍不等同外部**持久記憶**（Persistent Memory） <!-- term:PersistentMemory -->。
 

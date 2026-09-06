@@ -11,7 +11,6 @@ tags = [
     "社會技術系統", # term:SociotechnicalSystem
     "端到端效用", # term:EndToEndUtility
     "人工補償", # term:HumanCompensation
-    "不同角色", # term:DifferentRoles
     "貢獻利益", # term:ContributionMargin
     "中介變數", # term:MediatingVariable
   ]
@@ -31,11 +30,10 @@ series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 
 企業購買「AI 助理」時，簡報常以模型分數代表商品。實際合約交付的卻包含 API、容量、企業資料連接、權限、監測、人工支援與事故處理。問題因此不是模型會不會生成答案，而是哪些元件共同把答案變成可用、可停止、可救濟的結果。
 
-這種分析單位稱為**社會技術系統**（Sociotechnical System） <!-- term:SociotechnicalSystem -->：技術元件與組織安排必須共同運作才產生價值。NIST 的 AI RMF 也把模型開發、部署、運行監測、治理與評估分給**不同角色**（Different Roles） <!-- term:DifferentRoles -->；部署者必須處理情境決策、舊系統相容與組織變革，而非把責任留給模型供應者。[NIST AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
+這種分析單位稱為**社會技術系統**（Sociotechnical System） <!-- term:SociotechnicalSystem -->：技術元件與組織安排必須共同運作才產生價值。NIST 的 AI RMF 也把模型開發、部署、運行監測、治理與評估分給不同角色；部署者必須處理情境決策、舊系統相容與組織變革，而非把責任留給模型供應者。[NIST AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 
 > [!IMPORTANT]
 > **社會技術系統** <!-- term:SociotechnicalSystem --> (Sociotechnical System): 由技術元件與組織安排共同構成、必須整體運作才產生價值的系統。 <!-- anchor:SociotechnicalSystem -->
-> **不同角色** <!-- term:DifferentRoles --> (Different Roles): 在 1:N 協作拓撲中，將 Agent 分配為生成者與審查者等不同職責角色進行協作，藉由職能分工與視角差異來發現設計缺陷。 <!-- anchor:DifferentRoles -->
 
 
 ## 分析

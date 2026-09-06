@@ -29,11 +29,10 @@ series = ["信任與權威的成立：可信不是輸出屬性，而是被非同
 
 ## 導言
 
-專案成熟時，最難回答的問題常常不是「還缺什麼工具」，而是「現在到底由誰說了算」。同一段行為可能被程式碼實作、測試案例、操作流程、品質**準則**（Guidelines） <!-- term:Guidelines -->與需求規格同時描述。當它們彼此一致時，團隊感覺不到**差異**（Delta） <!-- term:Delta -->；當它們分歧時，真正的架構才會露出來。
+專案成熟時，最難回答的問題常常不是「還缺什麼工具」，而是「現在到底由誰說了算」。同一段行為可能被程式碼實作、測試案例、操作流程、品質**準則**（Guidelines） <!-- term:Guidelines -->與需求規格同時描述。當它們彼此一致時，團隊感覺不到差異；當它們分歧時，真正的架構才會露出來。
 
 > [!IMPORTANT]
 > **準則** <!-- term:Guidelines --> (Guidelines): 強制性的專案準則，指導如何正確地做事 <!-- anchor:Guidelines -->
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
 
 
 本文把這種架構稱為**驅動模型**（Driving Model） <!-- term:DrivingModel -->。驅動模型 <!-- term:DrivingModel -->不是工具分類，也不是文件格式分類，而是**決策權威**（Decision Authority） <!-- term:DecisionAuthority -->的分配方式。判斷一個專案目前由什麼模型驅動，最實用的問題是：當團隊對「這個行為是否正確」產生分歧時，最後會查閱什麼，並讓什麼推翻其他說法。
@@ -150,7 +149,7 @@ graph BT
    -> 行為契約由規格驅動。
 ```
 
-同一功能在**不同模型**（Different Models） <!-- term:DifferentModels -->下，「真相來源」與「完成判準」會完全不同。下面用 pseudo-code 展示差異 <!-- term:Delta -->：
+同一功能在**不同模型**（Different Models） <!-- term:DifferentModels -->下，「真相來源」與「完成判準」會完全不同。下面用 pseudo-code 展示差異：
 
 > [!IMPORTANT]
 > **不同模型** <!-- term:DifferentModels --> (Different Models): 在 1:N 協作拓撲中，指使用具備不同權重、上下文或隨機種子的模型進行交叉 Review，以利用其注意力分佈的差異來展開單一模型可能遺漏的盲區。 <!-- anchor:DifferentModels -->
@@ -211,7 +210,7 @@ Feature: refund(order)
 > **全域強制** <!-- term:GlobalEnforcement --> (Global Enforcement): 不顧模組的規模與風險差異，盲目對全系統統一實施最高抽象層級之行為規格定義的反模式。 <!-- anchor:GlobalEnforcement -->
 
 
-三種反模式共享同一根因：忽略層疊共存 <!-- term:LayeredCoexistence -->中的**前置條件**（Prerequisite） <!-- term:Prerequisite -->、權威轉移與維護成本。跳層忽略前置條件 <!-- term:Prerequisite -->，儀式化採納 <!-- term:RitualizedAdoption -->忽略權威轉移，全域強制 <!-- term:GlobalEnforcement -->忽略維護成本與局部差異 <!-- term:Delta -->。
+三種反模式共享同一根因：忽略層疊共存 <!-- term:LayeredCoexistence -->中的**前置條件**（Prerequisite） <!-- term:Prerequisite -->、權威轉移與維護成本。跳層忽略前置條件 <!-- term:Prerequisite -->，儀式化採納 <!-- term:RitualizedAdoption -->忽略權威轉移，全域強制 <!-- term:GlobalEnforcement -->忽略維護成本與局部差異。
 
 > [!IMPORTANT]
 > **前置條件** <!-- term:Prerequisite --> (Prerequisite): 執行某項開發活動之前必須滿足的準備工作或狀態。 <!-- anchor:Prerequisite -->
@@ -233,7 +232,7 @@ Feature: refund(order)
 
 ## 結論
 
-驅動模型 <!-- term:DrivingModel -->描述的是專案此刻由哪種媒介持有決策權威 <!-- term:DecisionAuthority -->。程式碼、測試、技能、準則 <!-- term:Guidelines -->與規格各自有效，也各自有限。它們的差異 <!-- term:Delta -->不在於誰比較高級，而在於它們回答不同問題、提供不同保證、承擔不同維護成本。
+驅動模型 <!-- term:DrivingModel -->描述的是專案此刻由哪種媒介持有決策權威 <!-- term:DecisionAuthority -->。程式碼、測試、技能、準則 <!-- term:Guidelines -->與規格各自有效，也各自有限。它們的差異不在於誰比較高級，而在於它們回答不同問題、提供不同保證、承擔不同維護成本。
 
 本文的核心原則可以收束為四點。第一，辨識模型時問「分歧時查閱什麼」，不要只看文件或工具是否存在。第二，每個模型的失敗都來自權威邊界被過度延伸；先看能力邊界 <!-- term:CapabilityBoundary -->，再談升級。第三，測試驅動與流程成熟度正交，它增加可驗證性，但不自動提供意圖來源。第四，演化是層疊加法，不是替換；新權威層取得裁決權，舊層仍作為基礎設施運作。
 

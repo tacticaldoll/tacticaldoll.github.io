@@ -123,10 +123,9 @@ UserExport:
   x-contract: "runtime and CI MUST reject payloads without user_id"
 ```
 
-這個**差異**（Delta） <!-- term:Delta -->看似格式細節，實際上是權威邊界。觀察性 schema 的目的不是命令系統，而是讓混亂可見。約束性規格 <!-- term:Spec -->的目的不是描述混亂，而是定義系統必須遵守的行為。把兩者混在同一層，會製造**虛假權威**（False Authority） <!-- term:FalseAuthority -->：形式上是規格，實質上只是未確認觀察。
+這個差異看似格式細節，實際上是權威邊界。觀察性 schema 的目的不是命令系統，而是讓混亂可見。約束性規格 <!-- term:Spec -->的目的不是描述混亂，而是定義系統必須遵守的行為。把兩者混在同一層，會製造**虛假權威**（False Authority） <!-- term:FalseAuthority -->：形式上是規格，實質上只是未確認觀察。
 
 > [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
 > **虛假權威** <!-- term:FalseAuthority --> (False Authority): 指文件或機制在形式上具備權威地位，但其實質內容或適用對象已不復存在或失效，從而產生「治理已到位」的虛假安全感。 <!-- anchor:FalseAuthority -->
 
 

@@ -85,11 +85,7 @@ flowchart TD
 
 錯誤表面 <!-- term:ErrorSurface -->是 agent 可能引入錯誤的自由度與決策空間。它不等於 bug 數量，而是 bug 能被寫出來、看起來合理、並通過局部檢查的空間。
 
-一段取消訂單的程式可以說明「人類覺得整潔」與「agent 因果完整」之間的**差異**（Delta） <!-- term:Delta -->：
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+一段取消訂單的程式可以說明「人類覺得整潔」與「agent 因果完整」之間的差異：
 
 ```javascript
 // 對 agent 因果較完整
@@ -111,7 +107,11 @@ function processOrder(order) {
 
 第二段在人類眼中可能更乾淨。問題不是封裝本身錯，而是封裝把「為什麼已出貨訂單不能走這裡」移到了 agent 未必會讀到的位置。當後續任務要求修改取消規則時，agent 看見的是 `isCancellable()` 這個結果，而不是它背後排除退貨流程的因果。它很可能做出局部合理、全域錯誤的改動。
 
-同樣的錯誤表面 <!-- term:ErrorSurface -->放大機制，也出現在過早泛化中：
+同樣的錯誤表面 <!-- term:ErrorSurface -->放大機制，也出現在過早**泛化**（Generalization） <!-- term:Generalization -->中：
+
+> [!IMPORTANT]
+> **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
+
 
 ```python
 class SortableList:
@@ -199,19 +199,20 @@ Token 命名空間碰撞 <!-- term:NamespaceCollision -->的工程含義很直�
 | 值的形狀 <!-- term:DataShape --> | 需要跳到多個實作才知道參數結構 | 型別標注、schema、Protocol |
 | 排除原因 | 只看到做了什麼，看不到為何不做別的 | why-not 註解 |
 | **預期行為**（Expected Behavior） <!-- term:ExpectedBehavior --> | 測試只覆蓋 happy path | 意圖測試與邊界測試 |
-| runtime 關係 | 訂閱者、decorator、factory 只在執行期組合 | 綁定清單、註冊表、靜態表格 |
+| runtime 關係 | 訂閱者、decorator、factory 只在執行期**組合**（Compose） <!-- term:Compose --> | 綁定清單、註冊表、靜態表格 |
 | 跨模組限制 | A 的寫法其實由 B 限制 | co-located README 或決策註解 |
 | 命名邊界 | 同形詞與基礎設施語言碰撞 | domain-specific compound term |
 
 > [!IMPORTANT]
 > **預期行為** <!-- term:ExpectedBehavior --> (Expected Behavior): 系統或模組在特定輸入或情境下被要求達到的正確輸出與副作用狀態 <!-- anchor:ExpectedBehavior -->
+> **組合** <!-- term:Compose --> (Compose): 將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。 <!-- anchor:Compose -->
 
 
 局部完備性 <!-- term:LocalCompleteness -->也有邊界。第一，它不應成為「到處寫長註解」的藉口。能由型別、測試或結構表達的事，不必用散文重複。第二，它不適合把所有探索都預先約束。探索階段需要發散；extension 階段才需要收斂。第三，它不能替代外部驗證。局部完備只能降低 agent 在局部決策中猜錯的機率，不能證明全局需求正確。
 
 ## 結構約束：收窄可犯錯空間
 
-局部完備性 <!-- term:LocalCompleteness -->補的是因果訊號；結構約束 <!-- term:StructuralConstraint -->收的是自由度。兩者的差異 <!-- term:Delta -->很重要：前者讓 agent 更容易理解，後者讓 agent 即使理解不完整，也比較難把錯誤寫成合法形狀 <!-- term:DataShape -->。
+局部完備性 <!-- term:LocalCompleteness -->補的是因果訊號；結構約束 <!-- term:StructuralConstraint -->收的是自由度。兩者的差異很重要：前者讓 agent 更容易理解，後者讓 agent 即使理解不完整，也比較難把錯誤寫成合法形狀 <!-- term:DataShape -->。
 
 比較兩種 extension point：
 
@@ -267,9 +268,10 @@ function classifyResource(path: string): Resource | null {
 
 ## 驅動模型與邊界誤用
 
-工程系統會使用不同的決策權威：程式碼、測試、技能流程、品質**準則**（Guidelines） <!-- term:Guidelines -->、規格。每一層都能降低某些錯誤表面 <!-- term:ErrorSurface -->，也會在被過度延伸時製造新的錯誤。
+工程系統會使用不同的**決策權威**（Decision Authority） <!-- term:DecisionAuthority -->：程式碼、測試、技能流程、品質**準則**（Guidelines） <!-- term:Guidelines -->、規格。每一層都能降低某些錯誤表面 <!-- term:ErrorSurface -->，也會在被過度延伸時製造新的錯誤。
 
 > [!IMPORTANT]
+> **決策權威** <!-- term:DecisionAuthority --> (Decision Authority): 爭議發生時能裁決答案的媒介；驅動模型即由決策權威落在何處來定義，權威隨專案演化在程式碼、測試、技能、準則與規格之間轉移。 <!-- anchor:DecisionAuthority -->
 > **準則** <!-- term:Guidelines --> (Guidelines): 強制性的專案準則，指導如何正確地做事 <!-- anchor:Guidelines -->
 
 

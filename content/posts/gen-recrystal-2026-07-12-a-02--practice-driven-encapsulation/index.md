@@ -8,7 +8,6 @@ description = "薄產品的誕生，是實踐與領域驅動的封裝。這篇�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
-    "分析論文", # term:AnalyticalEssay
     "薄產品", # term:ThinProduct
     "領域驅動設計", # term:DomainDrivenDesign
     "決策漏斗", # term:DecisionFunnel

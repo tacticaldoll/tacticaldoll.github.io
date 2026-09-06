@@ -12,7 +12,6 @@ tags = [
     "梯度消失", # term:VanishingGradient
     "信用分配", # term:CreditAssignment
     "反向傳播", # term:Backpropagation
-    "差異", # term:Delta
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
@@ -62,11 +61,7 @@ for scale in (0.8, 0.95, 1.0, 1.05, 1.2):
     print(scale, np.array(values))
 ```
 
-尺度 0.8 在 50 步後約為 $1.43\times10^{-5}$，1.2 則約為 $9.10\times10^3$。讀者應觀察距離如何放大微小局部**差異**（Delta） <!-- term:Delta -->。標量模型不能預測真實 RNN 的全部方向，因為矩陣非交換、非線性飽和與門控旁路都會改變有效 Jacobian。
-
-> [!IMPORTANT]
-> **差異** <!-- term:Delta --> (Delta): 特定變更的契約，用於驅動實作並作為驗證實作的基準對象。 <!-- anchor:Delta -->
-
+尺度 0.8 在 50 步後約為 $1.43\times10^{-5}$，1.2 則約為 $9.10\times10^3$。讀者應觀察距離如何放大微小局部差異。標量模型不能預測真實 RNN 的全部方向，因為矩陣非交換、非線性飽和與門控旁路都會改變有效 Jacobian。
 
 為了把流程變成可檢查結構，下圖標出中介量與失效點。
 
