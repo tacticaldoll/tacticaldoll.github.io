@@ -692,6 +692,33 @@
     "forbidden": [],
     "level": 2
   },
+  "ReparameterizationTrick": {
+    "zh": "重參數化技巧",
+    "en": [
+      "Reparameterization Trick"
+    ],
+    "description": "把隨機取樣改寫成可微分變換與獨立噪聲，使梯度能穿過取樣節點。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DiffusionProbabilisticModel": {
+    "zh": "擴散機率模型",
+    "en": [
+      "Diffusion Probabilistic Model"
+    ],
+    "description": "以固定前向加噪程序破壞資料，再學習反向轉移以生成樣本的機率模型。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DenoisingScoreMatching": {
+    "zh": "去噪分數匹配",
+    "en": [
+      "Denoising Score Matching"
+    ],
+    "description": "以預測加入的噪聲取代直接估計對數密度梯度的訓練目標。",
+    "forbidden": [],
+    "level": 1
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -1454,15 +1481,6 @@
       "Self-Attention"
     ],
     "description": "讓序列中任一位置直接以內容相依的權重聚合其他位置表示的機制。",
-    "forbidden": [],
-    "level": 2
-  },
-  "ReparameterizationTrick": {
-    "zh": "重參數技巧",
-    "en": [
-      "Reparameterization Trick"
-    ],
-    "description": "把隨機取樣改寫為與參數無關之噪聲的可微形式，使梯度得以穿過取樣步驟。",
     "forbidden": [],
     "level": 2
   },
@@ -3176,6 +3194,51 @@
     "forbidden": [],
     "level": 2
   },
+  "StatisticalLearning": {
+    "zh": "統計學習",
+    "en": [
+      "Statistical Learning"
+    ],
+    "description": "把學習寫成資料生成分佈、假設空間與選擇準則三者關係的理論框架。",
+    "forbidden": [],
+    "level": 2
+  },
+  "EmpiricalRisk": {
+    "zh": "經驗風險",
+    "en": [
+      "Empirical Risk"
+    ],
+    "description": "模型在有限訓練樣本上的平均損失，是目標分佈期望風險的間接替代量。",
+    "forbidden": [],
+    "level": 2
+  },
+  "HypothesisSpace": {
+    "zh": "假設空間",
+    "en": [
+      "Hypothesis Space"
+    ],
+    "description": "學習演算法可選函數所構成的集合，其大小決定泛化保證的鬆緊。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StructuralBias": {
+    "zh": "結構偏置",
+    "en": [
+      "Structural Bias"
+    ],
+    "description": "架構預先宣告的關係假設，用限制自由度換取樣本效率。",
+    "forbidden": [],
+    "level": 1
+  },
+  "NoiseSchedule": {
+    "zh": "噪聲排程",
+    "en": [
+      "Noise Schedule"
+    ],
+    "description": "前向過程中各時間步噪聲強度的設定，決定訓練與採樣的尺度分佈。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3526,6 +3589,24 @@
     "description": "逐步以先前輸出作為後續輸入條件的生成方式，使完成時間與輸出長度相關。",
     "forbidden": [],
     "level": 2
+  },
+  "ConditionNumber": {
+    "zh": "條件數",
+    "en": [
+      "Condition Number"
+    ],
+    "description": "損失曲面各方向曲率的比值，決定固定學習率下梯度下降的收斂速度。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ReceptiveField": {
+    "zh": "感受野",
+    "en": [
+      "Receptive Field"
+    ],
+    "description": "輸出單元實際可見的輸入區域範圍，隨層數與步幅累積擴張。",
+    "forbidden": [],
+    "level": 1
   },
   "Data": {
     "zh": "數據",
