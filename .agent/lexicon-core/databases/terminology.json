@@ -719,6 +719,15 @@
     "forbidden": [],
     "level": 1
   },
+  "AdaptiveOverfitting": {
+    "zh": "適應性過擬合",
+    "en": [
+      "Adaptive Overfitting"
+    ],
+    "description": "反覆在同一測試集上查看並挑選最佳結果，使公開分數高於真實泛化能力的偏差。",
+    "forbidden": [],
+    "level": 2
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -1508,6 +1517,24 @@
       "Discounted Cash Flow"
     ],
     "description": "將未來現金流以資金成本折算為現值的估值方法。",
+    "forbidden": [],
+    "level": 2
+  },
+  "IroniesOfAutomation": {
+    "zh": "自動化反諷",
+    "en": [
+      "Ironies Of Automation"
+    ],
+    "description": "自動化接手例行工作後，留給人的案例更難且練習更少，反而更難在關鍵時刻接管的設計張力。",
+    "forbidden": [],
+    "level": 2
+  },
+  "EndToEndUtility": {
+    "zh": "端到端效用",
+    "en": [
+      "End-To-End Utility"
+    ],
+    "description": "扣除整合、人工與失誤成本後，一條完整流程實際交付給使用者的價值。",
     "forbidden": [],
     "level": 2
   },
@@ -3310,6 +3337,33 @@
     "description": "把能力下降的警報轉成可反駁機制歸因的程序。",
     "forbidden": [],
     "level": 1
+  },
+  "ReboundEffect": {
+    "zh": "反彈效應",
+    "en": [
+      "Rebound Effect"
+    ],
+    "description": "單位成本下降刺激用量上升，使總成本不降反增的現象。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MediatingVariable": {
+    "zh": "中介變數",
+    "en": [
+      "Mediating Variable"
+    ],
+    "description": "位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DataFeedbackLoop": {
+    "zh": "資料回流",
+    "en": [
+      "Data Feedback Loop"
+    ],
+    "description": "使用者接受、修改或拒絕的紀錄回到產品與流程更新，進而改變後續系統行為的循環。",
+    "forbidden": [],
+    "level": 2
   },
   "Requirements": {
     "zh": "需求層",
