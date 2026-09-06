@@ -11,9 +11,6 @@ tags = [
     "生成對抗網路", # term:GenerativeAdversarialNetwork
     "模式坍縮", # term:ModeCollapse
     "分佈覆蓋", # term:DistributionCoverage
-    "實務對比", # term:PracticalContrastiveExamples
-    "反思", # term:Reflection
-    "導言", # term:Introduction
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]

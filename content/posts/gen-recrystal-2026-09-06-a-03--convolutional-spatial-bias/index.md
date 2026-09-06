@@ -12,8 +12,6 @@ tags = [
     "平移等變性", # term:TranslationEquivariance
     "感受野", # term:ReceptiveField
     "結構偏置", # term:StructuralBias
-    "實務對比", # term:PracticalContrastiveExamples
-    "反思", # term:Reflection
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
 [ai_info]

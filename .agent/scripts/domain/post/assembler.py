@@ -90,6 +90,15 @@ class PostAssembler:
             valid_user_tags.append(t)
             
         # 2. Auto harvest standard terms from body
+        # rules.de_bilingual_headers is the project's SSOT for generic SECTION names
+        # (導言 / 反思 / 實務對比 ...). Some of them also exist as lexicon terms, so a
+        # naive substring harvest turns a post's own structure into its topic tags and
+        # crowds out the curated ones (tags cap at 8). Structure is not subject matter.
+        structural_names = {
+            self._get_clean_tag(h)
+            for h in lexicon.rules.get("de_bilingual_headers", [])
+            if h
+        }
         body_content = self.post.body if hasattr(self.post, 'body') else ""
         harvested_tags = []
         sorted_terms = sorted([str(k) for k in lexicon.mapping.keys()], key=len, reverse=True)
@@ -97,7 +106,10 @@ class PostAssembler:
             if zh in body_content:
                 is_substring = any(zh in h for h in harvested_tags)
                 if not is_substring:
-                    if self._get_clean_tag(zh) not in [clean_structure_tag, clean_domain_tag]:
+                    clean_zh = self._get_clean_tag(zh)
+                    if clean_zh in structural_names:
+                        continue
+                    if clean_zh not in [clean_structure_tag, clean_domain_tag]:
                         harvested_tags.append(zh)
                         
         tech_tags = valid_user_tags + [t for t in harvested_tags if t not in valid_user_tags]

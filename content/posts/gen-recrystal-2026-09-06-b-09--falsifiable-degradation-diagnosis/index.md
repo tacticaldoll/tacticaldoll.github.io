@@ -11,7 +11,6 @@ tags = [
     "退化診斷", # term:DegradationDiagnosis
     "行為切片", # term:BehavioralSlice
     "不確定性", # term:Uncertainty
-    "實務對比", # term:PracticalContrastiveExamples
     "損失函數", # term:LossFunction
     "差異", # term:Delta
   ]

@@ -12,7 +12,6 @@ tags = [
     "去噪分數匹配", # term:DenoisingScoreMatching
     "噪聲排程", # term:NoiseSchedule
     "擴散機率模型", # term:DiffusionProbabilisticModel
-    "實務對比", # term:PracticalContrastiveExamples
     "差異", # term:Delta
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]

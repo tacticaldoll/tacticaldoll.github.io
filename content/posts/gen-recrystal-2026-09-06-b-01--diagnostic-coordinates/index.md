@@ -9,10 +9,7 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "測量契約", # term:MeasurementContract
-    "實務對比", # term:PracticalContrastiveExamples
     "差異", # term:Delta
-    "反思", # term:Reflection
-    "導言", # term:Introduction
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
@@ -97,7 +94,11 @@ print("model changed", accuracy(-1.5, y_ref))
 print("data changed", accuracy(0.0, y_shift))
 ```
 
-預期輸出是 `1.0, 0.75, 0.75`。相同結果來自不同中介變數：第一個事故移動決策邊界，第二個事故改變輸入與標籤的關係。這個玩具例只能證明分數不識別病因，不能證明真實系統四軸互不交互。
+預期輸出是 `1.0, 0.75, 0.75`。相同結果來自不同**中介變數**（Mediating Variable） <!-- term:MediatingVariable -->：第一個事故移動決策邊界，第二個事故改變輸入與標籤的關係。這個玩具例只能證明分數不識別病因，不能證明真實系統四軸互不交互。
+
+> [!IMPORTANT]
+> **中介變數** <!-- term:MediatingVariable --> (Mediating Variable): 位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。 <!-- anchor:MediatingVariable -->
+
 
 驗證契約如下：資料固定為成對快照並保留個體識別；切分採預先凍結的參考集與最新部署切片；seed 至少 5 個；指標含整體分數、個體翻轉率與切片差；控制模型、資料、推論、測量時每次只換一軸；觀察量是 $\差異 <!-- term:Delta --> S$ 及其區間；若固定三軸後差異 <!-- term:Delta -->消失，即反駁被替換軸的歸因；當區間窄於預先定義的最小實務差異 <!-- term:Delta -->，或資源上限用盡時停止。
 

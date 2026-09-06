@@ -9,11 +9,10 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "適應性過擬合", # term:AdaptiveOverfitting
-    "實務對比", # term:PracticalContrastiveExamples
     "不確定性", # term:Uncertainty
     "差異", # term:Delta
-    "反思", # term:Reflection
     "幻覺", # term:Hallucination
+    "校準", # term:Calibration
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]

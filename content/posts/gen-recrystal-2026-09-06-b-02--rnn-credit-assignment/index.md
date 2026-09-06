@@ -11,7 +11,6 @@ tags = [
     "遞迴神經網路", # term:RecurrentNeuralNetwork
     "梯度消失", # term:VanishingGradient
     "信用分配", # term:CreditAssignment
-    "實務對比", # term:PracticalContrastiveExamples
     "反向傳播", # term:Backpropagation
     "差異", # term:Delta
   ]

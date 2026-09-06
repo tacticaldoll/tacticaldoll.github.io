@@ -11,9 +11,7 @@ tags = [
     "災難性遺忘", # term:CatastrophicForgetting
     "梯度干涉", # term:GradientInterference
     "彈性權重固化", # term:ElasticWeightConsolidation
-    "實務對比", # term:PracticalContrastiveExamples
     "梯度下降", # term:GradientDescent
-    "反思", # term:Reflection
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
@@ -93,7 +91,11 @@ $$
 
 其中 $F_i$ 近似參數對舊任務的重要性。$\lambda$ 越大，重要方向越難移動；若 A 與 B 的定義真的矛盾，限制更新只能選擇取捨，不能創造同時滿足兩者的解。
 
-下圖標出從更新到行為損失的中介變數。
+下圖標出從更新到行為損失的**中介變數**（Mediating Variable） <!-- term:MediatingVariable -->。
+
+> [!IMPORTANT]
+> **中介變數** <!-- term:MediatingVariable --> (Mediating Variable): 位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。 <!-- anchor:MediatingVariable -->
+
 
 ```mermaid
 flowchart LR

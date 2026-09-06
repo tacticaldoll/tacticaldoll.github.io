@@ -12,7 +12,6 @@ tags = [
     "經驗風險", # term:EmpiricalRisk
     "泛化", # term:Generalization
     "假設空間", # term:HypothesisSpace
-    "實務對比", # term:PracticalContrastiveExamples
     "損失函數", # term:LossFunction
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
@@ -161,10 +160,11 @@ for n in (12, 40):
 
 第一個邊界是分佈偏移。即使 $g(h,S)$ 在 $P$ 下很小，部署分佈若變成 $Q$，真正關心的是 $R_Q(h)$。在 $P$ 上建立的泛化 <!-- term:Generalization -->證據不能自動跨越支持集、標註規則或族群比例的改變。
 
-第二個邊界是**損失函數**（Loss Function） <!-- term:LossFunction -->。低平均 MSE 不能推出罕見區域、安全成本或校準都良好。損失把多維後果壓成可最佳化數字；沒有被計價的錯誤不會因訓練成功而消失。
+第二個邊界是**損失函數**（Loss Function） <!-- term:LossFunction -->。低平均 MSE 不能推出罕見區域、安全成本或**校準**（Calibration） <!-- term:Calibration -->都良好。損失把多維後果壓成可最佳化數字；沒有被計價的錯誤不會因訓練成功而消失。
 
 > [!IMPORTANT]
 > **損失函數** <!-- term:LossFunction --> (Loss Function): 把模型輸出與目標之間的差距量化為單一數值的評分函數。 <!-- anchor:LossFunction -->
+> **校準** <!-- term:Calibration --> (Calibration): 模型輸出機率與實際正確率的一致程度。 <!-- anchor:Calibration -->
 
 
 反例也很重要。若真實關係確為二次函數、噪聲很低且樣本密集，較大假設空間 <!-- term:HypothesisSpace -->不必然造成差泛化 <!-- term:Generalization -->；正則化也可能讓形式上很大的空間只探索平滑解。因而「參數多」本身不是充分診斷，必須檢查選擇程序實際使用了多少自由度。

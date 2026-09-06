@@ -11,9 +11,9 @@ tags = [
     "社會技術系統", # term:SociotechnicalSystem
     "端到端效用", # term:EndToEndUtility
     "人工補償", # term:HumanCompensation
-    "實務對比", # term:PracticalContrastiveExamples
     "不同角色", # term:DifferentRoles
     "貢獻利益", # term:ContributionMargin
+    "中介變數", # term:MediatingVariable
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]

@@ -12,7 +12,6 @@ tags = [
     "梯度下降", # term:GradientDescent
     "條件數", # term:ConditionNumber
     "泛化", # term:Generalization
-    "實務對比", # term:PracticalContrastiveExamples
     "差異", # term:Delta
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
@@ -31,11 +30,12 @@ series = ["從有限證據到生成分佈：統計學習如何形成模型能力
 
 一個只有單一權重的模型要學 $y=3x$，看似沒有失敗空間。相同資料與相同均方誤差下，學習率 $0.1$ 會靠近斜率 3，學習率 $0.5$ 卻可能來回跳動。這個事故揭示：可表示正確函數、能算出導數、以及更新實際收斂，是三個不同命題。
 
-**反向傳播**（Backpropagation） <!-- term:Backpropagation -->使用鏈式法則重用計算圖中的中間量；**梯度下降**（Gradient Descent） <!-- term:GradientDescent -->再把導數轉成參數位移。Rumelhart、Hinton 與 Williams 的經典工作描述了以輸出誤差反覆調整連接權重、形成隱藏表示的程序。[Nature 論文](https://www.nature.com/articles/323533a0) 回過頭來看，真正要追問的是：誤差經過哪些中介變數才成為能力，又會在哪裡斷裂？
+**反向傳播**（Backpropagation） <!-- term:Backpropagation -->使用鏈式法則重用計算圖中的中間量；**梯度下降**（Gradient Descent） <!-- term:GradientDescent -->再把導數轉成參數位移。Rumelhart、Hinton 與 Williams 的經典工作描述了以輸出誤差反覆調整連接權重、形成隱藏表示的程序。[Nature 論文](https://www.nature.com/articles/323533a0) 回過頭來看，真正要追問的是：誤差經過哪些**中介變數**（Mediating Variable） <!-- term:MediatingVariable -->才成為能力，又會在哪裡斷裂？
 
 > [!IMPORTANT]
 > **反向傳播** <!-- term:Backpropagation --> (Backpropagation): 以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。 <!-- anchor:Backpropagation -->
 > **梯度下降** <!-- term:GradientDescent --> (Gradient Descent): 沿損失函數負梯度方向反覆更新參數的最佳化方法。 <!-- anchor:GradientDescent -->
+> **中介變數** <!-- term:MediatingVariable --> (Mediating Variable): 位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。 <!-- anchor:MediatingVariable -->
 
 
 ## 分析

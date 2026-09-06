@@ -10,9 +10,6 @@ tags = [
     "AI 代理人", # term:AiAgent
     "生成對抗網路", # term:GenerativeAdversarialNetwork
     "模式坍縮", # term:ModeCollapse
-    "實務對比", # term:PracticalContrastiveExamples
-    "反思", # term:Reflection
-    "導言", # term:Introduction
     "組合", # term:Compose
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]

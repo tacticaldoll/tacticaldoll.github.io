@@ -9,11 +9,9 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "貢獻利益", # term:ContributionMargin
-    "實務對比", # term:PracticalContrastiveExamples
     "人工補償", # term:HumanCompensation
     "反彈效應", # term:ReboundEffect
     "自回歸", # term:Autoregressive
-    "反思", # term:Reflection
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]

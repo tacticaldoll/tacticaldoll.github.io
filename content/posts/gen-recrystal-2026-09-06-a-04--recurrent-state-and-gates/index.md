@@ -8,9 +8,8 @@ description = "同一個連乘同時牽動前向記憶與反向梯度。分離�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
-    "遞迴式神經網路", # term:RecurrentNeuralNetwork
+    "遞迴神經網路", # term:RecurrentNeuralNetwork
     "長短期記憶網路", # term:LongShortTermMemory
-    "實務對比", # term:PracticalContrastiveExamples
     "反向傳播", # term:Backpropagation
     "信用分配", # term:CreditAssignment
     "形狀", # term:DataShape
@@ -31,7 +30,11 @@ series = ["從有限證據到生成分佈：統計學習如何形成模型能力
 
 把一個數值反覆乘以 $0.8$ 五十次，早期輸入的影響只剩約 $1.4\times10^{-5}$；改乘 $1.2$，影響則超過九千。這個標量事故常被拿來描述遞迴網路的記憶，但它其實同時打開兩個問題：歷史是否仍影響目前狀態，以及誤差是否能反向教會早期轉移。
 
-遞迴神經網路（recurrent neural network, RNN）以共享狀態轉移處理可變長度序列。這裡真正要問的是：前向資訊與反向梯度經過什麼機制保留，門控又在哪些條件下只提供通道而沒有提供記憶保證？
+**遞迴神經網路**（Recurrent Neural Network） <!-- term:RecurrentNeuralNetwork -->以共享狀態轉移處理可變長度序列。這裡真正要問的是：前向資訊與反向梯度經過什麼機制保留，門控又在哪些條件下只提供通道而沒有提供記憶保證？
+
+> [!IMPORTANT]
+> **遞迴神經網路** <!-- term:RecurrentNeuralNetwork --> (Recurrent Neural Network): 以隱藏狀態沿序列遞迴傳遞資訊的網路結構。 <!-- anchor:RecurrentNeuralNetwork -->
+
 
 ## 分析
 

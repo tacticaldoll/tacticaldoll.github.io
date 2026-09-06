@@ -10,10 +10,7 @@ tags = [
     "AI 代理人", # term:AiAgent
     "偽相關", # term:SpuriousCorrelation
     "捷徑學習", # term:ShortcutLearning
-    "實務對比", # term:PracticalContrastiveExamples
     "經驗風險", # term:EmpiricalRisk
-    "反思", # term:Reflection
-    "導言", # term:Introduction
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]

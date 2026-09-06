@@ -9,9 +9,6 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "折現現金流", # term:DiscountedCashFlow
-    "實務對比", # term:PracticalContrastiveExamples
-    "反思", # term:Reflection
-    "導言", # term:Introduction
     "校準", # term:Calibration
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]

@@ -10,10 +10,7 @@ tags = [
     "AI 代理人", # term:AiAgent
     "分佈漂移", # term:DistributionShift
     "表演性預測", # term:PerformativePrediction
-    "實務對比", # term:PracticalContrastiveExamples
     "差異", # term:Delta
-    "反思", # term:Reflection
-    "導言", # term:Introduction
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]

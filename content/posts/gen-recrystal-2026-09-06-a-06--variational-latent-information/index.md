@@ -12,8 +12,6 @@ tags = [
     "證據下界", # term:EvidenceLowerBound
     "重參數化技巧", # term:ReparameterizationTrick
     "後驗坍縮", # term:PosteriorCollapse
-    "實務對比", # term:PracticalContrastiveExamples
-    "反思", # term:Reflection
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
 [ai_info]
@@ -69,7 +67,11 @@ $\mu=0,\sigma^2=1$ 時成本為零。從**後驗坍縮**（Posterior Collapse）
 > **後驗坍縮** <!-- term:PosteriorCollapse --> (Posterior Collapse): 近似後驗退化為先驗、潛在變數不再攜帶輸入資訊的失效現象。 <!-- anchor:PosteriorCollapse -->
 
 
-Dieng 等人針對強 likelihood 模型下的 latent-variable collapse，利用生成端跳接加強 $z$ 與觀察之間的連結，並從理論與實驗檢查互資訊。[PMLR 論文](https://proceedings.mlr.press/v89/dieng19a.html) 這支持「解碼器路徑」是成因之一，但不代表所有坍縮只有單一病因；局部最優與資料結構也可能參與。[Dai、Wang 與 Wipf，ICML 2020](https://proceedings.mlr.press/v119/dai20c.html)
+Dieng 等人針對強 likelihood 模型下的 latent-variable collapse，利用生成端跳接加強 $z$ 與觀察之間的連結，並從理論與實驗檢查**互資訊**（Mutual Information） <!-- term:MutualInformation -->。[PMLR 論文](https://proceedings.mlr.press/v89/dieng19a.html) 這支持「解碼器路徑」是成因之一，但不代表所有坍縮只有單一病因；局部最優與資料結構也可能參與。[Dai、Wang 與 Wipf，ICML 2020](https://proceedings.mlr.press/v119/dai20c.html)
+
+> [!IMPORTANT]
+> **互資訊** <!-- term:MutualInformation --> (Mutual Information): 兩個隨機變數之間共享的資訊量，用來量化潛在變數是否攜帶輸入資訊。 <!-- anchor:MutualInformation -->
+
 
 ### 重參數化解決的是求導
 

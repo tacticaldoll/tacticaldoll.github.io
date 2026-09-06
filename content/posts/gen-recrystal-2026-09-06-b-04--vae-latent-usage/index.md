@@ -11,9 +11,7 @@ tags = [
     "變分自動編碼器", # term:VariationalAutoencoder
     "後驗坍縮", # term:PosteriorCollapse
     "互資訊", # term:MutualInformation
-    "實務對比", # term:PracticalContrastiveExamples
     "證據下界", # term:EvidenceLowerBound
-    "反思", # term:Reflection
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]

@@ -2157,7 +2157,7 @@
     ],
     "description": "從歷史經驗或設計模式中所獲得的架構最佳化概念與行動啟發。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "AttributionRouting": {
     "zh": "知識路由",
@@ -2202,7 +2202,7 @@
     ],
     "description": "報告中用於對比遺產架構與領域驅動架構差異的具體實踐範例。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "TrackA": {
     "zh": "正規流程",
@@ -3894,7 +3894,7 @@
     ],
     "description": "對現行架構與工程盲點進行的深層檢討與批判。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Hallucination": {
     "zh": "幻覺",
@@ -3921,7 +3921,7 @@
     ],
     "description": "文章或報告的開頭部分，用於引入背景、核心問題與寫作脈絡。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Analysis": {
     "zh": "分析",

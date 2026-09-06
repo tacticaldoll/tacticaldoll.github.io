@@ -11,9 +11,9 @@ tags = [
     "技術與組織互補", # term:OrganizationalComplementarity
     "人機協作", # term:HumanAiCollaboration
     "自動化反諷", # term:IroniesOfAutomation
-    "實務對比", # term:PracticalContrastiveExamples
     "人工補償", # term:HumanCompensation
     "中介變數", # term:MediatingVariable
+    "資料回流", # term:DataFeedbackLoop
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]

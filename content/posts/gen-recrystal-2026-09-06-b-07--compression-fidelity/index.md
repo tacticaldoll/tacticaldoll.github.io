@@ -13,7 +13,6 @@ tags = [
     "剪枝", # term:Pruning
     "知識蒸餾", # term:KnowledgeDistillation
     "校準", # term:Calibration
-    "實務對比", # term:PracticalContrastiveExamples
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]

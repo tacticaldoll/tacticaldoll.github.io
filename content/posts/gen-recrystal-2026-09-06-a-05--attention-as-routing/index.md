@@ -12,7 +12,6 @@ tags = [
     "縮放點積注意力", # term:ScaledDotProductAttention
     "位置編碼", # term:PositionalEncoding
     "持久記憶", # term:PersistentMemory
-    "實務對比", # term:PracticalContrastiveExamples
     "差異", # term:Delta
   ]
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
@@ -85,7 +84,11 @@ flowchart LR
     R --> Y["任務輸出"]
 ```
 
-圖中 $A$ 只是中介變數。最終輸出還受到值投影 <!-- term:Projection -->、殘差及後續轉換影響，因此不能只看 $A$ 判定輸入的因果貢獻。
+圖中 $A$ 只是**中介變數**（Mediating Variable） <!-- term:MediatingVariable -->。最終輸出還受到值投影 <!-- term:Projection -->、殘差及後續轉換影響，因此不能只看 $A$ 判定輸入的因果貢獻。
+
+> [!IMPORTANT]
+> **中介變數** <!-- term:MediatingVariable --> (Mediating Variable): 位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。 <!-- anchor:MediatingVariable -->
+
 
 ### 一個同時測縮放與非唯一解釋的實驗
 

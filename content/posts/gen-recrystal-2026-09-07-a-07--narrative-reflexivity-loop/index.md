@@ -11,9 +11,8 @@ tags = [
     "反身性", # term:Reflexivity
     "表演性預測", # term:PerformativePrediction
     "端到端效用", # term:EndToEndUtility
-    "實務對比", # term:PracticalContrastiveExamples
     "人工補償", # term:HumanCompensation
-    "反思", # term:Reflection
+    "校準", # term:Calibration
   ]
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]
