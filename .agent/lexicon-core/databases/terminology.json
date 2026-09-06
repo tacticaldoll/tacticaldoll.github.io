@@ -134,15 +134,6 @@
     "forbidden": [],
     "level": 2
   },
-  "RecurrentNeuralNetwork": {
-    "zh": "遞迴式神經網路",
-    "en": [
-      "Recurrent Neural Network"
-    ],
-    "description": "重複套用同一狀態轉換，把可變長度序列映射為固定維度隱藏狀態的網路。",
-    "forbidden": [],
-    "level": 2
-  },
   "LongShortTermMemory": {
     "zh": "長短期記憶網路",
     "en": [
@@ -176,6 +167,15 @@
       "Organizational Complementarity"
     ],
     "description": "技術能力必須搭配流程重排與技能調整才形成產出的互補關係。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RecurrentNeuralNetwork": {
+    "zh": "遞迴神經網路",
+    "en": [
+      "Recurrent Neural Network"
+    ],
+    "description": "以隱藏狀態沿序列遞迴傳遞資訊的網路結構。",
     "forbidden": [],
     "level": 2
   },
@@ -3239,6 +3239,78 @@
     "forbidden": [],
     "level": 1
   },
+  "ShortcutLearning": {
+    "zh": "捷徑學習",
+    "en": [
+      "Shortcut Learning"
+    ],
+    "description": "模型採用在標準基準有效、卻無法轉移到更具挑戰條件的決策規則。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MeasurementContract": {
+    "zh": "測量契約",
+    "en": [
+      "Measurement Contract"
+    ],
+    "description": "固定評測資料、指標定義與計分程式的約定，用來讓不同版本的分數可以互相比較。",
+    "forbidden": [],
+    "level": 1
+  },
+  "VanishingGradient": {
+    "zh": "梯度消失",
+    "en": [
+      "Vanishing Gradient"
+    ],
+    "description": "梯度沿深度或時間反向傳播時逐層衰減，使早期參數幾乎收不到更新訊號的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DistributionCoverage": {
+    "zh": "分佈覆蓋",
+    "en": [
+      "Distribution Coverage"
+    ],
+    "description": "生成分佈涵蓋目標分佈中各個模式的程度，與單一樣本的品質是不同的觀察量。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ModelCompression": {
+    "zh": "模型壓縮",
+    "en": [
+      "Model Compression"
+    ],
+    "description": "以量化、剪枝或蒸餾等方式縮減模型資源需求的近似手段。",
+    "forbidden": [],
+    "level": 1
+  },
+  "BehavioralSlice": {
+    "zh": "行為切片",
+    "en": [
+      "Behavioral Slice"
+    ],
+    "description": "依輸入屬性切出的評測子集，用來揭露被整體平均掩蓋的局部損失。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Uncertainty": {
+    "zh": "不確定性",
+    "en": [
+      "Uncertainty"
+    ],
+    "description": "估計值因抽樣與執行變異而帶有的波動範圍，是判定分數差異是否顯著的前提。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DegradationDiagnosis": {
+    "zh": "退化診斷",
+    "en": [
+      "Degradation Diagnosis"
+    ],
+    "description": "把能力下降的警報轉成可反駁機制歸因的程序。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3608,6 +3680,24 @@
     "forbidden": [],
     "level": 1
   },
+  "MutualInformation": {
+    "zh": "互資訊",
+    "en": [
+      "Mutual Information"
+    ],
+    "description": "兩個隨機變數之間共享的資訊量，用來量化潛在變數是否攜帶輸入資訊。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpuriousCorrelation": {
+    "zh": "偽相關",
+    "en": [
+      "Spurious Correlation"
+    ],
+    "description": "在訓練分佈中與標籤同時出現、但不具因果支撐的統計關聯。",
+    "forbidden": [],
+    "level": 1
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -3922,5 +4012,14 @@
     "description": "移除模型中影響較小的連接或結構，以縮減規模的壓縮方法。",
     "forbidden": [],
     "level": 2
+  },
+  "Calibration": {
+    "zh": "校準",
+    "en": [
+      "Calibration"
+    ],
+    "description": "模型輸出機率與實際正確率的一致程度。",
+    "forbidden": [],
+    "level": 1
   }
 }
