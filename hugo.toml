@@ -42,6 +42,18 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    # Math passthrough. Without this Goldmark parses formulas as prose: `*` and
+    # `_` inside $...$ became <em>, so e.g. `P^*` in a diagnostic-coordinates
+    # formula rendered as `P^<em>`. Passthrough hands the delimited span to the
+    # renderer verbatim, leaving it for MathJax at runtime.
+    # Inline `$...$` is safe here because no post uses a bare literal `$`
+    # (verified: zero lines with an odd `$` count outside code fences). Should a
+    # future post need one, escape it as `\$`.
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block  = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)'], ['$', '$']]
 
 [params]
   description = "exists. occasionally transmits."

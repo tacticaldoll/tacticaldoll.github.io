@@ -28,3 +28,24 @@
        --splash-bg off it, so dark paints with no flash — and nothing writes
        localStorage on first visit, so the config default stays authoritative
        (a script that hardcoded "<theme>-dark" here would shadow it). */ -}}
+
+{{- /*
+  Math (KaTeX). Site-level because the theme is a pinned submodule with no math
+  support. Paired with [markup.goldmark.extensions.passthrough] in hugo.toml:
+  passthrough keeps `$...$` / `$$...$$` out of Goldmark's hands (it was parsing
+  `*` and `_` inside formulas as emphasis, so `P^*` shipped as `P^<em>`), and
+  static/js/math.js renders what survives.
+
+  Only this ~4 KB driver ships eagerly. KaTeX itself (CSS + js + auto-render, on
+  jsDelivr with SRI) is fetched on first sight of a formula, so pages without
+  math pay nothing — the same economy the theme applies to Mermaid, without the
+  vendoring: a site may use a CDN even though the theme self-hosts.
+
+  Re-render timing rides the theme's own `slotify:slot` event, exactly as the
+  Disqus slot does; see static/js/math.js for why that beats a MutationObserver.
+
+  `math` defaults on; set `math = false` under [params] to ship neither.
+*/ -}}
+{{- if .Param "math" | default true }}
+<script defer src="{{ "js/math.js" | relURL }}"></script>
+{{- end }}
