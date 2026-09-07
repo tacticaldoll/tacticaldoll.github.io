@@ -726,7 +726,14 @@ class KBAuditor:
                                 if " " in en), "")
             tag_base = {"ai_info": {"generation": {"scope": genre_scope}}}
             genre_values = {v for v in tag_lex.taxonomy.get("genres", {}).values()}
-            ai_values = set(tag_lex.taxonomy.get("ai_taxonomy", {}).get("categories", []))
+            # Categories are stored as `中文 (English)` while lexicon keys are the bare
+            # Chinese, so comparing the two shapes excluded nothing: AI 經濟與社會 is a
+            # category and also a lexicon term, and it was reaching the pool. Harmless
+            # only because the probe body classifies to None and no domain tag is there
+            # to dedupe against — the precondition this set exists to establish was
+            # simply not established. Compared on the bare form now.
+            ai_values = {re.sub(r'\s*[(（].*?[)）]', '', c).strip()
+                         for c in tag_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])}
             # Real lexicon terms, so anchoring succeeds; none of them a genre or domain
             # value, which the assembler drops as deduplication rather than as loss.
             pool = [str(k) for k in tag_lex.mapping
