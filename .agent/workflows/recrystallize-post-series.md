@@ -252,17 +252,26 @@ spec: "../reference/agent-operating-guideline.md"
 
 重寫完成後，才重新產生 metadata。不得先整理 metadata 再倒推正文。
 
-**落點先講清楚**：再結晶後的 `series` 與 `tags` 一律記入 **series-map.md**（`series` 為系列級、`tags` 逐報告列），**不附加於 `report.zh-TW.md`**。`report.zh-TW.md` 正文以結論收束，**結尾嚴禁出現 `series`／`tags`／「建議 metadata」這類區塊**——它不是報告敘事，是生成管道痕跡，違反 §5；且 metadata 的最終定稿屬 `publish-article`，此處只是送審用的問題域描述。
+**落點先講清楚**：再結晶後的 `series` 與 `tags` 一律記入 **series-map.md**（`series` 僅在本 session 產出 `guide*.md` 時才寫、`tags` 逐報告列），**不附加於 `report.zh-TW.md`**。`report.zh-TW.md` 正文以結論收束，**結尾嚴禁出現 `series`／`tags`／「建議 metadata」這類區塊**——它不是報告敘事，是生成管道痕跡，違反 §5；且 metadata 的最終定稿屬 `publish-article`，此處只是送審用的問題域描述。
 
 ### 6a. Series
 
-`series` 必須描述問題域，而不是描述批次、日期或生成來源。
+**宣告資格先於格式 [CRITICAL]**：`is_series` 的唯一真相來源是 session 目錄中 `guide*.md` 的實體存在（見 `init-handoff.task.schema.yaml`）。因此：
+
+- 本 session 產出 `guide*.md`（兩篇以上報告）→ series-map **必須**宣告系列級 `series`。
+- 本 session 只產出一篇主報告、依 §7 省略 `guide.zh-TW.md` → 該 session 是 Standalone，series-map **嚴禁**宣告 `series`。
+
+單篇 session 若仍宣告 `series`，下游會依 L0 判準解析為 `is_series=false` 並丟棄該宣告，結果是系列只存在於內部地圖、不存在於貼文。這種「宣告了卻不生效」的狀態比不宣告更糟：它讓內部產物與已發布事實各說各話。系列邊界的敘述仍可寫在 series-map 的散文段落，那是分析結論；`series` 欄位是分類事實，只有具備資格時才填。
+
+`series` 必須描述問題域，而不是描述批次、日期或生成來源。格式依 `init-handoff.task.schema.yaml` 為 `[核心主題]：[敘事化副標題]`。
 
 良好格式：
 
 ```toml
 series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部裁決"]
 ```
+
+此欄位是 series-map 中 `series` 的**唯一**落點格式；不得改用 `**series**:` 之類的散文寫法，否則下游無法解析。
 
 ### 6b. Tags
 
@@ -303,13 +312,13 @@ series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部
 
 內部檢核產物（反推卡、候選清單、擴張去向標記等，見 §9）**即使在 `--force-write` 下也嚴禁寫入磁碟**——它們含原貼文 slug、路徑與原文片段，落盤即等於把可交付產物正要抹除的來源痕跡保存下來。內部檢核產物只能留在對話／session 脈絡。
 
-`series-map.md` 必須位於 session 根目錄；每份報告必須放入自己的 `<report-slug>/` 子目錄。若本次只產出一篇主報告，省略 `guide.zh-TW.md`。
+`series-map.md` 必須位於 session 根目錄；每份報告必須放入自己的 `<report-slug>/` 子目錄。若本次只產出一篇主報告，省略 `guide.zh-TW.md`——此時該 session 依 L0 判準為 Standalone，series-map 不得宣告 `series`（見 §6a）。
 
 此佈局**覆寫** `crystallize-report.schema.yaml` 之 `CRITICAL_INSTRUCTION` 的 `TARGET_PATH`：`recrystal-` 前綴目錄是辨識「重新結晶」的必要區隔，`series-map.md` 與 `guide.zh-TW.md` 皆為本流程正常產物，均不觸發該規則的 abort。
 
 輸出物：
 
-1. **series-map.md**：抽象後的系列邊界、文章角色與閱讀順序，**內含已填妥的展開方向盤點表**（四類展開狀態無留空），**並承載再結晶後的 metadata——系列級 `series` 與逐報告 `tags`**（§6）；不得包含原貼文 slug、路徑或檔名。
+1. **series-map.md**：抽象後的系列邊界、文章角色與閱讀順序，**內含已填妥的展開方向盤點表**（四類展開狀態無留空），**並承載再結晶後的 metadata——逐報告 `tags`，以及僅當本次產出 `guide*.md` 時的系列級 `series`**（§6a）；不得包含原貼文 slug、路徑或檔名。
 2. **report.zh-TW.md**：再結晶後的主報告或文章草稿，不得包含原貼文引用、路徑或再生成痕跡。**正文以結論收束，結尾不得附加 `series`／`tags`／「建議 metadata」等任何 metadata 區塊**（metadata 落於 series-map.md，見 §6）。
 3. **guide.zh-TW.md**：若單次產出兩篇以上報告，提供自然化閱讀順序與關係拓撲；不得揭露舊貼文重組來源。
 
@@ -340,7 +349,7 @@ series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部
 19. **案例保全**：候選貼文的具體案例與細節未以「重複」為由被去重吞掉；殊途同歸的多個事故皆保留，案例段未壓縮成一句帶過。
 20. **報告清單鎖定**：報告清單已凍結（每 slot 四欄齊全，`緣起來源` 欄留 session 內）；series-map 僅呈現去痕後 slot；最終報告篇數未低於鎖定數，任何 slot 的合併/刪除皆已進損失帳本附理由並重過合併條件，無靜默併篇。
 21. **展開下限**：§2 反推卡末三欄（潛在子問題、未證成前提、暗藏多核心）已逐篇抽取；§3.6 展開機會盤點三類（拆分、潛在深化、跨篇湧現）皆給定去向，選 `本次不展開` 者附理由；判為 `本次展開` 者已實際發展，報告未停在原貼文描述深度。
-22. **Metadata 落點**：`report.zh-TW.md` 正文以結論收束，結尾無 `series`／`tags`／「建議 metadata」區塊；再結晶後的 `series` 與逐報告 `tags` 記於 series-map.md。
+22. **Metadata 落點**：`report.zh-TW.md` 正文以結論收束，結尾無 `series`／`tags`／「建議 metadata」區塊；逐報告 `tags` 記於 series-map.md，系列級 `series` 僅在本次產出 `guide*.md` 時才記入，且使用 §6a 的 TOML 格式。`audit_kb.py` 物理攔截「宣告 series 但無 guide*.md」。
 23. **個案主軸與回推因果**：每個核心主張盡可能以具體個案為起點與骨幹（確屬純概念者至少附密度下限反例）；論證採「個案→回推因果→主張→邊界→通用化」，非主張先行配裝飾例；通用化結論皆由回推因果與個案賺得，達期刊論文層級的論證嚴謹度，且未墮入空泛學術腔或形式章節堆疊。
 24. **收束指涉完整性**：結論中的數量詞、代詞與總結性指涉（如「三個問題」「四者」「上述」「這些防線」）皆能在緊鄰段落或同一段落中找到明確對應；若作為全文最後收束，應優先列成明確問句、命題或清單，避免只在作者腦中成立的指涉閉合。
 

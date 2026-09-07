@@ -259,6 +259,58 @@ class KBAuditor:
             if anchor_marker.search(prose):
                 errors.append(f"[Governance] Terminology anchor in non-post report prose (anchoring is publish-only): {self.rel(file_path)}")
 
+        # `is_series` has exactly one SSOT: the physical existence of a `guide*.md`
+        # in the session directory (init-handoff.task.schema.yaml). A session that
+        # produced a single main report legitimately omits the guide, so it is a
+        # standalone post and MUST NOT declare a series-level `series` in its
+        # series-map — the declaration would be silently discarded downstream,
+        # leaving a series named in the internal map but absent from the post.
+        for map_path in glob.glob(os.path.join(config.SCRATCH_DIR, "*", "series-map*.md")):
+            with open(map_path, 'r', encoding='utf-8') as f:
+                map_content = f.read()
+            declares_series = re.search(r'^[ \t]*series[ \t]*=', map_content, re.MULTILINE)
+            if not declares_series:
+                continue
+            session_dir = os.path.dirname(map_path)
+            if not glob.glob(os.path.join(session_dir, "guide*.md")):
+                errors.append(
+                    f"[Governance] series-map declares `series` but session has no guide*.md, "
+                    f"so is_series resolves false and the declaration is dropped: {self.rel(map_path)}")
+
+        # Provenance headers must never reach domain classification: `**Agent**: ...`
+        # matches the 'agent' detection keyword, which made generation metadata decide
+        # every post's domain. Any call site handing raw report text to classify_domain
+        # reintroduces that. The strip lives in infra.utils.strip_report_provenance.
+        classify_sites = [
+            os.path.join(config.SCRIPTS_DIR, "workflows", "generate-article", "prepare_handoff.py"),
+            os.path.join(config.SCRIPTS_DIR, "workflows", "generate-article", "classify_posts.py"),
+        ]
+        for site in classify_sites:
+            if not os.path.exists(site):
+                continue
+            with open(site, 'r', encoding='utf-8') as f:
+                for line_no, line in enumerate(f, start=1):
+                    if "classify_domain(" not in line:
+                        continue
+                    if "strip_report_provenance(" not in line:
+                        errors.append(
+                            f"[Governance] classify_domain on unstripped report text "
+                            f"(provenance would vote on the domain) in {self.rel(site)}:{line_no}")
+
+        # Series naming has one SSOT: init-handoff.task.schema.yaml's
+        # `[核心主題]：[敘事化副標題]`. taxonomy.json owns tag/domain classification and
+        # directory naming, never a mandatory series prefix — GUIDE must not reassign it.
+        prefix_claim = re.compile(r'\[領域前綴\]|系列前綴必須依')
+        for gov_path in (os.path.join(config.ROOT_DIR, "GUIDE.md"),
+                         os.path.join(config.REFERENCE_DIR, "agent-operating-guideline.md")):
+            if not os.path.exists(gov_path):
+                continue
+            with open(gov_path, 'r', encoding='utf-8') as f:
+                gov_text = f.read()
+            if prefix_claim.search(gov_text):
+                errors.append(f"[Governance] {self.rel(gov_path)} mandates a taxonomy domain prefix for "
+                              f"series names; the series naming SSOT is init-handoff.task.schema.yaml")
+
         return errors
 
     def run(self):

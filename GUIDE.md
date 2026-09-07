@@ -104,7 +104,8 @@
 
 - **文章結構 (Page Bundles)**：所有文章必須使用 **Page Bundle** 格式：`content/posts/<post-name>/index.md`。圖片與附件存放在該目錄下。
 - **分類規範**：**禁用 Categories**。請將分類需求轉化為 `tags`（技術點）或 `series`（系列文章）。
-- **系列命名規範 (Series Naming)**：為確保知識索引的一致性，系列名稱應遵循 `[領域前綴]：[系列標題]` 的格式。前綴定義與選用原則以 **[.agent/lexicon-core/databases/taxonomy.json](.agent/lexicon-core/databases/taxonomy.json)** 為 SSOT；`taxonomy.md` 僅作為 read-only view。嚴禁將所有系列強制冠以單一前綴。
+- **系列命名規範 (Series Naming)**：系列名稱格式以 **[.agent/schemas/init-handoff.task.schema.yaml](.agent/schemas/init-handoff.task.schema.yaml)** 為 SSOT，即 `[核心主題]：[敘事化副標題]`。核心主題必須描述**問題域**，不得描述批次、日期或生成來源。嚴禁將所有系列強制冠以單一前綴；`taxonomy.json` 治理標籤與領域分類，不定義系列前綴。
+- **系列宣告資格 (Series Eligibility) [CRITICAL]**：`is_series` 的唯一判準是 session 目錄中 `guide*.md` 的實體存在（見 [init-handoff.task.schema.yaml](.agent/schemas/init-handoff.task.schema.yaml)）。單篇主報告 session 依規省略導讀檔，即為 Standalone，其 `series-map.md` **嚴禁**宣告 `series`——宣告了也會被下游丟棄，只會製造「內部地圖有系列、已發布貼文沒有」的分歧。由 `audit_kb.py` 物理攔截。
 - **去專案化修飾 (De-projectization) [SSOT]**：所有產出文章必須進行「敘事昇華」，將 Session ID、內部路徑、工具調用 (如 `safeguard.py`) 轉換為中立的技術敘事。
 - **文章摘要 (Summary)**：
     - **Separator 規範**：必須在導言段落後插入 `<!--more-->`。

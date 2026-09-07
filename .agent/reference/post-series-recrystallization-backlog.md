@@ -20,7 +20,7 @@
 - 這是已發布貼文系列再結晶，不修改 content/，不產生 handoff，不發布。
 - session 第一層目錄必須用 recrystal- prefix。
 - series-map.md 放在 session 根目錄，作為本次再結晶地圖。
-- 若最後判斷只需要一篇主報告，就不需要 guide.zh-TW.md。
+- 若最後判斷只需要一篇主報告，就不需要 guide.zh-TW.md；此時該 session 為 Standalone，series-map 不得宣告 `series`（工作流 §6a）。
 
 若只需要一篇主報告，結構應類似：
 

@@ -87,7 +87,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 
 ## 6. Permanent Gates
 
-- 系列前綴必須依 `taxonomy.json` 的領域定義選擇；`taxonomy.md` 僅能作為 read-only view。
+- 系列名稱格式依 `init-handoff.task.schema.yaml` 的 `[核心主題]：[敘事化副標題]`；`taxonomy.json` 治理標籤與領域分類，不定義系列前綴，`taxonomy.md` 僅能作為 read-only view。
+- 系列宣告資格由 `guide*.md` 的實體存在單一決定；單篇報告 session 為 Standalone，不得在 `series-map.md` 宣告 `series`。
 - 禁止建立、手動修復或操作 `terminology.md` 類型的術語投影；術語變更必須對準 `terminology.json` 與 promote 流程。
 - Agent 操作意圖只能有一個 active reference：`.agent/reference/agent-operating-guideline.md`，並必須由 `GUIDE.md` 明確引用。
 - 可驗證規則必須下沉到 schema、script 或 audit；本檔只保留意圖與邊界。
@@ -104,3 +105,6 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - Markdown 標頭處理不得使用 broad `\s*`。
 - 活躍 `handoff.terms.json` 的 `locked.description` 不得含 placeholder。
 - `.agent-scratch/` 報告 Markdown 的散文不得含術語錨定（`<!-- term:/anchor: -->`）；錨定是 `publish-article` 對 Hugo 貼文的專屬職責，語法示例須置於程式碼區塊。
+- `series-map.md` 不得在無 `guide*.md` 的 session 中宣告 `series`；`is_series` 的唯一判準是導讀檔的實體存在，無資格的宣告會被下游丟棄，只會製造內部地圖與已發布貼文的分歧。
+- `classify_domain` 不得接收未剝除 provenance 表頭的報告全文；表頭的 `**Agent**: ...` 命中 `agent` 偵測詞，會讓生成後設資料決定文章領域。剝除以 `infra.utils.strip_report_provenance` 為單一定義。
+- `GUIDE.md` 不得為系列名稱指定 `taxonomy.json` 的領域前綴；系列命名的 SSOT 是 `init-handoff.task.schema.yaml`，`taxonomy.json` 治理標籤與領域分類。
