@@ -384,68 +384,100 @@ class KBAuditor:
                 errors.append(f"[Governance] {self.rel(gov_path)} states a series naming rule without "
                               f"citing {schema_citation}, which owns the format")
 
-        # Genre is tags[0] on every post, and three places describe the same set:
-        # taxonomy.json's `genres` (the tag SSOT, GUIDE §0), the Structure line the
-        # report template offers an author, and the `structures:` definitions saying
-        # what each genre must contain. They drifted — the schema named 分析論文 and
-        # 技術隨筆 where taxonomy says 分析論述 and 技術筆記, and taxonomy offered a
-        # 案例研究 that no structure defined, so nothing said how to write one.
-        # A genre is only real when all three agree: named consistently, offerable,
-        # and defined.
+        # Genre is tags[0] on every post, and four projections describe the same set:
+        # taxonomy.json's canonical `中文 (English)` genres (the tag SSOT, GUIDE §0) and
+        # their slug aliases, the Structure line the report template offers an author,
+        # and the `structures:` definitions saying what each genre must contain. All
+        # four have drifted at some point — the schema named 分析論文 and 技術隨筆 where
+        # taxonomy says 分析論述 and 技術筆記, and taxonomy offered a 案例研究 that no
+        # structure defined. A genre is real only when every projection agrees.
+        #
+        # Each projection is extracted unconditionally and an empty one is a finding.
+        # Guarding the comparisons behind `if projection:` is how two of these rules
+        # previously passed a repo that had deleted the thing being audited.
         schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
         # Read the JSON SSOT directly; load_taxonomy() parses taxonomy.md, which is a
         # read-only view and must never be treated as the source.
         genres = {}
-        if os.path.exists(config.TAXONOMY_JSON):
+        if not os.path.exists(config.TAXONOMY_JSON):
+            errors.append("[Governance] Missing taxonomy.json; genre has no source of truth")
+        else:
             with open(config.TAXONOMY_JSON, 'r', encoding='utf-8') as f:
                 try:
                     genres = json.load(f).get("genres", {})
                 except json.JSONDecodeError as exc:
                     errors.append(f"[Governance] Invalid taxonomy JSON: {exc}")
-        # Spaced keys are the canonical English names; slug variants alias the same value.
+
         canonical = {en: zh for en, zh in genres.items() if " " in en}
-        # A missing SSOT is a finding, not a reason to skip: silently passing the genre
-        # check when genres or the schema are gone reported HEALTHY for a repo that had
-        # lost the very thing being audited.
-        if not genres:
-            errors.append("[Governance] taxonomy.json defines no `genres`; genre is tags[0] on "
-                          "every post and has no source of truth")
-        elif not canonical:
-            errors.append("[Governance] taxonomy.json `genres` has no canonical `中文 (English)` "
-                          "entries; only slug aliases were found")
+        aliases = {en: zh for en, zh in genres.items() if " " not in en}
+        schema_text = ""
         if not os.path.exists(schema_path):
             errors.append(f"[Governance] Missing report schema {self.rel(schema_path)}; the genre "
                           f"set cannot be reconciled against taxonomy.json")
-        if os.path.exists(schema_path) and canonical:
+        else:
             with open(schema_path, 'r', encoding='utf-8') as f:
                 schema_text = f.read()
 
-            # 1. Each `name: "中文 (English)"` must use taxonomy's ZH for that English name.
-            defined = {}
-            for zh, en in re.findall(r'^\s*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
-                defined[en.strip()] = zh.strip()
-                expected = canonical.get(en.strip())
-                if expected and expected != zh.strip():
-                    errors.append(f"[Governance] {self.rel(schema_path)} names genre '{en.strip()}' as "
-                                  f"'{zh.strip()}' but taxonomy.json says '{expected}'")
+        defined = {}
+        for zh, en in re.findall(r'^\s*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
+            defined[en.strip()] = zh.strip()
+        offered = set()
+        offered_match = re.search(r'\*\*Structure\*\*:.*?從\s*(.+?)\s*中擇一', schema_text)
+        if offered_match:
+            offered = {g.strip() for g in offered_match.group(1).split("/") if g.strip()}
 
-            # 2. The Structure line must offer exactly the genres taxonomy defines.
-            offered_match = re.search(r'\*\*Structure\*\*:.*?從\s*(.+?)\s*中擇一', schema_text)
-            if offered_match:
-                offered = {g.strip() for g in offered_match.group(1).split("/") if g.strip()}
-                for missing in sorted(set(canonical) - offered):
-                    errors.append(f"[Governance] taxonomy.json defines genre '{missing}' but "
-                                  f"{self.rel(schema_path)} does not offer it in **Structure**")
-                for extra in sorted(offered - set(canonical)):
-                    errors.append(f"[Governance] {self.rel(schema_path)} offers genre '{extra}' in "
-                                  f"**Structure** but taxonomy.json does not define it")
+        if not genres:
+            errors.append("[Governance] taxonomy.json defines no `genres`; genre is tags[0] on "
+                          "every post and has no source of truth")
+        if genres and not canonical:
+            errors.append("[Governance] taxonomy.json `genres` has no canonical `中文 (English)` "
+                          "entries; only slug aliases were found")
+        if schema_text and not offered:
+            errors.append(f"[Governance] {self.rel(schema_path)} has no **Structure** line offering "
+                          f"a genre choice; an author is given nothing to declare")
+        if schema_text and not defined:
+            errors.append(f"[Governance] {self.rel(schema_path)} defines no genre `structures:`; "
+                          f"no genre says what it must contain")
 
-            # 3. An offerable genre needs a structure definition, or an author has no
-            #    guidance on what to write.
-            if defined:
-                for undefined in sorted(set(canonical) - set(defined)):
-                    errors.append(f"[Governance] genre '{undefined}' is offerable but has no "
-                                  f"`structures:` definition in {self.rel(schema_path)}")
+        # TagAnchorer folds canonical names and slug aliases into one map keyed by
+        # camel_key, and taxonomy.json lists the aliases second, so an alias silently
+        # overrides the canonical display at runtime. A single wrong alias value
+        # retags every post of that genre, with nothing in the data looking wrong.
+        # Each canonical genre therefore needs exactly its own slug, carrying the
+        # identical display.
+        expected_aliases = {en.lower().replace(" ", "-"): (en, zh) for en, zh in canonical.items()}
+        for slug, (en, zh) in sorted(expected_aliases.items()):
+            if slug not in aliases:
+                errors.append(f"[Governance] taxonomy.json genre '{en}' has no '{slug}' alias; "
+                              f"slug-keyed lookups would miss it")
+            elif aliases[slug] != zh:
+                errors.append(f"[Governance] taxonomy.json genre alias '{slug}' displays as "
+                              f"'{aliases[slug]}' but canonical '{en}' says '{zh}'; the alias wins "
+                              f"at runtime and would retag every post of this genre")
+        for stray in sorted(set(aliases) - set(expected_aliases)):
+            errors.append(f"[Governance] taxonomy.json has genre alias '{stray}' with no canonical "
+                          f"`中文 (English)` entry behind it")
+
+        # The remaining comparisons are unconditional: an empty projection is already
+        # reported above, and comparing against it surfaces the same drift again rather
+        # than hiding it.
+        for en, zh in sorted(defined.items()):
+            expected = canonical.get(en)
+            if expected and expected != zh:
+                errors.append(f"[Governance] {self.rel(schema_path)} names genre '{en}' as "
+                              f"'{zh}' but taxonomy.json says '{expected}'")
+        for missing in sorted(set(canonical) - offered):
+            errors.append(f"[Governance] taxonomy.json defines genre '{missing}' but "
+                          f"{self.rel(schema_path)} does not offer it in **Structure**")
+        for extra in sorted(offered - set(canonical)):
+            errors.append(f"[Governance] {self.rel(schema_path)} offers genre '{extra}' in "
+                          f"**Structure** but taxonomy.json does not define it")
+        for undefined in sorted(set(canonical) - set(defined)):
+            errors.append(f"[Governance] genre '{undefined}' is offerable but has no "
+                          f"`structures:` definition in {self.rel(schema_path)}")
+        for orphan in sorted(set(defined) - set(canonical)):
+            errors.append(f"[Governance] {self.rel(schema_path)} defines genre '{orphan}' but "
+                          f"taxonomy.json does not list it")
 
         return errors
 
