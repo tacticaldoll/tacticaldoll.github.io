@@ -168,10 +168,26 @@ class PostAssembler:
         if anchored_domain:
             final_tags.append(anchored_domain)
         
-        for t in tech_tags[:15]:
+        # Both limits below discard candidates, and both used to do it in silence: a
+        # post whose curated terms outnumbered the cap shipped with some of them
+        # missing and nothing anywhere saying which. Duplicates and collisions with
+        # the genre or domain tag are not losses — they are deduplication — so they
+        # stay quiet. Truncation is a loss and is reported.
+        from infra.utils import log_info
+        scan = tech_tags[:config.TAG_SCAN_LIMIT]
+        dropped = []
+        if len(tech_tags) > len(scan):
+            beyond = [t for t in tech_tags[len(scan):] if t and t != "TODO: Add tags"]
+            if beyond:
+                dropped.append(f"{len(beyond)} beyond the {config.TAG_SCAN_LIMIT}-candidate "
+                               f"scan ({', '.join(beyond[:5])}{' ...' if len(beyond) > 5 else ''})")
+
+        for idx, t in enumerate(scan):
             if not t or t == "TODO: Add tags": continue
             anchored = anchorer.anchor_by_display(t)
-            if not anchored: continue
+            if not anchored:
+                dropped.append(f"{t} (no lexicon anchor)")
+                continue
             if not anchored[1]:
                 raise ValueError(f"Tag '{t}' generated an empty key. An English translation is required.")
             
@@ -183,9 +199,16 @@ class PostAssembler:
             if not any(f[0] == anchored[0] for f in final_tags):
                 final_tags.append(anchored)
                 
-            if len(final_tags) >= 8:
+            if len(final_tags) >= config.TAG_CAP:
+                remaining = [x for x in scan[idx + 1:] if x and x != "TODO: Add tags"]
+                if remaining:
+                    dropped.append(f"{len(remaining)} at the {config.TAG_CAP}-tag cap "
+                                   f"({', '.join(remaining[:5])}{' ...' if len(remaining) > 5 else ''})")
                 break
-                
+
+        if dropped:
+            log_info(f"  [TAGS DROPPED] {self._title}: " + "; ".join(dropped))
+
         self._tags = final_tags
         return self
 

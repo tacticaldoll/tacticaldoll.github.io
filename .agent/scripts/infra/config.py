@@ -48,3 +48,10 @@ def get_session_dir(session_id):
 # handoff preparer and the post assembler cannot disagree about what an undeclared
 # genre becomes; both log when they fall back to it.
 GENRE_FALLBACK_SCOPE = "Technical Note"
+
+# Tag assembly limits. Named here rather than left inline because both silently
+# discard candidates: TAG_SCAN_LIMIT caps how many harvested candidates are even
+# considered, TAG_CAP caps how many survive into the front matter. The assembler
+# reports what each one drops, and the audit reads these rather than holding a copy.
+TAG_SCAN_LIMIT = 15
+TAG_CAP = 8

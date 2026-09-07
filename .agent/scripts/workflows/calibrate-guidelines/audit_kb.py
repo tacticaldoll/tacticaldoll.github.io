@@ -1,6 +1,8 @@
 import os
 import re
 import ast
+import io
+import contextlib
 import json
 import sys
 import glob
@@ -516,6 +518,66 @@ class KBAuditor:
                                           f"keyword(s) against a loser with "
                                           f"{len(got['hits'][rival])}; an ambiguous "
                                           f"classification would reach the review gate silently")
+
+        # Tag truncation must announce itself. TAG_SCAN_LIMIT and TAG_CAP both discard
+        # candidates, and a post whose curated terms outnumber the cap used to ship with
+        # some of them missing and nothing saying which — the same silence as the genre
+        # fallback and the coerced domain, in the one place where the loss is invisible
+        # because the surviving tags all look deliberate.
+        #
+        # Asserted by assembling a post over the cap and reading what it printed. Both
+        # directions: over the cap must report, under the cap must stay silent, or a
+        # check satisfied by logging unconditionally would prove nothing.
+        try:
+            from domain.post.assembler import PostAssembler as _TagAssembler
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import PostAssembler to verify tag "
+                          f"truncation reporting: {exc}")
+        else:
+            class _TagStub:
+                def __init__(self):
+                    self.body = ""
+                    self.metadata = {}
+
+            tag_lex = Lexicon(self.terminology_path)
+            genre_scope = next((en for en in tag_lex.taxonomy.get("genres", {})
+                                if " " in en), "")
+            tag_base = {"ai_info": {"generation": {"scope": genre_scope}}}
+            genre_values = {v for v in tag_lex.taxonomy.get("genres", {}).values()}
+            ai_values = set(tag_lex.taxonomy.get("ai_taxonomy", {}).get("categories", []))
+            # Real lexicon terms, so anchoring succeeds; none of them a genre or domain
+            # value, which the assembler drops as deduplication rather than as loss.
+            pool = [str(k) for k in tag_lex.mapping
+                    if str(k) not in genre_values and str(k) not in ai_values]
+
+            if len(pool) <= config.TAG_CAP:
+                errors.append(f"[Governance] the lexicon holds too few anchorable terms "
+                              f"({len(pool)}) to exceed TAG_CAP ({config.TAG_CAP}); tag "
+                              f"truncation reporting cannot be verified")
+            else:
+                def assemble_tags(term_count):
+                    buf = io.StringIO()
+                    meta = dict(tag_base, tags=pool[:term_count])
+                    with contextlib.redirect_stdout(buf):
+                        built = _TagAssembler(_TagStub()).with_tags(meta, tag_lex)
+                    return built._tags, buf.getvalue()
+
+                over_tags, over_log = assemble_tags(config.TAG_CAP + 4)
+                if "[TAGS DROPPED]" not in over_log:
+                    errors.append(f"[Governance] assembling {config.TAG_CAP + 4} anchorable "
+                                  f"tags kept only {len(over_tags)} and reported nothing; "
+                                  f"candidates discarded at TAG_SCAN_LIMIT or TAG_CAP must "
+                                  f"be named, or a post silently loses curated terms.")
+                elif len(over_tags) > config.TAG_CAP:
+                    errors.append(f"[Governance] tag assembly emitted {len(over_tags)} tags, "
+                                  f"over TAG_CAP ({config.TAG_CAP})")
+
+                under_tags, under_log = assemble_tags(1)
+                if "[TAGS DROPPED]" in under_log:
+                    errors.append(f"[Governance] tag assembly reported a drop for a post "
+                                  f"with one tag and {len(under_tags)} emitted; an "
+                                  f"unconditional report would make the check above "
+                                  f"meaningless.")
 
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
