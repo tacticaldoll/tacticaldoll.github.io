@@ -84,6 +84,9 @@ class PostAssembler:
         # which is the drift 7f958bf removed from classify_domain itself.
         domain_tag = post_meta.get("domain_tag") or ""
         ai_categories = lexicon.taxonomy.get("ai_taxonomy", {}).get("categories", [])
+        # Read once, so the fallback classification below and the term harvest further
+        # down cannot end up reading different text.
+        body_content = self.post.body if hasattr(self.post, 'body') else ""
 
         if domain_tag not in ai_categories:
             from infra.taxonomy import TaxonomyEngine
@@ -96,7 +99,6 @@ class PostAssembler:
             # which caller reached it. The body is still pre-anchoring at this point
             # (with_tags runs before PostOrchestrator.cleanup), so no injected term
             # vocabulary can vote.
-            body_content = self.post.body if hasattr(self.post, 'body') else ""
             # The evidence, not just the answer. prepare_handoff reports an ambiguous
             # classification while a human still holds the handoff, but this path is
             # reached only when that run wrote no domain_tag at all — so it is the one
@@ -139,7 +141,6 @@ class PostAssembler:
             for h in lexicon.rules.get("de_bilingual_headers", [])
             if h
         }
-        body_content = self.post.body if hasattr(self.post, 'body') else ""
         harvested_tags = []
         sorted_terms = sorted([str(k) for k in lexicon.mapping.keys()], key=len, reverse=True)
         for zh in sorted_terms:
