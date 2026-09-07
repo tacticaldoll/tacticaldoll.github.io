@@ -819,7 +819,13 @@ class KBAuditor:
         # still listed three categories after the file held five. Mentioning a
         # category in prose is fine; supplying a list of them as a default is not.
         # Matched on the parse tree, so splitting the call across lines does not evade it.
-        for py_path in glob.glob(os.path.join(config.SCRIPTS_DIR, "**", "*.py"), recursive=True):
+        #
+        # Walked repo-wide rather than under SCRIPTS_DIR. The commitment binds scripts,
+        # and lexicon-core/scripts sits outside that tree while reading the category
+        # list itself — so a copy planted there was exempt from the guard meant to stop
+        # exactly that. The scope now matches the whitespace gate above, which has no
+        # tree to get wrong.
+        for py_path in self.iter_repo_files(extensions=(".py",)):
             with open(py_path, 'r', encoding='utf-8-sig') as f:
                 py_src = f.read()
             try:
