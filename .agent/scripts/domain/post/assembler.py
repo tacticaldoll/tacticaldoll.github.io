@@ -4,6 +4,8 @@
 import os
 import re
 from datetime import datetime
+from infra import config
+from infra import utils
 
 class PostAssembler:
     """
@@ -55,8 +57,15 @@ class PostAssembler:
     def _get_structure_tag(self, post_meta, anchorer):
         """Resolves the genre/structure tag (tags[0]) from the post's scope via the
         taxonomy genre SSOT (shared TagAnchorer). Returns (display_zh, key)."""
-        scope = post_meta.get("ai_info", {}).get("generation", {}).get("scope") or "Technical Note"
-        return anchorer.genre_tag(scope)
+        scope = post_meta.get("ai_info", {}).get("generation", {}).get("scope")
+        if not scope:
+            # The handoff carries no genre, so this post's genre is a default rather
+            # than a decision. Published either way, but not silently.
+            utils.log_error(f"  [GENRE FALLBACK] Handoff declares no scope for "
+                            f"'{post_meta.get('slug', post_meta.get('title', '?'))}'; "
+                            f"publishing as '{config.GENRE_FALLBACK_SCOPE}'.")
+            scope = config.GENRE_FALLBACK_SCOPE
+        return anchorer.genre_tag(scope, default_scope=config.GENRE_FALLBACK_SCOPE)
 
     def _get_clean_tag(self, tag):
         if not tag: return ""

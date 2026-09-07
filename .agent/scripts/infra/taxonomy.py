@@ -68,15 +68,6 @@ class TaxonomyEngine:
         # Do not force "AI" fallback, which protects pure technical posts (e.g. Linux).
         return None
 
-    def get_genre_mapping(self):
-        """Returns the mapping of slug/English names to Chinese genre names."""
-        return self.data.get("genres", {})
-
-    def resolve_genre(self, raw_genre):
-        """Maps a raw genre name to its standardized Chinese counterpart."""
-        genres = self.get_genre_mapping()
-        return genres.get(raw_genre, raw_genre)
-
     def save(self):
         """Persists the in-memory taxonomy back to taxonomy.json (utf-8, indent 2)."""
         with open(self.taxonomy_path, 'w', encoding='utf-8') as f:

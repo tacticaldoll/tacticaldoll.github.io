@@ -43,3 +43,8 @@ def resolve_path(rel_path):
 def get_session_dir(session_id):
     """Returns the absolute path to a session's scratch directory."""
     return os.path.join(SCRATCH_DIR, session_id)
+
+# Genre published when a report declares no **Structure** header. Lives here so the
+# handoff preparer and the post assembler cannot disagree about what an undeclared
+# genre becomes; both log when they fall back to it.
+GENRE_FALLBACK_SCOPE = "Technical Note"

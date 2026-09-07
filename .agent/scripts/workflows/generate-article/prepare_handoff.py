@@ -187,13 +187,22 @@ class HandoffPreparer:
             }
             
             # Store metadata for this specific report
-            self.report_ai_info[rf] = {"generation": {"scope": "Technical Note", "model": "Unknown", "agent": "Unknown"}}
+            self.report_ai_info[rf] = {"generation": {"scope": config.GENRE_FALLBACK_SCOPE, "model": "Unknown", "agent": "Unknown"}}
             gen_info = self.report_ai_info[rf]["generation"]
             
             for key, pattern in meta_patterns.items():
                 match = pattern.search(content[:1000]) # Only look at start of file
                 if match:
                     gen_info[key] = match.group(1).strip()
+
+            # `scope` becomes the published genre tag. Its default is a real genre, so a
+            # report whose **Structure** line is missing or misspelled ships as a
+            # technical note that reads as a deliberate choice. Say so instead.
+            if gen_info["scope"] == config.GENRE_FALLBACK_SCOPE and not re.search(
+                    r'^[ \t]*\*\*Structure\*\*:', content[:1000], re.MULTILINE):
+                log_error(f"  [GENRE FALLBACK] No **Structure** header in {os.path.basename(rf)}; "
+                          f"publishing as '{config.GENRE_FALLBACK_SCOPE}'. Declare it per "
+                          f"crystallize-report.schema.yaml to pick the genre deliberately.")
 
             # Strip markdown code blocks before processing to prevent false positives
             content_no_code = re.sub(r'```[\s\S]*?```', '', content)

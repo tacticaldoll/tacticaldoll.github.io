@@ -371,6 +371,57 @@ class KBAuditor:
                 errors.append(f"[Governance] {self.rel(gov_path)} states a series naming rule without "
                               f"citing {schema_citation}, which owns the format")
 
+        # Genre is tags[0] on every post, and three places describe the same set:
+        # taxonomy.json's `genres` (the tag SSOT, GUIDE §0), the Structure line the
+        # report template offers an author, and the `structures:` definitions saying
+        # what each genre must contain. They drifted — the schema named 分析論文 and
+        # 技術隨筆 where taxonomy says 分析論述 and 技術筆記, and taxonomy offered a
+        # 案例研究 that no structure defined, so nothing said how to write one.
+        # A genre is only real when all three agree: named consistently, offerable,
+        # and defined.
+        schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
+        # Read the JSON SSOT directly; load_taxonomy() parses taxonomy.md, which is a
+        # read-only view and must never be treated as the source.
+        genres = {}
+        if os.path.exists(config.TAXONOMY_JSON):
+            with open(config.TAXONOMY_JSON, 'r', encoding='utf-8') as f:
+                try:
+                    genres = json.load(f).get("genres", {})
+                except json.JSONDecodeError as exc:
+                    errors.append(f"[Governance] Invalid taxonomy JSON: {exc}")
+        # Spaced keys are the canonical English names; slug variants alias the same value.
+        canonical = {en: zh for en, zh in genres.items() if " " in en}
+        if os.path.exists(schema_path) and canonical:
+            with open(schema_path, 'r', encoding='utf-8') as f:
+                schema_text = f.read()
+
+            # 1. Each `name: "中文 (English)"` must use taxonomy's ZH for that English name.
+            defined = {}
+            for zh, en in re.findall(r'^\s*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
+                defined[en.strip()] = zh.strip()
+                expected = canonical.get(en.strip())
+                if expected and expected != zh.strip():
+                    errors.append(f"[Governance] {self.rel(schema_path)} names genre '{en.strip()}' as "
+                                  f"'{zh.strip()}' but taxonomy.json says '{expected}'")
+
+            # 2. The Structure line must offer exactly the genres taxonomy defines.
+            offered_match = re.search(r'\*\*Structure\*\*:.*?從\s*(.+?)\s*中擇一', schema_text)
+            if offered_match:
+                offered = {g.strip() for g in offered_match.group(1).split("/") if g.strip()}
+                for missing in sorted(set(canonical) - offered):
+                    errors.append(f"[Governance] taxonomy.json defines genre '{missing}' but "
+                                  f"{self.rel(schema_path)} does not offer it in **Structure**")
+                for extra in sorted(offered - set(canonical)):
+                    errors.append(f"[Governance] {self.rel(schema_path)} offers genre '{extra}' in "
+                                  f"**Structure** but taxonomy.json does not define it")
+
+            # 3. An offerable genre needs a structure definition, or an author has no
+            #    guidance on what to write.
+            if defined:
+                for undefined in sorted(set(canonical) - set(defined)):
+                    errors.append(f"[Governance] genre '{undefined}' is offerable but has no "
+                                  f"`structures:` definition in {self.rel(schema_path)}")
+
         return errors
 
     def run(self):

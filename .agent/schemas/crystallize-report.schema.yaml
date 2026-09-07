@@ -58,7 +58,7 @@ structures:
         requirement: "可遷移的實戰洞察與根因分析。從具體經驗中提煉出的普適性軟體工程或架構原理。"
 
   analytical_essay:
-    name: "分析論文 (Analytical Essay)"
+    name: "分析論述 (Analytical Essay)"
     description: "從觀察中推導分析，最後昇華為通用原理（論證與原理導向）"
     sections:
       - title: "導言 (Introduction)"
@@ -73,7 +73,7 @@ structures:
         requirement: "將具體操作昇華為通用化、可遷移的通用原理。不可指向其他報告，需閉合自身因果鏈。"
 
   technical_note:
-    name: "技術隨筆 (Technical Note)"
+    name: "技術筆記 (Technical Note)"
     description: "記錄具體的技術發現或調查診斷過程（問題與方案導向）"
     sections:
       - title: "問題 (Problem)"

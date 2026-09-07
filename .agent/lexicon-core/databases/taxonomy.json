@@ -3,11 +3,9 @@
     "Analytical Essay": "分析論述",
     "Technical Note": "技術筆記",
     "Experience Report": "經驗報告",
-    "Case Study": "案例研究",
     "analytical-essay": "分析論述",
     "technical-note": "技術筆記",
-    "experience-report": "經驗報告",
-    "case-study": "案例研究"
+    "experience-report": "經驗報告"
   },
   "ai_taxonomy": {
     "categories": [
