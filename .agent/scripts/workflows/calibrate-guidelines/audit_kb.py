@@ -115,8 +115,8 @@ class KBAuditor:
 
         return errors
 
-    def audit_governance(self):
-        """Audits governance files for drift that should be physically blocked."""
+    def _check_reference_layer(self):
+        """reference/ is a guidance layer, not a JSON database area."""
         errors = []
         reference_path = os.path.join(config.AGENT_DIR, "reference", "agent-operating-guideline.md")
         knowledge_dir = os.path.join(config.AGENT_DIR, "knowledge")
@@ -132,7 +132,11 @@ class KBAuditor:
             rel_path = self.rel(file_path)
             if rel_path.startswith(os.path.join(".agent", "reference") + os.sep):
                 errors.append(f"[Governance] JSON database entity found in reference layer: {rel_path}")
+        return errors
 
+    def _check_markdown_governance(self):
+        """Governance markdown and schemas must not carry retired paths or projections."""
+        errors = []
         markdown_files = list(self.iter_repo_files(extensions=(".md", ".yaml", ".yml")))
         for file_path in markdown_files:
             rel_path = self.rel(file_path)
@@ -172,7 +176,11 @@ class KBAuditor:
             if rel_path == os.path.join(".agent", "workflows", "distill-knowledge.md"):
                 if "../schemas/" in content or ".agent/" in content:
                     errors.append("[Governance] distill-knowledge workflow is project-coupled despite zero-coupling boundary")
+        return errors
 
+    def _check_workflow_front_matter(self):
+        """Workflow front matter must reference specs and schemas that exist."""
+        errors = []
         # Workflow front matter references must point to existing specs and schemas.
         workflow_dir = os.path.join(config.AGENT_DIR, "workflows")
         for workflow_path in glob.glob(os.path.join(workflow_dir, "*.md")):
@@ -190,7 +198,11 @@ class KBAuditor:
                     schema_path = os.path.normpath(os.path.join(os.path.dirname(workflow_path), schema_ref))
                     if not os.path.exists(schema_path):
                         errors.append(f"[Governance] Missing schema target in {rel_workflow}: {schema_ref}")
+        return errors
 
+    def _check_pipeline_duty_boundaries(self):
+        """publish-article must not reclaim init-handoff's duties, nor AI the script-owned fields."""
+        errors = []
         publish_task = os.path.join(config.AGENT_DIR, "schemas", "publish-article.task.schema.yaml")
         if os.path.exists(publish_task):
             with open(publish_task, 'r', encoding='utf-8') as f:
@@ -230,7 +242,11 @@ class KBAuditor:
                 batch_content = f.read()
             if "prepare_handoff.py" in batch_content:
                 errors.append("[Governance] batch orchestration must not rerun prepare_handoff outside /init-handoff")
+        return errors
 
+    def _check_anchored_whitespace(self):
+        """A broad whitespace class must not follow a line anchor and eat the newline it asserts."""
+        errors = []
         # A broad whitespace class placed immediately after a line anchor eats the
         # newline the anchor exists to assert, so the pattern matches from an earlier
         # line and crosses blank lines it was never meant to reach. Only [ \t] may
@@ -254,7 +270,11 @@ class KBAuditor:
                     errors.append(f"[Governance] Broad whitespace after a line anchor in "
                                   f"{rel_path}:{line_no}; the anchor does not hold when the "
                                   f"class can consume the newline. Use '^[ \\t]*'.")
+        return errors
 
+    def _check_handoff_term_descriptions(self):
+        """Active handoff term descriptions must be complete before publishing."""
+        errors = []
         # Active handoff term descriptions must be completed before publishing.
         for file_path in self.iter_repo_files(extensions=("handoff.terms.json",)):
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -269,7 +289,11 @@ class KBAuditor:
                 if not desc.strip() or any(p in desc for p in ["TODO", "PENDING_REFINEMENT", "PENDING_NLP_DIGESTION"]):
                     zh = term.get("zh", "<unknown>")
                     errors.append(f"[Governance] Incomplete locked term description in {self.rel(file_path)}: {zh}")
+        return errors
 
+    def _check_report_prose_anchors(self):
+        """Report prose must stay anchor-free; anchoring is publish-article's alone."""
+        errors = []
         # Crystallization reports are internal knowledge artifacts, NOT Hugo posts:
         # terminology anchoring is a publish-article responsibility. Report prose in
         # .agent-scratch/ must stay anchor-free. Syntax shown for explanation belongs
@@ -283,7 +307,11 @@ class KBAuditor:
             prose = re.sub(r'`[^`\n]*`', '', prose)                              # inline code spans
             if anchor_marker.search(prose):
                 errors.append(f"[Governance] Terminology anchor in non-post report prose (anchoring is publish-only): {self.rel(file_path)}")
+        return errors
 
+    def _check_series_eligibility(self):
+        """A series-map may declare `series` only where guide*.md makes the session eligible."""
+        errors = []
         # `is_series` has exactly one SSOT: the physical existence of a `guide*.md`
         # in the session directory (init-handoff.task.schema.yaml). A session that
         # produced a single main report legitimately omits the guide, so it is a
@@ -310,7 +338,11 @@ class KBAuditor:
                 errors.append(
                     f"[Governance] series-map declares `series` but session has no guide*.md, "
                     f"so is_series resolves false and the declaration is dropped: {self.rel(map_path)}")
+        return errors
 
+    def _check_provenance_strip(self):
+        """A report's provenance header must never decide its domain, and the strip must be idempotent."""
+        errors = []
         # Provenance headers must never reach domain classification: `**Agent**: ...`
         # matches a detection keyword and is identical across a session's reports, so
         # raw text let generation metadata pick the domain for all of them.
@@ -375,7 +407,11 @@ class KBAuditor:
                             f"— from_source strips the report, classify_domain strips again — so "
                             f"it may only remove those lines when a provenance header block is "
                             f"actually present (infra.utils.opens_provenance_header).")
+        return errors
 
+    def _check_asymmetric_tagging(self):
+        """A post with no AI subject matter must carry no domain tag, and one that classifies must keep it."""
+        errors = []
         # Asymmetric Tagging must survive the call site. classify_domain returns None
         # on purpose so a post with no AI subject matter carries no AI domain tag, and
         # `AI` is itself one of the categories — so a coerced `or "AI"` cancels that
@@ -390,7 +426,7 @@ class KBAuditor:
         # holds no copy of the SSOT.
         try:
             from domain.post.assembler import PostAssembler
-            from infra.taxonomy import TaxonomyEngine as _ProbeEngine
+            from infra.taxonomy import TaxonomyEngine
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import PostAssembler to verify "
                           f"asymmetric tagging: {exc}")
@@ -414,7 +450,7 @@ class KBAuditor:
                 # the only domain-shaped tag it could carry is an invented one. This is
                 # the case classify_domain's Asymmetric Tagging comment names (Linux).
                 neutral = "本文說明掛載點與憑證傳遞，以及 setuid 位元在權限升級路徑上的角色。\n"
-                if _ProbeEngine().classify_domain(neutral) is not None:
+                if TaxonomyEngine().classify_domain(neutral) is not None:
                     errors.append("[Governance] the asymmetric-tagging probe body is no longer "
                                   "keyword-free; it now classifies, so the check below cannot "
                                   "distinguish an invented domain from a real one")
@@ -457,7 +493,7 @@ class KBAuditor:
                     else:
                         cat, kw = probe
                         classified = f"本文討論 {kw} 的作用與邊界。\n"
-                        if _ProbeEngine().classify_domain(classified) != cat:
+                        if TaxonomyEngine().classify_domain(classified) != cat:
                             errors.append(f"[Governance] the domain-survival probe no longer "
                                           f"classifies as '{cat}'; the direction below is vacuous")
                         else:
@@ -500,19 +536,23 @@ class KBAuditor:
                                             f"truncated. prepare_handoff classifies the full report, so "
                                             f"a window at any other caller gives the same post a "
                                             f"different domain.")
+        return errors
 
+    def _check_evidence_agreement(self):
+        """classify_domain and classify_domain_evidence must be one decision, with live flags."""
+        errors = []
         # The evidence view and the answer must stay the same decision. classify_domain
         # delegates to classify_domain_evidence so that a caller surfacing ambiguity is
         # never reporting on a classification other than the one that shipped; two
         # parallel implementations would drift and the report would start describing a
         # domain the post does not have. Asserted over every category's own keyword.
         try:
-            from infra.taxonomy import TaxonomyEngine as _EvEngine
+            from infra.taxonomy import TaxonomyEngine
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import TaxonomyEngine to verify the "
                           f"evidence invariant: {exc}")
         else:
-            ev = _EvEngine()
+            ev = TaxonomyEngine()
             ev_tax = ev.data.get("ai_taxonomy", {})
             ev_cats = ev_tax.get("categories", [])
             ev_det = ev_tax.get("detection_keywords", {})
@@ -603,7 +643,11 @@ class KBAuditor:
                 elif ev.SINGLE_HIT not in got_n["flags"]:
                     errors.append(f"[Governance] a body whose only evidence is '{outer}' did "
                                   f"not raise SINGLE_HIT")
+        return errors
 
+    def _check_knowledge_funnel(self):
+        """GUIDE's funnel must place evaluation before crystallization, and §10.2 must not contradict the workflow."""
+        errors = []
         # The knowledge funnel must place evaluation before crystallization. §7.2 numbers
         # distill-knowledge as the first of three states, but §7's funnel once listed only
         # dialogue, crystallize and consolidate — so nothing in the funnel said that
@@ -669,7 +713,11 @@ class KBAuditor:
                                   "calibrate-guidelines. Two rules pointing one change at "
                                   "opposite processes resolve by whichever an executor "
                                   "reads first.")
+        return errors
 
+    def _check_protected_directories(self):
+        """The ignore file and GUIDE's absolute-protection block must name the same directories."""
+        errors = []
         # The ignore file and the guideline must name the same protected directories.
         # GUIDE defers the operative list to `.antigravityignore` ("被列入
         # .antigravityignore 的目錄") while separately declaring absolute protection for
@@ -718,7 +766,11 @@ class KBAuditor:
                                   f"protected but .antigravityignore does not list them; the "
                                   f"declaration reads as enforced while the mechanism GUIDE "
                                   f"defers to omits the path.")
+        return errors
 
+    def _check_category_priority(self):
+        """Category order decides the domain; a lower-priority category with more keywords must still lose."""
+        errors = []
         # Category order decides the domain and the first hit wins. That is a settled
         # decision rather than an artefact: AI 經濟與社會 precedes AI 代理人 so that a
         # specific reading beats a broad one even on a single keyword, and the posts it
@@ -730,12 +782,12 @@ class KBAuditor:
         # more keywords must still lose. Reading the source cannot carry this — a
         # weighting could be introduced anywhere in the scan without changing its shape.
         try:
-            from infra.taxonomy import TaxonomyEngine as _OrderEngine
+            from infra.taxonomy import TaxonomyEngine
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import TaxonomyEngine to verify category "
                           f"priority: {exc}")
         else:
-            order_engine = _OrderEngine()
+            order_engine = TaxonomyEngine()
             order_tax = order_engine.data.get("ai_taxonomy", {})
             order_cats = order_tax.get("categories", [])
             order_det = order_tax.get("detection_keywords", {})
@@ -773,7 +825,11 @@ class KBAuditor:
                             f"beats a broad one; a weighted or threshold scheme inverts the "
                             f"posts that decision was made for. Surface a close call through "
                             f"classify_domain_evidence's flags instead of re-deciding it.")
+        return errors
 
+    def _check_tag_truncation_reporting(self):
+        """Candidates discarded at TAG_SCAN_LIMIT or TAG_CAP must be named, one by one."""
+        errors = []
         # Tag truncation must announce itself. TAG_SCAN_LIMIT and TAG_CAP both discard
         # candidates, and a post whose curated terms outnumber the cap used to ship with
         # some of them missing and nothing saying which — the same silence as the genre
@@ -892,7 +948,11 @@ class KBAuditor:
                                       f"candidates and named {named} of them; every candidate "
                                       f"dropped at TAG_SCAN_LIMIT or TAG_CAP must be reported "
                                       f"one by one, not summarised with a count.")
+        return errors
 
+    def _check_hardcoded_categories(self):
+        """No script may hold a list constant as the default for the AI category list."""
+        errors = []
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default
@@ -925,7 +985,11 @@ class KBAuditor:
                     errors.append(f"[Governance] Hardcoded AI category list as a default; "
                                   f"taxonomy.json owns the category list and order: "
                                   f"{self.rel(py_path)}:{node.lineno}")
+        return errors
 
+    def _check_series_naming_ssot(self):
+        """Series naming defers to init-handoff.task.schema.yaml, never to a taxonomy domain prefix."""
+        errors = []
         # Series naming has one SSOT: init-handoff.task.schema.yaml's
         # `[核心主題]：[敘事化副標題]`. taxonomy.json owns tag/domain classification and
         # directory naming, never a mandatory series prefix.
@@ -950,7 +1014,11 @@ class KBAuditor:
             if "系列命名" in gov_text and schema_citation not in gov_text:
                 errors.append(f"[Governance] {self.rel(gov_path)} states a series naming rule without "
                               f"citing {schema_citation}, which owns the format")
+        return errors
 
+    def _check_genre_projections(self):
+        """Every projection of the genre set — taxonomy, aliases, offered, defined — must agree."""
+        errors = []
         # Genre is tags[0] on every post, and four projections describe the same set:
         # taxonomy.json's canonical `中文 (English)` genres (the tag SSOT, GUIDE §0) and
         # their slug aliases, the Structure line the report template offers an author,
@@ -1045,7 +1113,45 @@ class KBAuditor:
         for orphan in sorted(set(defined) - set(canonical)):
             errors.append(f"[Governance] {self.rel(schema_path)} defines genre '{orphan}' but "
                           f"taxonomy.json does not list it")
+        return errors
 
+    # Each governance rule is its own check; audit_governance only sequences them.
+    # They were one 933-line method, and that cost two things. A new rule had nowhere
+    # shallow to go, so checks nested to eight levels and every added probe went
+    # deeper still. And an exception anywhere took every later rule with it, returning
+    # a traceback in place of the governance errors the rest exist to produce — which
+    # is now confined to the check that raised, and reported by name.
+    GOVERNANCE_CHECKS = (
+        "_check_reference_layer",
+        "_check_markdown_governance",
+        "_check_workflow_front_matter",
+        "_check_pipeline_duty_boundaries",
+        "_check_anchored_whitespace",
+        "_check_handoff_term_descriptions",
+        "_check_report_prose_anchors",
+        "_check_series_eligibility",
+        "_check_provenance_strip",
+        "_check_asymmetric_tagging",
+        "_check_evidence_agreement",
+        "_check_knowledge_funnel",
+        "_check_protected_directories",
+        "_check_category_priority",
+        "_check_tag_truncation_reporting",
+        "_check_hardcoded_categories",
+        "_check_series_naming_ssot",
+        "_check_genre_projections",
+    )
+
+    def audit_governance(self):
+        """Audits governance files for drift that should be physically blocked."""
+        errors = []
+        for name in self.GOVERNANCE_CHECKS:
+            try:
+                errors.extend(getattr(self, name)())
+            except Exception as exc:
+                errors.append(f"[Governance] check {name} raised "
+                              f"{type(exc).__name__}: {exc}; the rules it carries were "
+                              f"not verified")
         return errors
 
     def run(self):
