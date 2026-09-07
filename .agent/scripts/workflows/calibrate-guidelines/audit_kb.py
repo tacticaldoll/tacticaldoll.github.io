@@ -424,118 +424,130 @@ class KBAuditor:
         # constant, and what matters is only whether a domain can be invented for a
         # post that has none. The categories come from taxonomy.json so this test
         # holds no copy of the SSOT.
+        #
+        # Each precondition below returns rather than nesting what follows inside its
+        # own else. The guards are the same guards and say the same thing — a check
+        # that cannot distinguish a pass from an unverifiable input must report that,
+        # not pass — but as a method this can return, which the one monolithic
+        # audit_governance could not.
         try:
             from domain.post.assembler import PostAssembler
             from infra.taxonomy import TaxonomyEngine
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import PostAssembler to verify "
                           f"asymmetric tagging: {exc}")
+            return errors
+
+        class _StubPost:
+            def __init__(self, body):
+                self.body = body
+                self.metadata = {}
+
+        def _clean(tag):
+            return re.sub(r'\s*[(（].*?[)）]', '', tag or '').strip().lower()
+
+        probe_lex = Lexicon(self.terminology_path)
+        probe_cats = probe_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])
+        if not probe_cats:
+            errors.append("[Governance] taxonomy.json defines no AI categories; "
+                          "asymmetric tagging cannot be verified")
+            return errors
+
+        cat_set = {_clean(c) for c in probe_cats}
+        # A pure-technical body: no detection keyword and no lexicon term, so
+        # the only domain-shaped tag it could carry is an invented one. This is
+        # the case classify_domain's Asymmetric Tagging comment names (Linux).
+        neutral = "本文說明掛載點與憑證傳遞，以及 setuid 位元在權限升級路徑上的角色。\n"
+        if TaxonomyEngine().classify_domain(neutral) is not None:
+            errors.append("[Governance] the asymmetric-tagging probe body is no longer "
+                          "keyword-free; it now classifies, so the check below cannot "
+                          "distinguish an invented domain from a real one")
+            return errors
+
+        # A real genre, drawn from taxonomy.json rather than hardcoded, so the
+        # probe does not trip genre_tag's unrelated fallback alarm.
+        probe_genre = next((en for en in probe_lex.taxonomy.get("genres", {})
+                            if " " in en), "")
+        base = {"ai_info": {"generation": {"scope": probe_genre}}}
+        for label, extra in (("absent", {}),
+                             ("unclassifiable", {"domain_tag": "NotACategory"})):
+            meta = dict(base, **extra)
+            try:
+                tags = PostAssembler(_StubPost(neutral)).with_tags(meta, probe_lex)._tags
+            except Exception as exc:
+                errors.append(f"[Governance] cannot assemble tags to verify asymmetric "
+                              f"tagging ({label} domain_tag): {exc}")
+                continue
+            invented = [zh for zh, _ in tags if _clean(zh) in cat_set]
+            if invented:
+                errors.append(
+                    f"[Governance] a post with no AI subject matter was given the "
+                    f"domain tag {invented!r} ({label} domain_tag). "
+                    f"TaxonomyEngine.classify_domain returns None for it on purpose; "
+                    f"the call site in domain/post/assembler.py must not coerce that "
+                    f"to a category. Note `AI` is itself a category, so using it as "
+                    f"the default also skips classification.")
+
+        # The reverse direction matters as much. A call site that dropped the
+        # domain unconditionally would satisfy the check above while stripping
+        # every post of its category — so a body that does classify must still
+        # carry that category out as a tag. Keyword and category both come from
+        # taxonomy.json.
+        probe = next(((cat, kws[0]) for cat, kws
+                      in probe_lex.taxonomy.get("ai_taxonomy", {})
+                                 .get("detection_keywords", {}).items() if kws), None)
+        if probe is None:
+            errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                          "the domain-survives-assembly direction cannot be verified")
+            return errors
+
+        cat, kw = probe
+        classified = f"本文討論 {kw} 的作用與邊界。\n"
+        if TaxonomyEngine().classify_domain(classified) != cat:
+            errors.append(f"[Governance] the domain-survival probe no longer "
+                          f"classifies as '{cat}'; the direction below is vacuous")
+            return errors
+
+        try:
+            tags = PostAssembler(_StubPost(classified)).with_tags(dict(base), probe_lex)._tags
+        except Exception as exc:
+            errors.append(f"[Governance] cannot assemble tags to verify domain "
+                          f"survival: {exc}")
         else:
-            class _StubPost:
-                def __init__(self, body):
-                    self.body = body
-                    self.metadata = {}
+            if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
+                errors.append(
+                    f"[Governance] a post that classifies as '{cat}' lost its "
+                    f"domain tag during assembly (emitted {[z for z, _ in tags]!r}). "
+                    f"Asymmetric Tagging drops the tag only when "
+                    f"classify_domain returns None, never otherwise.")
 
-            def _clean(tag):
-                return re.sub(r'\s*[(（].*?[)）]', '', tag or '').strip().lower()
+        # And no caller may window the text it classifies. The
+        # authoritative path (prepare_handoff) classifies the full
+        # report; a truncation at the assembly call site classified on
+        # a different basis, so the same post could resolve to
+        # different domains depending on which caller reached it. A
+        # subject stated only in a long post's final paragraph must
+        # still decide its domain.
+        long_body = (neutral * 200) + classified
+        if len(long_body) < 6000:
+            errors.append("[Governance] the windowing probe body is too short "
+                          "to detect a truncation; raise the filler count")
+            return errors
 
-            probe_lex = Lexicon(self.terminology_path)
-            probe_cats = probe_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])
-            if not probe_cats:
-                errors.append("[Governance] taxonomy.json defines no AI categories; "
-                              "asymmetric tagging cannot be verified")
-            else:
-                cat_set = {_clean(c) for c in probe_cats}
-                # A pure-technical body: no detection keyword and no lexicon term, so
-                # the only domain-shaped tag it could carry is an invented one. This is
-                # the case classify_domain's Asymmetric Tagging comment names (Linux).
-                neutral = "本文說明掛載點與憑證傳遞，以及 setuid 位元在權限升級路徑上的角色。\n"
-                if TaxonomyEngine().classify_domain(neutral) is not None:
-                    errors.append("[Governance] the asymmetric-tagging probe body is no longer "
-                                  "keyword-free; it now classifies, so the check below cannot "
-                                  "distinguish an invented domain from a real one")
-                else:
-                    # A real genre, drawn from taxonomy.json rather than hardcoded, so the
-                    # probe does not trip genre_tag's unrelated fallback alarm.
-                    probe_genre = next((en for en in probe_lex.taxonomy.get("genres", {})
-                                        if " " in en), "")
-                    base = {"ai_info": {"generation": {"scope": probe_genre}}}
-                    for label, extra in (("absent", {}),
-                                         ("unclassifiable", {"domain_tag": "NotACategory"})):
-                        meta = dict(base, **extra)
-                        try:
-                            tags = PostAssembler(_StubPost(neutral)).with_tags(meta, probe_lex)._tags
-                        except Exception as exc:
-                            errors.append(f"[Governance] cannot assemble tags to verify asymmetric "
-                                          f"tagging ({label} domain_tag): {exc}")
-                            continue
-                        invented = [zh for zh, _ in tags if _clean(zh) in cat_set]
-                        if invented:
-                            errors.append(
-                                f"[Governance] a post with no AI subject matter was given the "
-                                f"domain tag {invented!r} ({label} domain_tag). "
-                                f"TaxonomyEngine.classify_domain returns None for it on purpose; "
-                                f"the call site in domain/post/assembler.py must not coerce that "
-                                f"to a category. Note `AI` is itself a category, so using it as "
-                                f"the default also skips classification.")
-
-                    # The reverse direction matters as much. A call site that dropped the
-                    # domain unconditionally would satisfy the check above while stripping
-                    # every post of its category — so a body that does classify must still
-                    # carry that category out as a tag. Keyword and category both come from
-                    # taxonomy.json.
-                    probe = next(((cat, kws[0]) for cat, kws
-                                  in probe_lex.taxonomy.get("ai_taxonomy", {})
-                                             .get("detection_keywords", {}).items() if kws), None)
-                    if probe is None:
-                        errors.append("[Governance] taxonomy.json defines no detection keywords; "
-                                      "the domain-survives-assembly direction cannot be verified")
-                    else:
-                        cat, kw = probe
-                        classified = f"本文討論 {kw} 的作用與邊界。\n"
-                        if TaxonomyEngine().classify_domain(classified) != cat:
-                            errors.append(f"[Governance] the domain-survival probe no longer "
-                                          f"classifies as '{cat}'; the direction below is vacuous")
-                        else:
-                            try:
-                                tags = PostAssembler(_StubPost(classified)).with_tags(dict(base), probe_lex)._tags
-                            except Exception as exc:
-                                errors.append(f"[Governance] cannot assemble tags to verify domain "
-                                              f"survival: {exc}")
-                            else:
-                                if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
-                                    errors.append(
-                                        f"[Governance] a post that classifies as '{cat}' lost its "
-                                        f"domain tag during assembly (emitted {[z for z, _ in tags]!r}). "
-                                        f"Asymmetric Tagging drops the tag only when "
-                                        f"classify_domain returns None, never otherwise.")
-
-                            # And no caller may window the text it classifies. The
-                            # authoritative path (prepare_handoff) classifies the full
-                            # report; a truncation at the assembly call site classified on
-                            # a different basis, so the same post could resolve to
-                            # different domains depending on which caller reached it. A
-                            # subject stated only in a long post's final paragraph must
-                            # still decide its domain.
-                            long_body = (neutral * 200) + classified
-                            if len(long_body) < 6000:
-                                errors.append("[Governance] the windowing probe body is too short "
-                                              "to detect a truncation; raise the filler count")
-                            else:
-                                try:
-                                    tags = PostAssembler(_StubPost(long_body)).with_tags(dict(base), probe_lex)._tags
-                                except Exception as exc:
-                                    errors.append(f"[Governance] cannot assemble tags to verify the "
-                                                  f"classification window: {exc}")
-                                else:
-                                    if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
-                                        errors.append(
-                                            f"[Governance] a {len(long_body)}-character post whose only "
-                                            f"'{kw}' occurrence sits in its final paragraph did not "
-                                            f"classify as '{cat}': the classification input is being "
-                                            f"truncated. prepare_handoff classifies the full report, so "
-                                            f"a window at any other caller gives the same post a "
-                                            f"different domain.")
+        try:
+            tags = PostAssembler(_StubPost(long_body)).with_tags(dict(base), probe_lex)._tags
+        except Exception as exc:
+            errors.append(f"[Governance] cannot assemble tags to verify the "
+                          f"classification window: {exc}")
+            return errors
+        if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
+            errors.append(
+                f"[Governance] a {len(long_body)}-character post whose only "
+                f"'{kw}' occurrence sits in its final paragraph did not "
+                f"classify as '{cat}': the classification input is being "
+                f"truncated. prepare_handoff classifies the full report, so "
+                f"a window at any other caller gives the same post a "
+                f"different domain.")
         return errors
 
     def _check_evidence_agreement(self):
@@ -551,98 +563,100 @@ class KBAuditor:
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import TaxonomyEngine to verify the "
                           f"evidence invariant: {exc}")
+            return errors
+
+        ev = TaxonomyEngine()
+        ev_tax = ev.data.get("ai_taxonomy", {})
+        ev_cats = ev_tax.get("categories", [])
+        ev_det = ev_tax.get("detection_keywords", {})
+        probes = ["本文說明掛載點與憑證傳遞。\n"]
+        probes += [f"本文討論 {ev_det[c][0]} 的邊界。\n" for c in ev_cats if ev_det.get(c)]
+        # One keyword from every category. Single-category probes cannot detect a
+        # divergence in iteration order — they resolve to the same answer forwards or
+        # backwards — so the set must include a body where order is the only thing
+        # deciding the winner. This is the probe that catches a reimplementation.
+        every = [ev_det[c][0] for c in ev_cats if ev_det.get(c)]
+        if len(every) > 1:
+            probes.append("本文討論 " + "、".join(every) + " 的邊界。\n")
+        for body in probes:
+            answer = ev.classify_domain(body)
+            evidenced = ev.classify_domain_evidence(body)["domain"]
+            if answer != evidenced:
+                errors.append(f"[Governance] classify_domain and "
+                              f"classify_domain_evidence disagree ({answer!r} vs "
+                              f"{evidenced!r}); the ambiguity report would describe a "
+                              f"different classification than the one that ships")
+                break
+
+        # And the flags must not be dead. A winner resting on one keyword while a
+        # lower-priority category hits several is exactly the case priority order
+        # decides silently, so it is the case that must raise WEAK_WINNER.
+        rival = next((c for c in ev_cats[1:] if len(ev_det.get(c, [])) >= 2), None)
+        winner = next((c for c in ev_cats if ev_det.get(c)), None)
+        if rival is None or winner is None or winner == rival:
+            errors.append("[Governance] taxonomy.json cannot supply a contested probe; "
+                          "the ambiguity flags cannot be verified")
         else:
-            ev = TaxonomyEngine()
-            ev_tax = ev.data.get("ai_taxonomy", {})
-            ev_cats = ev_tax.get("categories", [])
-            ev_det = ev_tax.get("detection_keywords", {})
-            probes = ["本文說明掛載點與憑證傳遞。\n"]
-            probes += [f"本文討論 {ev_det[c][0]} 的邊界。\n" for c in ev_cats if ev_det.get(c)]
-            # One keyword from every category. Single-category probes cannot detect a
-            # divergence in iteration order — they resolve to the same answer forwards or
-            # backwards — so the set must include a body where order is the only thing
-            # deciding the winner. This is the probe that catches a reimplementation.
-            every = [ev_det[c][0] for c in ev_cats if ev_det.get(c)]
-            if len(every) > 1:
-                probes.append("本文討論 " + "、".join(every) + " 的邊界。\n")
-            for body in probes:
-                answer = ev.classify_domain(body)
-                evidenced = ev.classify_domain_evidence(body)["domain"]
-                if answer != evidenced:
-                    errors.append(f"[Governance] classify_domain and "
-                                  f"classify_domain_evidence disagree ({answer!r} vs "
-                                  f"{evidenced!r}); the ambiguity report would describe a "
-                                  f"different classification than the one that ships")
-                    break
-
-            # And the flags must not be dead. A winner resting on one keyword while a
-            # lower-priority category hits several is exactly the case priority order
-            # decides silently, so it is the case that must raise WEAK_WINNER.
-            rival = next((c for c in ev_cats[1:] if len(ev_det.get(c, [])) >= 2), None)
-            winner = next((c for c in ev_cats if ev_det.get(c)), None)
-            if rival is None or winner is None or winner == rival:
-                errors.append("[Governance] taxonomy.json cannot supply a contested probe; "
-                              "the ambiguity flags cannot be verified")
+            contested = (f"本文討論 {ev_det[winner][0]}，以及 "
+                         f"{ev_det[rival][0]}、{ev_det[rival][1]} 的邊界。\n")
+            got = ev.classify_domain_evidence(contested)
+            if got["domain"] != winner or len(got["hits"]) < 2:
+                errors.append(f"[Governance] the contested probe did not come out "
+                              f"contested (domain {got['domain']!r}, "
+                              f"{len(got['hits'])} category hit(s)); the ambiguity "
+                              f"flags cannot be verified")
             else:
-                contested = (f"本文討論 {ev_det[winner][0]}，以及 "
-                             f"{ev_det[rival][0]}、{ev_det[rival][1]} 的邊界。\n")
-                got = ev.classify_domain_evidence(contested)
-                if got["domain"] != winner or len(got["hits"]) < 2:
-                    errors.append(f"[Governance] the contested probe did not come out "
-                                  f"contested (domain {got['domain']!r}, "
-                                  f"{len(got['hits'])} category hit(s)); the ambiguity "
-                                  f"flags cannot be verified")
-                else:
-                    for flag in (ev.CONTESTED, ev.WEAK_WINNER):
-                        if flag not in got["flags"]:
-                            errors.append(f"[Governance] classify_domain_evidence did not raise "
-                                          f"{flag} for a winner with {len(got['hits'][winner])} "
-                                          f"keyword(s) against a loser with "
-                                          f"{len(got['hits'][rival])}; an ambiguous "
-                                          f"classification would reach the review gate silently")
+                for flag in (ev.CONTESTED, ev.WEAK_WINNER):
+                    if flag not in got["flags"]:
+                        errors.append(f"[Governance] classify_domain_evidence did not raise "
+                                      f"{flag} for a winner with {len(got['hits'][winner])} "
+                                      f"keyword(s) against a loser with "
+                                      f"{len(got['hits'][rival])}; an ambiguous "
+                                      f"classification would reach the review gate silently")
 
-            # SINGLE_HIT was the one flag never asserted, and the one most easily made
-            # vacuous: evidence was counted per keyword, so a single stretch of text
-            # matched by both `注意力` and `自我注意力` counted as two and the flag stayed
-            # silent on a classification resting on one phrase. Two shapes are probed,
-            # and the nested pair is found in taxonomy rather than named here.
-            solo_cat = next((c for c in ev_cats if ev_det.get(c)), None)
-            if solo_cat is None:
-                errors.append("[Governance] taxonomy.json defines no detection keywords; "
-                              "SINGLE_HIT cannot be verified")
-            else:
-                solo = ev.classify_domain_evidence(f"本文討論 {ev_det[solo_cat][0]} 的邊界。\n")
-                if solo["domain"] != solo_cat or len(solo["hits"].get(solo_cat, [])) != 1:
-                    errors.append(f"[Governance] the SINGLE_HIT probe did not resolve to one "
-                                  f"hit on '{solo_cat}'; the flag cannot be verified")
-                elif ev.SINGLE_HIT not in solo["flags"]:
-                    errors.append("[Governance] classify_domain_evidence did not raise "
-                                  "SINGLE_HIT for a winner resting on one keyword; a "
-                                  "classification with no other evidence would reach the "
-                                  "review gate looking corroborated")
+        # SINGLE_HIT was the one flag never asserted, and the one most easily made
+        # vacuous: evidence was counted per keyword, so a single stretch of text
+        # matched by both `注意力` and `自我注意力` counted as two and the flag stayed
+        # silent on a classification resting on one phrase. Two shapes are probed,
+        # and the nested pair is found in taxonomy rather than named here.
+        solo_cat = next((c for c in ev_cats if ev_det.get(c)), None)
+        if solo_cat is None:
+            errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                          "SINGLE_HIT cannot be verified")
+        else:
+            solo = ev.classify_domain_evidence(f"本文討論 {ev_det[solo_cat][0]} 的邊界。\n")
+            if solo["domain"] != solo_cat or len(solo["hits"].get(solo_cat, [])) != 1:
+                errors.append(f"[Governance] the SINGLE_HIT probe did not resolve to one "
+                              f"hit on '{solo_cat}'; the flag cannot be verified")
+            elif ev.SINGLE_HIT not in solo["flags"]:
+                errors.append("[Governance] classify_domain_evidence did not raise "
+                              "SINGLE_HIT for a winner resting on one keyword; a "
+                              "classification with no other evidence would reach the "
+                              "review gate looking corroborated")
 
-            nested = next(((c, outer, inner)
-                           for c, kws in ev_det.items()
-                           for outer in kws for inner in kws
-                           if inner != outer and inner.lower() in outer.lower()), None)
-            if nested:
-                cat_n, outer, inner = nested
-                got_n = ev.classify_domain_evidence(f"本文討論{outer}的邊界。\n")
-                if len(got_n["hits"].get(cat_n, [])) != 1:
-                    errors.append(
-                        f"[Governance] '{outer}' counted as "
-                        f"{len(got_n['hits'].get(cat_n, []))} pieces of evidence because "
-                        f"'{inner}' is a keyword inside it. One stretch of text is one "
-                        f"occurrence; a match contained in a longer one is the same text "
-                        f"read less specifically. Inflating the count is what silences "
-                        f"SINGLE_HIT and skews the WEAK_WINNER comparison.")
-                elif got_n["domain"] != cat_n:
-                    errors.append(f"[Governance] the nested-keyword probe resolved to "
-                                  f"'{got_n['domain']}' rather than '{cat_n}'; SINGLE_HIT "
-                                  f"cannot be read off it")
-                elif ev.SINGLE_HIT not in got_n["flags"]:
-                    errors.append(f"[Governance] a body whose only evidence is '{outer}' did "
-                                  f"not raise SINGLE_HIT")
+        nested = next(((c, outer, inner)
+                       for c, kws in ev_det.items()
+                       for outer in kws for inner in kws
+                       if inner != outer and inner.lower() in outer.lower()), None)
+        if nested is None:
+            return errors
+        cat_n, outer, inner = nested
+        got_n = ev.classify_domain_evidence(f"本文討論{outer}的邊界。\n")
+        if len(got_n["hits"].get(cat_n, [])) != 1:
+            errors.append(
+                f"[Governance] '{outer}' counted as "
+                f"{len(got_n['hits'].get(cat_n, []))} pieces of evidence because "
+                f"'{inner}' is a keyword inside it. One stretch of text is one "
+                f"occurrence; a match contained in a longer one is the same text "
+                f"read less specifically. Inflating the count is what silences "
+                f"SINGLE_HIT and skews the WEAK_WINNER comparison.")
+        elif got_n["domain"] != cat_n:
+            errors.append(f"[Governance] the nested-keyword probe resolved to "
+                          f"'{got_n['domain']}' rather than '{cat_n}'; SINGLE_HIT "
+                          f"cannot be read off it")
+        elif ev.SINGLE_HIT not in got_n["flags"]:
+            errors.append(f"[Governance] a body whose only evidence is '{outer}' did "
+                          f"not raise SINGLE_HIT")
         return errors
 
     def _check_knowledge_funnel(self):
@@ -840,114 +854,113 @@ class KBAuditor:
         # directions: over the cap must report, under the cap must stay silent, or a
         # check satisfied by logging unconditionally would prove nothing.
         try:
-            from domain.post.assembler import PostAssembler as _TagAssembler
+            from domain.post.assembler import PostAssembler
         except ImportError as exc:
             errors.append(f"[Governance] Cannot import PostAssembler to verify tag "
                           f"truncation reporting: {exc}")
-        else:
-            class _TagStub:
-                def __init__(self):
-                    self.body = ""
-                    self.metadata = {}
+            return errors
 
-            tag_lex = Lexicon(self.terminology_path)
-            genre_scope = next((en for en in tag_lex.taxonomy.get("genres", {})
-                                if " " in en), "")
-            tag_base = {"ai_info": {"generation": {"scope": genre_scope}}}
-            genre_values = {v for v in tag_lex.taxonomy.get("genres", {}).values()}
-            # Categories are stored as `中文 (English)` while lexicon keys are the bare
-            # Chinese, so comparing the two shapes excluded nothing: AI 經濟與社會 is a
-            # category and also a lexicon term, and it was reaching the pool. Harmless
-            # only because the probe body classifies to None and no domain tag is there
-            # to dedupe against — the precondition this set exists to establish was
-            # simply not established. Compared on the bare form now.
-            ai_values = {re.sub(r'\s*[(（].*?[)）]', '', c).strip()
-                         for c in tag_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])}
-            # Real lexicon terms, so anchoring succeeds; none of them a genre or domain
-            # value, which the assembler drops as deduplication rather than as loss.
-            pool = [str(k) for k in tag_lex.mapping
-                    if str(k) not in genre_values and str(k) not in ai_values]
+        class _TagStub:
+            def __init__(self):
+                self.body = ""
+                self.metadata = {}
 
-            if len(pool) <= config.TAG_CAP:
-                errors.append(f"[Governance] the lexicon holds too few anchorable terms "
-                              f"({len(pool)}) to exceed TAG_CAP ({config.TAG_CAP}); tag "
-                              f"truncation reporting cannot be verified")
-            else:
-                def assemble_tags(term_count):
-                    """Returns (tags, captured output, error message or None)."""
-                    buf = io.StringIO()
-                    meta = dict(tag_base, tags=pool[:term_count])
-                    # Both streams, because the assertion below must test whether the
-                    # loss is reported at all and not which stream carries it. Every
-                    # sibling loss in the pipeline is raised to stderr (the genre
-                    # fallback in tag_anchor and prepare_handoff), so a truncation
-                    # report correctly moved there would read here as no report at
-                    # all — and this check would pin in place the under-reporting it
-                    # exists to catch.
-                    # Reported, not raised, as at every sibling probe in this method.
-                    # with_tags raises on a tag whose English form yields an empty key,
-                    # and this block sits ahead of the category-default scan, the
-                    # series-naming guard and the four-way genre reconciliation — all in
-                    # this same method. An escaping exception would abort them and hand
-                    # back a traceback in place of the governance errors they exist to
-                    # produce, so one bad lexicon entry would quietly disable the rest of
-                    # the gate.
-                    try:
-                        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-                            built = _TagAssembler(_TagStub()).with_tags(meta, tag_lex)
-                    except Exception as exc:
-                        return [], buf.getvalue(), str(exc)
-                    return built._tags, buf.getvalue(), None
+        tag_lex = Lexicon(self.terminology_path)
+        genre_scope = next((en for en in tag_lex.taxonomy.get("genres", {})
+                            if " " in en), "")
+        tag_base = {"ai_info": {"generation": {"scope": genre_scope}}}
+        genre_values = {v for v in tag_lex.taxonomy.get("genres", {}).values()}
+        # Categories are stored as `中文 (English)` while lexicon keys are the bare
+        # Chinese, so comparing the two shapes excluded nothing: AI 經濟與社會 is a
+        # category and also a lexicon term, and it was reaching the pool. Harmless
+        # only because the probe body classifies to None and no domain tag is there
+        # to dedupe against — the precondition this set exists to establish was
+        # simply not established. Compared on the bare form now.
+        ai_values = {re.sub(r'\s*[(（].*?[)）]', '', c).strip()
+                     for c in tag_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])}
+        # Real lexicon terms, so anchoring succeeds; none of them a genre or domain
+        # value, which the assembler drops as deduplication rather than as loss.
+        pool = [str(k) for k in tag_lex.mapping
+                if str(k) not in genre_values and str(k) not in ai_values]
 
-                over_tags, over_log, over_err = assemble_tags(config.TAG_CAP + 4)
-                under_tags, under_log, under_err = assemble_tags(1)
-                probe_err = over_err or under_err
-                if probe_err:
-                    errors.append(f"[Governance] cannot assemble tags to verify tag "
-                                  f"truncation reporting: {probe_err}")
-                elif "[TAGS DROPPED]" not in over_log:
-                    errors.append(f"[Governance] assembling {config.TAG_CAP + 4} anchorable "
-                                  f"tags kept only {len(over_tags)} and reported nothing; "
-                                  f"candidates discarded at TAG_SCAN_LIMIT or TAG_CAP must "
-                                  f"be named, or a post silently loses curated terms.")
-                elif len(over_tags) > config.TAG_CAP:
-                    errors.append(f"[Governance] tag assembly emitted {len(over_tags)} tags, "
-                                  f"over TAG_CAP ({config.TAG_CAP})")
+        if len(pool) <= config.TAG_CAP:
+            errors.append(f"[Governance] the lexicon holds too few anchorable terms "
+                          f"({len(pool)}) to exceed TAG_CAP ({config.TAG_CAP}); tag "
+                          f"truncation reporting cannot be verified")
+            return errors
 
-                if not probe_err and "[TAGS DROPPED]" in under_log:
-                    errors.append(f"[Governance] tag assembly reported a drop for a post "
-                                  f"with one tag and {len(under_tags)} emitted; an "
-                                  f"unconditional report would make the check above "
-                                  f"meaningless.")
+        def assemble_tags(term_count):
+            """Returns (tags, captured output, error message or None)."""
+            buf = io.StringIO()
+            meta = dict(tag_base, tags=pool[:term_count])
+            # Both streams, because the assertion below must test whether the loss is
+            # reported at all and not which stream carries it. Every sibling loss in
+            # the pipeline is raised to stderr (the genre fallback in tag_anchor and
+            # prepare_handoff), so a truncation report correctly moved there would
+            # read here as no report at all — and this check would pin in place the
+            # under-reporting it exists to catch.
+            #
+            # Reported, not raised, as at every sibling probe. with_tags raises on a
+            # tag whose English form yields an empty key, and a check that lets that
+            # escape reports a traceback in place of a governance error. The driver in
+            # audit_governance would now confine it to this check, but naming the
+            # cause here is what makes the failure actionable.
+            try:
+                with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                    built = PostAssembler(_TagStub()).with_tags(meta, tag_lex)
+            except Exception as exc:
+                return [], buf.getvalue(), str(exc)
+            return built._tags, buf.getvalue(), None
 
-                # And each discarded candidate must be named, not summarised. The
-                # report once listed five and closed with an ellipsis, so a post over
-                # the cap by more than five lost curated terms that nothing anywhere
-                # identified — the same silence this reporting exists to break, moved
-                # past the fifth name. Sized to overflow that former limit, and the
-                # overflow is confirmed before the naming is asserted so the check
-                # cannot pass by being vacuous.
-                span = config.TAG_CAP + 6
-                if len(pool) < span:
-                    errors.append(f"[Governance] the lexicon holds too few anchorable terms "
-                                  f"({len(pool)}) to overflow the tag cap by more than five; "
-                                  f"per-candidate naming cannot be verified")
-                else:
-                    many_tags, many_log, many_err = assemble_tags(span)
-                    discarded = span - max(len(many_tags) - 1, 0)
-                    named = sum(1 for t in pool[:span] if t in many_log)
-                    if many_err:
-                        errors.append(f"[Governance] cannot assemble tags to verify "
-                                      f"per-candidate naming: {many_err}")
-                    elif discarded <= 5:
-                        errors.append(f"[Governance] the per-candidate naming probe discarded "
-                                      f"only {discarded} candidate(s); it cannot distinguish "
-                                      f"full naming from a list truncated at five")
-                    elif named <= 5:
-                        errors.append(f"[Governance] tag assembly discarded {discarded} "
-                                      f"candidates and named {named} of them; every candidate "
-                                      f"dropped at TAG_SCAN_LIMIT or TAG_CAP must be reported "
-                                      f"one by one, not summarised with a count.")
+        over_tags, over_log, over_err = assemble_tags(config.TAG_CAP + 4)
+        under_tags, under_log, under_err = assemble_tags(1)
+        probe_err = over_err or under_err
+        if probe_err:
+            errors.append(f"[Governance] cannot assemble tags to verify tag "
+                          f"truncation reporting: {probe_err}")
+        elif "[TAGS DROPPED]" not in over_log:
+            errors.append(f"[Governance] assembling {config.TAG_CAP + 4} anchorable "
+                          f"tags kept only {len(over_tags)} and reported nothing; "
+                          f"candidates discarded at TAG_SCAN_LIMIT or TAG_CAP must "
+                          f"be named, or a post silently loses curated terms.")
+        elif len(over_tags) > config.TAG_CAP:
+            errors.append(f"[Governance] tag assembly emitted {len(over_tags)} tags, "
+                          f"over TAG_CAP ({config.TAG_CAP})")
+
+        if not probe_err and "[TAGS DROPPED]" in under_log:
+            errors.append(f"[Governance] tag assembly reported a drop for a post "
+                          f"with one tag and {len(under_tags)} emitted; an "
+                          f"unconditional report would make the check above "
+                          f"meaningless.")
+
+        # And each discarded candidate must be named, not summarised. The report once
+        # listed five and closed with an ellipsis, so a post over the cap by more than
+        # five lost curated terms that nothing anywhere identified — the same silence
+        # this reporting exists to break, moved past the fifth name. Sized to overflow
+        # that former limit, and the overflow is confirmed before the naming is
+        # asserted so the check cannot pass by being vacuous.
+        span = config.TAG_CAP + 6
+        if len(pool) < span:
+            errors.append(f"[Governance] the lexicon holds too few anchorable terms "
+                          f"({len(pool)}) to overflow the tag cap by more than five; "
+                          f"per-candidate naming cannot be verified")
+            return errors
+
+        many_tags, many_log, many_err = assemble_tags(span)
+        discarded = span - max(len(many_tags) - 1, 0)
+        named = sum(1 for t in pool[:span] if t in many_log)
+        if many_err:
+            errors.append(f"[Governance] cannot assemble tags to verify "
+                          f"per-candidate naming: {many_err}")
+        elif discarded <= 5:
+            errors.append(f"[Governance] the per-candidate naming probe discarded "
+                          f"only {discarded} candidate(s); it cannot distinguish "
+                          f"full naming from a list truncated at five")
+        elif named <= 5:
+            errors.append(f"[Governance] tag assembly discarded {discarded} "
+                          f"candidates and named {named} of them; every candidate "
+                          f"dropped at TAG_SCAN_LIMIT or TAG_CAP must be reported "
+                          f"one by one, not summarised with a count.")
         return errors
 
     def _check_hardcoded_categories(self):
