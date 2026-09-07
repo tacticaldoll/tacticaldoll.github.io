@@ -25,7 +25,9 @@ class KBAuditor:
         self.taxonomy_path = config.TAXONOMY_MD
         self.content_dir = config.POSTS_DIR
         self.lexicon = Lexicon(self.terminology_path)
-        self.valid_headers, self.taxonomy_tags = self.load_taxonomy()
+        # load_taxonomy also returns a tag-slug set that nothing has ever read; only
+        # the header vocabulary is consumed, by audit_posts.
+        self.valid_headers, _ = self.load_taxonomy()
 
     def iter_repo_files(self, extensions=None):
         """Yields project files for governance scans."""
