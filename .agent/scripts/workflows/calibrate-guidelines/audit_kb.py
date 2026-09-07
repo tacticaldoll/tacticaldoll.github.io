@@ -457,6 +457,66 @@ class KBAuditor:
                                             f"a window at any other caller gives the same post a "
                                             f"different domain.")
 
+        # The evidence view and the answer must stay the same decision. classify_domain
+        # delegates to classify_domain_evidence so that a caller surfacing ambiguity is
+        # never reporting on a classification other than the one that shipped; two
+        # parallel implementations would drift and the report would start describing a
+        # domain the post does not have. Asserted over every category's own keyword.
+        try:
+            from infra.taxonomy import TaxonomyEngine as _EvEngine
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify the "
+                          f"evidence invariant: {exc}")
+        else:
+            ev = _EvEngine()
+            ev_tax = ev.data.get("ai_taxonomy", {})
+            ev_cats = ev_tax.get("categories", [])
+            ev_det = ev_tax.get("detection_keywords", {})
+            probes = ["本文說明掛載點與憑證傳遞。\n"]
+            probes += [f"本文討論 {ev_det[c][0]} 的邊界。\n" for c in ev_cats if ev_det.get(c)]
+            # One keyword from every category. Single-category probes cannot detect a
+            # divergence in iteration order — they resolve to the same answer forwards or
+            # backwards — so the set must include a body where order is the only thing
+            # deciding the winner. This is the probe that catches a reimplementation.
+            every = [ev_det[c][0] for c in ev_cats if ev_det.get(c)]
+            if len(every) > 1:
+                probes.append("本文討論 " + "、".join(every) + " 的邊界。\n")
+            for body in probes:
+                answer = ev.classify_domain(body)
+                evidenced = ev.classify_domain_evidence(body)["domain"]
+                if answer != evidenced:
+                    errors.append(f"[Governance] classify_domain and "
+                                  f"classify_domain_evidence disagree ({answer!r} vs "
+                                  f"{evidenced!r}); the ambiguity report would describe a "
+                                  f"different classification than the one that ships")
+                    break
+
+            # And the flags must not be dead. A winner resting on one keyword while a
+            # lower-priority category hits several is exactly the case priority order
+            # decides silently, so it is the case that must raise WEAK_WINNER.
+            rival = next((c for c in ev_cats[1:] if len(ev_det.get(c, [])) >= 2), None)
+            winner = next((c for c in ev_cats if ev_det.get(c)), None)
+            if rival is None or winner is None or winner == rival:
+                errors.append("[Governance] taxonomy.json cannot supply a contested probe; "
+                              "the ambiguity flags cannot be verified")
+            else:
+                contested = (f"本文討論 {ev_det[winner][0]}，以及 "
+                             f"{ev_det[rival][0]}、{ev_det[rival][1]} 的邊界。\n")
+                got = ev.classify_domain_evidence(contested)
+                if got["domain"] != winner or len(got["hits"]) < 2:
+                    errors.append(f"[Governance] the contested probe did not come out "
+                                  f"contested (domain {got['domain']!r}, "
+                                  f"{len(got['hits'])} category hit(s)); the ambiguity "
+                                  f"flags cannot be verified")
+                else:
+                    for flag in (ev.CONTESTED, ev.WEAK_WINNER):
+                        if flag not in got["flags"]:
+                            errors.append(f"[Governance] classify_domain_evidence did not raise "
+                                          f"{flag} for a winner with {len(got['hits'][winner])} "
+                                          f"keyword(s) against a loser with "
+                                          f"{len(got['hits'][rival])}; an ambiguous "
+                                          f"classification would reach the review gate silently")
+
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default

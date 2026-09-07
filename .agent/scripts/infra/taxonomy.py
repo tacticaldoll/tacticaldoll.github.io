@@ -47,6 +47,29 @@ class TaxonomyEngine:
         reports and 36 post bodies — no classification differs between one strip
         and two.
         """
+        return self.classify_domain_evidence(content)["domain"]
+
+    # Flags on an evidenced classification. Not verdicts — the answer is already
+    # correct — but reasons a human might want to look.
+    CONTESTED = "CONTESTED"
+    WEAK_WINNER = "WEAK_WINNER"
+    SINGLE_HIT = "SINGLE_HIT"
+
+    def classify_domain_evidence(self, content):
+        """Returns classify_domain's answer together with the evidence behind it.
+
+        Categories are priority-ordered and the first hit wins. That is deliberate:
+        a specific reading should beat a broad one even on a single keyword, which
+        is why AI 經濟與社會 precedes AI 代理人. The cost is that the decision is
+        silent — a post can hit four categories, or win on one late keyword against
+        a rival's four early ones, and nothing says so.
+
+        This reports that without changing it. classify_domain delegates here, so
+        the evidence and the answer cannot drift apart.
+
+        Flags: CONTESTED (more than one category hit), WEAK_WINNER (the winner has
+        fewer hits than some loser), SINGLE_HIT (the winner rests on one keyword).
+        """
         content = strip_report_provenance(content)
         ai_tax = self.data.get("ai_taxonomy", {})
         # No hardcoded fallback: taxonomy.json is the category SSOT, and a copy here
@@ -55,18 +78,36 @@ class TaxonomyEngine:
         # are no keywords either, so classification correctly yields None.
         categories = ai_tax.get("categories", [])
         detection = ai_tax.get("detection_keywords", {})
-        
+
         content_lower = content.lower()
-        
-        # Priority 1: Check specifically defined categories in order (Deep -> Shallow)
+
+        hits = {}
         for category in categories:
-            keywords = detection.get(category, [])
-            if any(kw.lower() in content_lower for kw in keywords):
-                return category
-                
-        # Asymmetric Tagging: Return None if no AI keywords are matched.
-        # Do not force "AI" fallback, which protects pure technical posts (e.g. Linux).
-        return None
+            found = []
+            for kw in detection.get(category, []):
+                pos = content_lower.find(kw.lower())
+                if pos >= 0:
+                    found.append({"keyword": kw, "position": pos})
+            if found:
+                found.sort(key=lambda h: h["position"])
+                hits[category] = found
+
+        # Priority 1: specifically defined categories in order (Deep -> Shallow).
+        # Asymmetric Tagging: None when nothing matched. Do not force an "AI"
+        # fallback, which protects pure technical posts (e.g. Linux).
+        winner = next((c for c in categories if c in hits), None)
+
+        flags = []
+        if winner is not None:
+            if len(hits) > 1:
+                flags.append(self.CONTESTED)
+                strongest_rival = max(len(v) for c, v in hits.items() if c != winner)
+                if len(hits[winner]) < strongest_rival:
+                    flags.append(self.WEAK_WINNER)
+            if len(hits[winner]) == 1:
+                flags.append(self.SINGLE_HIT)
+
+        return {"domain": winner, "hits": hits, "flags": flags}
 
     def save(self):
         """Persists the in-memory taxonomy back to taxonomy.json (utf-8, indent 2)."""

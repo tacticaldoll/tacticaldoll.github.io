@@ -357,12 +357,43 @@ class HandoffPreparer:
             log_info(f"  [METADATA HARVEST] {len(harvested)} curated term(s) from "
                      f"series-map/guide: {', '.join(harvested)}")
 
-    def _detect_domain(self, content):
+    def _detect_domain(self, content, report_name=None):
         """Delegates domain detection to the centralized TaxonomyEngine, which strips
         the report's provenance header before classifying. The caller still reads the
         unstripped head for `**Tags**:` / `**Description**:` — authored metadata, not
-        provenance."""
-        return self.tax_engine.classify_domain(content)
+        provenance.
+
+        Reports an ambiguous classification here, for the same reason the genre
+        fallback is reported here: this runs before the review gate where a human
+        hands the handoff back and the report can still be corrected, whereas the
+        publish pipeline runs past it. The domain is still the engine's to decide —
+        nothing below changes the answer, and AI does not write domain_tag."""
+        result = self.tax_engine.classify_domain_evidence(content)
+        winner, hits, flags = result["domain"], result["hits"], result["flags"]
+
+        if winner and flags:
+            name = report_name or "report"
+            clean = lambda c: re.sub(r'\s*[(（].*?[)）]', '', c).strip()
+            def summarize(category):
+                found = hits[category]
+                shown = ", ".join(f"{h['keyword']}@{h['position']}" for h in found[:3])
+                more = f" +{len(found) - 3}" if len(found) > 3 else ""
+                return f"{clean(category)} ({len(found)}: {shown}{more})"
+
+            rivals = [summarize(c) for c in hits if c != winner]
+            detail = (f"  [DOMAIN AMBIGUITY] {name}: {summarize(winner)} wins on category "
+                      f"priority" + (f"; also hits {'; '.join(rivals)}" if rivals else "") +
+                      f". Flags: {', '.join(flags)}.")
+            # WEAK_WINNER is the only flag where the evidence favours a category that
+            # lost, so it is the only one worth interrupting a review for. The rest is
+            # context: priority order is meant to let a specific reading win.
+            if self.tax_engine.WEAK_WINNER in flags:
+                log_error(detail + " Confirm the domain, or correct the report or "
+                                   "taxonomy.json keywords.")
+            else:
+                log_info(detail)
+
+        return winner
 
     def _sanitize_text(self, text):
         """Replaces forbidden terms in text using the lexicon engine."""
@@ -491,7 +522,8 @@ class HandoffPreparer:
             try:
                 with open(selected_report, 'r', encoding='utf-8') as f:
                     report_content = f.read()
-                    detected_domain = self._detect_domain(report_content)
+                    detected_domain = self._detect_domain(
+                        report_content, os.path.basename(selected_report))
                     if detected_domain:
                         domain_tag = detected_domain
                     
