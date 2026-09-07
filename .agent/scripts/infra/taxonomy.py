@@ -42,10 +42,12 @@ class TaxonomyEngine:
         meant every present and future caller had to remember; doing it here makes
         passing raw text harmless instead of policing it.
 
-        Stripping already-clean prose is safe for this method's contract: it only
-        drops a leading H1 or rule, which carry no keywords. Verified over the 141
-        reports and 36 post bodies — no classification differs between one strip
-        and two.
+        Stripping already-clean prose is a no-op, which is what makes handing raw
+        text here harmless. It is a no-op because the strip removes those lines only
+        when a provenance header block is actually present: a leading H1 is otherwise
+        the document's own title and a bold pair is otherwise prose, and both carry
+        keywords — the title of a report on boundary governance contains 治理, which
+        decides a domain. `audit_kb.py` probes both shapes.
         """
         return self.classify_domain_evidence(content)["domain"]
 

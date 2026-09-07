@@ -97,6 +97,28 @@ def load_json(path):
         log_error(f"Failed to load JSON from {path}: {e}")
         return None
 
+# Bold keys the report template writes into its provenance header. Restricted to
+# those: a prose body can open with a bold pair of its own, and `**Session**` /
+# `**Reports**` / `**Series**` belong to guides and series-maps, which are not
+# reports and must not be mistaken for one.
+_PROVENANCE_KEYS = ("Structure", "Date", "Model", "Agent", "Source", "Tags", "Description")
+
+_PROVENANCE_MARKER_RE = re.compile(r'^[ \t]*<!--[ \t]*front matter[ \t]*-->', re.M | re.I)
+_PROVENANCE_PAIR_RE = re.compile(
+    r'^[ \t]*\*\*(?:%s)\*\*[ \t]*:' % "|".join(_PROVENANCE_KEYS), re.M)
+
+
+def opens_provenance_header(text):
+    """True when `text` opens with a crystallized report's provenance header block.
+
+    The signature is the front-matter marker, or one of the keys the report template
+    writes, within the head of the document. Shape alone is not enough: `**前提**: ...`
+    is a bold pair too, and it is prose.
+    """
+    head = text[:800]
+    return bool(_PROVENANCE_MARKER_RE.search(head) or _PROVENANCE_PAIR_RE.search(head))
+
+
 def strip_report_provenance(source_text):
     """Strips a crystallized report's provenance header, leaving only the prose body.
 
@@ -111,11 +133,23 @@ def strip_report_provenance(source_text):
     text lets provenance metadata decide the article's domain. Callers that classify
     or scan report prose consume this function; `HugoPost.from_source` uses it to
     build the published body, keeping both paths on one definition.
+
+    Idempotent, and it has to be: `from_source` strips a report to build the body and
+    `classify_domain` strips again whatever it is handed, so a clean body passes
+    through a second time. Every line this removes is provenance only in the context
+    of a header block — a leading H1 is otherwise the document's title, a bold pair is
+    otherwise prose, a rule is otherwise a section break — so the whole strip is
+    conditional on that block being present. Without the guard the second pass ate the
+    body's own first line, and those lines carry detection keywords: the title of a
+    report on boundary governance contains 治理, which decides a domain.
     """
     if not source_text:
         return ""
-    # Strip YAML front matter if it exists at the absolute top
+    # YAML front matter is machine metadata in any document, never prose, so it goes
+    # before the question of whether a provenance header follows is even asked.
     content = re.sub(r'^---\s*\n.*?\n---\s*\n', '', source_text, flags=re.DOTALL)
+    if not opens_provenance_header(content):
+        return content.strip()
     # Strip the very first H1 if it exists
     content = re.sub(r'^[ \t]*#[ \t]+.*?\n', '', content).lstrip()
     # Strip the HTML front matter comment marker

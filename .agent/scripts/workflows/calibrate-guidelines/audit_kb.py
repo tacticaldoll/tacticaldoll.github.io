@@ -346,6 +346,27 @@ class KBAuditor:
                     errors.append(f"[Governance] classify_domain no longer sees the prose: a report "
                                   f"whose body contains '{keyword}' did not classify as '{category}'.")
 
+                # And the strip must be idempotent, because it runs twice: from_source
+                # strips a report to build the body, then classify_domain strips again
+                # whatever it is handed. Every line it removes is provenance only
+                # inside a header block — a leading H1 is otherwise the document's
+                # title, a bold pair is otherwise prose — so a second pass over a clean
+                # body was eating that body's own first line, keywords and all. Both
+                # shapes are probed with the keyword placed only in the line at risk,
+                # so a strip that eats it shows up as a lost classification rather than
+                # as a text comparison nobody can read.
+                for shape, prose in (
+                        ("a bold pair", f"**前提**: 本文討論 {keyword} 的邊界。\n\n## T\nx\n"),
+                        ("an H1 title", f"# 論 {keyword} 的邊界\n\n## T\nx\n")):
+                    if engine.classify_domain(prose) != category:
+                        errors.append(
+                            f"[Governance] a prose body opening with {shape} lost that line to "
+                            f"the provenance strip: '{keyword}' appears only there and the body "
+                            f"no longer classifies as '{category}'. The strip must be idempotent "
+                            f"— from_source strips the report, classify_domain strips again — so "
+                            f"it may only remove those lines when a provenance header block is "
+                            f"actually present (infra.utils.opens_provenance_header).")
+
         # Asymmetric Tagging must survive the call site. classify_domain returns None
         # on purpose so a post with no AI subject matter carries no AI domain tag, and
         # `AI` is itself one of the categories — so a coerced `or "AI"` cancels that
