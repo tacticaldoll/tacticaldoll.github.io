@@ -784,6 +784,35 @@ class KBAuditor:
                                   f"unconditional report would make the check above "
                                   f"meaningless.")
 
+                # And each discarded candidate must be named, not summarised. The
+                # report once listed five and closed with an ellipsis, so a post over
+                # the cap by more than five lost curated terms that nothing anywhere
+                # identified — the same silence this reporting exists to break, moved
+                # past the fifth name. Sized to overflow that former limit, and the
+                # overflow is confirmed before the naming is asserted so the check
+                # cannot pass by being vacuous.
+                span = config.TAG_CAP + 6
+                if len(pool) < span:
+                    errors.append(f"[Governance] the lexicon holds too few anchorable terms "
+                                  f"({len(pool)}) to overflow the tag cap by more than five; "
+                                  f"per-candidate naming cannot be verified")
+                else:
+                    many_tags, many_log, many_err = assemble_tags(span)
+                    discarded = span - max(len(many_tags) - 1, 0)
+                    named = sum(1 for t in pool[:span] if t in many_log)
+                    if many_err:
+                        errors.append(f"[Governance] cannot assemble tags to verify "
+                                      f"per-candidate naming: {many_err}")
+                    elif discarded <= 5:
+                        errors.append(f"[Governance] the per-candidate naming probe discarded "
+                                      f"only {discarded} candidate(s); it cannot distinguish "
+                                      f"full naming from a list truncated at five")
+                    elif named <= 5:
+                        errors.append(f"[Governance] tag assembly discarded {discarded} "
+                                      f"candidates and named {named} of them; every candidate "
+                                      f"dropped at TAG_SCAN_LIMIT or TAG_CAP must be reported "
+                                      f"one by one, not summarised with a count.")
+
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default

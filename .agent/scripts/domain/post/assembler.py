@@ -183,7 +183,7 @@ class PostAssembler:
             beyond = [t for t in tech_tags[len(scan):] if t and t != "TODO: Add tags"]
             if beyond:
                 dropped.append(f"{len(beyond)} beyond the {config.TAG_SCAN_LIMIT}-candidate "
-                               f"scan ({', '.join(beyond[:5])}{' ...' if len(beyond) > 5 else ''})")
+                               f"scan ({', '.join(beyond)})")
 
         for idx, t in enumerate(scan):
             if not t or t == "TODO: Add tags": continue
@@ -206,7 +206,7 @@ class PostAssembler:
                 remaining = [x for x in scan[idx + 1:] if x and x != "TODO: Add tags"]
                 if remaining:
                     dropped.append(f"{len(remaining)} at the {config.TAG_CAP}-tag cap "
-                                   f"({', '.join(remaining[:5])}{' ...' if len(remaining) > 5 else ''})")
+                                   f"({', '.join(remaining)})")
                 break
 
         if dropped:
