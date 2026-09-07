@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "低訓練誤差不等於能力。拆解資料生成分佈、假設空間與選擇準則三層，說明把經驗風險外推成目標分佈能力還需要哪些條件。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "統計學習", # term:StatisticalLearning
     "經驗風險", # term:EmpiricalRisk
     "泛化", # term:Generalization

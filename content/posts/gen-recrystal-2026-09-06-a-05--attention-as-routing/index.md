@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "內容相依加權縮短了位置之間的路徑，卻不等於保存也不等於解釋。界定注意力作為資訊路由的能力範圍與兩種常見過度推論。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "自我注意力", # term:SelfAttention
     "縮放點積注意力", # term:ScaledDotProductAttention
     "位置編碼", # term:PositionalEncoding

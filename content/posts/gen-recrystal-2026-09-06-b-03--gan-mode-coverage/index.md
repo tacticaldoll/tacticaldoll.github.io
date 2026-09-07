@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "幾張逼真的圖不等於覆蓋了分佈。分開樣本品質與模式覆蓋兩組觀察量，說明要證明模式坍縮失去的是模式，還需要哪些對照。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "生成對抗網路", # term:GenerativeAdversarialNetwork
     "模式坍縮", # term:ModeCollapse
     "分佈覆蓋", # term:DistributionCoverage

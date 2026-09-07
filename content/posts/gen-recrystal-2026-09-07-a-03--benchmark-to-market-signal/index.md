@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "分數只估計該資料集與指標所定義的任務。拆開樣本代表性、評分一致性與部署差異三道中介，說明有限測量何時才撐得起產品或職業層級的能力宣稱。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "適應性過擬合", # term:AdaptiveOverfitting
     "不確定性", # term:Uncertainty
     "幻覺", # term:Hallucination

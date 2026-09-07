@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "監測紅線只表示某個數字越界。用版本向量、交叉重放、行為切片與統計停止條件，把退化故事收束成可以被觀察推翻的因果判斷。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "退化診斷", # term:DegradationDiagnosis
     "行為切片", # term:BehavioralSlice
     "不確定性", # term:Uncertainty

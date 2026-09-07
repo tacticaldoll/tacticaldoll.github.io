@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "同分佈的高分可能建立在錯的理由上。用環境切分與跨環境反例分離偽相關形成的捷徑，說明測試分數為何不能代替穩定性證據。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "偽相關", # term:SpuriousCorrelation
     "捷徑學習", # term:ShortcutLearning
     "經驗風險", # term:EmpiricalRisk

@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "同一個工具在不同組織產生不同結果。用互補函數拆開流程適配、技能異質性、人工補償與資料回流，說明只量登入率為何會讓一半的因果消失。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "技術與組織互補", # term:OrganizationalComplementarity
     "人機協作", # term:HumanAiCollaboration
     "自動化反諷", # term:IroniesOfAutomation

@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "固定月費不會讓每次推論變免費。把推論、人工覆核與閒置容量放回每次交付，說明用量成長何時擴張貢獻利益、何時被反彈效應與尾部延遲吃掉。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "貢獻利益", # term:ContributionMargin
     "人工補償", # term:HumanCompensation
     "反彈效應", # term:ReboundEffect

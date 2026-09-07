@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "架構存得住早期狀態，訓練後卻只對最近輸入敏感。沿著 Jacobian 連乘追蹤跨時間的梯度通道，把長程依賴的取得失敗與其他坍縮分開。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "遞迴神經網路", # term:RecurrentNeuralNetwork
     "梯度消失", # term:VanishingGradient
     "信用分配", # term:CreditAssignment

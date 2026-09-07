@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "同一個連乘同時牽動前向記憶與反向梯度。分離狀態是否仍受歷史影響、與誤差是否教得動早期轉移這兩個不同問題。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "遞迴神經網路", # term:RecurrentNeuralNetwork
     "長短期記憶網路", # term:LongShortTermMemory
     "反向傳播", # term:Backpropagation

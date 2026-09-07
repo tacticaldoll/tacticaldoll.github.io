@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "分數下降是警報，不是病名。把模型參數、資料分佈、推論設定與測量契約拆成四個座標，說明同一次掉分要怎麼分辨究竟是誰變了。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "測量契約", # term:MeasurementContract
   ]
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]

@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "ELBO 同時獎勵重建與先驗匹配，強解碼器卻可能繞過潛在通道。說明潛在空間何時被實際使用，何時容許潛在資訊消失。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "變分自動編碼器", # term:VariationalAutoencoder
     "證據下界", # term:EvidenceLowerBound
     "重參數化技巧", # term:ReparameterizationTrick

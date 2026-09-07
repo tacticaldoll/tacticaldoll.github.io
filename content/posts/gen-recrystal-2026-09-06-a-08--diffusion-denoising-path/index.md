@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "已知的加噪程序讓任意噪聲尺度都能構造監督訊號。說明生成如何被拆成可學習的局部問題，以及採樣誤差從哪裡進入。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "擴散模型", # term:DiffusionModel
     "去噪分數匹配", # term:DenoisingScoreMatching
     "噪聲排程", # term:NoiseSchedule

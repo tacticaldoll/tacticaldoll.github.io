@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "參數一個位元都沒動，風險仍持續上升。區分外生漂移、決策回饋與遞迴生成資料三種資料生成程序，說明它們的介入位置為何不能互相取代。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "分佈漂移", # term:DistributionShift
     "表演性預測", # term:PerformativePrediction
   ]

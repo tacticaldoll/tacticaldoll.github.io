@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "權重共享把平移結構寫進架構，用自由度換樣本效率。說明這項空間偏置何時降低樣本需求，又在何時刪掉任務需要的資訊。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "卷積神經網路", # term:ConvolutionalNeuralNetwork
     "平移等變性", # term:TranslationEquivariance
     "感受野", # term:ReceptiveField

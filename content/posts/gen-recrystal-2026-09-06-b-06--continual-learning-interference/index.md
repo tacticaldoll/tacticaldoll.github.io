@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "災難性遺忘不是參數自然老化，而是新目標改寫了支撐舊行為的共享參數。把遺忘定位到梯度干涉上，並說明參數距離為何不等於功能損失。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "災難性遺忘", # term:CatastrophicForgetting
     "梯度干涉", # term:GradientInterference
     "彈性權重固化", # term:ElasticWeightConsolidation

@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "量化、剪枝與知識蒸餾都能省資源，建立近似的方式卻不同。平均準確率相同時，用個體翻轉、機率校準與罕見類別看見被平均掩蓋的失真。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "模型壓縮", # term:ModelCompression
     "量化", # term:Quantization
     "剪枝", # term:Pruning

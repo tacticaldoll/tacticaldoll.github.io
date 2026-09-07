@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "模型分數不是商品。把 API、整合、授權閘門、人工覆核與救濟放回同一條交付鏈，用端到端效用式盤點哪一層讓漂亮輸出仍變不成可追責的結果。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "社會技術系統", # term:SociotechnicalSystem
     "端到端效用", # term:EndToEndUtility
     "人工補償", # term:HumanCompensation

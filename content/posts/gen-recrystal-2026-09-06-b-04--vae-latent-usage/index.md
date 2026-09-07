@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "低 KL 只是症狀，不是判決。用 ELBO 分解檢查解碼器是否已繞過潛在通道，並區分目標權衡、推論落後與模型容量三種候選機制。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "變分自動編碼器", # term:VariationalAutoencoder
     "後驗坍縮", # term:PosteriorCollapse
     "互資訊", # term:MutualInformation

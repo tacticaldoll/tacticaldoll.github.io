@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "樣本像真與分佈覆蓋完整是兩個目標。說明兩個同步移動的目標如何提供學習訊號，又為何在有限模型下產生模式坍縮。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "生成對抗網路", # term:GenerativeAdversarialNetwork
     "模式坍縮", # term:ModeCollapse
     "組合", # term:Compose

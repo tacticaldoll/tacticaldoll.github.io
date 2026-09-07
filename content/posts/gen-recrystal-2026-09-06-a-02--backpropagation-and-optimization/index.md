@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "求導、更新與泛化是三個不同命題。說明反向傳播如何重用計算圖中間量，以及學習率與條件數如何決定更新是否真的收斂。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "機器學習", # term:MachineLearning
     "反向傳播", # term:Backpropagation
     "梯度下降", # term:GradientDescent
     "條件數", # term:ConditionNumber

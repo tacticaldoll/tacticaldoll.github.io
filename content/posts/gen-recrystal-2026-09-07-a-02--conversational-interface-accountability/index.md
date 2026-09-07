@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "Air Canada 判決顯示聊天機器人不是獨立責任主體。分離生成、授權、執行與救濟四個角色，說明擬人化為何讓使用者誤認行動權，而揭露本身並不等於治理。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "擬人化", # term:Anthropomorphism
     "中介變數", # term:MediatingVariable
     "主體", # term:Subject

@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "預期能透過資本改造現實，但只有四段轉換都留下證據才算閉合：資本形成產能、產能改善產品、產品形成留存、留存產生扣除成本與事故後的效用。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "AI 經濟與社會", # term:AiEconomics
     "反身性", # term:Reflexivity
     "表演性預測", # term:PerformativePrediction
     "端到端效用", # term:EndToEndUtility
