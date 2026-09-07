@@ -91,6 +91,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 系列宣告資格由 `guide*.md` 的實體存在單一決定；單篇報告 session 為 Standalone，不得在 `series-map.md` 宣告 `series`。
 - 禁止建立、手動修復或操作 `terminology.md` 類型的術語投影；術語變更必須對準 `terminology.json` 與 promote 流程。
 - Agent 操作意圖只能有一個 active reference：`.agent/reference/agent-operating-guideline.md`，並必須由 `GUIDE.md` 明確引用。
+- 領域分類由 `taxonomy.json` 的分類順序決定，依序取首個命中者。此為定案而非產物：較具體的讀法應勝過較寬泛的讀法，即使只命中一個詞。歧義以 `classify_domain_evidence` 的旗標曝光，不得改為加權或最低證據門檻——那會反轉此定案當初為之而立的貼文。
+- 引擎宣告的契約由引擎保證，不由呼叫點各自記得。呼叫點不得取消引擎已決定的政策。
 - 可驗證規則必須下沉到 schema、script 或 audit；本檔只保留意圖與邊界。
 
 ## 7. Audit Commitments
@@ -109,3 +111,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - `classify_domain` 不得接收未剝除 provenance 表頭的報告全文；表頭的 `**Agent**: ...` 命中 `agent` 偵測詞，會讓生成後設資料決定文章領域。剝除以 `infra.utils.strip_report_provenance` 為單一定義。
 - `GUIDE.md` 不得為系列名稱指定 `taxonomy.json` 的領域前綴；系列命名的 SSOT 是 `init-handoff.task.schema.yaml`，`taxonomy.json` 治理標籤與領域分類。
 - 腳本不得以 list 常量作為 `categories` 的預設值；AI 分類清單與其順序（`classify_domain` 依序取首個命中）的 SSOT 是 `taxonomy.json`，程式內的副本會自由漂移。散文提及個別分類不受此限。
+- 呼叫點不得把 `classify_domain` 的 `None` 強制成分類（Asymmetric Tagging）。`AI` 本身即為 `taxonomy.json` 的分類值，以它作為缺欄位預設會使 `not in ai_categories` 守衛恆假並整段跳過分類。
+- 任何呼叫點不得窗口化分類輸入。權威路徑 `prepare_handoff` 分類完整報告，呼叫點的截斷會讓同一篇文章依到達者不同而得到不同領域。
+- 分類不得改為加權或門檻決勝：優先序較低但命中較多的分類仍須落敗。
+- `classify_domain` 與 `classify_domain_evidence` 必須是同一個決定，且歧義旗標不得為死碼。兩套並行實作會漂移，使歧義回報描述一個貼文並不具備的領域。
+- 組裝時因 `TAG_SCAN_LIMIT` 或 `TAG_CAP` 被丟棄的候選標籤必須逐筆命名。去重（與 genre／領域標籤重複）不在此限。

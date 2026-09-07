@@ -519,6 +519,61 @@ class KBAuditor:
                                           f"{len(got['hits'][rival])}; an ambiguous "
                                           f"classification would reach the review gate silently")
 
+        # Category order decides the domain and the first hit wins. That is a settled
+        # decision rather than an artefact: AI 經濟與社會 precedes AI 代理人 so that a
+        # specific reading beats a broad one even on a single keyword, and the posts it
+        # was decided for are the ones a weighted or threshold scheme would invert.
+        # Ambiguity is surfaced instead (classify_domain_evidence flags it) precisely so
+        # that nobody needs to re-decide this to make a close call visible.
+        #
+        # Pinned by running the classifier: a lower-priority category carrying strictly
+        # more keywords must still lose. Reading the source cannot carry this — a
+        # weighting could be introduced anywhere in the scan without changing its shape.
+        try:
+            from infra.taxonomy import TaxonomyEngine as _OrderEngine
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify category "
+                          f"priority: {exc}")
+        else:
+            order_engine = _OrderEngine()
+            order_tax = order_engine.data.get("ai_taxonomy", {})
+            order_cats = order_tax.get("categories", [])
+            order_det = order_tax.get("detection_keywords", {})
+            first = next((c for c in order_cats if order_det.get(c)), None)
+            if first is None:
+                errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                              "category priority cannot be verified")
+            else:
+                own = {k.lower() for k in order_det[first]}
+                # A rival later in the order whose keywords are its own, so the hit counts
+                # below mean what they say.
+                rival = next((c for c in order_cats[order_cats.index(first) + 1:]
+                              if len([k for k in order_det.get(c, [])
+                                      if k.lower() not in own]) >= 3), None)
+                if rival is None:
+                    errors.append("[Governance] taxonomy.json offers no lower-priority "
+                                  "category with three distinct keywords; category "
+                                  "priority cannot be verified")
+                else:
+                    weak = order_det[first][0]
+                    strong = [k for k in order_det[rival] if k.lower() not in own][:3]
+                    body = f"本文討論 {weak}，以及 {'、'.join(strong)} 的邊界。\n"
+                    seen = order_engine.classify_domain_evidence(body)
+                    if len(seen["hits"].get(first, [])) != 1 or len(seen["hits"].get(rival, [])) < 3:
+                        errors.append(f"[Governance] the priority probe did not come out "
+                                      f"lopsided ({len(seen['hits'].get(first, []))} vs "
+                                      f"{len(seen['hits'].get(rival, []))} hits); category "
+                                      f"priority cannot be verified")
+                    elif seen["domain"] != first:
+                        errors.append(
+                            f"[Governance] classification is no longer decided by category "
+                            f"priority: '{rival}' won on {len(seen['hits'][rival])} keyword(s) "
+                            f"over '{first}' on {len(seen['hits'][first])}. First hit in "
+                            f"taxonomy.json order wins by decision, so that a specific reading "
+                            f"beats a broad one; a weighted or threshold scheme inverts the "
+                            f"posts that decision was made for. Surface a close call through "
+                            f"classify_domain_evidence's flags instead of re-deciding it.")
+
         # Tag truncation must announce itself. TAG_SCAN_LIMIT and TAG_CAP both discard
         # candidates, and a post whose curated terms outnumber the cap used to ship with
         # some of them missing and nothing saying which — the same silence as the genre
