@@ -41,7 +41,7 @@ class MarkdownAnalyzer:
             preview_area, main_body = parts[0], parts[1]
         
         headers = re.findall(r'^##\s+|^###\s+', body_text, re.MULTILINE)
-        list_items = re.findall(r'^\s*[-*]\s+', body_text, re.MULTILINE)
+        list_items = re.findall(r'^[ \t]*[-*]\s+', body_text, re.MULTILINE)
         paragraphs = [p for p in re.split(r'\n\s*\n', body_text) if p.strip()]
         
         return {

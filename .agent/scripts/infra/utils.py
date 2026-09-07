@@ -119,18 +119,24 @@ def strip_report_provenance(source_text):
     # Strip the very first H1 if it exists
     content = re.sub(r'^[ \t]*#[ \t]+.*?\n', '', content).lstrip()
     # Strip the HTML front matter comment marker
-    content = re.sub(r'^\s*<!--\s*front matter\s*-->\s*\n', '', content, flags=re.IGNORECASE)
+    content = re.sub(r'^[ \t]*<!--\s*front matter\s*-->\s*\n', '', content, flags=re.IGNORECASE)
     # Strip standard top-level bold Key: Value pairs if they exist at the top
     while True:
-        match = re.match(r'^\s*\*\*.*?\*\*:\s*.*?\n', content)
+        match = re.match(r'^[ \t]*\*\*.*?\*\*:\s*.*?\n', content)
         if not match:
             break
         content = content[match.end():]
+    # The bold-pair loop above stops at the first line that is not a header pair,
+    # which leaves the blank line separating the header block from the rule that
+    # closes it. Consume those blank lines explicitly. Letting the rule's own
+    # anchor absorb them means `^\s*`, the broad form the header rules forbid
+    # because it eats the line break the anchor is there to assert.
+    content = re.sub(r'\A(?:[ \t]*\n)+', '', content)
     # Strip the horizontal rule that closes the report's front-matter block.
     # Without this it survives into the post body and, being neither a heading
     # nor an alert, blocks relocate_alerts_after_more() from lifting the first
     # section past <!--more-->, leaving a stray <hr> as the whole summary.
-    content = re.sub(r'^\s*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n', '', content)
+    content = re.sub(r'^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n', '', content)
     return content.strip()
 
 def normalize_path(path):

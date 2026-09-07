@@ -172,18 +172,18 @@ class HandoffPreparer:
             # Anchor the publish time to the report's own **Date** header (to the
             # minute). The seconds slot is reserved for sort ordering (see
             # _calculate_post_date); falls back to session_date when absent.
-            date_m = re.search(r'^\s*\*\*Date\*\*:\s*(.*)', content[:1000], re.MULTILINE)
+            date_m = re.search(r'^[ \t]*\*\*Date\*\*:\s*(.*)', content[:1000], re.MULTILINE)
             if date_m and date_m.group(1).strip():
                 self.report_dates[rf] = date_m.group(1).strip()
 
             # 0. Extract Generation Metadata (if found at the top)
             # Pattern: **Key**: Value
             meta_patterns = {
-                "model": re.compile(r'^\s*\*\*Model\*\*:\s*(.*)', re.MULTILINE),
-                "agent": re.compile(r'^\s*\*\*Agent\*\*:\s*(.*)', re.MULTILINE),
-                "scope": re.compile(r'^\s*\*\*Structure\*\*:\s*(.*)', re.MULTILINE),
-                "tags": re.compile(r'^\s*\*\*Tags\*\*:\s*(.*)', re.MULTILINE),
-                "description": re.compile(r'^\s*\*\*Description\*\*:\s*(.*)', re.MULTILINE)
+                "model": re.compile(r'^[ \t]*\*\*Model\*\*:\s*(.*)', re.MULTILINE),
+                "agent": re.compile(r'^[ \t]*\*\*Agent\*\*:\s*(.*)', re.MULTILINE),
+                "scope": re.compile(r'^[ \t]*\*\*Structure\*\*:\s*(.*)', re.MULTILINE),
+                "tags": re.compile(r'^[ \t]*\*\*Tags\*\*:\s*(.*)', re.MULTILINE),
+                "description": re.compile(r'^[ \t]*\*\*Description\*\*:\s*(.*)', re.MULTILINE)
             }
             
             # Store metadata for this specific report

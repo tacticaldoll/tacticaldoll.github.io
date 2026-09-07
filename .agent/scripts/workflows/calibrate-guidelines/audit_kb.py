@@ -859,7 +859,7 @@ class KBAuditor:
                 schema_text = f.read()
 
         defined = {}
-        for zh, en in re.findall(r'^\s*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
+        for zh, en in re.findall(r'^[ \t]*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
             defined[en.strip()] = zh.strip()
         offered = set()
         offered_match = re.search(r'\*\*Structure\*\*:.*?從\s*(.+?)\s*中擇一', schema_text)
