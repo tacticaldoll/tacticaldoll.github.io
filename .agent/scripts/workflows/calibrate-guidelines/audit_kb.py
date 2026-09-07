@@ -293,7 +293,16 @@ class KBAuditor:
         for map_path in glob.glob(os.path.join(config.SCRATCH_DIR, "*", "series-map*.md")):
             with open(map_path, 'r', encoding='utf-8') as f:
                 map_content = f.read()
-            declares_series = re.search(r'^[ \t]*series[ \t]*=', map_content, re.MULTILINE)
+            # Both shapes. The TOML form is the only one the workflow permits, but a
+            # prose `**series**:` line declares the same thing to every reader of the
+            # map, and reading only the permitted form meant the check could be evaded
+            # by using the form the workflow already forbids. No script parses either
+            # one — the authoritative field is metadata.series in the handoff — so what
+            # is being intercepted is the divergence between the internal map and the
+            # published post, and that divergence does not care which shape wrote it.
+            declares_series = re.search(
+                r'^[ \t]*series[ \t]*=|^[ \t]*\*\*series\*\*[ \t]*[:：]',
+                map_content, re.MULTILINE | re.IGNORECASE)
             if not declares_series:
                 continue
             session_dir = os.path.dirname(map_path)

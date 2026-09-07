@@ -258,7 +258,7 @@ spec: "../reference/agent-operating-guideline.md"
 
 **宣告資格先於格式 [CRITICAL]**：`is_series` 的唯一真相來源是 session 目錄中 `guide*.md` 的實體存在（見 `init-handoff.task.schema.yaml`）。因此：
 
-- 本 session 產出 `guide*.md`（兩篇以上報告）→ series-map **必須**宣告系列級 `series`。
+- 本 session 產出 `guide*.md`（兩篇以上報告）→ series-map **應**以下列格式記錄系列級 `series`，作為送審形式與 `/init-handoff` Task 3 精煉 `metadata.series` 的依據。此處未記錄不阻斷發布——權威欄位在 handoff，不在地圖——但系列名稱就少了一次人工審視的機會。
 - 本 session 只產出一篇主報告、依 §7 省略 `guide.zh-TW.md` → 該 session 是 Standalone，series-map **嚴禁**宣告 `series`。
 
 單篇 session 若仍宣告 `series`，下游會依 L0 判準解析為 `is_series=false` 並丟棄該宣告，結果是系列只存在於內部地圖、不存在於貼文。這種「宣告了卻不生效」的狀態比不宣告更糟：它讓內部產物與已發布事實各說各話。系列邊界的敘述仍可寫在 series-map 的散文段落，那是分析結論；`series` 欄位是分類事實，只有具備資格時才填。
@@ -271,7 +271,7 @@ spec: "../reference/agent-operating-guideline.md"
 series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部裁決"]
 ```
 
-此欄位是 series-map 中 `series` 的**唯一**落點格式；不得改用 `**series**:` 之類的散文寫法，否則下游無法解析。
+此欄位是 series-map 中 `series` 的**唯一**落點格式。理由不是腳本會解析它——沒有任何腳本讀取 series-map 的 `series`，權威欄位是 `handoff.posts.json` 的 `metadata.series`，由 `/init-handoff` Task 3 依 `guide*.md` 精煉寫入。統一形狀的理由是可稽核：只有單一形狀，`audit_kb.py` 才能判斷一份 series-map 究竟有無宣告，從而攔住無資格的宣告。散文寫法會讓該攔截失效，因此同樣不得使用。
 
 ### 6b. Tags
 
@@ -349,7 +349,7 @@ series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部
 19. **案例保全**：候選貼文的具體案例與細節未以「重複」為由被去重吞掉；殊途同歸的多個事故皆保留，案例段未壓縮成一句帶過。
 20. **報告清單鎖定**：報告清單已凍結（每 slot 四欄齊全，`緣起來源` 欄留 session 內）；series-map 僅呈現去痕後 slot；最終報告篇數未低於鎖定數，任何 slot 的合併/刪除皆已進損失帳本附理由並重過合併條件，無靜默併篇。
 21. **展開下限**：§2 反推卡末三欄（潛在子問題、未證成前提、暗藏多核心）已逐篇抽取；§3.6 展開機會盤點三類（拆分、潛在深化、跨篇湧現）皆給定去向，選 `本次不展開` 者附理由；判為 `本次展開` 者已實際發展，報告未停在原貼文描述深度。
-22. **Metadata 落點**：`report.zh-TW.md` 正文以結論收束，結尾無 `series`／`tags`／「建議 metadata」區塊；逐報告 `tags` 記於 series-map.md，系列級 `series` 僅在本次產出 `guide*.md` 時才記入，且使用 §6a 的 TOML 格式。`audit_kb.py` 物理攔截「宣告 series 但無 guide*.md」。
+22. **Metadata 落點**：`report.zh-TW.md` 正文以結論收束，結尾無 `series`／`tags`／「建議 metadata」區塊；逐報告 `tags` 記於 series-map.md，系列級 `series` 僅在本次產出 `guide*.md` 時才記入，且使用 §6a 的 TOML 格式。`audit_kb.py` 物理攔截「宣告 series 但無 guide*.md」，TOML 與散文兩種形狀皆攔。
 23. **個案主軸與回推因果**：每個核心主張盡可能以具體個案為起點與骨幹（確屬純概念者至少附密度下限反例）；論證採「個案→回推因果→主張→邊界→通用化」，非主張先行配裝飾例；通用化結論皆由回推因果與個案賺得，達期刊論文層級的論證嚴謹度，且未墮入空泛學術腔或形式章節堆疊。
 24. **收束指涉完整性**：結論中的數量詞、代詞與總結性指涉（如「三個問題」「四者」「上述」「這些防線」）皆能在緊鄰段落或同一段落中找到明確對應；若作為全文最後收束，應優先列成明確問句、命題或清單，避免只在作者腦中成立的指涉閉合。
 
