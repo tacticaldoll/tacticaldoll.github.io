@@ -88,7 +88,14 @@ class PostAssembler:
         if domain_tag not in ai_categories:
             from infra.taxonomy import TaxonomyEngine
             tax_engine = TaxonomyEngine()
-            body_content = self.post.body[:5000] if hasattr(self.post, 'body') else ""
+            # No window. This is the fallback path — prepare_handoff already classified
+            # the full report and wrote domain_tag, and classify_posts re-derives it the
+            # same way — so a window here would classify on a different basis than the
+            # authoritative path and hand the same post a different domain depending on
+            # which caller reached it. The body is still pre-anchoring at this point
+            # (with_tags runs before PostOrchestrator.cleanup), so no injected term
+            # vocabulary can vote.
+            body_content = self.post.body if hasattr(self.post, 'body') else ""
             domain_tag = tax_engine.classify_domain(body_content) or ""
 
         clean_structure_tag = self._get_clean_tag(structure_tag)

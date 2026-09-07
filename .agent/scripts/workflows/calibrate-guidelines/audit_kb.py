@@ -430,6 +430,33 @@ class KBAuditor:
                                         f"Asymmetric Tagging drops the tag only when "
                                         f"classify_domain returns None, never otherwise.")
 
+                            # And no caller may window the text it classifies. The
+                            # authoritative path (prepare_handoff) classifies the full
+                            # report; a truncation at the assembly call site classified on
+                            # a different basis, so the same post could resolve to
+                            # different domains depending on which caller reached it. A
+                            # subject stated only in a long post's final paragraph must
+                            # still decide its domain.
+                            long_body = (neutral * 200) + classified
+                            if len(long_body) < 6000:
+                                errors.append("[Governance] the windowing probe body is too short "
+                                              "to detect a truncation; raise the filler count")
+                            else:
+                                try:
+                                    tags = PostAssembler(_StubPost(long_body)).with_tags(dict(base), probe_lex)._tags
+                                except Exception as exc:
+                                    errors.append(f"[Governance] cannot assemble tags to verify the "
+                                                  f"classification window: {exc}")
+                                else:
+                                    if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
+                                        errors.append(
+                                            f"[Governance] a {len(long_body)}-character post whose only "
+                                            f"'{kw}' occurrence sits in its final paragraph did not "
+                                            f"classify as '{cat}': the classification input is being "
+                                            f"truncated. prepare_handoff classifies the full report, so "
+                                            f"a window at any other caller gives the same post a "
+                                            f"different domain.")
+
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default
