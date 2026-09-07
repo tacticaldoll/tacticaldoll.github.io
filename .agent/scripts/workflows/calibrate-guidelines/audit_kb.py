@@ -6,6 +6,7 @@ import contextlib
 import json
 import sys
 import glob
+import subprocess
 
 # Add scripts root to path
 scripts_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,6 +14,7 @@ if scripts_root not in sys.path:
     sys.path.append(scripts_root)
 
 from infra import config
+from infra.utils import get_python_executable
 from lexicon import Lexicon
 
 class KBAuditor:
@@ -113,6 +115,70 @@ class KBAuditor:
                 if h_clean in generic_candidates and h_clean not in self.valid_headers:
                     errors.append(f"[{rel_path}] Header '## {h_clean}' should be normalized per taxonomy.md")
 
+        return errors
+
+    def _check_unit_suites(self):
+        """The unit suites must pass, and must not mutate the repository to do it."""
+        errors = []
+        # Nothing ran these. Not this audit, not a CI job, not a workflow, and GUIDE
+        # never mentioned them — so lexicon_tester.py had been failing since before the
+        # commit that introduced this check, asserting a promotion contract that the
+        # quality gate had replaced, and no one could have known. A suite that nothing
+        # runs is not a suite; it is a file that looks like one.
+        #
+        # Discovered rather than listed, so a new suite is covered the day it lands and
+        # a deleted one cannot quietly shrink the coverage this check claims.
+        suites = sorted(glob.glob(os.path.join(config.AGENT_DIR, "**", "*_tester.py"),
+                                  recursive=True))
+        if not suites:
+            errors.append("[Governance] no *_tester.py suite was found; this check would "
+                          "pass an empty repository")
+            return errors
+
+        # A suite that leaves a file behind breaks §10.1's empty-draft rule just by
+        # being run, which is exactly what lexicon_tester.py did on every failing run:
+        # it wrote TestTerm into terminology.draft.json and cleaned up only on the path
+        # where it passed. Compared before and against after, because the scratch
+        # submodule is already dirty for unrelated reasons.
+        def tracked_state():
+            try:
+                out = subprocess.run(["git", "status", "--porcelain"],
+                                     cwd=config.ROOT_DIR, capture_output=True,
+                                     text=True, timeout=60)
+                return set(out.stdout.splitlines()) if out.returncode == 0 else None
+            except Exception:
+                return None
+
+        before = tracked_state()
+        python_exe = get_python_executable()
+        for suite in suites:
+            rel = self.rel(suite)
+            try:
+                run = subprocess.run([python_exe, suite], cwd=config.ROOT_DIR,
+                                     capture_output=True, text=True,
+                                     encoding="utf-8", errors="replace", timeout=300)
+            except subprocess.TimeoutExpired:
+                errors.append(f"[Governance] unit suite {rel} did not finish within 300s")
+                continue
+            except Exception as exc:
+                errors.append(f"[Governance] unit suite {rel} could not be run: {exc}")
+                continue
+            if run.returncode != 0:
+                tail = [ln.strip() for ln in
+                        (run.stdout + "\n" + run.stderr).splitlines() if ln.strip()]
+                why = tail[-1] if tail else f"exit {run.returncode}"
+                errors.append(f"[Governance] unit suite {rel} fails: {why}")
+
+        after = tracked_state()
+        if before is None or after is None:
+            errors.append("[Governance] could not read the working tree state around the "
+                          "unit suites; their hermeticity was not verified")
+        elif after != before:
+            changed = sorted(after - before) or sorted(before - after)
+            errors.append(f"[Governance] running the unit suites changed the working "
+                          f"tree: {changed}. A suite must not write into the repository "
+                          f"— §10.1 requires an empty draft before a commit, and a suite "
+                          f"that leaves a file behind breaks it just by being run.")
         return errors
 
     def _check_reference_layer(self):
@@ -1300,6 +1366,7 @@ class KBAuditor:
     # a traceback in place of the governance errors the rest exist to produce — which
     # is now confined to the check that raised, and reported by name.
     GOVERNANCE_CHECKS = (
+        "_check_unit_suites",
         "_check_reference_layer",
         "_check_markdown_governance",
         "_check_workflow_front_matter",

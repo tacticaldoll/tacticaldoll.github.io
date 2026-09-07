@@ -98,6 +98,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 ## 7. Audit Commitments
 
 `audit_kb.py` 必須攔截以下漂移：
+- 單元套件（`*_tester.py`）必須全部通過。此前沒有任何機制執行它們——本稽核沒有、CI 沒有、工作流沒有、`GUIDE.md` 未曾提及——因此 `lexicon_tester.py` 長期失敗而無人可能發現。套件以 glob 發現而非寫死清單，新套件落地當天即納入覆蓋。
+- 單元套件不得寫入儲存庫。光是執行就讓 §10.1 的「草稿零殘留」失效，這正是 `lexicon_tester.py` 每次失敗都把 `TestTerm` 留在草稿裡的原因；hermeticity 以執行前後的工作區狀態比對驗證。
 
 - `reference/` 不得放置 JSON database entity。
 - 指引不得引用舊式上一層資料庫相對路徑；資料庫路徑必須指向 `.agent/lexicon-core/databases/`。
