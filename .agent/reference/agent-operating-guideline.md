@@ -108,7 +108,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 活躍 `handoff.terms.json` 的 `locked.description` 不得含 placeholder。
 - `.agent-scratch/` 報告 Markdown 的散文不得含術語錨定（`<!-- term:/anchor: -->`）；錨定是 `publish-article` 對 Hugo 貼文的專屬職責，語法示例須置於程式碼區塊。
 - `series-map.md` 不得在無 `guide*.md` 的 session 中宣告 `series`，TOML 與散文兩種形狀皆然；`is_series` 的唯一判準是導讀檔的實體存在。沒有腳本解析 series-map 的 `series`（權威欄位是 handoff 的 `metadata.series`），因此無資格的宣告只會製造內部地圖與已發布貼文的分歧。
-- `classify_domain` 不得接收未剝除 provenance 表頭的報告全文；表頭的 `**Agent**: ...` 命中 `agent` 偵測詞，會讓生成後設資料決定文章領域。剝除以 `infra.utils.strip_report_provenance` 為單一定義。
+- `classify_domain` 不得接收未剝除 provenance 表頭的報告全文；表頭記載的模型與工具名本身就是偵測詞（`**Model**: Claude` 命中大型語言模型，`**Agent**: Antigravity` 命中 AI 代理人），且同一 session 的每份報告值相同，會讓生成後設資料替全部報告決定領域。剝除以 `infra.utils.strip_report_provenance` 為單一定義。
 - `GUIDE.md` 不得為系列名稱指定 `taxonomy.json` 的領域前綴；系列命名的 SSOT 是 `init-handoff.task.schema.yaml`，`taxonomy.json` 治理標籤與領域分類。
 - 腳本不得以 list 常量作為 `categories` 的預設值；AI 分類清單與其順序（`classify_domain` 依序取首個命中）的 SSOT 是 `taxonomy.json`，程式內的副本會自由漂移。散文提及個別分類不受此限。
 - 呼叫點不得把 `classify_domain` 的 `None` 強制成分類（Asymmetric Tagging）。`AI` 本身即為 `taxonomy.json` 的分類值，以它作為缺欄位預設會使 `not in ai_categories` 守衛恆假並整段跳過分類。

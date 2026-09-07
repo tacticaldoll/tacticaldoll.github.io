@@ -127,12 +127,14 @@ def strip_report_provenance(source_text):
     Model / Agent / Source) and a closing horizontal rule. That header is a pipeline
     artifact: `publish-article` strips it rather than publishing it.
 
-    It must also be stripped before any semantic read of the report. `**Agent**:
-    Codex VS Code extension ...` contains the substring 'agent', which is a
-    detection keyword for the `AI 代理人 (AI Agent)` domain, so classifying the raw
-    text lets provenance metadata decide the article's domain. Callers that classify
-    or scan report prose consume this function; `HugoPost.from_source` uses it to
-    build the published body, keeping both paths on one definition.
+    It must also be stripped before any semantic read of the report. The header names
+    the model and the harness that produced the report, and those names are detection
+    keywords: `**Model**: Claude ...` hits the LLM domain in 77 of the reports in this
+    repository, `gpt` in 74, `gemini` and `**Agent**: Antigravity ...` in 23 each. The
+    value is identical across every report a session produced, so classifying raw text
+    let generation metadata pick one domain for all of them. Callers that classify or
+    scan report prose consume this function; `HugoPost.from_source` uses it to build
+    the published body, keeping both paths on one definition.
 
     Idempotent, and it has to be: `from_source` strips a report to build the body and
     `classify_domain` strips again whatever it is handed, so a clean body passes

@@ -34,13 +34,14 @@ class TaxonomyEngine:
         Classifies the AI domain of a given text content.
         Uses hierarchical matching defined in taxonomy.json.
 
-        Provenance is stripped here rather than by each caller. A report header's
-        `**Agent**: Codex VS Code extension ...` contains the substring 'agent',
-        a detection keyword for the AI 代理人 domain, and it is identical across
-        every report in a session — so classifying raw report text let generation
-        metadata pick the domain for all of them. Guarding that at the call sites
-        meant every present and future caller had to remember; doing it here makes
-        passing raw text harmless instead of policing it.
+        Provenance is stripped here rather than by each caller. A report header names
+        the model and harness that produced it, and those names are detection keywords:
+        `**Model**: Claude ...` hits the LLM domain, as do gpt and gemini, and
+        `**Agent**: Antigravity ...` hits AI 代理人. The value is identical across every
+        report in a session — so classifying raw report text let generation metadata
+        pick one domain for all of them. Guarding that at the call sites meant every
+        present and future caller had to remember; doing it here makes passing raw
+        text harmless instead of policing it.
 
         Stripping already-clean prose is a no-op, which is what makes handing raw
         text here harmless. It is a no-op because the strip removes those lines only
