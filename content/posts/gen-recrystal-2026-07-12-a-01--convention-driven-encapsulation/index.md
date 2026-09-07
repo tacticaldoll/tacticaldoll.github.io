@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "用 AI agent 做元件開發時，你要一個薄核，生成端卻補全成一個肥平台。這篇拆解 god module 的成因：慣例聚合如何填補你沒說出口的提示空缺、為何連刻意求薄都仍過度擁有應用語義，以及「找對消費者」本身的三難。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
     "封裝邊界", # term:EncapsulationBoundary
     "過度生成", # term:OverGeneration
     "提示空缺", # term:PromptGap

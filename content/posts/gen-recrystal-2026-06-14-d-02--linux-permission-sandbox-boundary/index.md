@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "Linux 權限不是標籤模型，而是關係模型。本文用主體、客體、能力、邊界四個詞，串起 process credentials、kernel object、Unix socket 授權、最小權限與 sandbox 邊界組合，並把這套模型放回 Agent 執行安全：sandbox 不是權限開關，而是可見世界、可用能力、可呼叫 syscall 與代執行責任的組合邊界。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
     "Linux 權限", # term:LinuxPermissions
     "Sandbox", # term:Sandbox
     "最小權限", # term:LeastPrivilege

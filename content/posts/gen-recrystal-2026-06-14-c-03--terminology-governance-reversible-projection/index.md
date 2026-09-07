@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "生成式系統很擅長在寫作、摘要、分類或知識抽取時順手產生名字。這些名字有時漂亮、有時粗糙、有時只是句子碎片。真正危險的不是候選詞裡有噪音，而是系統把噪音直接寫進共享、長期保留、會被後續產物繼承的術語層。當一個粗糙詞彙被持久化、被重複引用、被下游當成既有真相，它就不再只是一次輸出的小錯，而會變成語意污染。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
     "術語管理", # term:TerminologyManagement
     "可逆投影", # term:ReversibleProjection
     "語意污染", # term:SemanticPollution

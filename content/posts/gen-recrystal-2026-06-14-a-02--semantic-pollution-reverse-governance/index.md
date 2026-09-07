@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "最危險的污染不是明顯的錯字，而是一段曾經有用、看起來具體、又剛好落在模型視野裡的材料。本文剖析歷史、命名、上下文與管道四類污染如何穿越信任邊界、升格為指令或事實，並以反向指引與語境最小權限建構一套讓材料即使被看見也無法自然取得行動權的防線。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "大型語言模型", # term:LargeLanguageModel
     "語意污染", # term:SemanticPollution
     "反向指引", # term:ReverseGuidelines
     "語境最小權限", # term:ContextLeastPrivilege
