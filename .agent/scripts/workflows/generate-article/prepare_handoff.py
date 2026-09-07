@@ -195,9 +195,10 @@ class HandoffPreparer:
                 if match:
                     gen_info[key] = match.group(1).strip()
 
-            # `scope` becomes the published genre tag. Its default is a real genre, so a
-            # report whose **Structure** line is missing or misspelled ships as a
-            # technical note that reads as a deliberate choice. Say so instead.
+            # `scope` becomes the published genre tag. TagAnchorer.genre_tag reports any
+            # fallback it takes, but that happens during publish — past the review gate
+            # where a human hands the handoff back. Warn here too, while the report can
+            # still be corrected, and name the file so it is actionable.
             if gen_info["scope"] == config.GENRE_FALLBACK_SCOPE and not re.search(
                     r'^[ \t]*\*\*Structure\*\*:', content[:1000], re.MULTILINE):
                 log_error(f"  [GENRE FALLBACK] No **Structure** header in {os.path.basename(rf)}; "

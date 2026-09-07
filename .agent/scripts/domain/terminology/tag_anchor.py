@@ -12,6 +12,8 @@
 
 import re
 
+from infra.utils import log_error
+
 
 def clean_tag(tag):
     """Strips a trailing parenthetical gloss; returns the bare display text."""
@@ -62,11 +64,21 @@ class TagAnchorer:
     def genre_tag(self, scope, default_scope="Technical Note"):
         """Resolves a genre scope name (e.g. 'Analytical Essay') to (display_zh, key)
         via the taxonomy genre SSOT, falling back to default_scope. Used at build time so
-        the published genre matches what reanchor would re-derive."""
+        the published genre matches what reanchor would re-derive.
+
+        The fallback is announced. default_scope is itself a real genre, so coercing an
+        unrecognised scope to it silently publishes a genre that reads as a deliberate
+        choice — a report declaring 'Case Study' or a misspelt 'Technical Notes' became
+        a technical note with nothing to show it had not been asked for. Callers cannot
+        detect this themselves, since a valid-looking tag comes back either way, so the
+        resolver reports it rather than each caller pre-validating."""
         key = camel_key(scope)
         if key in self.genre_key_to_zh:
             return (self.genre_key_to_zh[key], key)
         dkey = camel_key(default_scope)
+        log_error(f"  [GENRE FALLBACK] Scope {scope!r} is not a genre in taxonomy.json "
+                  f"(known: {sorted(self.genre_key_to_zh.values())}); publishing as "
+                  f"{default_scope!r}.")
         return (self.genre_key_to_zh.get(dkey, default_scope), dkey)
 
     def anchor_by_display(self, tag, is_genre=False):

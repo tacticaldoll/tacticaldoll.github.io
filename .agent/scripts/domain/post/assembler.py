@@ -5,7 +5,6 @@ import os
 import re
 from datetime import datetime
 from infra import config
-from infra import utils
 
 class PostAssembler:
     """
@@ -58,14 +57,9 @@ class PostAssembler:
         """Resolves the genre/structure tag (tags[0]) from the post's scope via the
         taxonomy genre SSOT (shared TagAnchorer). Returns (display_zh, key)."""
         scope = post_meta.get("ai_info", {}).get("generation", {}).get("scope")
-        if not scope:
-            # The handoff carries no genre, so this post's genre is a default rather
-            # than a decision. Published either way, but not silently.
-            utils.log_error(f"  [GENRE FALLBACK] Handoff declares no scope for "
-                            f"'{post_meta.get('slug', post_meta.get('title', '?'))}'; "
-                            f"publishing as '{config.GENRE_FALLBACK_SCOPE}'.")
-            scope = config.GENRE_FALLBACK_SCOPE
-        return anchorer.genre_tag(scope, default_scope=config.GENRE_FALLBACK_SCOPE)
+        # genre_tag announces every fallback, whether the scope is absent or simply
+        # not a genre, so there is nothing to pre-validate here.
+        return anchorer.genre_tag(scope or "", default_scope=config.GENRE_FALLBACK_SCOPE)
 
     def _get_clean_tag(self, tag):
         if not tag: return ""

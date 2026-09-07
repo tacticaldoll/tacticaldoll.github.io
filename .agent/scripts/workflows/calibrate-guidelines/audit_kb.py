@@ -289,35 +289,48 @@ class KBAuditor:
                     f"so is_series resolves false and the declaration is dropped: {self.rel(map_path)}")
 
         # Provenance headers must never reach domain classification: `**Agent**: ...`
-        # matches the 'agent' detection keyword and is identical across a session's
-        # reports, so raw text let generation metadata pick the domain for all of them.
-        # The guarantee lives inside classify_domain rather than at its call sites, so
-        # that passing raw text is harmless instead of being policed; assert the engine
-        # still holds it. Parsed as a tree, not matched as a line, so reformatting the
-        # call cannot slip past.
-        engine_path = os.path.join(config.INFRA_DIR, "taxonomy.py")
-        if os.path.exists(engine_path):
-            # utf-8-sig: a BOM is transparent to import but ast.parse rejects it as
-            # a non-printable character, and one source file in this repo carries one.
-            with open(engine_path, 'r', encoding='utf-8-sig') as f:
-                engine_src = f.read()
-            try:
-                engine_tree = ast.parse(engine_src)
-            except SyntaxError as exc:
-                errors.append(f"[Governance] Cannot parse {self.rel(engine_path)}: {exc}")
-                engine_tree = None
-            if engine_tree is not None:
-                found = False
-                for node in ast.walk(engine_tree):
-                    if not (isinstance(node, ast.FunctionDef) and node.name == "classify_domain"):
-                        continue
-                    for inner in ast.walk(node):
-                        if isinstance(inner, ast.Call) and self._called_name(inner) == "strip_report_provenance":
-                            found = True
-                if not found:
-                    errors.append("[Governance] classify_domain does not strip report provenance; "
-                                  "generation metadata would vote on the article's domain: "
-                                  f"{self.rel(engine_path)}")
+        # matches a detection keyword and is identical across a session's reports, so
+        # raw text let generation metadata pick the domain for all of them.
+        #
+        # Asserted by running the classifier, not by reading it. An earlier version
+        # walked classify_domain's AST for a strip_report_provenance call, which a
+        # discarded `strip_report_provenance("")` satisfies while the real path
+        # classifies raw text — the check passed with the defect fully restored. What
+        # matters is whether provenance can decide the answer, and only the answer
+        # shows that. The keyword is drawn from taxonomy.json so this test does not
+        # embed a copy of the SSOT either.
+        try:
+            from infra.taxonomy import TaxonomyEngine
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify the "
+                          f"provenance invariant: {exc}")
+        else:
+            engine = TaxonomyEngine()
+            detection = engine.data.get("ai_taxonomy", {}).get("detection_keywords", {})
+            probe = next(((cat, kws[0]) for cat, kws in detection.items() if kws), None)
+            if probe is None:
+                errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                              "the provenance invariant cannot be verified")
+            else:
+                category, keyword = probe
+                # A neutral body: one character cannot contain any multi-character keyword.
+                header_voter = (f"# T\n\n<!-- front matter -->\n"
+                                f"**Structure**: Analytical Essay\n"
+                                f"**Agent**: {keyword} harness 1.0\n"
+                                f"**Source**: conversation\n\n---\n\nx\n")
+                if engine.classify_domain(header_voter) is not None:
+                    errors.append(f"[Governance] classify_domain lets the provenance header decide "
+                                  f"the domain: a report whose only occurrence of '{keyword}' is in "
+                                  f"**Agent** classified as '{category}'. Strip the header before "
+                                  f"matching (infra.utils.strip_report_provenance).")
+                # And the strip must not eat the prose it is meant to preserve.
+                body_voter = (f"# T\n\n<!-- front matter -->\n"
+                              f"**Structure**: Analytical Essay\n"
+                              f"**Agent**: neutral harness 1.0\n"
+                              f"**Source**: conversation\n\n---\n\n{keyword}\n")
+                if engine.classify_domain(body_voter) != category:
+                    errors.append(f"[Governance] classify_domain no longer sees the prose: a report "
+                                  f"whose body contains '{keyword}' did not classify as '{category}'.")
 
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
@@ -391,6 +404,18 @@ class KBAuditor:
                     errors.append(f"[Governance] Invalid taxonomy JSON: {exc}")
         # Spaced keys are the canonical English names; slug variants alias the same value.
         canonical = {en: zh for en, zh in genres.items() if " " in en}
+        # A missing SSOT is a finding, not a reason to skip: silently passing the genre
+        # check when genres or the schema are gone reported HEALTHY for a repo that had
+        # lost the very thing being audited.
+        if not genres:
+            errors.append("[Governance] taxonomy.json defines no `genres`; genre is tags[0] on "
+                          "every post and has no source of truth")
+        elif not canonical:
+            errors.append("[Governance] taxonomy.json `genres` has no canonical `中文 (English)` "
+                          "entries; only slug aliases were found")
+        if not os.path.exists(schema_path):
+            errors.append(f"[Governance] Missing report schema {self.rel(schema_path)}; the genre "
+                          f"set cannot be reconciled against taxonomy.json")
         if os.path.exists(schema_path) and canonical:
             with open(schema_path, 'r', encoding='utf-8') as f:
                 schema_text = f.read()
