@@ -129,8 +129,9 @@
 為了對抗 Session 效能衰退（熵增）並維持高品質的技術記憶，本專案採用「知識漏斗」機制管理資訊流向：
 
 - **第一級：對話 (Dialogue)**：Session 內的原始討論，具備高雜訊與流動性。
-- **第二級：結晶 (Crystallize)**：透過 `crystallize-report` 生成結構化報告，存放在 `.agent-scratch/` 對應的 Session 目錄下。將雜亂對話轉化為具備「抗抽象化」特性的階段性資產。
-- **第三級：綱領 (Consolidate)**：透過 `calibrate-guidelines` 將結晶報告中的成熟知識併入 `GUIDE.md` 等核心指引，並視情況移除過時的報告。在此階段應確保指引文件遵循「瘦身與委派」架構，防止規則冗餘。
+- **第二級：評估 (Distill)**：透過 `distill-knowledge` 判定各主題的性質、成熟度、歸屬傾向與體量。此級為結晶的**前置條件**：未經評估即結晶，會把體量不足或應外化的素材寫成報告。評估只產出表格，不決定去向，亦不得給出下一步指引。
+- **第三級：結晶 (Crystallize)**：透過 `crystallize-report` 生成結構化報告，存放在 `.agent-scratch/` 對應的 Session 目錄下。將雜亂對話轉化為具備「抗抽象化」特性的階段性資產。消費第二級的評估結果：歸屬為外化者導向沉澱 (Precipitate)，不進入結晶。
+- **第四級：綱領 (Consolidate)**：透過 `calibrate-guidelines` 將結晶報告中的成熟知識併入 `GUIDE.md` 等核心指引，並視情況移除過時的報告。在此階段應確保指引文件遵循「瘦身與委派」架構，防止規則冗餘。
 
 **熵增控制 (Entropy Control)**：
 - **冗餘禁止**：嚴禁建立語意與現有指引高度重疊的規則。
@@ -212,9 +213,11 @@
 - **冗餘檔案清理**：資料庫目錄下嚴禁存在空檔案或未定義的佔位檔（如 `terminology.archive.json`）。物理空間應保持極簡。
 
 ### 10.2 變更溯源與結晶 (Crystallization Requirement)
-- **架構級變更**：任何涉及子模組異動、治理規則 (GUIDE.md) 修改、或核心管線重構的變更，必須在 `.agent-scratch/` 對應路徑下附帶一份結晶報告。
+- **架構級變更**：任何涉及子模組異動或核心管線重構的變更，必須在 `.agent-scratch/` 對應路徑下附帶一份結晶報告。
+- **治理變更的排除 (CRITICAL)**：涉及治理模式、目錄權限或核心指引（`GUIDE.md`、reference）修改者 **不附** 結晶報告。[crystallize-report.md](.agent/workflows/crystallize-report.md) 第一階段對此類素材禁止結晶並導向 `calibrate-guidelines`；若此處仍要求報告，兩條規約會對同一次變更指向相反流程。此類變更的溯源形式為指引校正與永久防線落成，見 §8「校正優先」與 §9「定義先行」。
 - **Session 完整性**：結晶報告中必須明確紀錄原始 Context 的關鍵決策路徑與核心術語演進。
 
 ### 10.3 自動化稽核義務 (Automated Audit)
-- 在提交重大變更前，建議先行執行 `python3 .agent/scripts/workflows/calibrate-guidelines/audit_all.py`。
-- 若稽核腳本回報「術語品質」或「物理邊界」異常，必須先行校正後方可提交。
+- 提交重大變更前 **必須** 執行 `python3 .agent/scripts/workflows/calibrate-guidelines/audit_kb.py`。此腳本為治理防線的執行點，非零退出即為阻斷，不得以人工判斷覆寫。
+- 涉及已發布語料的變更，另須執行 `python3 .agent/scripts/workflows/calibrate-guidelines/audit_all.py` 取得逐篇合規表。該腳本只產出報表、不阻斷，其結論仍須人工裁決。
+- 若稽核回報「術語品質」或「物理邊界」異常，必須先行校正後方可提交。

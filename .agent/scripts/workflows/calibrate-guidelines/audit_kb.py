@@ -519,6 +519,72 @@ class KBAuditor:
                                           f"{len(got['hits'][rival])}; an ambiguous "
                                           f"classification would reach the review gate silently")
 
+        # The knowledge funnel must place evaluation before crystallization. §7.2 numbers
+        # distill-knowledge as the first of three states, but §7's funnel once listed only
+        # dialogue, crystallize and consolidate — so nothing in the funnel said that
+        # crystallizing without evaluating first writes reports out of material already
+        # judged too thin or belonging elsewhere. An ordering stated in one section and
+        # not the other is an ordering an executor will skip.
+        #
+        # GUIDE is read here rather than borrowed from another check. A first version of
+        # this block referenced a variable bound further down the method, so every branch
+        # was skipped and all four falsifiers passed: an absent input made the check
+        # vacuous while it still reported HEALTHY.
+        guide_md_path = os.path.join(config.ROOT_DIR, "GUIDE.md")
+        if not os.path.exists(guide_md_path):
+            errors.append("[Governance] Missing GUIDE.md; the knowledge funnel and the "
+                          "crystallization-report scope cannot be verified")
+        else:
+            with open(guide_md_path, 'r', encoding='utf-8-sig') as f:
+                guide_md = f.read()
+
+            funnel_lines = re.findall(r'^- \*\*第[一二三四五]級[：:].*$', guide_md, re.M)
+            stages = [m.group(1) for m in
+                      (re.search(r'`([a-z][a-z-]+)`', ln) for ln in funnel_lines) if m]
+            if not funnel_lines:
+                errors.append("[Governance] Cannot locate GUIDE's 知識漏斗 levels; the "
+                              "evaluation-before-crystallization order cannot be verified")
+            elif "distill-knowledge" not in stages:
+                errors.append(f"[Governance] GUIDE's 知識漏斗 does not name "
+                              f"`distill-knowledge` as a level (found {stages}); §7.2 "
+                              f"numbers it the first of the three states, and a funnel that "
+                              f"omits it lets crystallization run on unevaluated material.")
+            elif "crystallize-report" in stages and \
+                    stages.index("distill-knowledge") > stages.index("crystallize-report"):
+                errors.append(f"[Governance] GUIDE's 知識漏斗 places `crystallize-report` "
+                              f"before `distill-knowledge` ({stages}); evaluation is the "
+                              f"precondition, not a later refinement.")
+
+            # And §10.2 must not demand a crystallization report for the material that
+            # crystallize-report refuses to crystallize. That workflow's first stage
+            # forbids crystallizing governance material and routes it to
+            # calibrate-guidelines; while §10.2 also required a report for 治理規則
+            # changes, the two pointed one change at opposite processes and whichever an
+            # executor read first won.
+            cr_path = os.path.join(config.AGENT_DIR, "workflows", "crystallize-report.md")
+            if not os.path.exists(cr_path):
+                errors.append("[Governance] Missing .agent/workflows/crystallize-report.md")
+            else:
+                with open(cr_path, 'r', encoding='utf-8-sig') as f:
+                    cr_src = f.read()
+                demand = re.search(r'^- \*\*架構級變更\*\*[：:](.*)$', guide_md, re.M)
+                if "禁止執行結晶" not in cr_src or "治理" not in cr_src:
+                    errors.append("[Governance] crystallize-report.md no longer forbids "
+                                  "crystallizing governance material; GUIDE §10.2's "
+                                  "exclusion now rests on nothing and the pair must be "
+                                  "re-decided together")
+                elif not demand:
+                    errors.append("[Governance] Cannot locate GUIDE's 架構級變更 "
+                                  "requirement; the crystallization-report scope cannot "
+                                  "be verified")
+                elif "治理" in demand.group(1):
+                    errors.append("[Governance] GUIDE §10.2 requires a crystallization "
+                                  "report for 治理 changes, which crystallize-report.md's "
+                                  "first stage forbids crystallizing and routes to "
+                                  "calibrate-guidelines. Two rules pointing one change at "
+                                  "opposite processes resolve by whichever an executor "
+                                  "reads first.")
+
         # The ignore file and the guideline must name the same protected directories.
         # GUIDE defers the operative list to `.antigravityignore` ("被列入
         # .antigravityignore 的目錄") while separately declaring absolute protection for
