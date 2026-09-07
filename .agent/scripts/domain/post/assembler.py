@@ -172,7 +172,17 @@ class PostAssembler:
         # 3. Anchor Domain
         anchored_domain = None
         if domain_tag:
-            domain_res = lexicon.lookup(domain_tag)
+            # Resolve on the bare form. The category strings carry a parenthetical —
+            # `大型語言模型 (LLM)` — which the lexicon does not key on, so lookup on the
+            # full string has always missed and every domain tag was keyed off the
+            # parenthetical instead. That agreed with the lexicon only by coincidence of
+            # the English wording: `(Machine Learning)` camel-cases to MachineLearning,
+            # which is the key, but `(LLM)` gives Llm where the lexicon says
+            # LargeLanguageModel. A tag whose key the lexicon cannot resolve is dropped
+            # by reanchor as an orphan, so the coincidence was load-bearing — and it held
+            # only because no post had ever carried the 大型語言模型 domain.
+            bare_domain = re.sub(r'\s*[(（].*?[)）]', '', domain_tag).strip()
+            domain_res = lexicon.lookup(domain_tag) or lexicon.lookup(bare_domain)
             if domain_res and domain_res["status"] == "standard":
                 key = domain_res.get("key", "")
                 en_primary = domain_res["en"][0] if domain_res.get("en") else None

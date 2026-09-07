@@ -963,6 +963,77 @@ class KBAuditor:
                           f"one by one, not summarised with a count.")
         return errors
 
+    def _check_domain_tag_keys(self):
+        """A domain tag must carry the lexicon's key for its term, not one derived from
+        the category's parenthetical."""
+        errors = []
+        # `# term:Key` is the identity reanchor rewrites tags by, and a key the lexicon
+        # cannot resolve is dropped as an orphan — the whole tag goes. Domain tags were
+        # keyed off the parenthetical in the category string, which agreed with the
+        # lexicon only by coincidence of the English wording: `(Machine Learning)`
+        # camel-cases to MachineLearning, the real key, but `(LLM)` gives Llm where the
+        # lexicon says LargeLanguageModel. That never surfaced because no post had ever
+        # carried the 大型語言模型 domain, so the coincidence was load-bearing and
+        # invisible at the same time.
+        #
+        # Asserted by assembling a post per category and reading the key it emitted.
+        try:
+            from domain.post.assembler import PostAssembler
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import PostAssembler to verify domain "
+                          f"tag keys: {exc}")
+            return errors
+
+        class _Stub:
+            def __init__(self, body):
+                self.body = body
+                self.metadata = {}
+
+        lex = Lexicon(self.terminology_path)
+        ai_tax = lex.taxonomy.get("ai_taxonomy", {})
+        cats = ai_tax.get("categories", [])
+        det = ai_tax.get("detection_keywords", {})
+        genre_scope = next((en for en in lex.taxonomy.get("genres", {}) if " " in en), "")
+        if not cats:
+            errors.append("[Governance] taxonomy.json defines no AI categories; domain "
+                          "tag keys cannot be verified")
+            return errors
+
+        checked = 0
+        for cat in cats:
+            bare = re.sub(r'\s*[(（].*?[)）]', '', cat).strip()
+            term = lex.lookup(bare)
+            if not term or term.get("status") != "standard":
+                continue          # not a lexicon term; the AIDomain fallback owns it
+            expected = term.get("key")
+            kw = next(iter(det.get(cat, [])), None)
+            meta = {"ai_info": {"generation": {"scope": genre_scope}}, "domain_tag": cat}
+            body = f"本文討論 {kw} 的邊界。\n" if kw else ""
+            buf = io.StringIO()
+            try:
+                with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                    tags = PostAssembler(_Stub(body)).with_tags(meta, lex)._tags
+            except Exception as exc:
+                errors.append(f"[Governance] cannot assemble tags to verify the domain "
+                              f"key for '{cat}': {exc}")
+                continue
+            emitted = next((k for zh, k in tags if zh == bare), None)
+            checked += 1
+            if emitted is None:
+                errors.append(f"[Governance] the domain '{cat}' produced no tag at all; "
+                              f"a category the lexicon holds must reach the front matter")
+            elif emitted != expected:
+                errors.append(
+                    f"[Governance] the domain tag for '{cat}' carries key {emitted!r} but "
+                    f"the lexicon keys that term as {expected!r}. `# term:Key` is the "
+                    f"identity reanchor rewrites by, and a key it cannot resolve is "
+                    f"dropped as an orphan, taking the whole tag. Resolve the key from "
+                    f"the term, not from the category's parenthetical.")
+        if checked == 0:
+            errors.append("[Governance] no AI category resolved to a lexicon term; the "
+                          "domain tag key invariant cannot be verified")
+        return errors
+
     def _check_tag_level_priority(self):
         """Level 1 terms are extracted preferentially; Level 3 is never a tag or a loss."""
         errors = []
@@ -1245,6 +1316,7 @@ class KBAuditor:
         "_check_category_priority",
         "_check_tag_truncation_reporting",
         "_check_tag_level_priority",
+        "_check_domain_tag_keys",
         "_check_hardcoded_categories",
         "_check_series_naming_ssot",
         "_check_genre_projections",
