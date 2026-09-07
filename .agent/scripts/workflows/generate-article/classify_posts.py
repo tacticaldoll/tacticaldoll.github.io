@@ -11,7 +11,7 @@ if scripts_root not in sys.path:
 
 from infra import config
 from infra.taxonomy import TaxonomyEngine
-from infra.utils import log_info, log_error
+from infra.utils import log_info, log_error, strip_report_provenance
 
 class DomainClassifier:
     def __init__(self):
@@ -48,7 +48,9 @@ class DomainClassifier:
                 content = f.read()
                 
             old_tag = post.get("domain_tag")
-            new_tag = self.tax_engine.classify_domain(content)
+            # Classify prose only: the provenance header's `**Agent**: ...` line would
+            # otherwise match the 'agent' detection keyword in every single report.
+            new_tag = self.tax_engine.classify_domain(strip_report_provenance(content))
             
             if old_tag != new_tag:
                 post["domain_tag"] = new_tag

@@ -97,6 +97,42 @@ def load_json(path):
         log_error(f"Failed to load JSON from {path}: {e}")
         return None
 
+def strip_report_provenance(source_text):
+    """Strips a crystallized report's provenance header, leaving only the prose body.
+
+    A `report.zh-TW.md` opens with generation provenance — an H1, an optional
+    `<!-- front matter -->` marker, bold `**Key**: Value` lines (Structure / Date /
+    Model / Agent / Source) and a closing horizontal rule. That header is a pipeline
+    artifact: `publish-article` strips it rather than publishing it.
+
+    It must also be stripped before any semantic read of the report. `**Agent**:
+    Codex VS Code extension ...` contains the substring 'agent', which is a
+    detection keyword for the `AI 代理人 (AI Agent)` domain, so classifying the raw
+    text lets provenance metadata decide the article's domain. Callers that classify
+    or scan report prose consume this function; `HugoPost.from_source` uses it to
+    build the published body, keeping both paths on one definition.
+    """
+    if not source_text:
+        return ""
+    # Strip YAML front matter if it exists at the absolute top
+    content = re.sub(r'^---\s*\n.*?\n---\s*\n', '', source_text, flags=re.DOTALL)
+    # Strip the very first H1 if it exists
+    content = re.sub(r'^[ \t]*#[ \t]+.*?\n', '', content).lstrip()
+    # Strip the HTML front matter comment marker
+    content = re.sub(r'^\s*<!--\s*front matter\s*-->\s*\n', '', content, flags=re.IGNORECASE)
+    # Strip standard top-level bold Key: Value pairs if they exist at the top
+    while True:
+        match = re.match(r'^\s*\*\*.*?\*\*:\s*.*?\n', content)
+        if not match:
+            break
+        content = content[match.end():]
+    # Strip the horizontal rule that closes the report's front-matter block.
+    # Without this it survives into the post body and, being neither a heading
+    # nor an alert, blocks relocate_alerts_after_more() from lifting the first
+    # section past <!--more-->, leaving a stray <hr> as the whole summary.
+    content = re.sub(r'^\s*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n', '', content)
+    return content.strip()
+
 def normalize_path(path):
     """Normalizes path for the current OS."""
     return os.path.normpath(path)

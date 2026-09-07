@@ -25,28 +25,9 @@ class HugoPost:
         [FACTORY] Creates a post entity from raw source report text and specific post metadata.
         Incorporates 'extract_pure_body' logic.
         """
-        # 1. Extract pure body
-        # 1.1 Strip YAML frontmatter if it exists at the absolute top
-        content = re.sub(r'^---\s*\n.*?\n---\s*\n', '', source_text, flags=re.DOTALL)
-        # 1.2 Strip the very first H1 if it exists
-        content = re.sub(r'^[ \t]*#[ \t]+.*?\n', '', content).lstrip()
-        # 1.3 Strip HTML front matter comment
-        content = re.sub(r'^\s*<!--\s*front matter\s*-->\s*\n', '', content, flags=re.IGNORECASE)
-        # 1.4 Strip standard top-level bold Key: Value pairs if they exist at the top
-        while True:
-            match = re.match(r'^\s*\*\*.*?\*\*:\s*.*?\n', content)
-            if match:
-                content = content[match.end():]
-            else:
-                break
-
-        # 1.5 Strip the horizontal rule that closes the report's front-matter block.
-        # Without this it survives into the post body and, being neither a heading
-        # nor an alert, blocks relocate_alerts_after_more() from lifting the first
-        # section past <!--more-->, leaving a stray <hr> as the whole summary.
-        content = re.sub(r'^\s*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n', '', content)
-
-        body = content.strip()
+        # 1. Extract pure body: the provenance header strip is shared with the
+        # report scanners in infra.utils so both paths cannot drift apart.
+        body = utils.strip_report_provenance(source_text)
         
         # 2. Extract metadata
         post = cls()
