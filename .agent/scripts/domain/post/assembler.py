@@ -172,8 +172,11 @@ class PostAssembler:
         # post whose curated terms outnumbered the cap shipped with some of them
         # missing and nothing anywhere saying which. Duplicates and collisions with
         # the genre or domain tag are not losses — they are deduplication — so they
-        # stay quiet. Truncation is a loss and is reported.
-        from infra.utils import log_info
+        # stay quiet. Truncation is a loss and is reported on the loss channel:
+        # log_error, the same stderr the genre fallback uses, because a run that
+        # watches stdout for narration and stderr for problems must not have to
+        # read the narration to find out that curated terms were discarded.
+        from infra.utils import log_error
         scan = tech_tags[:config.TAG_SCAN_LIMIT]
         dropped = []
         if len(tech_tags) > len(scan):
@@ -207,7 +210,7 @@ class PostAssembler:
                 break
 
         if dropped:
-            log_info(f"  [TAGS DROPPED] {self._title}: " + "; ".join(dropped))
+            log_error(f"  [TAGS DROPPED] {self._title}: " + "; ".join(dropped))
 
         self._tags = final_tags
         return self
