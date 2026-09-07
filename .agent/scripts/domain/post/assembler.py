@@ -70,14 +70,26 @@ class PostAssembler:
         from domain.terminology.tag_anchor import TagAnchorer
         anchorer = TagAnchorer(lexicon)
         structure_tag, structure_key = self._get_structure_tag(post_meta, anchorer)
-        domain_tag = post_meta.get("domain_tag", "AI")
+        # `AI` is itself one of taxonomy.json's categories, so defaulting to it made an
+        # absent domain_tag look already-classified: the `not in ai_categories` guard
+        # below was False and classification never ran. An absent tag must fall through
+        # to the classifier.
+        #
+        # And the classifier's None must survive. TaxonomyEngine.classify_domain returns
+        # None deliberately (Asymmetric Tagging) so a post with no AI subject matter
+        # carries no AI domain tag; coercing it to "AI" here re-decided that policy at
+        # the call site and silently cancelled it. Same shape as the provenance strip
+        # that had to move into the engine rather than be remembered by every caller.
+        # Both literals were also program-internal copies of a taxonomy category value,
+        # which is the drift 7f958bf removed from classify_domain itself.
+        domain_tag = post_meta.get("domain_tag") or ""
         ai_categories = lexicon.taxonomy.get("ai_taxonomy", {}).get("categories", [])
-        
+
         if domain_tag not in ai_categories:
             from infra.taxonomy import TaxonomyEngine
             tax_engine = TaxonomyEngine()
             body_content = self.post.body[:5000] if hasattr(self.post, 'body') else ""
-            domain_tag = tax_engine.classify_domain(body_content) or "AI"
+            domain_tag = tax_engine.classify_domain(body_content) or ""
 
         clean_structure_tag = self._get_clean_tag(structure_tag)
         clean_domain_tag = self._get_clean_tag(domain_tag)

@@ -332,6 +332,104 @@ class KBAuditor:
                     errors.append(f"[Governance] classify_domain no longer sees the prose: a report "
                                   f"whose body contains '{keyword}' did not classify as '{category}'.")
 
+        # Asymmetric Tagging must survive the call site. classify_domain returns None
+        # on purpose so a post with no AI subject matter carries no AI domain tag, and
+        # `AI` is itself one of the categories — so a coerced `or "AI"` cancels that
+        # policy, and the same literal as the default for an absent domain_tag makes
+        # the `not in ai_categories` guard False and skips classification entirely.
+        # Neither is visible in the data: the emitted tag looks like a real category.
+        #
+        # Asserted by assembling tags, not by reading the source. An AST check for the
+        # literal would pass the moment the coercion moved into a helper or a config
+        # constant, and what matters is only whether a domain can be invented for a
+        # post that has none. The categories come from taxonomy.json so this test
+        # holds no copy of the SSOT.
+        try:
+            from domain.post.assembler import PostAssembler
+            from infra.taxonomy import TaxonomyEngine as _ProbeEngine
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import PostAssembler to verify "
+                          f"asymmetric tagging: {exc}")
+        else:
+            class _StubPost:
+                def __init__(self, body):
+                    self.body = body
+                    self.metadata = {}
+
+            def _clean(tag):
+                return re.sub(r'\s*[(（].*?[)）]', '', tag or '').strip().lower()
+
+            probe_lex = Lexicon(self.terminology_path)
+            probe_cats = probe_lex.taxonomy.get("ai_taxonomy", {}).get("categories", [])
+            if not probe_cats:
+                errors.append("[Governance] taxonomy.json defines no AI categories; "
+                              "asymmetric tagging cannot be verified")
+            else:
+                cat_set = {_clean(c) for c in probe_cats}
+                # A pure-technical body: no detection keyword and no lexicon term, so
+                # the only domain-shaped tag it could carry is an invented one. This is
+                # the case classify_domain's Asymmetric Tagging comment names (Linux).
+                neutral = "本文說明掛載點與憑證傳遞，以及 setuid 位元在權限升級路徑上的角色。\n"
+                if _ProbeEngine().classify_domain(neutral) is not None:
+                    errors.append("[Governance] the asymmetric-tagging probe body is no longer "
+                                  "keyword-free; it now classifies, so the check below cannot "
+                                  "distinguish an invented domain from a real one")
+                else:
+                    # A real genre, drawn from taxonomy.json rather than hardcoded, so the
+                    # probe does not trip genre_tag's unrelated fallback alarm.
+                    probe_genre = next((en for en in probe_lex.taxonomy.get("genres", {})
+                                        if " " in en), "")
+                    base = {"ai_info": {"generation": {"scope": probe_genre}}}
+                    for label, extra in (("absent", {}),
+                                         ("unclassifiable", {"domain_tag": "NotACategory"})):
+                        meta = dict(base, **extra)
+                        try:
+                            tags = PostAssembler(_StubPost(neutral)).with_tags(meta, probe_lex)._tags
+                        except Exception as exc:
+                            errors.append(f"[Governance] cannot assemble tags to verify asymmetric "
+                                          f"tagging ({label} domain_tag): {exc}")
+                            continue
+                        invented = [zh for zh, _ in tags if _clean(zh) in cat_set]
+                        if invented:
+                            errors.append(
+                                f"[Governance] a post with no AI subject matter was given the "
+                                f"domain tag {invented!r} ({label} domain_tag). "
+                                f"TaxonomyEngine.classify_domain returns None for it on purpose; "
+                                f"the call site in domain/post/assembler.py must not coerce that "
+                                f"to a category. Note `AI` is itself a category, so using it as "
+                                f"the default also skips classification.")
+
+                    # The reverse direction matters as much. A call site that dropped the
+                    # domain unconditionally would satisfy the check above while stripping
+                    # every post of its category — so a body that does classify must still
+                    # carry that category out as a tag. Keyword and category both come from
+                    # taxonomy.json.
+                    probe = next(((cat, kws[0]) for cat, kws
+                                  in probe_lex.taxonomy.get("ai_taxonomy", {})
+                                             .get("detection_keywords", {}).items() if kws), None)
+                    if probe is None:
+                        errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                                      "the domain-survives-assembly direction cannot be verified")
+                    else:
+                        cat, kw = probe
+                        classified = f"本文討論 {kw} 的作用與邊界。\n"
+                        if _ProbeEngine().classify_domain(classified) != cat:
+                            errors.append(f"[Governance] the domain-survival probe no longer "
+                                          f"classifies as '{cat}'; the direction below is vacuous")
+                        else:
+                            try:
+                                tags = PostAssembler(_StubPost(classified)).with_tags(dict(base), probe_lex)._tags
+                            except Exception as exc:
+                                errors.append(f"[Governance] cannot assemble tags to verify domain "
+                                              f"survival: {exc}")
+                            else:
+                                if not any(_clean(zh) == _clean(cat) for zh, _ in tags):
+                                    errors.append(
+                                        f"[Governance] a post that classifies as '{cat}' lost its "
+                                        f"domain tag during assembly (emitted {[z for z, _ in tags]!r}). "
+                                        f"Asymmetric Tagging drops the tag only when "
+                                        f"classify_domain returns None, never otherwise.")
+
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default
