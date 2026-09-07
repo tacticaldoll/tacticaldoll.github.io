@@ -297,6 +297,20 @@ class KBAuditor:
                             f"[Governance] classify_domain on unstripped report text "
                             f"(provenance would vote on the domain) in {self.rel(site)}:{line_no}")
 
+        # taxonomy.json is the SSOT for the AI category list and its order, which
+        # classify_domain depends on (first hit wins, deepest first). A hardcoded
+        # fallback default is a second definition free to drift: one such default
+        # still listed three categories after the file held five. Mentioning a
+        # category in prose is fine; supplying a list of them as a default is not.
+        hardcoded_cats = re.compile(r'get\(\s*["\']categories["\']\s*,\s*\[\s*["\']')
+        for py_path in glob.glob(os.path.join(config.SCRIPTS_DIR, "**", "*.py"), recursive=True):
+            with open(py_path, 'r', encoding='utf-8') as f:
+                for line_no, line in enumerate(f, start=1):
+                    if hardcoded_cats.search(line):
+                        errors.append(f"[Governance] Hardcoded AI category list as a default; "
+                                      f"taxonomy.json owns the category list and order: "
+                                      f"{self.rel(py_path)}:{line_no}")
+
         # Series naming has one SSOT: init-handoff.task.schema.yaml's
         # `[核心主題]：[敘事化副標題]`. taxonomy.json owns tag/domain classification and
         # directory naming, never a mandatory series prefix — GUIDE must not reassign it.

@@ -34,7 +34,11 @@ class TaxonomyEngine:
         Uses hierarchical matching defined in taxonomy.json.
         """
         ai_tax = self.data.get("ai_taxonomy", {})
-        categories = ai_tax.get("categories", ["AI 代理人 (AI Agent)", "大型語言模型 (LLM)", "AI"])
+        # No hardcoded fallback: taxonomy.json is the category SSOT, and a copy here
+        # would be a second definition free to drift from it — this default listed
+        # three categories long after the file held five. With no categories there
+        # are no keywords either, so classification correctly yields None.
+        categories = ai_tax.get("categories", [])
         detection = ai_tax.get("detection_keywords", {})
         
         content_lower = content.lower()
