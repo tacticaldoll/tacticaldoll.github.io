@@ -963,6 +963,100 @@ class KBAuditor:
                           f"one by one, not summarised with a count.")
         return errors
 
+    def _check_tag_level_priority(self):
+        """Level 1 terms are extracted preferentially; Level 3 is never a tag or a loss."""
+        errors = []
+        # GUIDE §3.2 assigns every term a level and says what each level does. Level 1
+        # terms "會被優先提取為文章的技術標籤"; Level 3 is the IGNORE_LIST, generic
+        # vocabulary kept for the Chinese-usage safeguard that does not participate in
+        # tag generation. The harvest honoured neither: it ordered candidates by string
+        # length, so at the cap a Level 1 term lost its slot to longer Level 2 terms,
+        # and it collected Level 3 terms that anchor_by_display then refused — spending
+        # scan budget on candidates that could never be tags and naming 錯誤, 差異 and
+        # 行為 in the discard report of every post as though something had been lost.
+        #
+        # Asserted by assembling posts, because the ordering is only observable in what
+        # survives the cap.
+        try:
+            from domain.post.assembler import PostAssembler
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import PostAssembler to verify tag "
+                          f"level priority: {exc}")
+            return errors
+
+        class _Stub:
+            def __init__(self, body):
+                self.body = body
+                self.metadata = {}
+
+        from domain.terminology.tag_anchor import TagAnchorer
+        lex = Lexicon(self.terminology_path)
+        anchorable = {zh for zh in map(str, lex.mapping)
+                      if TagAnchorer(lex).anchor_by_display(zh)}
+        genre_scope = next((en for en in lex.taxonomy.get("genres", {}) if " " in en), "")
+        base = {"ai_info": {"generation": {"scope": genre_scope}}}
+
+        # A Level 1 term, and enough strictly longer Level 2 terms to fill the cap on
+        # their own. Under length ordering the Level 1 term is last and is discarded.
+        level_1 = [zh for zh in anchorable if lex.levels.get(zh) == 1]
+        level_1.sort(key=len)
+        pick = next(((one, [two for two in anchorable
+                            if lex.levels.get(two) == 2 and len(two) > len(one)][:config.TAG_CAP])
+                     for one in level_1
+                     if len([two for two in anchorable
+                             if lex.levels.get(two) == 2 and len(two) > len(one)]) >= config.TAG_CAP),
+                    None)
+        if pick is None:
+            errors.append(f"[Governance] the lexicon cannot supply a Level 1 term with "
+                          f"{config.TAG_CAP} longer Level 2 terms; tag level priority "
+                          f"cannot be verified")
+            return errors
+
+        one, twos = pick
+        body = "本文討論 " + "、".join(twos + [one]) + " 的邊界。\n"
+        try:
+            tags = PostAssembler(_Stub(body)).with_tags(dict(base), lex)._tags
+        except Exception as exc:
+            errors.append(f"[Governance] cannot assemble tags to verify level priority: {exc}")
+            return errors
+
+        emitted = [zh for zh, _ in tags]
+        if one not in emitted:
+            errors.append(
+                f"[Governance] the Level 1 term {one!r} was discarded at the tag cap while "
+                f"Level 2 terms shipped ({emitted!r}). GUIDE §3.2 extracts Level 1 "
+                f"preferentially; ordering candidates by string length stands proxy for "
+                f"nothing and inverts it.")
+
+        # And a Level 3 term must be neither a tag nor a reported loss: it is excluded by
+        # policy, which is not a loss, exactly as deduplication is not.
+        level_3 = next((zh for zh in map(str, lex.mapping) if lex.levels.get(zh) == 3), None)
+        if level_3 is None:
+            errors.append("[Governance] the lexicon holds no Level 3 term; the IGNORE_LIST "
+                          "exemption cannot be verified")
+            return errors
+
+        body_3 = "本文討論 " + "、".join(twos + [level_3]) + " 的邊界。\n"
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                tags_3 = PostAssembler(_Stub(body_3)).with_tags(dict(base), lex)._tags
+        except Exception as exc:
+            errors.append(f"[Governance] cannot assemble tags to verify the IGNORE_LIST "
+                          f"exemption: {exc}")
+            return errors
+
+        if any(zh == level_3 for zh, _ in tags_3):
+            errors.append(f"[Governance] the Level 3 term {level_3!r} was emitted as a tag; "
+                          f"§3.2 keeps the IGNORE_LIST out of tag generation")
+        if level_3 in buf.getvalue():
+            errors.append(f"[Governance] the Level 3 term {level_3!r} was named in the "
+                          f"discard report. It is excluded by policy and anchor_by_display "
+                          f"refuses it, so reporting it is noise on the channel the real "
+                          f"losses use — and a report nobody can read restores the silence "
+                          f"it was added to break.")
+        return errors
+
     def _check_hardcoded_categories(self):
         """No script may hold a list constant as the default for the AI category list."""
         errors = []
@@ -1150,6 +1244,7 @@ class KBAuditor:
         "_check_protected_directories",
         "_check_category_priority",
         "_check_tag_truncation_reporting",
+        "_check_tag_level_priority",
         "_check_hardcoded_categories",
         "_check_series_naming_ssot",
         "_check_genre_projections",

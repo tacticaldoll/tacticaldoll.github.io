@@ -142,7 +142,14 @@ class PostAssembler:
             if h
         }
         harvested_tags = []
-        sorted_terms = sorted([str(k) for k in lexicon.mapping.keys()], key=len, reverse=True)
+        # Level 3 is the IGNORE_LIST (GUIDE §3.2): generic vocabulary kept in the lexicon
+        # for the Chinese-usage safeguard, and never a tag — anchor_by_display drops it.
+        # Harvesting it anyway spent scan budget on candidates that could not become
+        # tags, pushed eligible terms past TAG_SCAN_LIMIT, and put 錯誤 / 差異 / 行為 into
+        # the discard report of every post as though something had been lost.
+        sorted_terms = sorted(
+            (str(k) for k in lexicon.mapping.keys() if lexicon.levels.get(str(k), 1) < 3),
+            key=len, reverse=True)
         for zh in sorted_terms:
             if zh in body_content:
                 is_substring = any(zh in h for h in harvested_tags)
@@ -153,6 +160,13 @@ class PostAssembler:
                     if clean_zh not in [clean_structure_tag, clean_domain_tag]:
                         harvested_tags.append(zh)
                         
+        # Level 1 terms are the ones §3.2 says are extracted preferentially. The harvest
+        # above found them in length order, which stands proxy for nothing: at the cap a
+        # Level 1 term lost its slot to longer Level 2 terms — 假設空間, 校準, 條件數 and
+        # 感受野 were all discarded while Level 2 terms shipped. Sorted by level, stably,
+        # so length still breaks ties within a level. Curated tags stay ahead of the
+        # harvest either way: an author's choice outranks a substring match.
+        harvested_tags.sort(key=lambda zh: lexicon.levels.get(zh, 1))
         tech_tags = valid_user_tags + [t for t in harvested_tags if t not in valid_user_tags]
         
         # 3. Anchor Domain
@@ -208,7 +222,13 @@ class PostAssembler:
             if not t or t == "TODO: Add tags": continue
             anchored = anchorer.anchor_by_display(t)
             if not anchored:
-                dropped.append(f"{t} (no lexicon anchor)")
+                if lexicon.levels.get(t, 1) >= 3:
+                    # The IGNORE_LIST doing its job. Not a loss, so not reported — the
+                    # same exemption deduplication has. A curated tag can land here if
+                    # the handoff named a generic term.
+                    continue
+                dropped.append(f"{t} (not in the lexicon; /init-handoff must lock a term "
+                               f"before it can be anchored as a tag)")
                 continue
             if not anchored[1]:
                 raise ValueError(f"Tag '{t}' generated an empty key. An English translation is required.")

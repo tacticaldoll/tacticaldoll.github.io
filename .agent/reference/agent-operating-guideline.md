@@ -116,6 +116,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 分類不得改為加權或門檻決勝：優先序較低但命中較多的分類仍須落敗。
 - `classify_domain` 與 `classify_domain_evidence` 必須是同一個決定，且歧義旗標不得為死碼。兩套並行實作會漂移，使歧義回報描述一個貼文並不具備的領域。
 - 組裝時因 `TAG_SCAN_LIMIT` 或 `TAG_CAP` 被丟棄的候選標籤必須逐筆命名。去重（與 genre／領域標籤重複）不在此限。
+- 標籤候選的去留不得由字串長度決定。GUIDE §3.2 將 Level 1 定為優先標籤，依長度排序會讓 Level 1 術語在 `TAG_CAP` 處輸給較長的 Level 2 術語。
+- Level 3（IGNORE_LIST）術語不得進入標籤候選，也不得出現在丟棄報告中。`anchor_by_display` 依政策拒絕它們，那不是損失；報進損失通道只會淹掉真正的損失，與去重同屬豁免。
 - `.antigravityignore` 與 `GUIDE.md` 的 `目錄保護絕對規則` 必須指名同一組受保護目錄。忽略清單多出未經宣告的路徑，或宣告了絕對保護卻未列入忽略清單，兩者皆為漂移；後者使宣告看似已被強制，而 GUIDE 所委派的機制並未涵蓋該路徑。
 - `GUIDE.md` 的知識漏斗必須指名 `distill-knowledge` 且排在 `crystallize-report` 之前。評估是結晶的前置條件；漏斗漏掉評估級，會讓結晶跑在未經評估的素材上。
 - `GUIDE.md` §10.2 不得對 `crystallize-report` 拒絕結晶的素材要求結晶報告。該工作流第一階段禁止結晶治理素材並導向 `calibrate-guidelines`；兩條規約對同一次變更指向相反流程時，實際結果取決於執行者先讀到哪一條。
