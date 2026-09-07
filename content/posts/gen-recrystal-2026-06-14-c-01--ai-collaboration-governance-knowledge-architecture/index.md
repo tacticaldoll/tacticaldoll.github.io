@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "AI 協作把一個老問題放大了：專案知識到底應該放在哪裡？過去，團隊主要在程式碼、文件、規格與口頭溝通之間分配知識。引入 agent 後，新的載體加入了系統：永遠載入的專案入口、工具原生規則、個人記憶、對話上下文、知識萃取報告、外部平台文件、lint 或 schema 這類執行工具。這些載體都能影響 agent 的行動，但它們的耐久性、可見性、權威性與載入時機完全不同。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
     "AI 治理", # term:AIGovernance
     "知識管理", # term:KnowledgeManagement
     "權威漂移", # term:AuthorityDrift

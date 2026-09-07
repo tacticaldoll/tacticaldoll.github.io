@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "AI 協作真正的瓶頸不是工具知識，而是判斷力。本文從文字介質的失真預算談起，說明外化規則為何報酬遞減、觀念化能力如何只能內化、團隊擴散如何放大個體差異，並界定何時不該用 AI，以及手寫代碼為何仍是裁決權的來源。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
+    "大型語言模型", # term:LargeLanguageModel
     "人機協作", # term:HumanAiCollaboration
     "觀念化能力", # term:ConceptualSkill
     "團隊擴散", # term:TeamDiffusion
