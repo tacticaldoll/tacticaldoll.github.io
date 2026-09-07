@@ -728,7 +728,14 @@ class KBAuditor:
                 def assemble_tags(term_count):
                     buf = io.StringIO()
                     meta = dict(tag_base, tags=pool[:term_count])
-                    with contextlib.redirect_stdout(buf):
+                    # Both streams, because the assertion below must test whether the
+                    # loss is reported at all and not which stream carries it. Every
+                    # sibling loss in the pipeline is raised to stderr (the genre
+                    # fallback in tag_anchor and prepare_handoff), so a truncation
+                    # report correctly moved there would read here as no report at
+                    # all — and this check would pin in place the under-reporting it
+                    # exists to catch.
+                    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
                         built = _TagAssembler(_TagStub()).with_tags(meta, tag_lex)
                     return built._tags, buf.getvalue()
 
