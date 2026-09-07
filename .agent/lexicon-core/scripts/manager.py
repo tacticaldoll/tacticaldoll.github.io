@@ -35,11 +35,17 @@ class LexiconManager:
     Handles replenishment, promotion, and archiving under the CamelCase Key-Value Object schema.
     """
     
-    def __init__(self, lexicon=None):
+    def __init__(self, lexicon=None, db_dir=None):
+        """db_dir defaults to the real database directory. It is a parameter so that a
+        test can exercise replenish and promote without writing to the Core SSOT: the
+        quality gate is what these methods are for, and a test of it that mutates the
+        live terminology has to clean up after itself, which it cannot do on the path
+        where the gate correctly refuses."""
         self.lexicon = lexicon or Lexicon()
-        self.core_path = os.path.join(DEFAULT_DB_DIR, "terminology.json")
-        self.draft_path = os.path.join(DEFAULT_DB_DIR, "terminology.draft.json")
-        self.archive_path = os.path.join(DEFAULT_DB_DIR, "terminology.archive.json")
+        db_dir = db_dir or DEFAULT_DB_DIR
+        self.core_path = os.path.join(db_dir, "terminology.json")
+        self.draft_path = os.path.join(db_dir, "terminology.draft.json")
+        self.archive_path = os.path.join(db_dir, "terminology.archive.json")
 
     def _migrate_to_dict(self, data):
         """Converts a legacy list database structure to the new CamelCase key-value structure."""
