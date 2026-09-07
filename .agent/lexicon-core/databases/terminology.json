@@ -71,6 +71,15 @@
     "forbidden": [],
     "level": 2
   },
+  "AiEconomics": {
+    "zh": "AI 經濟與社會",
+    "en": [
+      "AI Economics"
+    ],
+    "description": "描述 AI 能力主張如何經由商品化、評測訊號、資本定價與組織採用轉為可驗證效用的分析領域；涵蓋單位經濟、貢獻利益、人工補償與敘事反身性。",
+    "forbidden": [],
+    "level": 1
+  },
   "CodeAsDocumentation": {
     "zh": "以程式碼為文件",
     "en": [
