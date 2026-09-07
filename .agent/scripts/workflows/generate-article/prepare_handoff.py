@@ -24,7 +24,7 @@ if scripts_root not in sys.path:
     sys.path.append(scripts_root)
 
 from domain.terminology.engine import TerminologyEngine
-from infra.utils import normalize_path, log_info, log_error, strip_report_provenance
+from infra.utils import normalize_path, log_info, log_error
 from infra.taxonomy import TaxonomyEngine
 from infra import config
 
@@ -348,17 +348,11 @@ class HandoffPreparer:
                      f"series-map/guide: {', '.join(harvested)}")
 
     def _detect_domain(self, content):
-        """Delegates domain detection to the centralized TaxonomyEngine.
-
-        The report's provenance header is stripped first. `**Agent**: Codex VS Code
-        extension ...` carries the substring 'agent', a detection keyword for the
-        `AI 代理人 (AI Agent)` domain, so classifying the raw report lets generation
-        metadata — identical across every report in a session — decide the article's
-        domain. Only the prose may vote. The caller still reads the unstripped head
-        for `**Tags**:` / `**Description**:`, which are authored metadata, not
-        provenance.
-        """
-        return self.tax_engine.classify_domain(strip_report_provenance(content))
+        """Delegates domain detection to the centralized TaxonomyEngine, which strips
+        the report's provenance header before classifying. The caller still reads the
+        unstripped head for `**Tags**:` / `**Description**:` — authored metadata, not
+        provenance."""
+        return self.tax_engine.classify_domain(content)
 
     def _sanitize_text(self, text):
         """Replaces forbidden terms in text using the lexicon engine."""

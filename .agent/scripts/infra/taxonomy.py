@@ -5,6 +5,7 @@ import os
 import json
 import re
 from infra import config
+from infra.utils import strip_report_provenance
 
 class TaxonomyEngine:
     """
@@ -32,7 +33,21 @@ class TaxonomyEngine:
         """
         Classifies the AI domain of a given text content.
         Uses hierarchical matching defined in taxonomy.json.
+
+        Provenance is stripped here rather than by each caller. A report header's
+        `**Agent**: Codex VS Code extension ...` contains the substring 'agent',
+        a detection keyword for the AI 代理人 domain, and it is identical across
+        every report in a session — so classifying raw report text let generation
+        metadata pick the domain for all of them. Guarding that at the call sites
+        meant every present and future caller had to remember; doing it here makes
+        passing raw text harmless instead of policing it.
+
+        Stripping already-clean prose is safe for this method's contract: it only
+        drops a leading H1 or rule, which carry no keywords. Verified over the 141
+        reports and 36 post bodies — no classification differs between one strip
+        and two.
         """
+        content = strip_report_provenance(content)
         ai_tax = self.data.get("ai_taxonomy", {})
         # No hardcoded fallback: taxonomy.json is the category SSOT, and a copy here
         # would be a second definition free to drift from it — this default listed

@@ -1,5 +1,6 @@
 import os
 import re
+import ast
 import json
 import sys
 import glob
@@ -61,6 +62,16 @@ class KBAuditor:
             for f in item.get('forbidden', []):
                 banned.add(f)
         return banned
+
+    def _called_name(self, call):
+        """Returns the final attribute or bare name of a Call's target, so `x.y.get(...)`
+        and `get(...)` both answer 'get'. None when the target is not a plain reference."""
+        func = call.func
+        if isinstance(func, ast.Attribute):
+            return func.attr
+        if isinstance(func, ast.Name):
+            return func.id
+        return None
 
     def audit_terminology(self):
         """Audits the terminology source of truth (JSON)."""
@@ -278,52 +289,87 @@ class KBAuditor:
                     f"so is_series resolves false and the declaration is dropped: {self.rel(map_path)}")
 
         # Provenance headers must never reach domain classification: `**Agent**: ...`
-        # matches the 'agent' detection keyword, which made generation metadata decide
-        # every post's domain. Any call site handing raw report text to classify_domain
-        # reintroduces that. The strip lives in infra.utils.strip_report_provenance.
-        classify_sites = [
-            os.path.join(config.SCRIPTS_DIR, "workflows", "generate-article", "prepare_handoff.py"),
-            os.path.join(config.SCRIPTS_DIR, "workflows", "generate-article", "classify_posts.py"),
-        ]
-        for site in classify_sites:
-            if not os.path.exists(site):
-                continue
-            with open(site, 'r', encoding='utf-8') as f:
-                for line_no, line in enumerate(f, start=1):
-                    if "classify_domain(" not in line:
+        # matches the 'agent' detection keyword and is identical across a session's
+        # reports, so raw text let generation metadata pick the domain for all of them.
+        # The guarantee lives inside classify_domain rather than at its call sites, so
+        # that passing raw text is harmless instead of being policed; assert the engine
+        # still holds it. Parsed as a tree, not matched as a line, so reformatting the
+        # call cannot slip past.
+        engine_path = os.path.join(config.INFRA_DIR, "taxonomy.py")
+        if os.path.exists(engine_path):
+            # utf-8-sig: a BOM is transparent to import but ast.parse rejects it as
+            # a non-printable character, and one source file in this repo carries one.
+            with open(engine_path, 'r', encoding='utf-8-sig') as f:
+                engine_src = f.read()
+            try:
+                engine_tree = ast.parse(engine_src)
+            except SyntaxError as exc:
+                errors.append(f"[Governance] Cannot parse {self.rel(engine_path)}: {exc}")
+                engine_tree = None
+            if engine_tree is not None:
+                found = False
+                for node in ast.walk(engine_tree):
+                    if not (isinstance(node, ast.FunctionDef) and node.name == "classify_domain"):
                         continue
-                    if "strip_report_provenance(" not in line:
-                        errors.append(
-                            f"[Governance] classify_domain on unstripped report text "
-                            f"(provenance would vote on the domain) in {self.rel(site)}:{line_no}")
+                    for inner in ast.walk(node):
+                        if isinstance(inner, ast.Call) and self._called_name(inner) == "strip_report_provenance":
+                            found = True
+                if not found:
+                    errors.append("[Governance] classify_domain does not strip report provenance; "
+                                  "generation metadata would vote on the article's domain: "
+                                  f"{self.rel(engine_path)}")
 
         # taxonomy.json is the SSOT for the AI category list and its order, which
         # classify_domain depends on (first hit wins, deepest first). A hardcoded
         # fallback default is a second definition free to drift: one such default
         # still listed three categories after the file held five. Mentioning a
         # category in prose is fine; supplying a list of them as a default is not.
-        hardcoded_cats = re.compile(r'get\(\s*["\']categories["\']\s*,\s*\[\s*["\']')
+        # Matched on the parse tree, so splitting the call across lines does not evade it.
         for py_path in glob.glob(os.path.join(config.SCRIPTS_DIR, "**", "*.py"), recursive=True):
-            with open(py_path, 'r', encoding='utf-8') as f:
-                for line_no, line in enumerate(f, start=1):
-                    if hardcoded_cats.search(line):
-                        errors.append(f"[Governance] Hardcoded AI category list as a default; "
-                                      f"taxonomy.json owns the category list and order: "
-                                      f"{self.rel(py_path)}:{line_no}")
+            with open(py_path, 'r', encoding='utf-8-sig') as f:
+                py_src = f.read()
+            try:
+                tree = ast.parse(py_src)
+            except SyntaxError as exc:
+                errors.append(f"[Governance] Cannot parse {self.rel(py_path)}: {exc}")
+                continue
+            for node in ast.walk(tree):
+                if not (isinstance(node, ast.Call) and self._called_name(node) == "get"):
+                    continue
+                if len(node.args) < 2:
+                    continue
+                key, default = node.args[0], node.args[1]
+                if not (isinstance(key, ast.Constant) and key.value == "categories"):
+                    continue
+                if isinstance(default, (ast.List, ast.Tuple, ast.Set)) and default.elts:
+                    errors.append(f"[Governance] Hardcoded AI category list as a default; "
+                                  f"taxonomy.json owns the category list and order: "
+                                  f"{self.rel(py_path)}:{node.lineno}")
 
         # Series naming has one SSOT: init-handoff.task.schema.yaml's
         # `[核心主題]：[敘事化副標題]`. taxonomy.json owns tag/domain classification and
-        # directory naming, never a mandatory series prefix — GUIDE must not reassign it.
-        prefix_claim = re.compile(r'\[領域前綴\]|系列前綴必須依')
+        # directory naming, never a mandatory series prefix.
+        #
+        # Scope of this check: prose cannot be gated semantically, and this does not
+        # claim to catch every way a document could reassign the SSOT. It is two
+        # concrete guards — the dead phrasings that were actually found here must not
+        # return, and the clause must keep citing the schema it defers to. A rewrite
+        # that reassigns the SSOT in new words needs a human reading, which is what
+        # calibrate-guidelines is for.
+        dead_prefix_phrasings = re.compile(r'\[領域前綴\]|系列前綴必須依')
+        schema_citation = "init-handoff.task.schema.yaml"
         for gov_path in (os.path.join(config.ROOT_DIR, "GUIDE.md"),
                          os.path.join(config.REFERENCE_DIR, "agent-operating-guideline.md")):
             if not os.path.exists(gov_path):
                 continue
             with open(gov_path, 'r', encoding='utf-8') as f:
                 gov_text = f.read()
-            if prefix_claim.search(gov_text):
+            if dead_prefix_phrasings.search(gov_text):
                 errors.append(f"[Governance] {self.rel(gov_path)} mandates a taxonomy domain prefix for "
-                              f"series names; the series naming SSOT is init-handoff.task.schema.yaml")
+                              f"series names; the series naming SSOT is {schema_citation}")
+            if "系列命名" in gov_text and schema_citation not in gov_text:
+                errors.append(f"[Governance] {self.rel(gov_path)} states a series naming rule without "
+                              f"citing {schema_citation}, which owns the format")
 
         return errors
 
