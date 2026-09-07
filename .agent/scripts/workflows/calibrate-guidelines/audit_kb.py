@@ -519,6 +519,55 @@ class KBAuditor:
                                           f"{len(got['hits'][rival])}; an ambiguous "
                                           f"classification would reach the review gate silently")
 
+        # The ignore file and the guideline must name the same protected directories.
+        # GUIDE defers the operative list to `.antigravityignore` ("被列入
+        # .antigravityignore 的目錄") while separately declaring absolute protection for
+        # named directories, so the two can drift apart in either direction: a directory
+        # added to the ignore file that no rule explains, or a directory declared
+        # untouchable that the ignore file never covers. Both failures are silent, and
+        # the second is the dangerous one — the declaration reads as enforced when the
+        # mechanism carrying it does not list the path.
+        ignore_path = os.path.join(config.ROOT_DIR, ".antigravityignore")
+        guide_path = os.path.join(config.ROOT_DIR, "GUIDE.md")
+        if not os.path.exists(ignore_path):
+            errors.append("[Governance] Missing .antigravityignore; GUIDE defers the "
+                          "protected-directory list to it")
+        elif not os.path.exists(guide_path):
+            errors.append("[Governance] Missing GUIDE.md; the protected-directory "
+                          "declarations have no source")
+        else:
+            with open(ignore_path, 'r', encoding='utf-8-sig') as f:
+                ignored = {ln.strip() for ln in f
+                           if ln.strip() and not ln.lstrip().startswith("#")}
+            with open(guide_path, 'r', encoding='utf-8-sig') as f:
+                guide_src = f.read()
+
+            # The absolute-protection block, bounded by its own heading bullet and the
+            # next bullet at the same indent. Located rather than assumed: a renamed
+            # heading must report itself, not silently match nothing.
+            block = re.search(r'^- \*\*目錄保護絕對規則.*?$(.*?)(?=^- \*\*)',
+                              guide_src, re.S | re.M)
+            if not block:
+                errors.append("[Governance] Cannot locate GUIDE's 目錄保護絕對規則 block; "
+                              "the protected-directory agreement cannot be verified")
+            else:
+                declared = {t for t in re.findall(r'`([^`]+/)`', block.group(1))}
+                if not declared:
+                    errors.append("[Governance] GUIDE's 目錄保護絕對規則 block names no "
+                                  "directory; the ignore list has nothing to agree with")
+                undeclared = sorted(ignored - declared)
+                unenforced = sorted(declared - ignored)
+                if undeclared:
+                    errors.append(f"[Governance] .antigravityignore protects {undeclared} "
+                                  f"but GUIDE's 目錄保護絕對規則 does not declare them; an "
+                                  f"agent excluding a path for no stated reason cannot tell "
+                                  f"a boundary from an accident.")
+                if unenforced:
+                    errors.append(f"[Governance] GUIDE declares {unenforced} absolutely "
+                                  f"protected but .antigravityignore does not list them; the "
+                                  f"declaration reads as enforced while the mechanism GUIDE "
+                                  f"defers to omits the path.")
+
         # Category order decides the domain and the first hit wins. That is a settled
         # decision rather than an artefact: AI 經濟與社會 precedes AI 代理人 so that a
         # specific reading beats a broad one even on a single keyword, and the posts it
