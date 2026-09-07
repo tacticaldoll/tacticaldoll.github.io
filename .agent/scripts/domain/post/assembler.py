@@ -87,6 +87,7 @@ class PostAssembler:
 
         if domain_tag not in ai_categories:
             from infra.taxonomy import TaxonomyEngine
+            from infra.utils import log_error, log_info
             tax_engine = TaxonomyEngine()
             # No window. This is the fallback path — prepare_handoff already classified
             # the full report and wrote domain_tag, and classify_posts re-derives it the
@@ -96,7 +97,24 @@ class PostAssembler:
             # (with_tags runs before PostOrchestrator.cleanup), so no injected term
             # vocabulary can vote.
             body_content = self.post.body if hasattr(self.post, 'body') else ""
-            domain_tag = tax_engine.classify_domain(body_content) or ""
+            # The evidence, not just the answer. prepare_handoff reports an ambiguous
+            # classification while a human still holds the handoff, but this path is
+            # reached only when that run wrote no domain_tag at all — so it is the one
+            # classification nobody has looked at, and it was the last one still
+            # deciding in silence. Same severity split as there: a winner the evidence
+            # argues against interrupts, the rest is context.
+            evidence = tax_engine.classify_domain_evidence(body_content)
+            domain_tag = evidence["domain"] or ""
+            if domain_tag and evidence["flags"]:
+                report = (f"  [DOMAIN AMBIGUITY] {self._title}: {domain_tag} on "
+                          f"{len(evidence['hits'][domain_tag])} keyword(s), "
+                          f"{len(evidence['hits'])} category(ies) hit. "
+                          f"Flags: {', '.join(evidence['flags'])}.")
+                if tax_engine.WEAK_WINNER in evidence["flags"]:
+                    log_error(report + " The evidence favours a category that lost on "
+                                       "category priority; confirm the domain.")
+                else:
+                    log_info(report)
 
         clean_structure_tag = self._get_clean_tag(structure_tag)
         clean_domain_tag = self._get_clean_tag(domain_tag)

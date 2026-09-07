@@ -89,7 +89,20 @@ class TaxonomyEngine:
             for kw in detection.get(category, []):
                 pos = content_lower.find(kw.lower())
                 if pos >= 0:
-                    found.append({"keyword": kw, "position": pos})
+                    found.append({"keyword": kw, "position": pos,
+                                  "end": pos + len(kw)})
+            # One stretch of text is one piece of evidence. `注意力` is a substring of
+            # `自我注意力` and both are keywords of this category, so a single
+            # five-character phrase counted as two hits. That count is what
+            # WEAK_WINNER compares and what SINGLE_HIT tests, so a winner resting on
+            # one phrase looked like it rested on two and raised no flag at all — the
+            # flags were reporting on an evidence base the text did not have. A match
+            # contained inside a longer one is the same occurrence read less
+            # specifically; the containing match stands for it.
+            found = [h for h in found
+                     if not any(o["position"] <= h["position"] and h["end"] <= o["end"]
+                                and (o["end"] - o["position"]) > (h["end"] - h["position"])
+                                for o in found)]
             if found:
                 found.sort(key=lambda h: h["position"])
                 hits[category] = found

@@ -552,6 +552,49 @@ class KBAuditor:
                                           f"{len(got['hits'][rival])}; an ambiguous "
                                           f"classification would reach the review gate silently")
 
+            # SINGLE_HIT was the one flag never asserted, and the one most easily made
+            # vacuous: evidence was counted per keyword, so a single stretch of text
+            # matched by both `注意力` and `自我注意力` counted as two and the flag stayed
+            # silent on a classification resting on one phrase. Two shapes are probed,
+            # and the nested pair is found in taxonomy rather than named here.
+            solo_cat = next((c for c in ev_cats if ev_det.get(c)), None)
+            if solo_cat is None:
+                errors.append("[Governance] taxonomy.json defines no detection keywords; "
+                              "SINGLE_HIT cannot be verified")
+            else:
+                solo = ev.classify_domain_evidence(f"本文討論 {ev_det[solo_cat][0]} 的邊界。\n")
+                if solo["domain"] != solo_cat or len(solo["hits"].get(solo_cat, [])) != 1:
+                    errors.append(f"[Governance] the SINGLE_HIT probe did not resolve to one "
+                                  f"hit on '{solo_cat}'; the flag cannot be verified")
+                elif ev.SINGLE_HIT not in solo["flags"]:
+                    errors.append("[Governance] classify_domain_evidence did not raise "
+                                  "SINGLE_HIT for a winner resting on one keyword; a "
+                                  "classification with no other evidence would reach the "
+                                  "review gate looking corroborated")
+
+            nested = next(((c, outer, inner)
+                           for c, kws in ev_det.items()
+                           for outer in kws for inner in kws
+                           if inner != outer and inner.lower() in outer.lower()), None)
+            if nested:
+                cat_n, outer, inner = nested
+                got_n = ev.classify_domain_evidence(f"本文討論{outer}的邊界。\n")
+                if len(got_n["hits"].get(cat_n, [])) != 1:
+                    errors.append(
+                        f"[Governance] '{outer}' counted as "
+                        f"{len(got_n['hits'].get(cat_n, []))} pieces of evidence because "
+                        f"'{inner}' is a keyword inside it. One stretch of text is one "
+                        f"occurrence; a match contained in a longer one is the same text "
+                        f"read less specifically. Inflating the count is what silences "
+                        f"SINGLE_HIT and skews the WEAK_WINNER comparison.")
+                elif got_n["domain"] != cat_n:
+                    errors.append(f"[Governance] the nested-keyword probe resolved to "
+                                  f"'{got_n['domain']}' rather than '{cat_n}'; SINGLE_HIT "
+                                  f"cannot be read off it")
+                elif ev.SINGLE_HIT not in got_n["flags"]:
+                    errors.append(f"[Governance] a body whose only evidence is '{outer}' did "
+                                  f"not raise SINGLE_HIT")
+
         # The knowledge funnel must place evaluation before crystallization. §7.2 numbers
         # distill-knowledge as the first of three states, but §7's funnel once listed only
         # dialogue, crystallize and consolidate — so nothing in the funnel said that
