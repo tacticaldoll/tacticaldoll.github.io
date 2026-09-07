@@ -726,6 +726,7 @@ class KBAuditor:
                               f"truncation reporting cannot be verified")
             else:
                 def assemble_tags(term_count):
+                    """Returns (tags, captured output, error message or None)."""
                     buf = io.StringIO()
                     meta = dict(tag_base, tags=pool[:term_count])
                     # Both streams, because the assertion below must test whether the
@@ -735,12 +736,28 @@ class KBAuditor:
                     # report correctly moved there would read here as no report at
                     # all — and this check would pin in place the under-reporting it
                     # exists to catch.
-                    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-                        built = _TagAssembler(_TagStub()).with_tags(meta, tag_lex)
-                    return built._tags, buf.getvalue()
+                    # Reported, not raised, as at every sibling probe in this method.
+                    # with_tags raises on a tag whose English form yields an empty key,
+                    # and this block sits ahead of the category-default scan, the
+                    # series-naming guard and the four-way genre reconciliation — all in
+                    # this same method. An escaping exception would abort them and hand
+                    # back a traceback in place of the governance errors they exist to
+                    # produce, so one bad lexicon entry would quietly disable the rest of
+                    # the gate.
+                    try:
+                        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                            built = _TagAssembler(_TagStub()).with_tags(meta, tag_lex)
+                    except Exception as exc:
+                        return [], buf.getvalue(), str(exc)
+                    return built._tags, buf.getvalue(), None
 
-                over_tags, over_log = assemble_tags(config.TAG_CAP + 4)
-                if "[TAGS DROPPED]" not in over_log:
+                over_tags, over_log, over_err = assemble_tags(config.TAG_CAP + 4)
+                under_tags, under_log, under_err = assemble_tags(1)
+                probe_err = over_err or under_err
+                if probe_err:
+                    errors.append(f"[Governance] cannot assemble tags to verify tag "
+                                  f"truncation reporting: {probe_err}")
+                elif "[TAGS DROPPED]" not in over_log:
                     errors.append(f"[Governance] assembling {config.TAG_CAP + 4} anchorable "
                                   f"tags kept only {len(over_tags)} and reported nothing; "
                                   f"candidates discarded at TAG_SCAN_LIMIT or TAG_CAP must "
@@ -749,8 +766,7 @@ class KBAuditor:
                     errors.append(f"[Governance] tag assembly emitted {len(over_tags)} tags, "
                                   f"over TAG_CAP ({config.TAG_CAP})")
 
-                under_tags, under_log = assemble_tags(1)
-                if "[TAGS DROPPED]" in under_log:
+                if not probe_err and "[TAGS DROPPED]" in under_log:
                     errors.append(f"[Governance] tag assembly reported a drop for a post "
                                   f"with one tag and {len(under_tags)} emitted; an "
                                   f"unconditional report would make the check above "
