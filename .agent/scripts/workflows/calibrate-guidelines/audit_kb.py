@@ -231,17 +231,29 @@ class KBAuditor:
             if "prepare_handoff.py" in batch_content:
                 errors.append("[Governance] batch orchestration must not rerun prepare_handoff outside /init-handoff")
 
-        # Header rewrite/crop regex must not use broad \s* because it can consume newlines.
+        # A broad whitespace class placed immediately after a line anchor eats the
+        # newline the anchor exists to assert, so the pattern matches from an earlier
+        # line and crosses blank lines it was never meant to reach. Only [ \t] may
+        # express horizontal whitespace there.
+        #
+        # Keyed on the anchored form itself, not on a header marker. The previous
+        # condition required a '#' on the same line, which no front-matter regex
+        # carries: the provenance stripper's own three anchored patterns sat in a file
+        # this loop already walked, and passed. Widening the marker list to ** and
+        # <!-- instead catches <!--\s*anchor:, where the class sits inside the comment
+        # and has no anchor to defeat. The anchored form is the defect, so it is what
+        # this reads.
         for file_path in self.iter_repo_files(extensions=(".py",)):
             rel_path = self.rel(file_path)
             with open(file_path, 'r', encoding='utf-8') as f:
                 for line_no, line in enumerate(f, 1):
                     if not any(call in line for call in ("re.sub", "re.match", "re.compile", "re.search", "re.findall")):
                         continue
-                    if "\\s*" not in line:
+                    if "^\\s*" not in line:
                         continue
-                    if "##" in line or "#{" in line or "^#" in line or "^\\s*#" in line:
-                        errors.append(f"[Governance] Potential broad header whitespace regex '\\s*' in {rel_path}:{line_no}")
+                    errors.append(f"[Governance] Broad whitespace after a line anchor in "
+                                  f"{rel_path}:{line_no}; the anchor does not hold when the "
+                                  f"class can consume the newline. Use '^[ \\t]*'.")
 
         # Active handoff term descriptions must be completed before publishing.
         for file_path in self.iter_repo_files(extensions=("handoff.terms.json",)):
