@@ -1,6 +1,11 @@
 # 已發布知識再結晶 Backlog
 
-本文件是已發布貼文重新歸納為母系列的草案。它不是既有分類的權威來源，而是後續執行 `recrystallize-post-series` 時的工作入口。
+> [!IMPORTANT]
+> **本佇列已消耗完畢。** 下列 10 個母系列的 75 篇候選貼文全部已完成再結晶並封存至 `archive/posts/`，`content/posts/` 中不再有任何一篇。本檔自此保留為 provenance 紀錄——它記載每個母系列當初由哪些貼文構成，供追溯用。
+>
+> 活躍的延後工作佇列見 [deferred-work-backlog.md](deferred-work-backlog.md)。
+
+本文件原是已發布貼文重新歸納為母系列的草案。它不是既有分類的權威來源，而是執行 `recrystallize-post-series` 時的工作入口。
 
 每個母系列應獨立使用一個 session 處理。處理時讀取候選貼文全文，暫時忽略既有 `tags` 與 `series` 的權威性，再從正文反推核心問題、因果鏈與系列角色。
 
