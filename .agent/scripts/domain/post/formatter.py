@@ -35,27 +35,21 @@ class PostFormatter:
         """Standardizes headers based on taxonomy rules in handoff and global rules SSOT."""
         header_map = {}
         try:
-            from infra import config
-            import json
-            if os.path.exists(config.RULES_JSON):
-                with open(config.RULES_JSON, 'r', encoding='utf-8') as f:
-                    global_rules = json.load(f)
-                    header_map.update(global_rules.get("header_normalization", {}))
+            from infra.taxonomy import TaxonomyEngine
+            header_map.update(TaxonomyEngine().header_variant_map())
         except Exception as e:
-            # Not config.RULES_JSON in this message: config is imported inside the try,
-            # so naming it here would raise NameError on the one failure that matters.
             from infra.utils import log_error
-            log_error(f"formatter: could not read header_normalization from rules.json: {e}")
+            log_error(f"formatter: could not read header_normalization from "
+                      f"the taxonomy SSOT: {e}")
 
         if not header_map:
-            # No built-in default. The fallback that used to sit here was a fourth copy
-            # of this vocabulary and it disagreed with the others — it mapped Reflection
-            # to 省思 where the schema names the section 反思 — so a missing SSOT was
-            # silently replaced by a different vocabulary. An empty map normalizes
+            # No built-in default. The fallback that used to sit here held a copy of
+            # this vocabulary and disagreed with every other copy, so a missing SSOT
+            # was silently replaced by a different vocabulary. An empty map normalizes
             # nothing, which is visible; substituting a guess is not.
             from infra.utils import log_error
-            log_error("formatter: header_normalization is empty; no global header "
-                      "normalization will be applied this run")
+            log_error("formatter: the taxonomy defines no header_normalization; no "
+                      "global header normalization will be applied this run")
 
         if rules and rules.get("headers"):
             header_map.update(rules["headers"])

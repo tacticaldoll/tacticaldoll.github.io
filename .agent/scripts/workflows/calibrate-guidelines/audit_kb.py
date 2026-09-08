@@ -22,12 +22,9 @@ class KBAuditor:
     
     def __init__(self):
         self.terminology_path = config.TERMINOLOGY_JSON
-        self.taxonomy_path = config.TAXONOMY_MD
         self.content_dir = config.POSTS_DIR
         self.lexicon = Lexicon(self.terminology_path)
-        # load_taxonomy also returns a tag-slug set that nothing has ever read; only
-        # the header vocabulary is consumed, by audit_posts.
-        self.valid_headers, _ = self.load_taxonomy()
+        self.valid_headers, self.header_variants = self.load_taxonomy()
 
     def iter_repo_files(self, extensions=None):
         """Yields project files for governance scans."""
@@ -43,23 +40,11 @@ class KBAuditor:
         return os.path.relpath(file_path, config.ROOT_DIR)
         
     def load_taxonomy(self):
-        """Extracts valid headers and tags from taxonomy.md."""
-        if not os.path.exists(self.taxonomy_path):
-            return set(), set()
-        with open(self.taxonomy_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-
-        # 1. Generic Headers
-        header_section = re.search(r'### A\. 全域通用標題.*?\n(.*?)\n###', content, re.DOTALL)
-        valid_headers = []
-        if header_section:
-            matches = re.findall(r'\|\s*\*\*(.*?)\*\*\s*\|', header_section.group(1))
-            valid_headers = [m.strip() for m in matches]
-
-        # 2. Taxonomy Tags (slugs)
-        tag_matches = re.findall(r'- `(.*?)`:', content)
-        
-        return set(valid_headers), set(tag_matches)
+        """The canonical section headers and the variations that must become them, from
+        the taxonomy SSOT rather than scraped out of a Markdown table."""
+        from infra.taxonomy import TaxonomyEngine
+        engine = TaxonomyEngine()
+        return engine.standard_headers(), engine.header_variant_map()
         
     def get_banned_words(self):
         """Dynamically extracts all forbidden terms from the knowledge base."""
@@ -109,13 +94,18 @@ class KBAuditor:
                 if banned in content:
                     errors.append(f"[{rel_path}] Contains banned word '{banned}'")
             
-            # 2. Header Normalization
-            headers = re.findall(r'^##\s+(.*)', content, re.MULTILINE)
+            # 2. Header Normalization. The candidate vocabulary comes from the
+            # taxonomy, not from a set literal here: the literal that used to sit here
+            # had drifted out of step with the table it mirrored — it omitted 反思,
+            # which was the only reason this check was not firing on 24 posts — and
+            # named five words the table does not list at all.
+            headers = re.findall(r'^##[ \t]+(.*)', content, re.MULTILINE)
             for h in headers:
                 h_clean = h.strip()
-                generic_candidates = {"引言", "背景", "前言", "觀察", "發現", "結果", "決策", "決議", "結案", "總結", "教訓", "啟示", "後記", "結論"}
-                if h_clean in generic_candidates and h_clean not in self.valid_headers:
-                    errors.append(f"[{rel_path}] Header '## {h_clean}' should be normalized per taxonomy.md")
+                standard = self.header_variants.get(h_clean)
+                if standard and h_clean not in self.valid_headers:
+                    errors.append(f"[{rel_path}] Header '## {h_clean}' should be "
+                                  f"normalized to '## {standard}' per taxonomy.json")
 
         return errors
 

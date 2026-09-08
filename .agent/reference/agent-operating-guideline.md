@@ -70,7 +70,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 | :--- | :--- | :--- | :--- |
 | `metadata.posts[].tags` | `/init-handoff` NLP | `pipeline.py` | AI 可在 Stage 0 填寫一般技術標籤。 |
 | `metadata.posts[].domain_tag` | `TaxonomyEngine` | `pipeline.py` | AI 不得填寫。 |
-| `metadata.posts[].rules` | `/init-handoff` NLP | `pipeline.py` | NLP 寫入語意脫敏與標頭規則；pipeline 只消費。 |
+| `metadata.posts[].rules.redactions` / `.sublimations` | `/init-handoff` NLP | `pipeline.py` | NLP 寫入語意脫敏與敘事昇華；pipeline 只消費。 |
+| `metadata.posts[].rules.headers` | `prepare_handoff.py` | `formatter.py` | 由 `taxonomy.json` 的 `header_normalization` 推導，非 NLP 撰寫。標頭詞彙的 SSOT 是 taxonomy，不是逐 session 的判斷。 |
 | `terms.declared` | `/init-handoff` NLP | `refine_handoff.py` | 享有 declaration immunity，但不得含敘事雜訊。 |
 | `terms.discovered/existing/forbidden_found` | `prepare_handoff.py` | `refine_handoff.py` | Script-managed。 |
 | `terms.locked` | `refine_handoff.py` + NLP description | `pipeline.py` | description 不得為空或含 placeholder。 |

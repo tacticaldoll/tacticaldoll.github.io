@@ -125,6 +125,34 @@ class TaxonomyEngine:
 
         return {"domain": winner, "hits": hits, "flags": flags}
 
+    def header_normalization(self):
+        """The section-header vocabulary: {standard: [variations]}.
+
+        One table, in the file GUIDE §0 makes authoritative for structure and
+        classification. It replaced five: this table's predecessor in taxonomy.md, a
+        four-entry subset in rules.json, a hardcoded fallback in the formatter, and a
+        hardcoded candidate set in audit_posts — which disagreed with each other about
+        what the Reflection section is called, and produced published headers the
+        schema does not name.
+
+        Genre-blind by construction. `Introduction` is deliberately not a variation of
+        anything: the schema opens an analytical essay with 導言 and an experience
+        report with 背景, so no global table can resolve it. That decision belongs to
+        the per-session `rules.headers` the ownership matrix assigns to /init-handoff,
+        which the formatter applies after this table. A missing rule there leaves an
+        English header, which is visible; a global default would ship a plausible
+        Chinese one that is wrong for half the genres.
+        """
+        return self.data.get("header_normalization", {})
+
+    def standard_headers(self):
+        """The canonical section names. Every schema section title must be one."""
+        return set(self.header_normalization().keys())
+
+    def header_variant_map(self):
+        """{variation: standard}, for callers that normalize a header they were given."""
+        return {v: std for std, vs in self.header_normalization().items() for v in vs}
+
     def save(self):
         """Persists the in-memory taxonomy back to taxonomy.json (utf-8, indent 2)."""
         with open(self.taxonomy_path, 'w', encoding='utf-8') as f:

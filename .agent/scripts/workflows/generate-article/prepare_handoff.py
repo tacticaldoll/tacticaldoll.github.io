@@ -34,7 +34,6 @@ class HandoffPreparer:
         self.handoff: Dict[str, Any] = {}
         self.root_dir = config.ROOT_DIR
         self.scratch_dir = os.path.join(self.root_dir, ".agent-scratch", session_id)
-        self.taxonomy_path = config.TAXONOMY_MD
         self.term_json_path = config.TERMINOLOGY_JSON
         
         
@@ -127,25 +126,14 @@ class HandoffPreparer:
         self.taxonomy_headers = {}
 
     def load_taxonomy_rules(self):
-        """Extracts standard headers and domain tags from taxonomy.md."""
-        if not os.path.exists(self.taxonomy_path):
-            return
-            
-        with open(self.taxonomy_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            
-        # Parse Generic Headers table
-        header_table = re.findall(r'^\|\s*(.*?)\s*\|\s*\*\*(.*?)\*\*\s*\|', content, re.MULTILINE)
-        for variants, standard in header_table:
-            for v in variants.split('` / `'):
-                v_clean = v.strip('` ')
-                self.taxonomy_headers[v_clean] = standard
+        """Loads the section-header vocabulary from the taxonomy SSOT into the map the
+        handoff carries as `rules.headers`.
 
-        # Parse Domain Tags (Slugs to ZH)
-        tag_matches = re.findall(r'- `(.*?)`: (.*)', content)
-        for slug, zh in tag_matches:
-            # We don't store them all, just use them to identify terms in content
-            pass
+        Read from taxonomy.json rather than parsed out of a Markdown table. The tag-slug
+        parse that used to sit here ended in a `pass` — it collected nothing and no
+        caller ever wanted it.
+        """
+        self.taxonomy_headers = self.tax_engine.header_variant_map()
 
     def scan_reports(self):
         """Scans selected reports in the session for terms and context (prioritizing zh)."""

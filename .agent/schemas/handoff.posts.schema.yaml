@@ -74,7 +74,10 @@ metadata:
         # [標頭正規化]: 
         # 針對 ## 與 ### 泛化標題，動態定義去除英文括號或純英文的對應，保護 TOC 不被污染。
         # 範例: {"實作細節 (Implementation)": "實作細節", "Conclusion": "結論"}
-        headers: {} 
+        # [標頭正規化]: 由 prepare_handoff.py 從 taxonomy.json 的 `header_normalization`
+        # 推導的 {變體: 標準} 對映，**非 NLP 撰寫**。標頭詞彙的 SSOT 是 taxonomy，
+        # 不是逐 session 的判斷；此處僅為 formatter 的消費副本。
+        headers: {}
         # [脈絡脫敏 (通用化 Generalization)]: 
         # 將專案內部的專有名詞（如特定產品名稱、內部絕對路徑、團隊名稱、未定義的內部術語）轉換為符合上下文的代名詞，
         # 進行通用化脫敏，取代一刀切的腳本替換，讓外部讀者也能輕易理解。
