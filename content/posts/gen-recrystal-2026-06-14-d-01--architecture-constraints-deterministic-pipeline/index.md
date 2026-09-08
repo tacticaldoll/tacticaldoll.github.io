@@ -31,16 +31,15 @@ series = ["結構與邊界：當權威必須落成程式與核心都會拒絕的
 
 AI agent 進入工程系統後，最危險的誤解是把模型能力當成架構能力。模型可以讀很多上下文、生成完整方案、模仿既有代碼風格，也可以在缺少資訊時補出一條看似合理的因果鏈。但這些能力不會自動帶來可驗證性、可回復性或責任邊界。相反地，若架構沒有穩定約束，模型越會生成，系統越容易把隱式依賴、歷史污染與錯誤抽象擴散得更快。
 
-這裡真正要主張的是：agent 友善架構不是讓模型自由理解更多東西，而是把可誤解空間縮小到工程能承受的範圍。分類規則要集中成可審計的 dispatch；資料、schema、workflow 與 script 要有明確歸屬；高風險轉換要進入 deterministic pipeline；領域邊界要壓縮 agent 的**搜尋熵**（Search Entropy） <!-- term:SearchEntropy -->；跨語言重寫要先萃取黑盒契約，而不是翻譯舊**形狀**（Data Shape） <!-- term:DataShape -->。最後，**單一事實來源**（Single Source of Truth） <!-- term:SingleSourceOfTruth -->不能只是一個檔案，而要演化為多維 SSOT：codebase 管物理現實，Living Specs 管意圖，**衝突封存**（Archive） <!-- term:Archive --> 管歷史因果，Production 管現實回饋。
+這裡真正要主張的是：agent 友善架構不是讓模型自由理解更多東西，而是把可誤解空間縮小到工程能承受的範圍。分類規則要集中成可審計的 dispatch；資料、schema、workflow 與 script 要有明確歸屬；高風險轉換要進入 deterministic pipeline；領域邊界要壓縮 agent 的**搜尋熵**（Search Entropy） <!-- term:SearchEntropy -->；跨語言重寫要先萃取黑盒契約，而不是翻譯舊形狀。最後，**單一事實來源**（Single Source of Truth） <!-- term:SingleSourceOfTruth -->不能只是一個檔案，而要演化為多維 SSOT：codebase 管物理現實，Living Specs 管意圖，**衝突封存**（Archive） <!-- term:Archive --> 管歷史因果，Production 管現實回饋。
 
 > [!IMPORTANT]
 > **搜尋熵** <!-- term:SearchEntropy --> (Search Entropy): AI Agent 或開發者在不確定或散亂的程式碼庫中搜尋定位特定邏輯或行為時面臨的無序度。 <!-- anchor:SearchEntropy -->
-> **形狀** <!-- term:DataShape --> (Data Shape): 資料結構或物件所包含的屬性與型別定義，通常由型別系統來描述 <!-- anchor:DataShape -->
 > **單一事實來源** <!-- term:SingleSourceOfTruth --> (Single Source of Truth): 指在特定工作執行緒中唯一被視為絕對真實與合法的結構化資料來源，所有操作皆以其為單向基準。 <!-- anchor:SingleSourceOfTruth -->
 > **衝突封存** <!-- term:Archive --> (Archive): 這是 SDD 治理框架中的三層防禦之一，旨在記錄版本歷史與衝突狀態，但在底層模型發生無聲漂移時，由於缺乏清晰分界點，難以有效捕捉連續的品質滑坡。 <!-- anchor:Archive -->
 
 
-這裡需要先定義兩個前提。第一，LLM 屬於統計生成層：當上下文缺少因果鏈時，它傾向用可見形狀 <!-- term:DataShape -->補齊空白，產生自洽但未必正確的輸出。第二，**確定性邊界**（Deterministic Trust Boundary） <!-- term:DeterministicTrustBoundary -->與統計執行層不同。需要全局一致、可重放、二元判斷或零錯誤的步驟，必須由 deterministic code、schema validator、linter、CI gate 或 runtime assertion 執行。模型可以提出假設、整理脈絡與生成候選方案，但不能成為最後的完整性裁決者。
+這裡需要先定義兩個前提。第一，LLM 屬於統計生成層：當上下文缺少因果鏈時，它傾向用可見形狀補齊空白，產生自洽但未必正確的輸出。第二，**確定性邊界**（Deterministic Trust Boundary） <!-- term:DeterministicTrustBoundary -->與統計執行層不同。需要全局一致、可重放、二元判斷或零錯誤的步驟，必須由 deterministic code、schema validator、linter、CI gate 或 runtime assertion 執行。模型可以提出假設、整理脈絡與生成候選方案，但不能成為最後的完整性裁決者。
 
 > [!IMPORTANT]
 > **確定性邊界** <!-- term:DeterministicTrustBoundary --> (Deterministic Trust Boundary): 在系統設計中，劃分確定性執行層（如腳本、CI）與統計推論層（如大語言模型）的介面契約，以確保關鍵操作的 100% 正確性。 <!-- anchor:DeterministicTrustBoundary -->
@@ -52,11 +51,7 @@ AI agent 進入工程系統後，最危險的誤解是把模型能力當成架�
 
 架構約束的第一個功能，是把「看似局部」的知識重新放回全局位置。分類規則就是典型例子。當每個 kind 都各自宣稱「我知道如何判斷自己」，系統表面上很物件導向，實際上卻把優先序、互斥關係與 fallback 藏在註冊順序裡。這種自包含是假象：分類從來不是單一物件的私事，而是整個集合的全局關係。
 
-若再把分類、行為**組合**（Compose） <!-- term:Compose -->與身份查詢疊在同一個抽象上，語意斷裂就會發生。外層行為可能遮蔽內層身份，讓「唯讀」這種操作特性被誤讀為資源種類。對人類而言，這也許只是一次設計失誤；對 agent 而言，這會變成可模仿的錯誤形狀 <!-- term:DataShape -->。模型會看到某個介面同時承擔太多責任，並延續這種混雜。
-
-> [!IMPORTANT]
-> **組合** <!-- term:Compose --> (Compose): 將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。 <!-- anchor:Compose -->
-
+若再把分類、行為**組合**與身份查詢疊在同一個抽象上，語意斷裂就會發生。外層行為可能遮蔽內層身份，讓「唯讀」這種操作特性被誤讀為資源種類。對人類而言，這也許只是一次設計失誤；對 agent 而言，這會變成可模仿的錯誤形狀。模型會看到某個介面同時承擔太多責任，並延續這種混雜。
 
 更穩定的方向，是把分類規則集中為 declarative dispatch。pattern 規則、metadata guard 與 fallback 應該在同一個可審計位置被排列，kind 本身則退回純操作與構建。這不是追求 god function，而是承認「全局知識必須有全局表達」。當分類的互斥性與優先序被寫成資料表，agent 不再需要從分散檔案與註冊順序中推測真相。
 
@@ -107,7 +102,7 @@ flowchart LR
 
 這條管線的關鍵，是每一層只做一件事。萃取層可以使用 LLM 協助整理候選資訊，但萃取結果必須落成結構化 manifest。驗證層不應再反向讀全文猜測，而是檢查 manifest 是否符合 schema。轉換層只讀已驗證輸入，輸出層只負責組裝，審計層記錄版本、來源與裁決結果。
 
-最小 gate 形狀 <!-- term:DataShape -->可以像這樣：
+最小 gate 形狀可以像這樣：
 
 ```python
 def run_pipeline(raw_input, schema, code_index):
@@ -173,9 +168,9 @@ publisher.emit(document)
 
 ### 重構重力井：不要把舊形狀翻譯成新宇宙
 
-當系統進入跨語言重寫或大型重構時，架構約束會遇到另一種敵人：legacy 重力井。舊代碼、舊測試、舊 bug、原作者 PoC 與團隊習慣，會把新系統拉回舊世界。AI 會放大這個力量，因為它擅長模仿上下文。若上下文主要是舊代碼，模型會把舊形狀 <!-- term:DataShape -->當權威。
+當系統進入跨語言重寫或大型重構時，架構約束會遇到另一種敵人：legacy 重力井。舊代碼、舊測試、舊 bug、原作者 PoC 與團隊習慣，會把新系統拉回舊世界。AI 會放大這個力量，因為它擅長模仿上下文。若上下文主要是舊代碼，模型會把舊形狀當權威。
 
-重寫的錯誤路徑通常有幾種。逐行翻譯會把舊語言的隱式狀態搬進新語言，用全域鎖、singleton 或共享 mutable state 包裝成「相容」。白盒測試搬運會把私有方法、mock 結構與中間狀態誤當契約，迫使新系統保留舊**依賴圖**（Dependency Graph） <!-- term:DependencyGraph -->。Bug-compatible 崇拜會把歷史偶然永久化。原作者 PoC 則可能把壓縮直覺以未解釋的形狀 <!-- term:DataShape -->交給 AI，成為新的定錨污染。
+重寫的錯誤路徑通常有幾種。逐行翻譯會把舊語言的隱式狀態搬進新語言，用全域鎖、singleton 或共享 mutable state 包裝成「相容」。白盒測試搬運會把私有方法、mock 結構與中間狀態誤當契約，迫使新系統保留舊**依賴圖**（Dependency Graph） <!-- term:DependencyGraph -->。Bug-compatible 崇拜會把歷史偶然永久化。原作者 PoC 則可能把壓縮直覺以未解釋的形狀交給 AI，成為新的定錨污染。
 
 > [!IMPORTANT]
 > **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網絡，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->
@@ -190,7 +185,7 @@ publisher.emit(document)
 | 哪些錯誤語義被呼叫端依賴？ | 保留外部相容性 |
 | 哪些 bug 已被下游依賴？ | 設計相容層與退場條件 |
 | 哪些歷史補丁在防禦事故？ | 避免清掉必要邊界 |
-| 哪些形狀 <!-- term:DataShape -->只是舊框架遺產？ | 允許新語言使用新範式 |
+| 哪些形狀只是舊框架遺產？ | 允許新語言使用新範式 |
 
 這些答案應進入 Living Specs 與 衝突封存 <!-- term:Archive -->，而不是只存在於 prompt。AI 可以協助整理入口、資料流、反例與測試矩陣，但它不應在契約萃取前扮演翻譯機。
 
@@ -235,7 +230,7 @@ flowchart LR
 
 Codebase 是物理現實的 SSOT。文件說流程非同步，但代碼同步等待外部 API，物理上就是同步。Living Specs 是意圖真理的 SSOT，負責說明系統應該維持哪些不變量、錯誤語義、資料權威與相容性窗口。衝突封存 <!-- term:Archive --> 是歷史因果的 SSOT，負責保存曾經失敗的方案與當時條件。Production 是現實回饋的 SSOT，負責用 metrics、logs、traces、事故與使用者行為反駁紙上假設。
 
-多維 SSOT 的價值在於衝突處理。Codebase 與 約束性規格 <!-- term:Spec --> 衝突時，要判斷是實作漂移還是意圖過期。約束性規格 <!-- term:Spec --> 與 Production 衝突時，要判斷是假設錯誤還是系統需要補強。Codebase 重引入 衝突封存 <!-- term:Archive --> 記錄過的危險模式時，review 應要求說明為何這次條件不同。若沒有這些維度，agent 只能在單一上下文裡模仿最顯眼的形狀 <!-- term:DataShape -->。
+多維 SSOT 的價值在於衝突處理。Codebase 與 約束性規格 <!-- term:Spec --> 衝突時，要判斷是實作漂移還是意圖過期。約束性規格 <!-- term:Spec --> 與 Production 衝突時，要判斷是假設錯誤還是系統需要補強。Codebase 重引入 衝突封存 <!-- term:Archive --> 記錄過的危險模式時，review 應要求說明為何這次條件不同。若沒有這些維度，agent 只能在單一上下文裡模仿最顯眼的形狀。
 
 ## 反思
 
@@ -245,7 +240,7 @@ Codebase 是物理現實的 SSOT。文件說流程非同步，但代碼同步等
 
 多維 SSOT 則提醒我們：權威不是集中到一份文件就完成了。Codebase 可能真實但污染，約束性規格 <!-- term:Spec --> 可能正確但過期，衝突封存 <!-- term:Archive --> 可能有因果但不代表當前契約，Production 可能反映現實但需要解釋。成熟治理不是消除這些張力，而是讓張力有固定對話位置。
 
-這也解釋了為什麼跨語言重寫特別危險。重寫看似是逃離舊世界，實際上很容易把舊世界的形狀 <!-- term:DataShape -->搬得更快、更漂亮、更難拆。只有當舊代碼降級為證據、舊測試降級為線索、專家直覺升級為規格，AI 才能協助現代化，而不是成為 legacy 的複製機。
+這也解釋了為什麼跨語言重寫特別危險。重寫看似是逃離舊世界，實際上很容易把舊世界的形狀搬得更快、更漂亮、更難拆。只有當舊代碼降級為證據、舊測試降級為線索、專家直覺升級為規格，AI 才能協助現代化，而不是成為 legacy 的複製機。
 
 ## 結論
 

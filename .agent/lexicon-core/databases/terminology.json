@@ -4011,7 +4011,7 @@
     ],
     "description": "權限檢查中發起操作的一方，在 Linux 中由 process credentials（UID、GID、capabilities 等）描述其身分與當下能力。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Object": {
     "zh": "客體",
@@ -4020,7 +4020,7 @@
     ],
     "description": "權限檢查中被存取的目標，例如檔案、目錄、Unix socket、device 等 kernel object，其類型決定 kernel 走哪一條檢查路徑。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Identity": {
     "zh": "身分",

@@ -147,11 +147,10 @@ const order = await getOrder(user.id);
 
 人類看到 `await` 可能會想起 event loop、共享狀態、競態條件與錯誤路徑。Agent 若只做逐行模擬，會把兩行之間的世界當成靜止。中間狀態變化沒有 token，對它而言就像沒有發生。這不是「讀錯一行」；這是文本模型與執行模型不相等。
 
-因此，agent 友善的程式碼不等於大量註解，也不等於犧牲封裝。它要求在決策點補足 agent 無法自行推導的訊號：why-not、**跨模組因果**（Cross-Module Causality） <!-- term:CrossModuleCausality -->、runtime 綁定清單、非同步邊界、型別**形狀**（Data Shape） <!-- term:DataShape -->、意圖測試與局部 README。重點不是把所有知識集中到一份百科，而是把決策所需的不可推導訊號放在決策附近。
+因此，agent 友善的程式碼不等於大量註解，也不等於犧牲封裝。它要求在決策點補足 agent 無法自行推導的訊號：why-not、**跨模組因果**（Cross-Module Causality） <!-- term:CrossModuleCausality -->、runtime 綁定清單、非同步邊界、型別形狀、意圖測試與局部 README。重點不是把所有知識集中到一份百科，而是把決策所需的不可推導訊號放在決策附近。
 
 > [!IMPORTANT]
 > **跨模組因果** <!-- term:CrossModuleCausality --> (Cross-Module Causality): 一個模組的實作細節受限於另一個模組的隱含規則，且在靜態程式碼中不直接呈現的因果依賴 <!-- anchor:CrossModuleCausality -->
-> **形狀** <!-- term:DataShape --> (Data Shape): 資料結構或物件所包含的屬性與型別定義，通常由型別系統來描述 <!-- anchor:DataShape -->
 
 
 ## 知識外化也會放大斷裂
@@ -196,23 +195,22 @@ Token 命名空間碰撞 <!-- term:NamespaceCollision -->的工程含義很直�
 
 | 決策需要什麼 | 常見缺口 | 局部補訊號 |
 | :--- | :--- | :--- |
-| 值的形狀 <!-- term:DataShape --> | 需要跳到多個實作才知道參數結構 | 型別標注、schema、Protocol |
+| 值的形狀 | 需要跳到多個實作才知道參數結構 | 型別標注、schema、Protocol |
 | 排除原因 | 只看到做了什麼，看不到為何不做別的 | why-not 註解 |
 | **預期行為**（Expected Behavior） <!-- term:ExpectedBehavior --> | 測試只覆蓋 happy path | 意圖測試與邊界測試 |
-| runtime 關係 | 訂閱者、decorator、factory 只在執行期**組合**（Compose） <!-- term:Compose --> | 綁定清單、註冊表、靜態表格 |
+| runtime 關係 | 訂閱者、decorator、factory 只在執行期組合 | 綁定清單、註冊表、靜態表格 |
 | 跨模組限制 | A 的寫法其實由 B 限制 | co-located README 或決策註解 |
 | 命名邊界 | 同形詞與基礎設施語言碰撞 | domain-specific compound term |
 
 > [!IMPORTANT]
 > **預期行為** <!-- term:ExpectedBehavior --> (Expected Behavior): 系統或模組在特定輸入或情境下被要求達到的正確輸出與副作用狀態 <!-- anchor:ExpectedBehavior -->
-> **組合** <!-- term:Compose --> (Compose): 將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。 <!-- anchor:Compose -->
 
 
 局部完備性 <!-- term:LocalCompleteness -->也有邊界。第一，它不應成為「到處寫長註解」的藉口。能由型別、測試或結構表達的事，不必用散文重複。第二，它不適合把所有探索都預先約束。探索階段需要發散；extension 階段才需要收斂。第三，它不能替代外部驗證。局部完備只能降低 agent 在局部決策中猜錯的機率，不能證明全局需求正確。
 
 ## 結構約束：收窄可犯錯空間
 
-局部完備性 <!-- term:LocalCompleteness -->補的是因果訊號；結構約束 <!-- term:StructuralConstraint -->收的是自由度。兩者的差異很重要：前者讓 agent 更容易理解，後者讓 agent 即使理解不完整，也比較難把錯誤寫成合法形狀 <!-- term:DataShape -->。
+局部完備性 <!-- term:LocalCompleteness -->補的是因果訊號；結構約束 <!-- term:StructuralConstraint -->收的是自由度。兩者的差異很重要：前者讓 agent 更容易理解，後者讓 agent 即使理解不完整，也比較難把錯誤寫成合法形狀。
 
 比較兩種 extension point：
 
@@ -247,7 +245,7 @@ function classifyResource(path: string): Resource | null {
 }
 ```
 
-第一種設計把 extension 變成任意函式修改。Agent 需要判斷插入位置、條件順序、路徑解析重複、fallback 語意與副作用。第二種設計把 extension 收斂成「加一列資料，實作一個 build 函式」。錯誤仍可能發生，但錯誤表面 <!-- term:ErrorSurface -->小很多：非法形狀 <!-- term:DataShape -->被型別擋掉，變更位置集中，**引用完整性**（Referential Integrity） <!-- term:ReferentialIntegrity -->更容易檢查。
+第一種設計把 extension 變成任意函式修改。Agent 需要判斷插入位置、條件順序、路徑解析重複、fallback 語意與副作用。第二種設計把 extension 收斂成「加一列資料，實作一個 build 函式」。錯誤仍可能發生，但錯誤表面 <!-- term:ErrorSurface -->小很多：非法形狀被型別擋掉，變更位置集中，**引用完整性**（Referential Integrity） <!-- term:ReferentialIntegrity -->更容易檢查。
 
 > [!IMPORTANT]
 > **引用完整性** <!-- term:ReferentialIntegrity --> (Referential Integrity): 批量變更或重命名時，系統中所有交叉引用（包括非典型位置的類型標記與文件段落）皆被同步更新的狀態。 <!-- anchor:ReferentialIntegrity -->
@@ -259,7 +257,7 @@ function classifyResource(path: string): Resource | null {
 在收斂性任務中，error surface 與 structural constraint 成反比。
 ```
 
-**收斂性任務**（Convergent Task） <!-- term:ConvergentTask -->的答案形狀 <!-- term:DataShape -->已知，工作是填入內容；extension point 通常就是這種任務。**發散性任務**（Divergent Task） <!-- term:DivergentTask -->則不同：架構探索、需求發現、方案比較，需要保留自由度。若把發散任務過早塞進固定表格，會讓 agent 只能在錯誤的空間內優化。結構約束 <!-- term:StructuralConstraint -->的用法不是「永遠約束」，而是在形狀 <!-- term:DataShape -->已知後，把後續重複 extension 轉成受限操作。
+**收斂性任務**（Convergent Task） <!-- term:ConvergentTask -->的答案形狀已知，工作是填入內容；extension point 通常就是這種任務。**發散性任務**（Divergent Task） <!-- term:DivergentTask -->則不同：架構探索、需求發現、方案比較，需要保留自由度。若把發散任務過早塞進固定表格，會讓 agent 只能在錯誤的空間內優化。結構約束 <!-- term:StructuralConstraint -->的用法不是「永遠約束」，而是在形狀已知後，把後續重複 extension 轉成受限操作。
 
 > [!IMPORTANT]
 > **收斂性任務** <!-- term:ConvergentTask --> (Convergent Task): 答案形狀已知、主要工作為在既定結構內填入內容的開發任務，適合以強結構約束降低出錯率。 <!-- anchor:ConvergentTask -->
