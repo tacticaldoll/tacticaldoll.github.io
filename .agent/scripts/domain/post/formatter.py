@@ -42,16 +42,20 @@ class PostFormatter:
                     global_rules = json.load(f)
                     header_map.update(global_rules.get("header_normalization", {}))
         except Exception as e:
-            import sys
-            print(f"[WARNING] formatter: Failed to load RULES_JSON, using built-in defaults: {e}", file=sys.stderr)
+            # Not config.RULES_JSON in this message: config is imported inside the try,
+            # so naming it here would raise NameError on the one failure that matters.
+            from infra.utils import log_error
+            log_error(f"formatter: could not read header_normalization from rules.json: {e}")
 
         if not header_map:
-            header_map = {
-                "Introduction": "背景",
-                "Analysis": "分析",
-                "Reflection": "省思",
-                "Conclusion": "結論"
-            }
+            # No built-in default. The fallback that used to sit here was a fourth copy
+            # of this vocabulary and it disagreed with the others — it mapped Reflection
+            # to 省思 where the schema names the section 反思 — so a missing SSOT was
+            # silently replaced by a different vocabulary. An empty map normalizes
+            # nothing, which is visible; substituting a guess is not.
+            from infra.utils import log_error
+            log_error("formatter: header_normalization is empty; no global header "
+                      "normalization will be applied this run")
 
         if rules and rules.get("headers"):
             header_map.update(rules["headers"])
