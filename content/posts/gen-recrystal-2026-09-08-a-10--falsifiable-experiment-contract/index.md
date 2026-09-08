@@ -87,19 +87,19 @@ def optional_stopping():           # 邊收資料邊看，顯著就停
 
 上面的模擬展示了一種特定的偏差。要設計一份完整的契約，需要先把工程實務中會遇到的落差類型盤點清楚。訓練期的每一個指標都是某個無法直接觀測的量的**代理**，而代理與被代理者之間的差距有三種常見的產生機制。
 
-**選擇偏差**（Selection Bias） <!-- term:SelectionBias -->。** 同一批資料同時扮演擬合、挑選與證明三個角色。前兩個角色消耗資料中的資訊，第三個角色卻假設資料還是乾淨的。上面的模擬就是這個機制的純粹形態，它的特徵是候選越多、偏差越深。
+**第一種**：**選擇偏差**（Selection Bias） <!-- term:SelectionBias -->。 同一批資料同時扮演擬合、挑選與證明三個角色。前兩個角色消耗資料中的資訊，第三個角色卻假設資料還是乾淨的。上面的模擬就是這個機制的純粹形態，它的特徵是候選越多、偏差越深。
 
 > [!IMPORTANT]
 > **選擇偏差** <!-- term:SelectionBias --> (Selection Bias): 從多個候選中挑出表現最好者時，該讀數同時包含真實能力與抽樣噪聲，使其系統性地優於真值的偏差。 <!-- anchor:SelectionBias -->
 
 
-**條件命題的前提破壞**（Broken Premise） <!-- term:BrokenPremise -->。** 某個方法或架構宣稱具備某性質，該性質確實可證明，但證明依賴的前提在實作中不成立。它的特徵是理論與實作之間的落差，換更多資料不會改善。
+**第二種**：**條件命題的前提破壞**（Broken Premise） <!-- term:BrokenPremise -->。 某個方法或架構宣稱具備某性質，該性質確實可證明，但證明依賴的前提在實作中不成立。它的特徵是理論與實作之間的落差，換更多資料不會改善。
 
 > [!IMPORTANT]
 > **條件命題的前提破壞** <!-- term:BrokenPremise --> (Broken Premise): 架構或演算法的數學性質是條件命題；當實作為了效率或有限輸入而違反其前提時，該性質在特定條件下完全失效，而非緩慢退化。 <!-- anchor:BrokenPremise -->
 
 
-**中介誤認**（Mediator Misreading） <!-- term:MediatorMisreading -->。** 模型內部有某個可觀測的中間量與輸出相關，於是被當成輸出的原因。它的特徵是觀測本身為真，只有歸因是假的。
+**第三種**：**中介誤認**（Mediator Misreading） <!-- term:MediatorMisreading -->。 模型內部有某個可觀測的中間量與輸出相關，於是被當成輸出的原因。它的特徵是觀測本身為真，只有歸因是假的。
 
 > [!IMPORTANT]
 > **中介誤認** <!-- term:MediatorMisreading --> (Mediator Misreading): 把因果鏈上可觀察的中介變數當成成因本身，因而以觀察性讀數回答只有干預才能回答的問題。 <!-- anchor:MediatorMisreading -->
