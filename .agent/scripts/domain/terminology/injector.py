@@ -187,7 +187,17 @@ class TerminologyInjector:
                         # Word-boundary the ASCII alias so "Spec" cannot anchor INSIDE
                         # "OpenSpec"/"Specialists"/"specs/". Bare substring matching here
                         # was the root cause of systematic English-word corruption on
-                        # every reanchor. CJK zh above need no boundary.
+                        # every reanchor.
+                        #
+                        # The CJK zh above gets NO equivalent guard, and that is a known
+                        # gap rather than a safe asymmetry: 量化 matches inside 輕量化,
+                        # 技術債 inside 技術債務, 導讀 inside 誤導讀者. Chinese has no
+                        # orthographic word boundary, so \b is unavailable and a correct
+                        # guard would need segmentation or a longest-match exclusion set.
+                        # Neither exists here, so the mitigation is a review rule, not
+                        # code: see agent-operating-guideline.md §6 — a demotion decision
+                        # must inspect match POSITIONS, not just definitions, because the
+                        # true-positive rate is not mechanically decidable.
                         patterns.append(r'\b' + re.escape(en) + r'\b')
         
         patterns.sort(key=len, reverse=True)
