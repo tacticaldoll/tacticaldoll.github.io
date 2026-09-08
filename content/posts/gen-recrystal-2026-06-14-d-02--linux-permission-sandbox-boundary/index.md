@@ -188,7 +188,7 @@ flowchart TD
 
 因此，Agent sandbox 的成熟設計至少要回答幾個 OS 層問題：workspace write root 是哪裡？哪些 path 是只讀？network 是否允許？哪些命令需要外部批准？是否能碰到 Docker socket、SSH agent、cloud credentials 或 package manager cache？工具 process 是否帶有過大的 groups 或 capabilities？若答案只停在「我們有 prompt 規則」，就還沒有進入真正的權限邊界。
 
-## 省思
+## 反思
 
 這個主題最重要的張力，是便利抽象與安全語意之間的落差。Unix 把許多東西都放進 file descriptor 世界，讓程式可以用一致 API 操作檔案、socket、pipe 與 device。Container 把多層 kernel 機制包成一個部署單位，讓人用一行命令取得隔離感。Agent 工具又把 shell、filesystem 與外部服務包成高階能力，讓人用自然語言觸發行動。
 
