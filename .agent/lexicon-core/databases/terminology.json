@@ -4111,5 +4111,14 @@
     "description": "模型輸出機率與實際正確率的一致程度。",
     "forbidden": [],
     "level": 1
+  },
+  "Injective": {
+    "zh": "單射",
+    "en": [
+      "Injective"
+    ],
+    "description": "一對一的映射性質：不同的輸入必對應不同的輸出。聚合讀數與產生它的機制之間不具此性質，因此無法從讀數回推機制。",
+    "forbidden": [],
+    "level": 2
   }
 }
