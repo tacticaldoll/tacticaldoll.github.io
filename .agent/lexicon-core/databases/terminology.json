@@ -17,6 +17,15 @@
     "forbidden": [],
     "level": 2
   },
+  "BrokenPremise": {
+    "zh": "條件命題的前提破壞",
+    "en": [
+      "Broken Premise"
+    ],
+    "description": "架構或演算法的數學性質是條件命題；當實作為了效率或有限輸入而違反其前提時，該性質在特定條件下完全失效，而非緩慢退化。",
+    "forbidden": [],
+    "level": 2
+  },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
     "en": [
@@ -3371,6 +3380,24 @@
       "Data Feedback Loop"
     ],
     "description": "使用者接受、修改或拒絕的紀錄回到產品與流程更新，進而改變後續系統行為的循環。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SelectionBias": {
+    "zh": "選擇偏差",
+    "en": [
+      "Selection Bias"
+    ],
+    "description": "從多個候選中挑出表現最好者時，該讀數同時包含真實能力與抽樣噪聲，使其系統性地優於真值的偏差。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MediatorMisreading": {
+    "zh": "中介誤認",
+    "en": [
+      "Mediator Misreading"
+    ],
+    "description": "把因果鏈上可觀察的中介變數當成成因本身，因而以觀察性讀數回答只有干預才能回答的問題。",
     "forbidden": [],
     "level": 2
   },

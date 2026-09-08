@@ -516,9 +516,16 @@ class HandoffPreparer:
                         domain_tag = detected_domain
                     
                     report_head = report_content[:2000]
+                    title_found = False
                     for line in report_head.splitlines():
-                        if line.strip().startswith('# '):
-                            title = line.strip()[2:].strip()
+                        # The H1 is the FIRST unindented '# ' line and nothing after it
+                        # may overwrite the title. Without both guards a Python comment
+                        # inside an early code block hijacks it — '# 模型：h_t = ...'
+                        # and '    # 計算 corr(x0, xt)...' both did, which would have
+                        # published two posts titled with a code comment.
+                        if not title_found and line.startswith('# '):
+                            title = line[2:].strip()
+                            title_found = True
                         elif '**Tags**:' in line:
                             tags_str = line.split('**Tags**:')[1].strip()
                             extracted_tags = [t.strip() for t in tags_str.split(',') if t.strip()]
