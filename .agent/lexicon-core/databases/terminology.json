@@ -816,7 +816,7 @@
     ],
     "description": "逆向工程產出的描述性知識，在專案中被視為債務指標",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "StranglerPattern": {
     "zh": "絞殺者模式",
@@ -3840,7 +3840,7 @@
     ],
     "description": "資料結構或物件所包含的屬性與型別定義，通常由型別系統來描述",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Distill": {
     "zh": "蒸餾",
@@ -3849,7 +3849,7 @@
     ],
     "description": "從長對話或大量開發脈絡中萃取關鍵資訊的處理過程。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Crystallize": {
     "zh": "結晶",
@@ -3984,7 +3984,7 @@
     ],
     "description": "產物透過穩定鍵間接引用共享庫時，它不再是凍結快照，而是共享庫當前狀態一個可隨時重算的呈現。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Idempotent": {
     "zh": "冪等",
@@ -4038,7 +4038,7 @@
     ],
     "description": "將多個獨立元件串聯運作的方式，強調資料流轉而非直接相依。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Depend": {
     "zh": "相依",
