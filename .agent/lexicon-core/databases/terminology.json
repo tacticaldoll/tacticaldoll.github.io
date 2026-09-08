@@ -3786,7 +3786,7 @@
     ],
     "description": "術語審計中指出的潛在問題或警告",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Guidelines": {
     "zh": "準則",
@@ -4047,7 +4047,7 @@
     ],
     "description": "元件之間產生的耦合關係，一方改動會強制影響另一方。",
     "forbidden": [],
-    "level": 2
+    "level": 3
   },
   "Generalization": {
     "zh": "泛化",
