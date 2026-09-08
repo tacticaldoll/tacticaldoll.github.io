@@ -13,10 +13,12 @@ template: |
   - `[ ]` **Task 3: 系列名稱精煉 (Series Name Refinement)**
     - 若為系列，攔截空泛標題（如「XX 系列」）。
     - 強制產出 `[核心主題]：[自由發揮的敘事化副標題]` 風格之標題，寫入 `metadata.series`。
+    - **Session 隔離**：嚴禁不同 Session 共用相同的系列名稱。每一組構成系列的 Session 都必須擁有獨一無二的專屬命名（例如依具體實踐目標命名），否則檢索時會發生語義混淆。
   
   ## 階段二：微觀解析 (Micro Extraction)
   - `[ ]` **Task 4: 單篇元數據萃取與強制排序 (Post Metadata & Forcing Order)**
     - 為每篇文章提取 `title`、生成標準化 `slug` 與濃縮精華的 SEO `description`。
+    - **標籤首見即引**：寫入 `tags` 的每個術語必須在該篇正文中至少出現一次，且為該篇的核心討論對象。正文採收的候選天然滿足此條（腳本只採收正文命中的術語），此規約約束的是 NLP 自行擬定的策展標籤。
     - **強制排序**：依據 Task 2 的順序，為各篇文章的 `date` 欄位加上秒數差距（例如 `+1s`, `+2s`），強制鎖定時序，確保發佈順序。
   - `[ ]` **Task 5: AI 資訊提取 (Extract AI Info)**
     - 掃描每份 `report.*.md` 的頭部，提取 `**Model**:` 與 `**Agent**:` 資訊，寫入 `ai_info.generation`。

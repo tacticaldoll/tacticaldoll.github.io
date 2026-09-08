@@ -1252,6 +1252,62 @@ class KBAuditor:
                               f"citing {schema_citation}, which owns the format")
         return errors
 
+    def _check_schema_header_titles(self):
+        """Every section title the report schema prescribes must be a canonical header."""
+        errors = []
+        # This is where the two authority hierarchies meet. GUIDE §0 makes taxonomy.json
+        # authoritative for classification and vocabulary; §9 makes the schema the
+        # highest authority for structure. Neither referenced the other, which is how
+        # the schema came to prescribe a section named 反思 while the taxonomy listed
+        # 反思 as a variation to be normalized into 結論 — a section the schema also
+        # prescribes, so applying the rule would have merged two sections with different
+        # mandates. Nothing detected it because nothing compared the two files.
+        #
+        # The boundary: the schema decides which sections a genre has and what each must
+        # accomplish; the taxonomy decides what they are called. So each title must
+        # appear as a standard in header_normalization, and this check is the seam.
+        try:
+            from infra.taxonomy import TaxonomyEngine
+        except ImportError as exc:
+            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify schema "
+                          f"header titles: {exc}")
+            return errors
+
+        standards = TaxonomyEngine().standard_headers()
+        if not standards:
+            errors.append("[Governance] taxonomy.json defines no header_normalization; "
+                          "the schema's section titles cannot be checked against it")
+            return errors
+
+        schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
+        if not os.path.exists(schema_path):
+            errors.append(f"[Governance] Missing {self.rel(schema_path)}; the section "
+                          f"titles it prescribes cannot be checked")
+            return errors
+        with open(schema_path, 'r', encoding='utf-8') as f:
+            schema_text = f.read()
+
+        titles = re.findall(r'^[ \t]+- title:[ \t]*"([^"]+)"', schema_text, re.MULTILINE)
+        if not titles:
+            errors.append(f"[Governance] {self.rel(schema_path)} prescribes no section "
+                          f"titles; this check would pass a schema with no structures")
+            return errors
+
+        for title in titles:
+            # Titles are bilingual — `導言 (Introduction)` — and the taxonomy keys on the
+            # Chinese, which is what a published header reduces to.
+            zh = re.sub(r'\s*[(（].*?[)）]', '', title).strip()
+            zh = re.sub(r'\s*\[[^\]]+\]\s*$', '', zh).strip()
+            if zh not in standards:
+                errors.append(
+                    f"[Governance] the report schema prescribes a section titled "
+                    f"{title!r}, but {zh!r} is not a standard header in taxonomy.json. "
+                    f"The schema decides which sections exist; the taxonomy decides what "
+                    f"they are called. Either add it to header_normalization or use the "
+                    f"canonical name — a title that is a normalizable variation gets "
+                    f"rewritten into a different section on publish.")
+        return errors
+
     def _check_genre_projections(self):
         """Every projection of the genre set — taxonomy, aliases, offered, defined — must agree."""
         errors = []
@@ -1267,8 +1323,9 @@ class KBAuditor:
         # Guarding the comparisons behind `if projection:` is how two of these rules
         # previously passed a repo that had deleted the thing being audited.
         schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
-        # Read the JSON SSOT directly; load_taxonomy() parses taxonomy.md, which is a
-        # read-only view and must never be treated as the source.
+        # Read the JSON SSOT directly. This used to be a warning against load_taxonomy,
+        # which scraped the genre names out of a Markdown projection; that projection is
+        # gone and load_taxonomy reads the same JSON now.
         genres = {}
         if not os.path.exists(config.TAXONOMY_JSON):
             errors.append("[Governance] Missing taxonomy.json; genre has no source of truth")
@@ -1378,6 +1435,7 @@ class KBAuditor:
         "_check_domain_tag_keys",
         "_check_hardcoded_categories",
         "_check_series_naming_ssot",
+        "_check_schema_header_titles",
         "_check_genre_projections",
     )
 

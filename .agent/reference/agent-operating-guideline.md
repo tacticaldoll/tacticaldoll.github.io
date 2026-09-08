@@ -76,7 +76,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 | `terms.discovered/existing/forbidden_found` | `prepare_handoff.py` | `refine_handoff.py` | Script-managed。 |
 | `terms.locked` | `refine_handoff.py` + NLP description | `pipeline.py` | description 不得為空或含 placeholder。 |
 | `terminology.json` | Lexicon scripts | 全域管線 | 只能透過 schema 與 promote 流程維護。 |
-| `taxonomy.json` | Lexicon/database layer | Taxonomy scripts | 分類 SSOT。`taxonomy.md` 只能是 secondary/read-only view。 |
+| `taxonomy.json` | Lexicon/database layer | Taxonomy scripts | 分類、genre 與標頭詞彙的 SSOT。禁止建立 Markdown 投影。 |
 
 ## 5. Production Intent
 
@@ -88,7 +88,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 
 ## 6. Permanent Gates
 
-- 系列名稱格式依 `init-handoff.task.schema.yaml` 的 `[核心主題]：[敘事化副標題]`；`taxonomy.json` 治理標籤與領域分類，不定義系列前綴，`taxonomy.md` 僅能作為 read-only view。
+- 系列名稱格式依 `init-handoff.task.schema.yaml` 的 `[核心主題]：[敘事化副標題]`；`taxonomy.json` 治理標籤、領域分類與標頭詞彙，不定義系列前綴。
 - 系列宣告資格由 `guide*.md` 的實體存在單一決定；單篇報告 session 為 Standalone，不得在 `series-map.md` 宣告 `series`。
 - 禁止建立、手動修復或操作 `terminology.md` 類型的術語投影；術語變更必須對準 `terminology.json` 與 promote 流程。
 - Agent 操作意圖只能有一個 active reference：`.agent/reference/agent-operating-guideline.md`，並必須由 `GUIDE.md` 明確引用。

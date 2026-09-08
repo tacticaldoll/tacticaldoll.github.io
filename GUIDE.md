@@ -10,7 +10,7 @@
 
 1.  **代碼與設定層**：`hugo.toml` 與 `origin/main` 是網站行為與專案歷史的最終真相。
 2.  **核心術語層**：`.agent/lexicon-core/databases/terminology.json` 是語意控制的唯一 SSOT。**嚴禁** 建立或手動修改衍生 Markdown 檢視。
-3.  **結構與分類層**：`.agent/lexicon-core/databases/taxonomy.json` 定義標籤與目錄命名的權威框架；`taxonomy.md` 僅能作為 read-only view。
+3.  **結構與分類層**：`.agent/lexicon-core/databases/taxonomy.json` 定義標籤、領域分類、genre 與標頭詞彙的權威框架。**嚴禁**建立 `taxonomy.md` 之類的 Markdown 投影——與術語庫同理，投影沒有生成器就會變成第二份手改來源。
 4.  **Agent 操作參考層**：`.agent/reference/agent-operating-guideline.md` 是 AI Agent 操作意圖、工作流邊界與永久防線的單一活躍 reference。
 
 ---
@@ -187,6 +187,14 @@
     - **定位**：執行權威 (Automation SSOT)。定義自動化的物理步驟。
     - **範圍**：位於 `.agent/scripts/` 下的所有 Python/Bash 程式。
     - **規則**：定義「具體執行」。所有腳本標頭 **必須** 註明其所屬的 L0 規約與 L1 工作流，並嚴格遵守 L0 定義的消費主權，禁止越位讀取受規範保護的 SSOT 檔案。
+
+### 9.0 兩個階層的交界 (Where the Two Hierarchies Meet) [CRITICAL]
+
+§0 的真相來源階層與本節的政體階層**互不隸屬**,各管一件事。兩者從未互相引用,而那正是矛盾能長期存在的原因:schema 曾規定一個名為 `反思` 的章節,而 taxonomy 同時把 `反思` 列為應正規化為 `結論` 的變體——而 `結論` 也是 schema 規定的章節,套用該規則會把兩個任務不同的章節併成一個。沒有任何機制發現,因為沒有任何機制比對過這兩個檔案。
+
+- **L0 Schema 決定結構**:哪些實體存在、有哪些欄位、一個 genre 有哪些章節、每個章節必須達成什麼。
+- **§0 資料層決定詞彙**:分類值、genre 名稱、標頭正規名稱。`taxonomy.json` 與 `terminology.json` 是這些名稱的 SSOT,schema 引用它們而不定義它們。
+- **交界即不變量**:schema 規定的每個章節標題,必須是 `taxonomy.json` `header_normalization` 中的標準名稱。由 `audit_kb.py` 物理攔截。
 
 ### 9.1 路徑引用規範 (Path Normalization) [SSOT]
 

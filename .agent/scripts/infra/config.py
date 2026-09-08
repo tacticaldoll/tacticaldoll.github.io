@@ -25,7 +25,6 @@ TERMINOLOGY_JSON = os.path.join(DATABASES_DIR, "terminology.json")
 TERMINOLOGY_DRAFT_JSON = os.path.join(DATABASES_DIR, "terminology.draft.json")
 TERMINOLOGY_ARCHIVE_JSON = os.path.join(DATABASES_DIR, "terminology.archive.json")
 TAXONOMY_JSON = os.path.join(DATABASES_DIR, "taxonomy.json")
-TAXONOMY_MD = os.path.join(DATABASES_DIR, "taxonomy.md")
 RULES_JSON = os.path.join(DATABASES_DIR, "rules.json")
 
 
