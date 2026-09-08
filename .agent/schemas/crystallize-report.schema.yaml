@@ -54,7 +54,7 @@ structures:
         requirement: "自適應顯示：當決策點 ≥ 3 時提供一鍵式摘要表格。若決策點 < 3 則完全省略此章節。內容不得與發現中的 Callout 逐字重複。"
       - title: "補充知識 (Supplementary)"
         requirement: "對應高密度之新概念 (選填)。只有在內容實質且有深度時保留。"
-      - title: "關鍵教訓 (Key Lessons)"
+      - title: "技術啟示 (Technical Insights)"
         requirement: "可遷移的實戰洞察與根因分析。從具體經驗中提煉出的普適性軟體工程或架構原理。"
 
   analytical_essay:
