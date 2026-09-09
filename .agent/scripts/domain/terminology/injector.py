@@ -1,5 +1,15 @@
 import re
 
+# Machine-generated definition callouts: an [!IMPORTANT] header followed only by
+# marker-bearing definition lines. Author callouts carry no marker and must not
+# match. The leading newlines are consumed deliberately: the append step re-emits
+# them, so eating them here is what makes a second pass a no-op. Re-emitting a
+# blank line instead accumulates two newlines per round.
+_RM_ANCHOR_BLOCK = re.compile(
+    r'[\r\n]+>[ \t]*\[!IMPORTANT\]\r?\n'
+    r'(?:>[ \t]*\*\*.*?\*\*[^\r\n]*<!--[ \t]*(?:anchor|term):[^\r\n]*(?:\r?\n)?)+'
+)
+
 class TerminologyInjector:
     """Handles terminology anchoring and glossary injection into post text."""
     
@@ -16,7 +26,7 @@ class TerminologyInjector:
         # to ensure perfect idempotency before processing paragraphs. Each generated box line
         # carries a <!-- term:/anchor: --> marker; requiring it prevents deleting author-written
         # [!IMPORTANT] callouts that merely start with bold text.
-        body = re.sub(r'[\r\n]+>\s*\[!IMPORTANT\]\r?\n(?:>\s*\*\*.*?\*\*[^\r\n]*<!--\s*(?:anchor|term):[^\r\n]*(?:\r?\n)?)+', '', post.body)
+        body = _RM_ANCHOR_BLOCK.sub('', post.body)
 
         # 1. Temporarily extract/protect code blocks
         code_blocks = []
@@ -46,8 +56,12 @@ class TerminologyInjector:
             sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
             cleanup_pattern = re.compile(
                 r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?' +
-                r'(?:[ \t]*[\(（].*?[\)）])?' + 
-                r'(?:[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
+                # The （bilingual） suffix is consumed ONLY as part of a
+                # marker-terminated tail. A machine anchor always carries the
+                # marker; a bare `**詞**（English）` is authored text, and eating
+                # it drops the line out of protected_alert_patterns, which is how
+                # an author callout gets anchored and then deleted as machine output.
+                r'(?:(?:[ \t]*[\(（].*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
             )
             def cleaner(m):
                 pre = m.group(1) or ""
@@ -125,19 +139,38 @@ class TerminologyInjector:
         generic_pattern = re.compile(r'^(#+[ \t]+(?:' + '|'.join(generic_headers) + r'))[ \t]*[(（].*?[)）]')
         protected_patterns = lexicon.rules.get("markdown_anchors", {}).get("protected_alert_patterns", [])
 
+        # Protected lines are held in place by a placeholder instead of being hoisted.
+        # Emitting them first reordered the block: a heading that followed a paragraph
+        # came out in front of it and, when it was the block's last line and carried no
+        # newline, glued to the paragraph's first character.
+        protected_map = {}
+        seq = []
         for line in block.splitlines(True):
+            keep = None
             if re.match(r'^#+[ \t]+', line):
-                line = generic_pattern.sub(r'\1', line)
-                header_lines.append(line)
+                keep = generic_pattern.sub(r'\1', line)
             elif any(re.match(p, line) for p in protected_patterns):
-                header_lines.append(line)
-            else:
+                keep = line
+            if keep is None:
                 other_lines.append(line)
-                
+                seq.append(line)
+            else:
+                token = "__PROTLINE%d__" % len(protected_map)
+                protected_map[token] = keep
+                header_lines.append(keep)
+                seq.append(token + ("\n" if keep.endswith("\n") else ""))
+
         if not other_lines:
             return "".join(header_lines), []
 
-        text = "".join(other_lines)
+        def _restore_protected(out):
+            for token, original in protected_map.items():
+                out = out.replace(token + "\n" if original.endswith("\n") else token,
+                                  original)
+                out = out.replace(token, original.rstrip("\r\n"))
+            return out
+
+        text = "".join(seq)
         newly_anchored_info = []
 
         # Forbidden Replacement (Always)
@@ -147,14 +180,18 @@ class TerminologyInjector:
         if mode == "remove_all":
             # 1. First remove standalone terminology definition boxes (including mutated/legacy ones).
             #    Require the <!-- term:/anchor: --> marker so author-written [!IMPORTANT] callouts survive.
-            text = re.sub(r'[\r\n]+>\s*\[!IMPORTANT\]\r?\n(?:>\s*\*\*.*?\*\*[^\r\n]*<!--\s*(?:anchor|term):[^\r\n]*(?:\r?\n)?)+', '', text)
+            text = _RM_ANCHOR_BLOCK.sub('', text)
 
             # 2. Strip all (EN) anchors and inline comments
             sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
             cleanup_pattern = re.compile(
                 r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?' +
-                r'(?:[ \t]*[\(（].*?[\)）])?' + 
-                r'(?:[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
+                # The （bilingual） suffix is consumed ONLY as part of a
+                # marker-terminated tail. A machine anchor always carries the
+                # marker; a bare `**詞**（English）` is authored text, and eating
+                # it drops the line out of protected_alert_patterns, which is how
+                # an author callout gets anchored and then deleted as machine output.
+                r'(?:(?:[ \t]*[\(（].*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
             )
             def cleaner(m):
                 pre = m.group(1) or ""
@@ -258,7 +295,7 @@ class TerminologyInjector:
             trailing = m.group(0) if m else ""
             text = text[:len(text)-len(trailing)].rstrip() + "\n" + important_block + "\n" + trailing.lstrip('\n')
 
-        return "".join(header_lines) + text, [item['zh'] for item in newly_anchored_info]
+        return _restore_protected(text), [item['zh'] for item in newly_anchored_info]
 
     def remove_all_anchors(self, post, lexicon):
         """Restores post to pure zero-anchor state."""

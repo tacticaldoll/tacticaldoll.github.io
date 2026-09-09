@@ -144,6 +144,74 @@ def test_gap4_orphan_l3_bold_is_stripped():
     )
 
 
+# --- Gap 5: an author gloss with no anchor marker must survive de-anchoring -----
+# anchor_first's global cleanup consumes an optional （bilingual） suffix whether or
+# not an anchor marker follows it. A machine anchor always carries the marker; a bare
+# `**詞**（English）` is authored text, and stripping it is what removes the author's
+# own gloss — and, inside a callout, what drops the line out of
+# rules.json protected_alert_patterns so the next pass anchors it.
+def test_gap5_author_gloss_without_marker_survives():
+    term = _pick_anchorable_term()
+    en = LEXICON.zh_to_ens[term][0]
+    body = (
+        "前段。\n\n"
+        "> [!IMPORTANT]\n"
+        f"> **{term}**（{en}）：作者手寫的定義，沒有機器標記。\n\n"
+        "後段。\n"
+    )
+    out = _reanchor(body)
+    author_line = next((ln for ln in out.splitlines() if "作者手寫的定義" in ln), "")
+    assert author_line, "Gap 5: the author's definition line disappeared entirely"
+    assert "<!-- term:" not in author_line and "<!-- anchor:" not in author_line, (
+        "Gap 5: the author's callout line acquired a machine marker. Its （bilingual） "
+        "gloss is consumed by the global cleanup even with no marker attached, which "
+        "drops the line out of protected_alert_patterns and exposes it to anchoring — "
+        "and a marker is what makes the removal regex delete the whole callout next pass."
+    )
+    assert f"（{en}）" in author_line, (
+        "Gap 5: the author's （bilingual） gloss was stripped although no anchor marker "
+        "followed it; only a marker-terminated suffix is machine output."
+    )
+
+
+# --- Gap 6: re-anchoring must not reorder lines within a block -----------------
+# _process_paragraph splits a block into heading/protected lines and everything else,
+# then emits the headings FIRST. A heading that followed a paragraph is hoisted in
+# front of it and glued to its text.
+def test_gap6_line_order_is_preserved():
+    term = _pick_anchorable_term()
+    body = f"段落提到{term}。\n### 後面的標題\n"
+    out = _reanchor(body)
+    assert out.index("段落提到") < out.index("### 後面的標題"), (
+        "Gap 6: a heading that came after a paragraph was hoisted in front of it."
+    )
+
+
+# --- Gap 7: idempotency with an author definition block present ----------------
+# The existing control uses a body with no author callout, so the destructive path
+# is untested: once the author's line loses protection it gains a term marker, and
+# the removal regex then classifies the whole callout as machine output and deletes
+# it — author text included.
+def test_gap7_idempotent_with_author_definition_block():
+    term = _pick_anchorable_term()
+    en = LEXICON.zh_to_ens[term][0]
+    body = (
+        f"正文提到{term}，需要錨定。\n\n"
+        "> [!IMPORTANT]\n"
+        f"> **{term}**（{en}）：作者手寫的定義。\n\n"
+        "### 後續章節\n\n"
+        "結尾。\n"
+    )
+    once = _reanchor(body)
+    twice = _reanchor(once)
+    assert "作者手寫的定義" in once, "Gap 7: author definition lost on the first pass"
+    assert "作者手寫的定義" in twice, (
+        "Gap 7: author definition deleted on the second pass — this is the published-content "
+        "data loss that blocks reanchor --apply."
+    )
+    assert once == twice, "Gap 7: re-anchoring is not idempotent when an author callout exists"
+
+
 # --- Positive control: idempotency must hold (and keep holding after fixes) ---
 def test_control_idempotent_on_clean_body():
     term = _pick_anchorable_term()
@@ -162,6 +230,9 @@ TESTS = [
     ("Gap 2  orphan anchor cleaned",        test_gap2_orphan_anchor_of_removed_term_is_cleaned),
     ("Gap 3' preview not anchored",         test_gap3_preview_area_is_not_anchored),
     ("Gap 4  orphan L3 bold stripped",      test_gap4_orphan_l3_bold_is_stripped),
+    ("Gap 5  author gloss survives",        test_gap5_author_gloss_without_marker_survives),
+    ("Gap 6  line order preserved",         test_gap6_line_order_is_preserved),
+    ("Gap 7  idempotent w/ author block",   test_gap7_idempotent_with_author_definition_block),
     ("control idempotency",                 test_control_idempotent_on_clean_body),
 ]
 
