@@ -756,24 +756,45 @@ class KBAuditor:
                               f"before `distill-knowledge` ({stages}); evaluation is the "
                               f"precondition, not a later refinement.")
 
-            # And §10.2 must not demand a crystallization report for the material that
-            # crystallize-report refuses to crystallize. That workflow's first stage
-            # forbids crystallizing governance material and routes it to
-            # calibrate-guidelines; while §10.2 also required a report for 治理規則
-            # changes, the two pointed one change at opposite processes and whichever an
-            # executor read first won.
+            # And §10.2 must not conscript the crystallization report as a
+            # change-traceability attachment. crystallize-report.md defines the report as
+            # a write-once internalization asset, and its schema forbids the report from
+            # keeping a Commit ID or a concrete path — so a compliant report cannot name
+            # the change it would be tracing. §10.2 nonetheless demanded one for every
+            # submodule bump, which is unenforced and was ignored the one time a theme
+            # was repinned. Traceability rides commit messages and guideline calibration;
+            # crystallization is decided by §7's funnel on whether a lesson was distilled.
             cr_path = os.path.join(config.AGENT_DIR, "workflows", "crystallize-report.md")
+            schema_path = os.path.join(config.AGENT_DIR, "schemas",
+                                       "crystallize-report.schema.yaml")
+            sec = re.search(r'^### 10\.2 .*?(?=^### |\Z)', guide_md, re.M | re.S)
             if not os.path.exists(cr_path):
                 errors.append("[Governance] Missing .agent/workflows/crystallize-report.md")
+            elif not os.path.exists(schema_path):
+                errors.append("[Governance] Missing crystallize-report.schema.yaml; §10.2's "
+                              "separation of traceability from crystallization rests on "
+                              "its de-projectization gate and cannot be verified")
+            elif not sec:
+                errors.append("[Governance] Cannot locate GUIDE §10.2; the "
+                              "crystallization-report scope cannot be verified")
             else:
                 with open(cr_path, 'r', encoding='utf-8-sig') as f:
                     cr_src = f.read()
-                demand = re.search(r'^- \*\*架構級變更\*\*[：:](.*)$', guide_md, re.M)
+                with open(schema_path, 'r', encoding='utf-8-sig') as f:
+                    schema_src = f.read()
+                sec_src = sec.group(0)
+                demand = re.search(r'^- \*\*架構級變更\*\*[：:](.*)$', sec_src, re.M)
+                # Both premises the rule rests on. Either one going away reopens the call.
                 if "禁止執行結晶" not in cr_src or "治理" not in cr_src:
                     errors.append("[Governance] crystallize-report.md no longer forbids "
                                   "crystallizing governance material; GUIDE §10.2's "
                                   "exclusion now rests on nothing and the pair must be "
                                   "re-decided together")
+                elif "去專案化" not in schema_src or "Commit ID" not in schema_src:
+                    errors.append("[Governance] crystallize-report.schema.yaml no longer "
+                                  "forbids keeping a Commit ID; §10.2 separates traceability "
+                                  "from crystallization because a compliant report cannot "
+                                  "name its own change, and that premise is gone")
                 elif not demand:
                     errors.append("[Governance] Cannot locate GUIDE's 架構級變更 "
                                   "requirement; the crystallization-report scope cannot "
@@ -785,6 +806,19 @@ class KBAuditor:
                                   "calibrate-guidelines. Two rules pointing one change at "
                                   "opposite processes resolve by whichever an executor "
                                   "reads first.")
+                elif "結晶" in demand.group(1):
+                    errors.append("[Governance] GUIDE §10.2 makes a crystallization report "
+                                  "a consequence of the change type (架構級變更). The report "
+                                  "is a write-once internalization asset whose own schema "
+                                  "forbids keeping a Commit ID or a path, so it cannot name "
+                                  "the change it would trace; conscripting it yields empty "
+                                  "reports for changes that taught nothing.")
+                elif "結晶不由變更類型觸發" not in sec_src:
+                    errors.append("[Governance] GUIDE §10.2 no longer states that "
+                                  "crystallization is not triggered by change type. Without "
+                                  "it the section reads as a list of traceability duties "
+                                  "with the crystallization decision unowned, which is how "
+                                  "the report became a filing requirement.")
         return errors
 
     def _check_protected_directories(self):

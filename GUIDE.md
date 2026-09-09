@@ -220,10 +220,14 @@
 - **草稿零殘留**：`terminology.draft.json` 必須為空。所有新偵測或增補的術語必須先行完成精煉，並透過 `manage.py --promote` 晉升至 Core SSOT。
 - **冗餘檔案清理**：資料庫目錄下嚴禁存在空檔案或未定義的佔位檔（如 `terminology.archive.json`）。物理空間應保持極簡。
 
-### 10.2 變更溯源與結晶 (Crystallization Requirement)
-- **架構級變更**：任何涉及子模組異動或核心管線重構的變更，必須在 `.agent-scratch/` 對應路徑下附帶一份結晶報告。
-- **治理變更的排除 (CRITICAL)**：涉及治理模式、目錄權限或核心指引（`GUIDE.md`、reference）修改者 **不附** 結晶報告。[crystallize-report.md](.agent/workflows/crystallize-report.md) 第一階段對此類素材禁止結晶並導向 `calibrate-guidelines`；若此處仍要求報告，兩條規約會對同一次變更指向相反流程。此類變更的溯源形式為指引校正與永久防線落成，見 §8「校正優先」與 §9「定義先行」。
-- **Session 完整性**：結晶報告中必須明確紀錄原始 Context 的關鍵決策路徑與核心術語演進。
+### 10.2 變更溯源 (Change Traceability)
+
+溯源與結晶是兩種產物，本節曾把後者當成前者的附件。[crystallize-report.md](.agent/workflows/crystallize-report.md) 定義結晶報告為「一次性內化資產」，用途是知識內化；[crystallize-report.schema.yaml](.agent/schemas/crystallize-report.schema.yaml) 的「高解析度去專案化」閘門更明文禁止報告保留 Commit ID 與特定路徑。一份合規的報告無法指名它要溯源的那次變更——這個產物在結構上就做不了溯源。
+
+- **架構級變更**：任何涉及子模組異動或核心管線重構的變更，其溯源形式為 commit 訊息，記載關鍵決策路徑與被否決的替代方案。
+- **指引變更**：涉及治理模式、目錄權限或核心指引（`GUIDE.md`、reference）者，溯源形式為指引校正與永久防線落成，見 §8「校正優先」與 §9「定義先行」。[crystallize-report.md](.agent/workflows/crystallize-report.md) 第一階段對此類素材禁止結晶並導向 `calibrate-guidelines`。
+- **結晶不由變更類型觸發 (CRITICAL)**：是否結晶由 §7 知識漏斗決定——`distill-knowledge` 評估出值得留存的教訓，才進入結晶。以「動了某類檔案」為條件強制附帶報告，是把溯源義務誤植到結晶產物上，並讓沒有教訓的變更產出空報告。
+- **報告內容**：由 [crystallize-report.schema.yaml](.agent/schemas/crystallize-report.schema.yaml) 定義，本文件不重述。
 
 ### 10.3 自動化稽核義務 (Automated Audit)
 - 提交重大變更前 **必須** 執行 `python3 .agent/scripts/workflows/calibrate-guidelines/audit_kb.py`。此腳本為治理防線的執行點，非零退出即為阻斷，不得以人工判斷覆寫。
