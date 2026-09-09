@@ -915,6 +915,117 @@ class KBAuditor:
                           "into core architecture vocabulary")
         return errors
 
+    def _check_database_schema_coverage(self):
+        """Every database under lexicon-core must have a schema, and match it at the top level."""
+        errors = []
+        # GUIDE §9 makes the L0 schemas the highest authority and says they define what
+        # an entity looks like, but taxonomy.json — GUIDE §0's third-ranked SSOT, owning
+        # categories, genres and header vocabulary — had no schema at all, and neither
+        # did rules.json. An SSOT with no declared structure cannot drift from its
+        # declaration only because there is nothing to drift from; every guarantee the
+        # tiered hierarchy claims simply did not apply to them.
+        pairs = [("taxonomy.json", "taxonomy.schema.yaml"),
+                 ("rules.json", "rules.schema.yaml")]
+        for data_name, schema_name in pairs:
+            data_path = os.path.join(config.DATABASES_DIR, data_name)
+            schema_path = os.path.join(config.AGENT_DIR, "schemas", schema_name)
+            if not os.path.exists(data_path):
+                errors.append(f"[Governance] Missing {data_name}")
+                continue
+            if not os.path.exists(schema_path):
+                errors.append(f"[Governance] {data_name} has no schema. GUIDE §9 makes "
+                              f"the schema layer the constitution; a database without one "
+                              f"is governed by nothing")
+                continue
+            with open(schema_path, 'r', encoding='utf-8-sig') as f:
+                schema_src = f.read()
+            try:
+                with open(data_path, 'r', encoding='utf-8-sig') as f:
+                    data = json.load(f)
+            except (ValueError, OSError) as exc:
+                errors.append(f"[Governance] {data_name} is unreadable ({exc})")
+                continue
+            req = re.search(r'^required:\n((?:^[ \t]+-[ \t]*\S+\n)+)', schema_src, re.M)
+            props = re.search(r'^properties:\n((?:(?:^[ \t]+.*)?\n)+)', schema_src, re.M)
+            if not (req and props):
+                errors.append(f"[Governance] Cannot parse {schema_name}'s required/"
+                              f"properties; its conformance is unverified and it must keep "
+                              f"a shape this gate can read")
+                continue
+            required = set(re.findall(r'-[ \t]*(\S+)', req.group(1)))
+            declared = set(re.findall(r'^  ([a-z_]\w*):$', props.group(1), re.M))
+            actual = {k for k in data if not k.startswith("_comment")}
+            missing = sorted(required - actual)
+            if missing:
+                errors.append(f"[Governance] {schema_name} requires {missing}, absent from "
+                              f"{data_name}")
+            undeclared = sorted(actual - declared)
+            if undeclared:
+                errors.append(f"[Governance] {data_name} carries top-level {undeclared}, "
+                              f"which {schema_name} does not declare")
+            dead = sorted(declared - actual)
+            if dead:
+                errors.append(f"[Governance] {schema_name} declares top-level {dead}, "
+                              f"absent from {data_name}")
+
+        # taxonomy invariants the schema states in prose and nothing enforced.
+        tax_path = os.path.join(config.DATABASES_DIR, "taxonomy.json")
+        if os.path.exists(tax_path):
+            try:
+                with open(tax_path, 'r', encoding='utf-8-sig') as f:
+                    tax = json.load(f)
+            except (ValueError, OSError):
+                tax = None
+            if isinstance(tax, dict):
+                ai = tax.get("ai_taxonomy") or {}
+                cats = ai.get("categories") or []
+                keys = set((ai.get("detection_keywords") or {}))
+                if not cats:
+                    errors.append("[Governance] taxonomy.json declares no categories; "
+                                  "classify_domain has nothing to decide between")
+                stray = sorted(keys - set(cats))
+                if stray:
+                    errors.append(f"[Governance] taxonomy.json has detection_keywords for "
+                                  f"{stray}, which are not categories — keywords for a "
+                                  f"category that does not exist can never be reached")
+                blind = sorted(set(cats) - keys)
+                if blind:
+                    errors.append(f"[Governance] taxonomy.json categories {blind} have no "
+                                  f"detection keywords; a category that cannot be hit "
+                                  f"occupies priority order without ever winning")
+                hn = tax.get("header_normalization") or {}
+                for canon, variants in hn.items():
+                    if not isinstance(variants, list):
+                        continue
+                    collide = sorted(set(variants) & set(hn))
+                    if collide:
+                        errors.append(f"[Governance] taxonomy.json normalizes {collide} "
+                                      f"into '{canon}' while they are canonical header "
+                                      f"names themselves; applying the rule merges two "
+                                      f"sections with different jobs")
+
+        # rules invariants: the patterns have to compile, or the guard they carry is off.
+        rules_path = os.path.join(config.DATABASES_DIR, "rules.json")
+        if os.path.exists(rules_path):
+            try:
+                with open(rules_path, 'r', encoding='utf-8-sig') as f:
+                    rules = json.load(f)
+            except (ValueError, OSError):
+                rules = None
+            if isinstance(rules, dict):
+                anchors = rules.get("markdown_anchors") or {}
+                pats = list(anchors.get("protected_alert_patterns") or [])
+                if isinstance(anchors.get("anchor_regex"), str):
+                    pats.append(anchors["anchor_regex"])
+                for pat in pats:
+                    try:
+                        re.compile(pat)
+                    except re.error as exc:
+                        errors.append(f"[Governance] rules.json pattern {pat!r} does not "
+                                      f"compile ({exc}); the protection it declares is "
+                                      f"silently absent")
+        return errors
+
     def _check_protected_directories(self):
         """The ignore file and GUIDE's absolute-protection block must name the same directories."""
         errors = []
@@ -1557,6 +1668,7 @@ class KBAuditor:
         "_check_evidence_agreement",
         "_check_knowledge_funnel",
         "_check_terminology_schema_conformance",
+        "_check_database_schema_coverage",
         "_check_protected_directories",
         "_check_category_priority",
         "_check_tag_truncation_reporting",

@@ -1,0 +1,61 @@
+# Taxonomy Database Schema Definition
+# 此檔案定義了分類庫 (taxonomy.json) 的絕對結構。
+# 所有自動化腳本或人工編輯都必須遵守此結構，嚴禁寫入未定義之屬性。
+
+# 核心檔案位置: .agent/lexicon-core/databases/taxonomy.json
+# 依 GUIDE.md §0，本檔治理標籤、領域分類、genre 與標頭詞彙，不定義系列前綴。
+# 嚴禁建立 taxonomy.md 之類的 Markdown 投影：投影沒有生成器就會變成第二份手改來源。
+
+type: object
+required:
+  - genres
+  - ai_taxonomy
+  - header_normalization
+properties:
+  genres:
+    type: object
+    additionalProperties:
+      type: string
+    description: >
+      genre 識別碼到中文顯示名的映射。同一個 genre 同時以 Title Case 與
+      kebab-case 兩種鍵收錄，兩組必須覆蓋相同的顯示名集合，因為呼叫點使用
+      哪一種寫法並不統一。
+
+  ai_taxonomy:
+    type: object
+    required:
+      - categories
+      - detection_keywords
+    properties:
+      categories:
+        type: array
+        items:
+          type: string
+        description: >
+          領域分類清單。**順序即優先序**：`classify_domain` 依序取首個命中者，
+          較具體的讀法勝過較寬泛的讀法，即使只命中一個詞。此為定案而非產物，
+          不得改為加權或最低證據門檻——歧義以 `classify_domain_evidence` 的
+          旗標曝光。腳本不得以 list 常量複製此清單，程式內的副本會自由漂移。
+      detection_keywords:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            type: string
+        description: >
+          每個分類的偵測詞。鍵必須是 `categories` 的成員，且每個分類都必須
+          有一組偵測詞——沒有偵測詞的分類永遠不會被命中，形同不存在。
+          偵測詞對中文不設字界，短詞會命中更長詞的內部（`估值` 落在
+          「評估值」），收錄前須檢視語料中的實際命中位置。
+
+  header_normalization:
+    type: object
+    additionalProperties:
+      type: array
+      items:
+        type: string
+    description: >
+      標頭正規名到變體清單的映射。鍵是正規名，值是應被正規化為它的寫法。
+      正規名不得出現在任何變體清單中（含自己的），否則正規化會把兩個任務
+      不同的章節併成一個。每個正規名必須是 `crystallize-report.schema.yaml`
+      所規定的章節標題之一——這是 GUIDE §9.0 兩個階層的交界。

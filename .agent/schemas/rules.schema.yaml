@@ -1,0 +1,58 @@
+# Rules Database Schema Definition
+# 此檔案定義了規則庫 (rules.json) 的絕對結構。
+# 所有自動化腳本或人工編輯都必須遵守此結構，嚴禁寫入未定義之屬性。
+
+# 核心檔案位置: .agent/lexicon-core/databases/rules.json
+
+type: object
+required:
+  - de_bilingual_headers
+  - markdown_anchors
+  - zh_tw_forbidden_usage
+  - zh_tw_context_review
+patternProperties:
+  "^_comment":
+    type: string
+    description: "檔內註解。JSON 無註解語法，以底線前綴鍵承載。"
+properties:
+  de_bilingual_headers:
+    type: array
+    items:
+      type: string
+    description: >
+      結構標頭清單。這些是章節標題而非術語，不得被施以『中文（English）』
+      雙語錨定，否則結構標籤會被術語引擎吞掉。
+
+  markdown_anchors:
+    type: object
+    required:
+      - protected_alert_patterns
+      - anchor_regex
+    properties:
+      protected_alert_patterns:
+        type: array
+        items:
+          type: string
+        description: >
+          受保護區塊的 regex。命中者不得被注入錨點。所有 pattern 必須可編譯，
+          且行錨點後不得使用會吞垂直換行的 `\s*`，只能用 `[ \t]*`。
+      anchor_regex:
+        type: string
+        description: "既有錨點的辨識 regex，供移除與冪等性比對使用。必須可編譯。"
+
+  zh_tw_forbidden_usage:
+    type: object
+    additionalProperties:
+      type: string
+    description: >
+      正體中文維護防線（GUIDE §3.1）。鍵為嚴禁使用的區域慣用語，值為應改用的
+      正體技術術語。此表為無條件替換：鍵在任何語境下都不成立。
+
+  zh_tw_context_review:
+    type: object
+    additionalProperties:
+      type: string
+    description: >
+      需人工判讀的同形詞。鍵在某些語境下正確、某些語境下錯誤（`函數` 在數學義
+      保留、在程式義應為 `函式`），因此值是判讀說明而非替換目標。嚴禁腳本
+      據此執行無條件替換。
