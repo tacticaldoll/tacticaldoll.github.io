@@ -821,6 +821,100 @@ class KBAuditor:
                                   "the report became a filing requirement.")
         return errors
 
+    def _check_terminology_schema_conformance(self):
+        """terminology.schema.yaml must describe the terminology.json that actually exists."""
+        errors = []
+        # The schema calls itself the absolute structure and forbids undeclared
+        # properties, and it had drifted from the data on three counts at once: it
+        # declared `type: array` keyed by zh while the file is an object keyed by a
+        # PascalCase id; it never declared `level`, which every one of the entries
+        # carries and which injector/tag_anchor read to decide anchoring; and it
+        # declared `category`/`tags`, which nothing writes and nothing reads. Nothing
+        # compared the two files, so the L0 constitution described a database that
+        # had not existed for a long time. This compares them in both directions.
+        schema_path = os.path.join(config.AGENT_DIR, "schemas", "terminology.schema.yaml")
+        data_path = config.TERMINOLOGY_JSON
+        if not os.path.exists(schema_path):
+            return ["[Governance] Missing .agent/schemas/terminology.schema.yaml; the "
+                    "terminology database has no declared structure to conform to"]
+        if not os.path.exists(data_path):
+            return ["[Governance] Missing terminology.json; schema conformance cannot "
+                    "be verified"]
+        with open(schema_path, 'r', encoding='utf-8-sig') as f:
+            schema_src = f.read()
+        try:
+            with open(data_path, 'r', encoding='utf-8-sig') as f:
+                data = json.load(f)
+        except (ValueError, OSError) as exc:
+            return [f"[Governance] terminology.json is unreadable ({exc}); schema "
+                    f"conformance cannot be verified"]
+
+        # Parsed by regex on purpose: this is a blocking gate and the repository
+        # declares no Python dependencies, so importing a YAML library here would
+        # make the gate crash wherever that library is absent.
+        top = re.search(r'^type:[ \t]*(\w+)', schema_src, re.M)
+        req = re.search(r'^    required:\n((?:[ \t]*-[ \t]*\w+\n)+)', schema_src, re.M)
+        props = re.search(r'^    properties:\n((?:(?:[ \t]{6,}.*)?\n)+)', schema_src, re.M)
+        if not (top and req and props):
+            return ["[Governance] Cannot parse terminology.schema.yaml's type/required/"
+                    "properties; conformance is unverified and the schema must keep a "
+                    "shape this gate can read"]
+        declared_top = top.group(1)
+        required = set(re.findall(r'-[ \t]*(\w+)', req.group(1)))
+        declared = set(re.findall(r'^      ([a-z_]\w*):$', props.group(1), re.M))
+
+        actual_top = "object" if isinstance(data, dict) else "array"
+        if declared_top != actual_top:
+            errors.append(f"[Governance] terminology.schema.yaml declares "
+                          f"`type: {declared_top}` but terminology.json is a(n) "
+                          f"{actual_top}; the declared structure is not the one on disk")
+            return errors
+        if not isinstance(data, dict) or not data:
+            return errors
+
+        used = set()
+        for entry in data.values():
+            if isinstance(entry, dict):
+                used.update(entry.keys())
+        missing = sorted(required - used)
+        if missing:
+            errors.append(f"[Governance] terminology.schema.yaml requires {missing} "
+                          f"but no entry carries them")
+        undeclared = sorted(used - declared)
+        if undeclared:
+            errors.append(f"[Governance] terminology.json entries carry {undeclared}, "
+                          f"which terminology.schema.yaml does not declare — the schema "
+                          f"forbids undeclared properties, so one of the two is wrong")
+        dead = sorted(declared - used)
+        if dead:
+            errors.append(f"[Governance] terminology.schema.yaml declares {dead}, which "
+                          f"no entry uses. A property nothing writes is a claim about the "
+                          f"database that stopped being true without anything failing")
+
+        enum = re.search(r'^        enum:[ \t]*\[([0-9,\t ]+)\]', schema_src, re.M)
+        if "level" in declared:
+            if not enum:
+                errors.append("[Governance] terminology.schema.yaml declares `level` "
+                              "without an enum; its allowed values are what separates a "
+                              "pipeline weight from an arbitrary integer")
+            else:
+                allowed = {int(x) for x in re.findall(r'\d+', enum.group(1))}
+                seen = {e.get("level") for e in data.values() if isinstance(e, dict)}
+                stray = sorted(v for v in seen if v not in allowed)
+                if stray:
+                    errors.append(f"[Governance] terminology.json uses level {stray}, "
+                                  f"outside the schema's {sorted(allowed)}")
+        # GUIDE §3.2 owns what a level MEANS. A second definition here drifts: the
+        # schema once carried a five-level maturity ladder whose Level 3 was "核心架構
+        # 術語" while GUIDE's Level 3 is the IGNORE_LIST — opposite polarity, and the
+        # code follows GUIDE.
+        if re.search(r'^[ \t]*-[ \t]*"?Level [45]', schema_src, re.M):
+            errors.append("[Governance] terminology.schema.yaml defines levels beyond "
+                          "GUIDE §3.2's three. Two definitions of the same field drift, "
+                          "and the last divergence inverted level 3 from IGNORE_LIST "
+                          "into core architecture vocabulary")
+        return errors
+
     def _check_protected_directories(self):
         """The ignore file and GUIDE's absolute-protection block must name the same directories."""
         errors = []
@@ -1462,6 +1556,7 @@ class KBAuditor:
         "_check_asymmetric_tagging",
         "_check_evidence_agreement",
         "_check_knowledge_funnel",
+        "_check_terminology_schema_conformance",
         "_check_protected_directories",
         "_check_category_priority",
         "_check_tag_truncation_reporting",
