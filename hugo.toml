@@ -42,13 +42,18 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
-    # Math passthrough. Without this Goldmark parses formulas as prose: `*` and
-    # `_` inside $...$ became <em>, so e.g. `P^*` in a diagnostic-coordinates
-    # formula rendered as `P^<em>`. Passthrough hands the delimited span to the
-    # renderer verbatim, leaving it for MathJax at runtime.
-    # Inline `$...$` is safe here because no post uses a bare literal `$`
-    # (verified: zero lines with an odd `$` count outside code fences). Should a
-    # future post need one, escape it as `\$`.
+    # Goldmark passthrough: "do not parse what sits between these delimiters".
+    # Not a math feature — a parser setting whose only consumer here is math.
+    # LaTeX collides with Markdown: `_` and `*` are emphasis, so Goldmark turns
+    # `\mathbb{E}_{q_\phi(...)}` into `\mathbb{E}<em>{q</em>\phi(...)` before any
+    # renderer sees it (re-verified on theme 0.2.0 by disabling this block).
+    # Site-level by nature: it governs how this site's content is parsed at build
+    # time, so the theme cannot own it — the theme owns only the second stage,
+    # turning what survives into `.math` + `data-math` for its useKatex
+    # composable to render against vendored KaTeX.
+    # The delimiter choice is a site decision with a site cost: declaring `$...$`
+    # inline forbids a lone literal `$` corpus-wide (verified: zero lines with an
+    # odd `$` count outside code fences). A future post needing one escapes `\$`.
     [markup.goldmark.extensions.passthrough]
       enable = true
       [markup.goldmark.extensions.passthrough.delimiters]
