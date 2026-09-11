@@ -35,7 +35,17 @@ class TerminologyInjector:
             return f"__CODE_BLOCK_{len(code_blocks)-1}__"
         
         protected_body = re.sub(r'^```[\s\S]*?^```', code_replacer, body, flags=re.MULTILINE)
-        
+
+        # Math is not prose. The zh keys below are matched by plain substring, so a term
+        # appearing inside \text{…} gets an anchor comment injected into the formula:
+        #   \text{條件機率序列生成器 <!-- term:Foo -->} = x
+        # which corrupts the LaTeX. BlockProtector guards the assembly path this way;
+        # apply_lexicon is reached directly by reanchor.py, which bypasses that path, so
+        # the same guard has to exist here. Display math first, then single-line inline
+        # math, matching BlockProtector's order.
+        protected_body = re.sub(r'\$\$[\s\S]*?\$\$', code_replacer, protected_body)
+        protected_body = re.sub(r'(?<!\$)\$(?!\$)[^\n$]+?\$(?!\$)', code_replacer, protected_body)
+
         def comment_replacer(match):
             comment = match.group(0)
             # Keep the <!--more--> separator literal so split_by_more can isolate the preview

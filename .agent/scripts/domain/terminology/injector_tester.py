@@ -225,6 +225,33 @@ def test_control_idempotent_on_clean_body():
     assert once == twice, "control: re-anchoring an already-anchored body must be a no-op"
 
 
+# --- Gap 8: math spans must not be anchored -----------------------------------
+# zh keys are matched by plain substring, so a term inside \text{…} used to get an
+# anchor comment injected into the formula — `\text{術語 <!-- term:Foo -->}` — which
+# corrupts the LaTeX. BlockProtector guards the assembly path, but reanchor.py calls
+# apply_lexicon directly and bypasses it, so the injector needs its own guard.
+def test_gap8_math_is_not_anchored():
+    term = _pick_anchorable_term()
+    display = f"$$\n\\text{{{term}}} = x\n$$"
+    inline = f"$\\alpha_{{{term}}}$"
+    body = (
+        f"正文首次提到{term}，建立首錨。\n\n"
+        f"{display}\n\n"
+        f"行內公式 {inline} 也必須原樣保留。\n\n"
+        f"結尾再次提到{term}。\n"
+    )
+    out = _reanchor(body)
+    assert display in out, (
+        "Gap 8: display math was rewritten (an anchor was injected inside $$…$$)."
+    )
+    assert inline in out, (
+        "Gap 8: inline math was rewritten (an anchor was injected inside $…$)."
+    )
+    assert "<!-- term:" in out, (
+        "Gap 8: guard over-reached — prose outside the math spans lost its anchor."
+    )
+
+
 TESTS = [
     ("Gap 1  author [!IMPORTANT] survives", test_gap1_author_important_block_survives),
     ("Gap 2  orphan anchor cleaned",        test_gap2_orphan_anchor_of_removed_term_is_cleaned),
@@ -233,6 +260,7 @@ TESTS = [
     ("Gap 5  author gloss survives",        test_gap5_author_gloss_without_marker_survives),
     ("Gap 6  line order preserved",         test_gap6_line_order_is_preserved),
     ("Gap 7  idempotent w/ author block",   test_gap7_idempotent_with_author_definition_block),
+    ("Gap 8  math not anchored",            test_gap8_math_is_not_anchored),
     ("control idempotency",                 test_control_idempotent_on_clean_body),
 ]
 
