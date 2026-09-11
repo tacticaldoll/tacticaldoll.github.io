@@ -137,39 +137,3 @@ class TagAnchorer:
             kept.append((ndisp, nkey))
         return kept, {"refreshed": refreshed, "dropped": dropped}
 
-    def reanchor_tags_block(self, fm_text):
-        """Rewrites the `tags = [...]` block inside a verbatim TOML front-matter string,
-        IN PLACE: each entry is refreshed/dropped by key, duplicates (same key) are merged.
-        Every other byte of the front matter is preserved. Returns (new_fm_text, stats).
-        stats = {"refreshed": n, "dropped": n}.
-        """
-        m = re.search(r'(tags\s*=\s*\[)(.*?)(\])', fm_text, re.DOTALL)
-        if not m:
-            return fm_text, {"refreshed": 0, "dropped": 0}
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-
-        entry_re = re.compile(r'^([ \t]*)"(.+?)"[ \t]*,?[ \t]*#[ \t]*term:(\S+)[ \t]*$')
-        indent = "    "
-        for line in body.splitlines():
-            em = entry_re.match(line)
-            if em:
-                indent = em.group(1) or indent
-                break
-
-        parsed = []
-        for line in body.splitlines():
-            em = entry_re.match(line)
-            if em:  # anything else is structural whitespace / bracket padding
-                parsed.append((em.group(2), em.group(3)))
-        kept, stats = self.reanchor_entries(parsed)
-        refreshed, dropped = stats["refreshed"], stats["dropped"]
-
-        # Preserve the original closing-bracket padding (e.g. "\n  " before ]).
-        close_pad = re.search(r'(\n[ \t]*)$', body)
-        close = close_pad.group(1) if close_pad else "\n"
-        if kept:
-            new_body = "".join(f'\n{indent}"{d}", # term:{k}' for d, k in kept) + close
-        else:
-            new_body = ""
-        new_fm = fm_text[:m.start()] + head + new_body + tail + fm_text[m.end():]
-        return new_fm, {"refreshed": refreshed, "dropped": dropped}

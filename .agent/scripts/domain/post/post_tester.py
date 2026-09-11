@@ -110,6 +110,30 @@ def test_keyed_tag_edit_preserves_the_rest():
     assert out.endswith("正文第一段。\n"), "a tag edit damaged the body"
 
 
+def test_tag_splice_is_idempotent():
+    """Writing back the same entry set twice must converge — re-anchoring runs
+    repeatedly over the published corpus, so a splice that drifts would accumulate."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    post.set_tag_entries(post.tag_entries)
+    once = post.save_to_string()
+    again = HugoPost()
+    again.load(content=once)
+    again.set_tag_entries(again.tag_entries)
+    assert once == again.save_to_string(), "splicing an unchanged entry set is not a no-op"
+
+
+def test_no_tags_block_untouched():
+    """A post with no keyed tags has nothing to edit. tag_entries must be None rather
+    than empty, so a caller cannot mistake 'no tags array' for 'an empty one' and
+    write the array away."""
+    fm_only = '+++\ntitle = "無標籤"\ndraft = false\n+++\n\n正文。\n'
+    post = HugoPost()
+    post.load(content=fm_only)
+    assert post.tag_entries is None, "a post without keyed tags must report None, not []"
+    assert post.save_to_string() == fm_only, "a post without tags must round-trip untouched"
+
+
 def test_metadata_edit_still_rebuilds():
     """The boundary of the fix: once metadata is mutated the verbatim prefix is stale,
     so save must fall back to rebuilding rather than re-emitting the old front matter."""
@@ -131,6 +155,8 @@ def main():
 
     for name, fn in (("body-only edit preserves front matter", test_body_edit_preserves_front_matter),
                      ("keyed tag edit preserves the rest",     test_keyed_tag_edit_preserves_the_rest),
+                     ("tag splice is idempotent",              test_tag_splice_is_idempotent),
+                     ("no tags block untouched",               test_no_tags_block_untouched),
                      ("metadata edit still rebuilds",          test_metadata_edit_still_rebuilds)):
         fn()
         print(f"[PASS] {name}")

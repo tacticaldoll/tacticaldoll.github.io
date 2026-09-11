@@ -82,54 +82,38 @@ def test_removed_key_dropped():
 
 
 # --- block: refresh + dedup + drop, with the rest of FM byte-identical -------
-def test_tags_block_reanchor():
+# --- whole-set refresh: dedup by key, drop orphans, count both ---------------
+# The decision half of re-anchoring. How the result is stored is the post model's
+# concern and is pinned in post_tester.py; this only asserts which entries survive.
+def test_entries_refresh_dedup_and_drop():
     gkey, gcanon = _a_genre_key()
     zh, tkey = _a_level_lt3_term()
-    fm = (
-        "+++\n"
-        'title = "保留我"\n'
-        "tags = [\n"
-        f'    "舊genre顯示", # term:{gkey}\n'
-        f'    "舊tech顯示", # term:{tkey}\n'
-        f'    "重複genre", # term:{gkey}\n'
-        '    "孤兒", # term:ZzRemovedKey99999\n'
-        "  ]\n"
-        "draft = false\n"
-        "+++\n"
-    )
-    out, stats = ANCHORER.reanchor_tags_block(fm)
-    # genre refreshed to canonical, appears exactly once (dedup)
-    assert out.count(f"# term:{gkey}") == 1, "duplicate genre key must be merged to one"
-    assert f'"{gcanon}", # term:{gkey}' in out, "genre display must be refreshed"
-    # orphan dropped
-    assert "ZzRemovedKey99999" not in out, "orphan key must be dropped"
+    kept, stats = ANCHORER.reanchor_entries([
+        ("舊genre顯示", gkey),
+        ("舊tech顯示", tkey),
+        ("重複genre", gkey),
+        ("孤兒", "ZzRemovedKey99999"),
+    ])
+    keys = [k for _, k in kept]
+    assert keys.count(gkey) == 1, "duplicate genre key must be merged to one"
+    assert (gcanon, gkey) in kept, "genre display must be refreshed to canonical"
+    assert "ZzRemovedKey99999" not in keys, "orphan key must be dropped"
     assert stats["dropped"] >= 2, f"expected >=2 drops (dup + orphan), got {stats}"
-    # rest of front matter preserved verbatim
-    assert 'title = "保留我"' in out and "draft = false" in out, "non-tags FM must be preserved"
 
 
-# --- idempotency: reanchoring an already-fresh block is a no-op --------------
-def test_block_idempotent():
+# --- idempotency: refreshing an already-fresh set is a no-op ------------------
+def test_entries_idempotent():
     gkey, _ = _a_genre_key()
-    zh, tkey = _a_level_lt3_term()
-    fm = (
-        "+++\n"
-        "tags = [\n"
-        f'    "x", # term:{gkey}\n'
-        f'    "y", # term:{tkey}\n'
-        "  ]\n"
-        "+++\n"
-    )
-    once, _ = ANCHORER.reanchor_tags_block(fm)
-    twice, _ = ANCHORER.reanchor_tags_block(once)
-    assert once == twice, "reanchoring an already-fresh tags block must be a no-op"
+    _zh, tkey = _a_level_lt3_term()
+    once, _ = ANCHORER.reanchor_entries([("x", gkey), ("y", tkey)])
+    twice, _ = ANCHORER.reanchor_entries(once)
+    assert once == twice, "refreshing an already-fresh entry set must be a no-op"
 
 
-# --- no tags block: untouched ------------------------------------------------
-def test_no_tags_block_untouched():
-    fm = "+++\ntitle = \"x\"\ndraft = false\n+++\n"
-    out, stats = ANCHORER.reanchor_tags_block(fm)
-    assert out == fm and stats == {"refreshed": 0, "dropped": 0}
+# --- nothing to refresh: empty in, empty out ---------------------------------
+def test_no_entries_untouched():
+    kept, stats = ANCHORER.reanchor_entries(None)
+    assert kept == [] and stats == {"refreshed": 0, "dropped": 0}
 
 
 TESTS = [
@@ -137,9 +121,9 @@ TESTS = [
     ("tech term refreshed by key",     test_tech_term_refreshed_by_key),
     ("downgraded term dropped",        test_downgraded_term_dropped),
     ("removed key dropped",            test_removed_key_dropped),
-    ("tags block reanchor",            test_tags_block_reanchor),
-    ("block idempotent",               test_block_idempotent),
-    ("no tags block untouched",        test_no_tags_block_untouched),
+    ("entries refresh/dedup/drop",     test_entries_refresh_dedup_and_drop),
+    ("entries idempotent",             test_entries_idempotent),
+    ("no entries untouched",           test_no_entries_untouched),
 ]
 
 
