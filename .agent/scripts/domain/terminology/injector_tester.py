@@ -6,6 +6,11 @@
 ##       they FAIL on the current implementation (reproducing each gap) and turn GREEN
 ##       once the injector is fixed. A positive idempotency control must stay GREEN throughout.
 ##
+## RED-TO-GREEN IS WITHIN ONE COMMIT, NOT ACROSS. audit_kb.py discovers these suites and
+## runs them as a GOVERNANCE check, and a failing one makes the mandatory audit exit
+## non-zero — which GUIDE §10.3 treats as blocking. Writing the failing assertion first is
+## the point of this file; leaving it failing at commit time blocks everyone.
+##
 ## Convention: mirrors lexicon_tester.py (plain asserts + __main__ runner, no pytest dependency).
 ## Run: python .agent/scripts/domain/terminology/injector_tester.py
 

@@ -7,7 +7,11 @@
 ##       byte-for-byte, so re-anchoring can rewrite a body without the front matter
 ##       paying for it.
 ##
-##       It was committed red. build_toml_front_matter() rebuilt the front matter from
+##       It was written red, and the fix landed before the commit closed — audit_kb.py
+##       runs these suites as a GOVERNANCE check, so a suite left failing blocks every
+##       commit, not just the one that introduced it.
+##
+##       build_toml_front_matter() rebuilt the front matter from
 ##       a parsed dict and dropped every `# term:Key` tag comment — the identity each
 ##       tag is refreshed by — so all 48 published posts failed. That single loss was
 ##       why three separate treatments of front matter existed. The model now re-emits

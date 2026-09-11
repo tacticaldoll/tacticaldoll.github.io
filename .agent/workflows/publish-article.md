@@ -53,4 +53,4 @@ python3 .agent/scripts/domain/terminology/manage.py --promote
 
 1. **NLP 不越界**：Handoff 產出後，AI 代理人不再介入內容精煉，一切交由流水線腳本處理。
 2. **填充即法律**：禁止合併或刪除物理段落。
-3. **治理委派**：所有關於 JSON 元數據、標籤協議與去雙語化標題規範，請參閱 [handoff.posts.schema.yaml](../schemas/handoff.posts.schema.yaml)。
+3. **治理委派**：JSON 元數據與標籤協議見 [handoff.posts.schema.yaml](../schemas/handoff.posts.schema.yaml)。去雙語化名單見 `rules.json` 的 `de_bilingual_headers`——它管的是**章節標頭**（導言、分析、結論…），不管文章標題；標題無去雙語化規範。
