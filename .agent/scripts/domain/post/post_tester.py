@@ -176,6 +176,22 @@ def test_set_title_splices_only_that_line():
     assert post.save_to_string() == out, "set_title is not stable across repeated saves"
 
 
+def test_set_scalar_field_reaches_description():
+    """Correction has to reach every published scalar field, not just the title. The
+    description ships in listings and RSS, and a variant added to the lexicon after
+    publication was stranded there until this path existed."""
+    fm = ('+++\ntitle = "標題"\ndescription = "描述含舊寫法"\ndraft = false\n'
+          'tags = [\n    "分析論述", # term:AnalyticalEssay\n  ]\n+++\n\n正文。\n')
+    post = HugoPost()
+    post.load(content=fm)
+    assert post.set_scalar_field("description", "描述含新寫法") is True
+    out = post.save_to_string()
+    assert 'description = "描述含新寫法"' in out, "the description was not replaced"
+    assert 'title = "標題"' in out, "a description edit damaged the title"
+    assert "# term:AnalyticalEssay" in out, "a description edit dropped a tag comment"
+    assert out.endswith("正文。\n"), "a description edit damaged the body"
+
+
 def test_set_title_refuses_escaping():
     """A title carrying a quote or a backslash would need TOML escaping. Nothing in the
     corpus has ever carried one, so the guard is cheaper than an escaping routine that
@@ -212,6 +228,7 @@ def main():
                      ("no tags block untouched",               test_no_tags_block_untouched),
                      ("unkeyed tags are refused",              test_unkeyed_tags_are_refused),
                      ("set_title splices only that line",      test_set_title_splices_only_that_line),
+                     ("set_scalar_field reaches description",  test_set_scalar_field_reaches_description),
                      ("set_title refuses escaping",            test_set_title_refuses_escaping),
                      ("metadata edit still rebuilds",          test_metadata_edit_still_rebuilds)):
         fn()

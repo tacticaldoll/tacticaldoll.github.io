@@ -111,13 +111,20 @@ def process_post(path, lexicon, tag_anchorer):
     if post.tag_entries is not None:
         post.set_tag_entries(new_entries)
 
-    # The title is corrected, never anchored. Correction rewrites a known variant to
-    # its canonical form and leaves nothing behind; anchoring would put a gloss and a
-    # definition block in the title, which is presentation and belongs to the theme.
-    # Because only correction runs here, the title cannot become a term's first
-    # occurrence, so the definition block stays on the first occurrence in the body —
-    # no special case needed to keep it there.
-    title_corrected = post.set_title(lexicon.replace_forbidden(post.metadata.get("title", "")))
+    # Published scalar front matter is corrected, never anchored. Correction rewrites a
+    # known variant to its canonical form and leaves nothing behind; anchoring would put
+    # a gloss and a definition block in a title, which is presentation and belongs to the
+    # theme. Because only correction runs here, neither field can become a term's first
+    # occurrence, so the definition block stays on the first occurrence in the body with
+    # no special case needed to hold it there.
+    #
+    # Both fields reach readers — the title everywhere, the description in listings and
+    # RSS — so a variant added to the lexicon after publication has to reach them too.
+    fm_corrected = 0
+    for field in ("title", "description"):
+        current = post.metadata.get(field)
+        if isinstance(current, str) and post.set_scalar_field(field, lexicon.replace_forbidden(current)):
+            fm_corrected += 1
 
     before_t, before_a = _count_anchors(post.body)
     body = post.body
@@ -133,7 +140,7 @@ def process_post(path, lexicon, tag_anchorer):
         "anchor_delta": after_a - before_a,
         "tag_refreshed": tag_stats["refreshed"],
         "tag_dropped": tag_stats["dropped"],
-        "title_corrected": title_corrected,
+        "fm_corrected": fm_corrected,
         "warnings": diagnose(body, new_body) if changed else [],
         "new_content": new_content,
     }
@@ -162,7 +169,7 @@ def run(apply, slug_filter, force=False):
             warnings = res["warnings"]
             rows.append((slug, res["term_delta"], res["anchor_delta"],
                          res["tag_refreshed"], res["tag_dropped"],
-                         res["title_corrected"], warnings))
+                         res["fm_corrected"], warnings))
             if apply:
                 # SAFETY GATE: a flagged post is quarantined (not written) unless --force,
                 # so blind corruption is surfaced for human review instead of shipped.
@@ -177,7 +184,7 @@ def run(apply, slug_filter, force=False):
 
     _write_report(rows, apply, force)
     mode = "APPLY" if apply else "SCAN (dry-run, no writes)"
-    flagged = sum(1 for r in rows if r[5])
+    flagged = sum(1 for r in rows if r[-1])   # warnings are the last field
     log_info(f"[{mode}] {changed} post(s) would change; {flagged} carry warning(s)."
              + (f" Wrote {written}, quarantined {quarantined}." if apply else ""))
     log_info(f"Report: {os.path.relpath(REPORT_PATH, config.ROOT_DIR)}")
@@ -190,13 +197,13 @@ def run(apply, slug_filter, force=False):
 
 
 def _write_report(rows, apply, force=False):
-    flagged = [r for r in rows if r[6]]
+    flagged = [r for r in rows if r[-1]]   # warnings are the last field
     out = [
         "# 貼文再錨定報告 (Re-anchor " + ("Apply" if apply else "Scan") + ")",
         "",
         f"> {'已套用' if apply else 'Dry-run（未寫入）'}。term = 內文 `<!-- term -->` 錨點，anchor = 定義框，"
         "tag刷新 = 標籤顯示值依鍵刷新數，tag刪除 = 孤兒/降級標籤刪除數，"
-        "標題 = 標題套用了禁用詞校正（校正無標記，不是錨定）。",
+        "前綴校正 = 標題/描述套用禁用詞校正的欄位數（校正無標記，不是錨定）。",
         "",
         f"變更貼文數：**{len(rows)}**　|　帶警告：**{len(flagged)}**"
         + ("　（--force 已關閉防線）" if force else ""),
@@ -205,11 +212,11 @@ def _write_report(rows, apply, force=False):
     if not rows:
         out.append("（無貼文需變更——術語庫、內文與標籤已一致，冪等 no-op。）")
     else:
-        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | 標題 | ⚠ |")
+        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | 前綴校正 | ⚠ |")
         out.append("|---|---:|---:|---:|---:|:--:|:--|")
         for slug, td, ad, tr, tdrop, tfix, w in rows:
             out.append(f"| {slug} | {td:+d} | {ad:+d} | {tr} | {tdrop} | "
-                       f"{'✓' if tfix else ''} | {'⚠×'+str(len(w)) if w else ''} |")
+                       f"{tfix or ''} | {'⚠×'+str(len(w)) if w else ''} |")
     if flagged:
         out += ["", "## ⚠ 安全防線警告（apply 時除非 --force 否則跳過寫入）", ""]
         for slug, _td, _ad, _tr, _tdrop, _tfix, w in flagged:
