@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 ## Authored by Schema: ../../../schemas/handoff.posts.schema.yaml
 ## Reference Workflow: ../../../workflows/reanchor-posts.md
-## Role: Round-trip identity harness for HugoPost over the PUBLISHED corpus.
-##       Pins the property every caller of the model needs but none currently has:
-##       load() then save_to_string() with no modification must return the file
-##       byte-for-byte. It FAILS today — build_toml_front_matter() reconstructs the
-##       front matter from a parsed dict, which drops the `# term:Key` tag comments
-##       that carry every tag's anchor identity. That loss is exactly why reanchor.py
-##       bypasses the model with a regex split and TagAnchorer edits front matter as
-##       raw text: three treatments of one region, because the model is lossy.
+## Role: Round-trip identity harness for HugoPost over the PUBLISHED corpus, plus the
+##       unit cases around it. Pins the property every caller of the model depends on:
+##       load() then save_to_string() with no modification returns the file
+##       byte-for-byte, so re-anchoring can rewrite a body without the front matter
+##       paying for it.
 ##
-##       This harness is the gate for making the model comment-preserving. It turns
-##       GREEN when the model round-trips the real corpus losslessly, and stays green
-##       as callers are migrated onto it.
+##       It was committed red. build_toml_front_matter() rebuilt the front matter from
+##       a parsed dict and dropped every `# term:Key` tag comment — the identity each
+##       tag is refreshed by — so all 48 published posts failed. That single loss was
+##       why three separate treatments of front matter existed. The model now re-emits
+##       the block verbatim when untouched and splices only the tags array when the
+##       keyed tags change, and the bypasses are retired.
+##
+##       Keep this green. A regression here does not announce itself: a lossy save
+##       silently strips anchors from every post it touches.
 ##
 ## Convention: mirrors injector_tester.py (plain asserts + __main__ runner, no pytest).
 ## Run: python3 .agent/scripts/domain/post/post_tester.py [--show N]
@@ -134,6 +137,30 @@ def test_no_tags_block_untouched():
     assert post.save_to_string() == fm_only, "a post without tags must round-trip untouched"
 
 
+def test_unkeyed_tags_are_refused():
+    """An array the model cannot key must be reported as unmanageable, not as an empty
+    or partial entry list. Regenerating the array from parsed entries would silently
+    drop every tag carrying no `# term:Key`, and an unkeyed tag cannot be looked up to
+    decide whether it deserved to survive."""
+    single_line = '+++\ntitle = "x"\ntags = ["甲", "乙"]\n+++\n\n正文。\n'
+    post = HugoPost()
+    post.load(content=single_line)
+    assert post.tag_entries is None, "a fully unkeyed tags array must be refused"
+    assert post.save_to_string() == single_line, "refusing must still round-trip verbatim"
+
+    partial = ('+++\ntitle = "x"\ntags = [\n'
+               '    "甲", # term:K1\n'
+               '    "乙"\n'
+               '  ]\n+++\n\n正文。\n')
+    post2 = HugoPost()
+    post2.load(content=partial)
+    assert post2.tag_entries is None, (
+        "a partially keyed tags array must be refused — keeping only the keyed entry "
+        "would drop the other one on write-back"
+    )
+    assert post2.save_to_string() == partial, "refusing must still round-trip verbatim"
+
+
 def test_metadata_edit_still_rebuilds():
     """The boundary of the fix: once metadata is mutated the verbatim prefix is stale,
     so save must fall back to rebuilding rather than re-emitting the old front matter."""
@@ -157,6 +184,7 @@ def main():
                      ("keyed tag edit preserves the rest",     test_keyed_tag_edit_preserves_the_rest),
                      ("tag splice is idempotent",              test_tag_splice_is_idempotent),
                      ("no tags block untouched",               test_no_tags_block_untouched),
+                     ("unkeyed tags are refused",              test_unkeyed_tags_are_refused),
                      ("metadata edit still rebuilds",          test_metadata_edit_still_rebuilds)):
         fn()
         print(f"[PASS] {name}")

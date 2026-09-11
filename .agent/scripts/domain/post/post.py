@@ -106,7 +106,15 @@ class HugoPost:
 
     def _parse_tag_entries(self):
         """Reads `[(display, key)]` out of the verbatim front matter. Returns None when
-        there is no front matter or no keyed tags array to read."""
+        there is nothing safely manageable: no front matter, no tags array, or an array
+        holding any tag this model cannot key.
+
+        The last case is the one that matters. Rewriting the array means regenerating it
+        from the parsed entries, so a tag whose `# term:Key` comment is missing would be
+        silently dropped — a single-line `tags = ["a", "b"]` would come back empty, and a
+        partially annotated array would lose exactly the entries that carry no key.
+        Refusing the whole array is the only safe answer, because an unkeyed tag cannot
+        be matched against the lexicon to decide whether it should survive at all."""
         if not self.raw_fm_prefix:
             return None
         m = _TAGS_BLOCK.search(self.raw_fm_prefix)
@@ -117,7 +125,9 @@ class HugoPost:
             em = _TAG_ENTRY.match(line)
             if em:
                 entries.append((em.group(2), em.group(3)))
-        return entries
+            elif '"' in line:
+                return None  # an unkeyed tag: refuse to manage the array
+        return entries or None
 
     def set_tag_entries(self, entries):
         """Replaces the keyed tags. The rest of the front matter still round-trips
