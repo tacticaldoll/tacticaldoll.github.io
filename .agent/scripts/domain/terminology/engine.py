@@ -36,9 +36,7 @@ class TerminologyEngine:
         return True
 
     def replace_forbidden(self, text):
-        if not self.lexicon.forbidden_regex:
-            return text
-        return self.lexicon.forbidden_regex.sub(lambda m: self.lexicon.forbidden[m.group(0)], text)
+        return self.lexicon.replace_forbidden(text)
 
     def process_content(self, content, mode="anchor_first"):
         post = HugoPost()

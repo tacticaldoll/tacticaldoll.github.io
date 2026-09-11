@@ -111,6 +111,14 @@ def process_post(path, lexicon, tag_anchorer):
     if post.tag_entries is not None:
         post.set_tag_entries(new_entries)
 
+    # The title is corrected, never anchored. Correction rewrites a known variant to
+    # its canonical form and leaves nothing behind; anchoring would put a gloss and a
+    # definition block in the title, which is presentation and belongs to the theme.
+    # Because only correction runs here, the title cannot become a term's first
+    # occurrence, so the definition block stays on the first occurrence in the body —
+    # no special case needed to keep it there.
+    title_corrected = post.set_title(lexicon.replace_forbidden(post.metadata.get("title", "")))
+
     before_t, before_a = _count_anchors(post.body)
     body = post.body
     new_body = reanchor_body(body, lexicon)
@@ -125,6 +133,7 @@ def process_post(path, lexicon, tag_anchorer):
         "anchor_delta": after_a - before_a,
         "tag_refreshed": tag_stats["refreshed"],
         "tag_dropped": tag_stats["dropped"],
+        "title_corrected": title_corrected,
         "warnings": diagnose(body, new_body) if changed else [],
         "new_content": new_content,
     }
@@ -152,7 +161,8 @@ def run(apply, slug_filter, force=False):
             changed += 1
             warnings = res["warnings"]
             rows.append((slug, res["term_delta"], res["anchor_delta"],
-                         res["tag_refreshed"], res["tag_dropped"], warnings))
+                         res["tag_refreshed"], res["tag_dropped"],
+                         res["title_corrected"], warnings))
             if apply:
                 # SAFETY GATE: a flagged post is quarantined (not written) unless --force,
                 # so blind corruption is surfaced for human review instead of shipped.
@@ -180,12 +190,13 @@ def run(apply, slug_filter, force=False):
 
 
 def _write_report(rows, apply, force=False):
-    flagged = [r for r in rows if r[5]]
+    flagged = [r for r in rows if r[6]]
     out = [
         "# 貼文再錨定報告 (Re-anchor " + ("Apply" if apply else "Scan") + ")",
         "",
         f"> {'已套用' if apply else 'Dry-run（未寫入）'}。term = 內文 `<!-- term -->` 錨點，anchor = 定義框，"
-        "tag刷新 = 標籤顯示值依鍵刷新數，tag刪除 = 孤兒/降級標籤刪除數。",
+        "tag刷新 = 標籤顯示值依鍵刷新數，tag刪除 = 孤兒/降級標籤刪除數，"
+        "標題 = 標題套用了禁用詞校正（校正無標記，不是錨定）。",
         "",
         f"變更貼文數：**{len(rows)}**　|　帶警告：**{len(flagged)}**"
         + ("　（--force 已關閉防線）" if force else ""),
@@ -194,13 +205,14 @@ def _write_report(rows, apply, force=False):
     if not rows:
         out.append("（無貼文需變更——術語庫、內文與標籤已一致，冪等 no-op。）")
     else:
-        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | ⚠ |")
-        out.append("|---|---:|---:|---:|---:|:--|")
-        for slug, td, ad, tr, tdrop, w in rows:
-            out.append(f"| {slug} | {td:+d} | {ad:+d} | {tr} | {tdrop} | {'⚠×'+str(len(w)) if w else ''} |")
+        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | 標題 | ⚠ |")
+        out.append("|---|---:|---:|---:|---:|:--:|:--|")
+        for slug, td, ad, tr, tdrop, tfix, w in rows:
+            out.append(f"| {slug} | {td:+d} | {ad:+d} | {tr} | {tdrop} | "
+                       f"{'✓' if tfix else ''} | {'⚠×'+str(len(w)) if w else ''} |")
     if flagged:
         out += ["", "## ⚠ 安全防線警告（apply 時除非 --force 否則跳過寫入）", ""]
-        for slug, _td, _ad, _tr, _tdrop, w in flagged:
+        for slug, _td, _ad, _tr, _tdrop, _tfix, w in flagged:
             out.append(f"### {slug}")
             for msg in w:
                 out.append(f"- {msg}")

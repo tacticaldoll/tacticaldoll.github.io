@@ -161,6 +161,32 @@ def test_unkeyed_tags_are_refused():
     assert post2.save_to_string() == partial, "refusing must still round-trip verbatim"
 
 
+def test_set_title_splices_only_that_line():
+    """Correcting a title must not cost the rest of the front matter its formatting or
+    its tag comments — the maintenance pass that rewrites a title is the same pass that
+    must leave every anchor intact."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    assert post.set_title("改過的標題") is True, "set_title refused a plain title"
+    out = post.save_to_string()
+    assert 'title = "改過的標題"' in out, "the title was not replaced"
+    assert '"分析論述", # term:AnalyticalEssay' in out, "a title edit dropped a tag comment"
+    assert "draft = false" in out, "a title edit damaged another field"
+    assert out.endswith("正文第一段。\n"), "a title edit damaged the body"
+    assert post.save_to_string() == out, "set_title is not stable across repeated saves"
+
+
+def test_set_title_refuses_escaping():
+    """A title carrying a quote or a backslash would need TOML escaping. Nothing in the
+    corpus has ever carried one, so the guard is cheaper than an escaping routine that
+    nothing exercises — and a wrong escape corrupts the whole front matter block."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    assert post.set_title('帶"引號"的標題') is False, "a title needing escaping must be refused"
+    assert post.set_title("帶\\反斜線的標題") is False, "a title with a backslash must be refused"
+    assert post.save_to_string() == _FIXTURE, "a refused title edit must leave the post untouched"
+
+
 def test_metadata_edit_still_rebuilds():
     """The boundary of the fix: once metadata is mutated the verbatim prefix is stale,
     so save must fall back to rebuilding rather than re-emitting the old front matter."""
@@ -185,6 +211,8 @@ def main():
                      ("tag splice is idempotent",              test_tag_splice_is_idempotent),
                      ("no tags block untouched",               test_no_tags_block_untouched),
                      ("unkeyed tags are refused",              test_unkeyed_tags_are_refused),
+                     ("set_title splices only that line",      test_set_title_splices_only_that_line),
+                     ("set_title refuses escaping",            test_set_title_refuses_escaping),
                      ("metadata edit still rebuilds",          test_metadata_edit_still_rebuilds)):
         fn()
         print(f"[PASS] {name}")

@@ -16,6 +16,7 @@ _FM_PREFIX = re.compile(r'^(﻿?\+\+\+[ \t]*\n.*?\n\+\+\+[ \t]*\n\s*)', re.DOTAL
 # The tags array inside a verbatim front matter block, and one entry within it.
 # A tag's identity is its `# term:Key` comment, not its display text: the display
 # can be corrected while the key stays stable, so edits must be keyed on the comment.
+_TITLE_LINE = re.compile(r'^(title[ \t]*=[ \t]*")(.*?)("[ \t]*)$', re.MULTILINE)
 _TAGS_BLOCK = re.compile(r'(tags\s*=\s*\[)(.*?)(\])', re.DOTALL)
 _TAG_ENTRY = re.compile(r'^([ \t]*)"(.+?)"[ \t]*,?[ \t]*#[ \t]*term:(\S+)[ \t]*$')
 
@@ -137,6 +138,26 @@ class HugoPost:
         self._tags_dirty = True
         self.metadata["tags"] = [d for d, _ in self.tag_entries]
         self._meta_snapshot = copy.deepcopy(self.metadata)
+
+    def set_title(self, new_title):
+        """Replaces the title, splicing only that line so the rest of the front matter
+        still round-trips verbatim. Returns True when it was written.
+
+        Refuses a title needing TOML escaping. Nothing in the corpus has ever carried a
+        quote or a backslash, so the choice is between a guard and an escaping routine
+        exercised by nothing — and a wrong escape here corrupts the whole front matter,
+        not just the title."""
+        if self.raw_fm_prefix is None or new_title == self.metadata.get("title"):
+            return False
+        if '"' in new_title or "\\" in new_title:
+            return False
+        if not _TITLE_LINE.search(self.raw_fm_prefix):
+            return False
+        self.raw_fm_prefix = _TITLE_LINE.sub(
+            lambda m: m.group(1) + new_title + m.group(3), self.raw_fm_prefix, count=1)
+        self.metadata["title"] = new_title
+        self._meta_snapshot = copy.deepcopy(self.metadata)
+        return True
 
     def _splice_tags(self, fm_prefix):
         """Rewrites only the tags array inside a verbatim front matter block, keeping

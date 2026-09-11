@@ -120,6 +120,21 @@ class Lexicon:
 
         self._rebuild_regex()
 
+    def replace_forbidden(self, text):
+        """Rewrites every known variant spelling to its canonical ZH.
+
+        This is correction, not anchoring: it leaves no marker, adds no gloss, and
+        emits no definition block. It matches the WRONG form rather than the right
+        one, which is why it needs no trace to stay repeatable — the thing it looks
+        for is listed in the lexicon's `forbidden` entries.
+
+        Lives here because the data does. Callers that already hold a lexicon use it
+        directly instead of constructing an engine and loading the file twice.
+        """
+        if not text or not self.forbidden_regex:
+            return text
+        return self.forbidden_regex.sub(lambda m: self.forbidden[m.group(0)], text)
+
     def lint(self, data=None):
         """Lints terminology for self-contradictions, banned terms, and placeholder descriptions."""
         target_data = data if data is not None else self.items
