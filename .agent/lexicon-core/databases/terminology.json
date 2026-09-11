@@ -3469,7 +3469,7 @@
     "en": [
       "Dependency Graph"
     ],
-    "description": "追溯各項治理規則與機制之建立緣由所構成的依賴網絡，用以評估該機制的存續價值與拆除時機。",
+    "description": "追溯各項治理規則與機制之建立緣由所構成的依賴網路，用以評估該機制的存續價值與拆除時機。",
     "forbidden": [],
     "level": 2
   },
@@ -3787,6 +3787,28 @@
     "description": "在訓練分佈中與標籤同時出現、但不具因果支撐的統計關聯。",
     "forbidden": [],
     "level": 1
+  },
+  "Optimization": {
+    "zh": "最佳化",
+    "en": [
+      "Optimization"
+    ],
+    "description": "在給定約束下調整參數或結構，以改善某個目標量測值的過程。",
+    "forbidden": [
+      "優化"
+    ],
+    "level": 3
+  },
+  "Code": {
+    "zh": "程式碼",
+    "en": [
+      "Code"
+    ],
+    "description": "以程式語言撰寫、可被編譯或直譯執行的文字。",
+    "forbidden": [
+      "代碼"
+    ],
+    "level": 3
   },
   "Data": {
     "zh": "數據",
@@ -4120,5 +4142,27 @@
     "description": "一對一的映射性質：不同的輸入必對應不同的輸出。聚合讀數與產生它的機制之間不具此性質，因此無法從讀數回推機制。",
     "forbidden": [],
     "level": 2
+  },
+  "Network": {
+    "zh": "網路",
+    "en": [
+      "Network"
+    ],
+    "description": "由節點與節點間連結構成、可傳遞資料或訊號的結構。",
+    "forbidden": [
+      "網絡"
+    ],
+    "level": 3
+  },
+  "Default": {
+    "zh": "預設",
+    "en": [
+      "Default"
+    ],
+    "description": "使用者未明確指定時，系統所採用的值或行為。",
+    "forbidden": [
+      "默認"
+    ],
+    "level": 3
   }
 }

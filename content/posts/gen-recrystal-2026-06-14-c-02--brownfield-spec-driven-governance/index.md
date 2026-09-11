@@ -143,7 +143,7 @@ OpenSpec 或類似 SDD 框架的價值，主要在三個思維模型：規格作
 
 > [!IMPORTANT]
 > **鷹架** <!-- term:Scaffolding --> (Scaffolding): 專案在過渡或重構階段所建立的臨時性治理機制，其生命週期與特定過渡性問題綁定，問題解決後即應予以拆除。 <!-- anchor:Scaffolding -->
-> **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網絡，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->
+> **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網路，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->
 
 
 ### 物理邊界：沒有 gate 的規格只是高成本文件

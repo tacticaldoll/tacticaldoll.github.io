@@ -202,7 +202,7 @@ flowchart LR
 多工具環境讓入口治理更重要，但也更容易被誤解。AGENTS.md 或類似標準可以作為人類對 agent 的社會契約：宣告邊界、指向權威、定義載入路徑、隔離不該碰的區域。它不能讓一個 CLI agent 突然獲得另一個 IDE 的向量搜尋、**依賴圖**（Dependency Graph） <!-- term:DependencyGraph -->或專有檢索能力。它解決的是語意入口問題，不是工具執行層能力差異。
 
 > [!IMPORTANT]
-> **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網絡，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->
+> **依賴圖** <!-- term:DependencyGraph --> (Dependency Graph): 追溯各項治理規則與機制之建立緣由所構成的依賴網路，用以評估該機制的存續價值與拆除時機。 <!-- anchor:DependencyGraph -->
 
 
 因此，跨工具治理應採用**入口網關**（Gateway） <!-- term:Gateway -->與**漸進式披露**（Progressive Disclosure） <!-- term:ProgressiveDisclosure -->。各工具可以保留極薄的原生配置檔，只做一件事：把 agent 導向共同的最高知識地圖。根入口則只宣告專案邊界與路由。當 agent 進入特定子目錄或觸碰特定客體時，再讀取局部規則。這樣既保留工具互通性，也避免把所有規則塞進單一檔案。

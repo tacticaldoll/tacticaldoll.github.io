@@ -257,7 +257,7 @@ function classifyResource(path: string): Resource | null {
 在收斂性任務中，error surface 與 structural constraint 成反比。
 ```
 
-**收斂性任務**（Convergent Task） <!-- term:ConvergentTask -->的答案形狀已知，工作是填入內容；extension point 通常就是這種任務。**發散性任務**（Divergent Task） <!-- term:DivergentTask -->則不同：架構探索、需求發現、方案比較，需要保留自由度。若把發散任務過早塞進固定表格，會讓 agent 只能在錯誤的空間內優化。結構約束 <!-- term:StructuralConstraint -->的用法不是「永遠約束」，而是在形狀已知後，把後續重複 extension 轉成受限操作。
+**收斂性任務**（Convergent Task） <!-- term:ConvergentTask -->的答案形狀已知，工作是填入內容；extension point 通常就是這種任務。**發散性任務**（Divergent Task） <!-- term:DivergentTask -->則不同：架構探索、需求發現、方案比較，需要保留自由度。若把發散任務過早塞進固定表格，會讓 agent 只能在錯誤的空間內最佳化。結構約束 <!-- term:StructuralConstraint -->的用法不是「永遠約束」，而是在形狀已知後，把後續重複 extension 轉成受限操作。
 
 > [!IMPORTANT]
 > **收斂性任務** <!-- term:ConvergentTask --> (Convergent Task): 答案形狀已知、主要工作為在既定結構內填入內容的開發任務，適合以強結構約束降低出錯率。 <!-- anchor:ConvergentTask -->
