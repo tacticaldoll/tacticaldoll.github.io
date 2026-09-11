@@ -3,8 +3,15 @@
 
 import os
 import re
+import copy
 from datetime import datetime
 from infra import utils
+
+# Captures the verbatim front matter block plus the whitespace separating it from
+# the body: everything before the body starts. Re-emitting this instead of rebuilding
+# from the parsed dict is what preserves the `# term:Key` tag comments, which carry
+# every tag's anchor identity and do not survive a TOML parse.
+_FM_PREFIX = re.compile(r'^(﻿?\+\+\+[ \t]*\n.*?\n\+\+\+[ \t]*\n\s*)', re.DOTALL)
 
 class HugoPost:
     """
@@ -16,6 +23,8 @@ class HugoPost:
         self.metadata = {}
         self.body = ""
         self.raw_content = ""
+        self.raw_fm_prefix = None
+        self._meta_snapshot = None
         if file_path and os.path.exists(file_path):
             self.load()
 
@@ -52,7 +61,16 @@ class HugoPost:
                 content = f.read()
         
         self.raw_content = content
-        
+
+        # 0. Keep the front matter exactly as written, and snapshot what we parsed
+        # out of it. save_to_string() re-emits this prefix verbatim whenever the
+        # metadata has not been touched, so a load/save round trip cannot silently
+        # drop the tag comments. A caller that DOES mutate metadata falls back to
+        # rebuilding, which still loses them \u2014 structured tag editing is a separate
+        # concern and belongs to the tag anchorer, not here.
+        prefix_match = _FM_PREFIX.match(content)
+        self.raw_fm_prefix = prefix_match.group(1) if prefix_match else None
+
         # 1. Handle Byte Order Mark (BOM)
         if content.startswith('\ufeff'):
             content = content[1:]
@@ -72,14 +90,25 @@ class HugoPost:
             # Fallback for ill-formatted or missing FM
             self.metadata = {}
             self.body = content.lstrip()
+            self.raw_fm_prefix = None
+
+        self._meta_snapshot = copy.deepcopy(self.metadata)
 
     def save_to_string(self):
         """Returns the reassembled post content as a string."""
         if not self.metadata:
             return self.body.lstrip()
+
+        # Untouched metadata re-emits the original front matter byte-for-byte, so a
+        # load/save round trip is lossless even though the TOML parse behind
+        # self.metadata cannot see the `# term:Key` tag comments. Pinned by
+        # post_tester.py over the published corpus.
+        if self.raw_fm_prefix is not None and self.metadata == self._meta_snapshot:
+            return self.raw_fm_prefix + self.body
+
         # Reconstruct FM
         fm_str = utils.build_toml_front_matter(self.metadata).strip()
-        
+
         # Consistent reassembly (+++ on own lines, double newline before body)
         return fm_str + "\n\n" + self.body.lstrip()
 

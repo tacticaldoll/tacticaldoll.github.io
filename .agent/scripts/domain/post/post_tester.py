@@ -66,11 +66,57 @@ def iter_posts():
         yield os.path.basename(os.path.dirname(p)), p
 
 
+_FIXTURE = (
+    '+++\n'
+    'title = "示例標題"\n'
+    'draft = false\n'
+    'tags = [\n'
+    '    "分析論述", # term:AnalyticalEssay\n'
+    '    "錯誤表面", # term:ErrorSurface\n'
+    '  ]\n'
+    '+++\n'
+    '\n'
+    '正文第一段。\n'
+)
+
+
+def test_body_edit_preserves_front_matter():
+    """The reanchor case: only the body changes, so the front matter must come back
+    verbatim — tag comments included."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    post.body = post.body.replace("正文第一段。", "正文第一段，已改寫。")
+    out = post.save_to_string()
+    assert "# term:AnalyticalEssay" in out and "# term:ErrorSurface" in out, (
+        "body-only edit dropped the tag comments — the verbatim front matter path did not run"
+    )
+    assert "已改寫" in out, "body-only edit did not take effect"
+
+
+def test_metadata_edit_still_rebuilds():
+    """The boundary of the fix: once metadata is mutated the verbatim prefix is stale,
+    so save must fall back to rebuilding rather than re-emitting the old front matter."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    post.metadata["title"] = "改過的標題"
+    out = post.save_to_string()
+    assert "改過的標題" in out, (
+        "metadata edit was ignored — a stale verbatim front matter was re-emitted"
+    )
+    assert "示例標題" not in out, "the old title survived a metadata edit"
+
+
 def main():
     ap = argparse.ArgumentParser(description="HugoPost round-trip identity over published posts")
     ap.add_argument("--show", type=int, default=3,
                     help="show a unified diff for the first N differing posts (default 3)")
     args = ap.parse_args()
+
+    for name, fn in (("body-only edit preserves front matter", test_body_edit_preserves_front_matter),
+                     ("metadata edit still rebuilds", test_metadata_edit_still_rebuilds)):
+        fn()
+        print(f"[PASS] {name}")
+    print()
 
     total = 0
     differing = []
