@@ -3,9 +3,11 @@
 ## Role: Idempotent re-anchor migration. Propagates the current core lexicon
 ## into published post BODIES, reusing the publish pipeline's anchoring engine.
 ##
-## SAFETY: The TOML front matter is preserved VERBATIM (never round-tripped
-## through tomllib), because parse drops the `# term:Key` tag comments and a
-## re-serialize would destroy all tag anchors. Only the body is rewritten.
+## SAFETY: The TOML front matter is preserved VERBATIM. HugoPost re-emits it
+## byte-for-byte unless something changed, and splices only the tags array when
+## the keyed tags were edited, so the `# term:Key` anchors survive. That guarantee
+## is pinned by post_tester.py across the whole published corpus; this module no
+## longer carries a front matter parser of its own.
 
 import os
 import re
@@ -29,9 +31,6 @@ from domain.terminology.injector import TerminologyInjector
 from domain.terminology.tag_anchor import TagAnchorer
 
 REPORT_PATH = os.path.join(config.SCRATCH_DIR, "reanchor-report.md")
-
-# Splits a post into (verbatim front-matter block incl. both +++, body).
-_FM_SPLIT = re.compile(r'^(﻿?\+\+\+[ \t]*\n.*?\n\+\+\+[ \t]*\n)(.*)$', re.DOTALL)
 
 
 def _count_anchors(text):
@@ -92,27 +91,33 @@ def diagnose(old_body, new_body):
 def process_post(path, lexicon, tag_anchorer):
     """Computes the re-anchored content for one post without writing.
 
-    Body anchors are re-applied via the injector; the front-matter `tags` block is
-    refreshed in place via the shared TagAnchorer (identity = the `# term:Key`). Every
-    other byte of the front matter is preserved verbatim.
+    Body anchors are re-applied via the injector. Keyed tags are refreshed by the
+    shared TagAnchorer (identity = the `# term:Key`) and written back through the
+    post model, which splices only the tags array; every other byte of the front
+    matter is preserved verbatim.
 
     Returns dict: {changed, term_delta, anchor_delta, tag_refreshed, tag_dropped,
     new_content} or None on parse failure.
     """
     with open(path, encoding="utf-8") as f:
         original = f.read()
-    m = _FM_SPLIT.match(original)
-    if not m:
+    post = HugoPost()
+    post.load(content=original)
+    if post.raw_fm_prefix is None:
         log_error(f"  [SKIP] No parseable front matter: {os.path.relpath(path, config.POSTS_DIR)}")
         return None
-    fm_block, body = m.group(1), m.group(2)
 
-    new_fm_block, tag_stats = tag_anchorer.reanchor_tags_block(fm_block)
-    before_t, before_a = _count_anchors(body)
+    new_entries, tag_stats = tag_anchorer.reanchor_entries(post.tag_entries)
+    if post.tag_entries is not None:
+        post.set_tag_entries(new_entries)
+
+    before_t, before_a = _count_anchors(post.body)
+    body = post.body
     new_body = reanchor_body(body, lexicon)
     after_t, after_a = _count_anchors(new_body)
+    post.body = new_body
 
-    new_content = new_fm_block + new_body
+    new_content = post.save_to_string()
     changed = new_content != original
     return {
         "changed": changed,

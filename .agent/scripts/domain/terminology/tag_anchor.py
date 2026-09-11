@@ -111,6 +111,32 @@ class TagAnchorer:
             return (self.domain_key_to_disp[key], key)        # domain: refresh display, keep
         return None                                            # removed term -> drop
 
+    def reanchor_entries(self, entries):
+        """Maintenance time: refresh a whole `[(display, key)]` set BY KEY.
+
+        Entries are refreshed or dropped individually, and duplicates that collapse to
+        the same key are merged. This is the decision half of re-anchoring, with no
+        opinion about how the tags are stored — callers that hold a parsed tag list
+        use it directly instead of round-tripping through front matter text.
+        Returns (kept_entries, {"refreshed": n, "dropped": n}).
+        """
+        kept, seen = [], set()
+        refreshed = dropped = 0
+        for disp, key in entries or []:
+            r = self.reanchor_entry(disp, key)
+            if r is None:
+                dropped += 1
+                continue
+            ndisp, nkey = r
+            if nkey in seen:
+                dropped += 1
+                continue
+            seen.add(nkey)
+            if ndisp != disp:
+                refreshed += 1
+            kept.append((ndisp, nkey))
+        return kept, {"refreshed": refreshed, "dropped": dropped}
+
     def reanchor_tags_block(self, fm_text):
         """Rewrites the `tags = [...]` block inside a verbatim TOML front-matter string,
         IN PLACE: each entry is refreshed/dropped by key, duplicates (same key) are merged.
@@ -130,25 +156,13 @@ class TagAnchorer:
                 indent = em.group(1) or indent
                 break
 
-        kept, seen = [], set()
-        refreshed = dropped = 0
+        parsed = []
         for line in body.splitlines():
             em = entry_re.match(line)
-            if not em:
-                continue  # structural whitespace / bracket padding — regenerated below
-            disp, key = em.group(2), em.group(3)
-            r = self.reanchor_entry(disp, key)
-            if r is None:
-                dropped += 1
-                continue
-            ndisp, nkey = r
-            if nkey in seen:
-                dropped += 1
-                continue
-            seen.add(nkey)
-            if ndisp != disp:
-                refreshed += 1
-            kept.append((ndisp, nkey))
+            if em:  # anything else is structural whitespace / bracket padding
+                parsed.append((em.group(2), em.group(3)))
+        kept, stats = self.reanchor_entries(parsed)
+        refreshed, dropped = stats["refreshed"], stats["dropped"]
 
         # Preserve the original closing-bracket padding (e.g. "\n  " before ]).
         close_pad = re.search(r'(\n[ \t]*)$', body)
