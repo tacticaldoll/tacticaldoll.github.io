@@ -93,6 +93,23 @@ def test_body_edit_preserves_front_matter():
     assert "已改寫" in out, "body-only edit did not take effect"
 
 
+def test_keyed_tag_edit_preserves_the_rest():
+    """A tag's identity is its `# term:Key`, so a display can be corrected while the key
+    stays put. Editing tags must not cost the other front matter fields their formatting
+    — that cost is exactly why tag editing lived outside the model as raw-text regex."""
+    post = HugoPost()
+    post.load(content=_FIXTURE)
+    assert post.tag_entries == [("分析論述", "AnalyticalEssay"), ("錯誤表面", "ErrorSurface")], (
+        "keyed tags were not parsed out of the verbatim front matter"
+    )
+    post.set_tag_entries([("分析論述", "AnalyticalEssay"), ("錯誤介面", "ErrorSurface")])
+    out = post.save_to_string()
+    assert '"錯誤介面", # term:ErrorSurface' in out, "keyed rename lost the display or the key"
+    assert '"分析論述", # term:AnalyticalEssay' in out, "an untouched tag lost its comment"
+    assert 'title = "示例標題"' in out, "a tag edit damaged another front matter field"
+    assert out.endswith("正文第一段。\n"), "a tag edit damaged the body"
+
+
 def test_metadata_edit_still_rebuilds():
     """The boundary of the fix: once metadata is mutated the verbatim prefix is stale,
     so save must fall back to rebuilding rather than re-emitting the old front matter."""
@@ -113,7 +130,8 @@ def main():
     args = ap.parse_args()
 
     for name, fn in (("body-only edit preserves front matter", test_body_edit_preserves_front_matter),
-                     ("metadata edit still rebuilds", test_metadata_edit_still_rebuilds)):
+                     ("keyed tag edit preserves the rest",     test_keyed_tag_edit_preserves_the_rest),
+                     ("metadata edit still rebuilds",          test_metadata_edit_still_rebuilds)):
         fn()
         print(f"[PASS] {name}")
     print()

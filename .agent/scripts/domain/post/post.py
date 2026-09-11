@@ -13,6 +13,12 @@ from infra import utils
 # every tag's anchor identity and do not survive a TOML parse.
 _FM_PREFIX = re.compile(r'^(﻿?\+\+\+[ \t]*\n.*?\n\+\+\+[ \t]*\n\s*)', re.DOTALL)
 
+# The tags array inside a verbatim front matter block, and one entry within it.
+# A tag's identity is its `# term:Key` comment, not its display text: the display
+# can be corrected while the key stays stable, so edits must be keyed on the comment.
+_TAGS_BLOCK = re.compile(r'(tags\s*=\s*\[)(.*?)(\])', re.DOTALL)
+_TAG_ENTRY = re.compile(r'^([ \t]*)"(.+?)"[ \t]*,?[ \t]*#[ \t]*term:(\S+)[ \t]*$')
+
 class HugoPost:
     """
     Standardized entity for Hugo posts (Markdown with TOML front matter).
@@ -25,6 +31,8 @@ class HugoPost:
         self.raw_content = ""
         self.raw_fm_prefix = None
         self._meta_snapshot = None
+        self.tag_entries = None      # [(display, key)] parsed from the verbatim FM
+        self._tags_dirty = False
         if file_path and os.path.exists(file_path):
             self.load()
 
@@ -93,6 +101,55 @@ class HugoPost:
             self.raw_fm_prefix = None
 
         self._meta_snapshot = copy.deepcopy(self.metadata)
+        self.tag_entries = self._parse_tag_entries()
+        self._tags_dirty = False
+
+    def _parse_tag_entries(self):
+        """Reads `[(display, key)]` out of the verbatim front matter. Returns None when
+        there is no front matter or no keyed tags array to read."""
+        if not self.raw_fm_prefix:
+            return None
+        m = _TAGS_BLOCK.search(self.raw_fm_prefix)
+        if not m:
+            return None
+        entries = []
+        for line in m.group(2).splitlines():
+            em = _TAG_ENTRY.match(line)
+            if em:
+                entries.append((em.group(2), em.group(3)))
+        return entries
+
+    def set_tag_entries(self, entries):
+        """Replaces the keyed tags. The rest of the front matter still round-trips
+        verbatim, so editing tags no longer costs the other fields their formatting
+        or their comments."""
+        self.tag_entries = list(entries)
+        self._tags_dirty = True
+        self.metadata["tags"] = [d for d, _ in self.tag_entries]
+        self._meta_snapshot = copy.deepcopy(self.metadata)
+
+    def _splice_tags(self, fm_prefix):
+        """Rewrites only the tags array inside a verbatim front matter block, keeping
+        the original indent and closing padding. Every other byte is preserved."""
+        m = _TAGS_BLOCK.search(fm_prefix)
+        if not m:
+            return fm_prefix
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+
+        indent = "    "
+        for line in body.splitlines():
+            em = _TAG_ENTRY.match(line)
+            if em:
+                indent = em.group(1) or indent
+                break
+        close_pad = re.search(r'(\n[ \t]*)$', body)
+        close = close_pad.group(1) if close_pad else "\n"
+
+        if self.tag_entries:
+            new_body = "".join(f'\n{indent}"{d}", # term:{k}' for d, k in self.tag_entries) + close
+        else:
+            new_body = ""
+        return fm_prefix[:m.start()] + head + new_body + tail + fm_prefix[m.end():]
 
     def save_to_string(self):
         """Returns the reassembled post content as a string."""
@@ -104,7 +161,8 @@ class HugoPost:
         # self.metadata cannot see the `# term:Key` tag comments. Pinned by
         # post_tester.py over the published corpus.
         if self.raw_fm_prefix is not None and self.metadata == self._meta_snapshot:
-            return self.raw_fm_prefix + self.body
+            prefix = self._splice_tags(self.raw_fm_prefix) if self._tags_dirty else self.raw_fm_prefix
+            return prefix + self.body
 
         # Reconstruct FM
         fm_str = utils.build_toml_front_matter(self.metadata).strip()
