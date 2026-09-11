@@ -29,7 +29,7 @@ class Lexicon:
     - Scripts MUST use Lexicon for read-only anchoring and validation.
     """
     
-    def __init__(self, json_path=None):
+    def __init__(self, json_path=None, include_draft=True):
         self.json_path = json_path or os.path.join(DEFAULT_DB_DIR, "terminology.json")
         self.mapping = {}      # ZH -> primary EN
         self.mapping_lower = {} # lowercase ZH -> primary ZH
@@ -54,10 +54,15 @@ class Lexicon:
         if os.path.exists(self.json_path):
             self.load(self.json_path)
 
-        # Load Draft Database (Append mode)
-        draft_path = os.path.join(DEFAULT_DB_DIR, "terminology.draft.json")
-        if os.path.exists(draft_path):
-            self.load(draft_path, append=True)
+        # Load Draft Database (Append mode). Callers that must reason about what is
+        # ALREADY canonical — consolidation deciding what to promote, an audit reporting
+        # the existing core — need the core alone: with drafts merged in, a candidate
+        # shows up as if it were already admitted, and the report meant to inform that
+        # decision instead pre-empts it.
+        if include_draft:
+            draft_path = os.path.join(DEFAULT_DB_DIR, "terminology.draft.json")
+            if os.path.exists(draft_path):
+                self.load(draft_path, append=True)
 
     def load(self, json_path, append=False):
         """Loads terminology from JSON and builds indices/regex."""

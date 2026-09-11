@@ -112,7 +112,9 @@ def write_report(draft_buckets, core_buckets):
 
 # --- Modes ------------------------------------------------------------------
 def run_scan():
-    core = Lexicon(config.TERMINOLOGY_JSON)
+    # Core only: with drafts merged in, a candidate would be audited as if it were
+    # already core, and the variant check would compare drafts against each other.
+    core = Lexicon(config.TERMINOLOGY_JSON, include_draft=False)
     existing_zh = list(core.mapping.keys())
     draft = load_json(config.TERMINOLOGY_DRAFT_JSON) or {}
     core_terms = {core.keys.get(zh, zh): {"zh": zh} for zh in existing_zh}
