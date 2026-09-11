@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import argparse
+from collections import namedtuple
 
 # .agent/scripts (for infra, domain) ----------------------------------------
 scripts_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -31,6 +32,13 @@ from domain.terminology.injector import TerminologyInjector
 from domain.terminology.tag_anchor import TagAnchorer
 
 REPORT_PATH = os.path.join(config.SCRATCH_DIR, "reanchor-report.md")
+
+# One report line. Named rather than positional: inserting a column shifted the
+# warnings field twice, and both times something kept reading the old index — once
+# the report's flagged filter, once the run log, which then announced a warning
+# count that was really the number of corrected front matter fields.
+Row = namedtuple("Row", "slug term_delta anchor_delta tag_refreshed tag_dropped "
+                        "fm_corrected warnings")
 
 
 def _count_anchors(text):
@@ -167,9 +175,9 @@ def run(apply, slug_filter, force=False):
         if res["changed"]:
             changed += 1
             warnings = res["warnings"]
-            rows.append((slug, res["term_delta"], res["anchor_delta"],
-                         res["tag_refreshed"], res["tag_dropped"],
-                         res["fm_corrected"], warnings))
+            rows.append(Row(slug, res["term_delta"], res["anchor_delta"],
+                            res["tag_refreshed"], res["tag_dropped"],
+                            res["fm_corrected"], warnings))
             if apply:
                 # SAFETY GATE: a flagged post is quarantined (not written) unless --force,
                 # so blind corruption is surfaced for human review instead of shipped.
@@ -184,7 +192,7 @@ def run(apply, slug_filter, force=False):
 
     _write_report(rows, apply, force)
     mode = "APPLY" if apply else "SCAN (dry-run, no writes)"
-    flagged = sum(1 for r in rows if r[-1])   # warnings are the last field
+    flagged = sum(1 for r in rows if r.warnings)
     log_info(f"[{mode}] {changed} post(s) would change; {flagged} carry warning(s)."
              + (f" Wrote {written}, quarantined {quarantined}." if apply else ""))
     log_info(f"Report: {os.path.relpath(REPORT_PATH, config.ROOT_DIR)}")
@@ -197,7 +205,7 @@ def run(apply, slug_filter, force=False):
 
 
 def _write_report(rows, apply, force=False):
-    flagged = [r for r in rows if r[-1]]   # warnings are the last field
+    flagged = [r for r in rows if r.warnings]
     out = [
         "# 貼文再錨定報告 (Re-anchor " + ("Apply" if apply else "Scan") + ")",
         "",
@@ -214,14 +222,15 @@ def _write_report(rows, apply, force=False):
     else:
         out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | 前綴校正 | ⚠ |")
         out.append("|---|---:|---:|---:|---:|:--:|:--|")
-        for slug, td, ad, tr, tdrop, tfix, w in rows:
-            out.append(f"| {slug} | {td:+d} | {ad:+d} | {tr} | {tdrop} | "
-                       f"{tfix or ''} | {'⚠×'+str(len(w)) if w else ''} |")
+        for r in rows:
+            out.append(f"| {r.slug} | {r.term_delta:+d} | {r.anchor_delta:+d} | "
+                       f"{r.tag_refreshed} | {r.tag_dropped} | {r.fm_corrected or ''} | "
+                       f"{'⚠×'+str(len(r.warnings)) if r.warnings else ''} |")
     if flagged:
         out += ["", "## ⚠ 安全防線警告（apply 時除非 --force 否則跳過寫入）", ""]
-        for slug, _td, _ad, _tr, _tdrop, _tfix, w in flagged:
-            out.append(f"### {slug}")
-            for msg in w:
+        for r in flagged:
+            out.append(f"### {r.slug}")
+            for msg in r.warnings:
                 out.append(f"- {msg}")
             out.append("")
     with open(REPORT_PATH, "w", encoding="utf-8") as f:
