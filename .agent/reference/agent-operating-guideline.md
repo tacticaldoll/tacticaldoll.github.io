@@ -64,6 +64,18 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 職責：處理嚴重污染、舊路徑殘留或本地 Git 狀態混亂。
 - 限制：任何 destructive Git 行為都必須取得人類明確確認。
 
+### expand-knowledge-arc
+
+- 職責：作為重新結晶的上游展開工序。突破既有框架，萃取議題、精神與客觀知識，清洗不可靠引用；自由進行深化、合併、拆分以重構最佳敘事弧，並規劃流程圖、程式碼與數學公式規格。
+- 輸出：知識展開藍圖（Dossier / Blueprint），交由下游結晶。
+- 禁止：不得撰寫最終發布文章，不得修改 `content/` 原文。
+
+### recrystallize-post-series
+
+- 職責：吸收既有貼文或消費上游展開藍圖，進行因果覆蓋性重寫與系列重鑄。
+- 輸出：自洽的結晶報告（`report.zh-TW.md`）、`guide.zh-TW.md` 與 `series-map.md`。
+- 限制：輸出僅限 `.agent-scratch/recrystal-*` 目錄，嚴禁更動 `content/`。
+
 ## 4. Ownership Matrix
 
 | Surface | Owner | Consumer | Mutation Rule |
