@@ -228,6 +228,18 @@ spec: "../reference/agent-operating-guideline.md"
 
 - **與 §4 七章節相容**：個案與回推填充「背景脈絡」「因果鏈」「核心主張」，通用化收於「收束結論」。回推出的因果鏈與結構邊界，依 §4a 優先以 Mermaid／example code 承載。
 
+### 4d. 學術出處與同行評審文獻規範 (Peer-reviewed Grounding & Inline Citations)
+
+去污染（De-pollution）的真義是**破除虛假指涉與無實質依據之學術黑話**，絕非否定客觀科學的奠基成果。為確保報告具備期刊級嚴謹度與可檢驗性，文獻引用採以下行內規範：
+
+1. **真實出處行內錨定 (Inline Anchoring)**：
+   - 當論述涉及客觀學術定理、經典機制或開創性理論框架（如 Pearl 因果階梯、Manski 部分識別界限、PRD 測度論、Fisher 資訊幾何、SVD 譜半徑衰減等）時，**必須在論述該概念的具體段落中，直接以 Markdown 超連結形式自然嵌入真實出處**。
+   - 格式規範：`[學者等人，年份 / 《論文名》](真實 URL / DOI / arXiv / PMLR)`，例如 `[Manski，1990](https://www.jstor.org/stable/2006627)` 或 `[Pascanu 等人，2013](https://proceedings.mlr.press/v28/pascanu13.html)`。
+2. **禁絕文末形式主義章節**：
+   - 正文必須嚴格遵守「以收束結論為終點」之原則，**嚴禁在文末開闢獨立的「參考文獻」章節或列表**，避免破壞敘事閉合與觸發 schema 違規。
+3. **零偽造與可查驗性 (Zero Hallucination)**：
+   - 所有引用的超連結必須指向真實存在的 DOI、arXiv、PMLR 或頂級學會出版源，嚴禁使用未經檢驗的偽造 URL。
+
 ---
 
 ## 5. 輸出去痕跡化 (Output De-tracing)
