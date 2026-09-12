@@ -22,6 +22,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - `lexicon-core/databases/`: 放置可被腳本讀寫的 SSOT。Agent 不得繞過 schema 或專屬腳本直接發明資料庫狀態。
 - `scripts/`: 放置確定性操作。腳本只能消費 schema/database/reference 的契約，不得以啟發式猜測取代 Handoff 或術語庫。
 - `.agent-scratch/`: 原始資料、結晶報告與 Handoff 會話狀態。Agent 只能在人類明確引導下寫入。
+  - `.agent-scratch/archive/`: 歷史／已退役之結晶報告封存目錄。廢棄舊有的 `-archive` 目錄後綴制度，全面改採 `archive/<session-id>/` 目錄物理隔離（結構位置承載語意）。封存狀態嚴格自 `archive/posts/` 的已退役貼文回推，主倉庫之子模組指標定位等到整體知識庫收尾時再行定案。
 
 ## 3. Workflow Boundaries
 

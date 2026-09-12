@@ -11,8 +11,9 @@ CRITICAL_INSTRUCTION: |
   EXCEPTION — Re-crystallization mode (recrystallize-post-series workflow): when invoked by
   that workflow, the authoritative layout is .agent-scratch/recrystal-<YYYY-MM-DD>-<suffix>/
   (recrystal- prefix dir; series-map.md and guide.zh-TW.md are valid products, reports live
-  under <report-slug>/report.zh-TW.md). That layout and the `recrystal_only` block below
-  OVERRIDE this TARGET_PATH and MUST NOT trigger abort.
+  under <report-slug>/report.zh-TW.md). Superseded or retired sessions are archived under
+  .agent-scratch/archive/<session-id>/ (without suffixes). That layout and the `recrystal_only`
+  block below OVERRIDE this TARGET_PATH and MUST NOT trigger abort.
 
   SCOPE RULE — All invocations apply `principles` and `quality_gate` (the shared lists).
   ONLY the recrystallize-post-series workflow additionally applies the `recrystal_only`

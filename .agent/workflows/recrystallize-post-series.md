@@ -326,6 +326,13 @@ series = ["信任邊界與驗證瓶頸：AI 協作中的漂移、幻覺與外部
 2. **report.zh-TW.md**：再結晶後的主報告或文章草稿，不得包含原貼文引用、路徑或再生成痕跡。**正文以結論收束，結尾不得附加 `series`／`tags`／「建議 metadata」等任何 metadata 區塊**（metadata 落於 series-map.md，見 §6）。
 3. **guide.zh-TW.md**：若單次產出兩篇以上報告，提供自然化閱讀順序與關係拓撲；不得揭露舊貼文重組來源。
 
+### 7a. 歷史封存公約 (Archiving Convention)
+
+當貼文系列完成再結晶並正式發佈，其對應的歷史結晶報告必須進行封存：
+1. **目錄物理隔離（Structure as Semantics）**：廢棄舊有的 `-archive` 目錄後綴制度，全面改將歷史會話目錄移入 `.agent-scratch/archive/<session-id>/`。
+2. **封存回推判定**：草稿層 `.agent-scratch/archive/` 中的會話目錄嚴格自 `archive/posts/` 實際退役的貼文清單回推，保持草稿庫與發佈庫的生命週期嚴格鏡像。
+3. **主倉庫定位解耦**：主倉庫對 `.agent-scratch` 子模組的指標定位（submodule commit bump）嚴格保留至整個知識庫收尾時再行一次性定案，草稿編輯與內部歸檔期間禁止頻繁改動主倉庫 commit 指標。
+
 ---
 
 ## 8. 品質閘門 (Quality Gate)
