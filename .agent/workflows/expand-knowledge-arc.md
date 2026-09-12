@@ -103,16 +103,20 @@ flowchart TD
    - 指定 Mermaid 圖表類型（`flowchart`, `stateDiagram-v2`, `sequenceDiagram`）。
    - 明確標注該圖承載的因果傳播鏈、責任邊界、狀態轉移或破壞機制。
 2. **對比與診斷表格（Structured Tables & Cognitive Ergonomics）**：
-   - 強制規劃**「數值直覺對照表」**（錨定極端計算的輸入/中間/輸出）與**「病因診斷 / 範式轉移對照表」**（對照脆弱作法 vs 嚴謹工程），提供高密度認知支撐。
-3. **最小驗證程式碼（Minimal Executable Code）**：
-   - 嚴格限定僅使用 Python 標準函式庫或 NumPy。
-   - 設計具備自我驗證能力的玩具模型（Toy Simulation），秒級重現現象（例如：蒙地卡羅極值挑選偏差、一維頻譜混疊、奇異值衰減、注意力置換不變性、PRD 曲線、逆向 SDE 誤差預算）。
-4. **數學公式表達（Rigorous Mathematical Grounding）**：
+   - **數值走一遍對照表 (Toy Walkthrough Table)**：強制規劃「極端數值演算法」，明確列出初始邊界輸入、中間敏感度狀態、理論極限值與經驗輸出，杜絕純概念名詞羅列。
+   - **跨維度診斷與範式對照表 (Diagnostic Matrix)**：強制四維對照「表面監控讀數 $\to$ 底層物理病灶 $\to$ 舊代脆弱做法 $\to$ 新代嚴格工程防衛」。
+3. **最小驗證程式碼（Minimal Executable Code & Self-Verifying Harness）**：
+   - 嚴格限定僅使用 Python 標準函式庫（`math`, `random`, `dataclasses`）或基礎 `NumPy`。
+   - **強制包含數值 `assert` 斷言**：代碼必須包含完整的 `if __name__ == "__main__":` 執行塊，並透過 `assert` 語句自動驗證數值定理（如極值偏差界限、雅可比奇異值連乘衰減、Manski 不確定性區間跨零點），保證秒級（< 1s）自運行且無報錯。
+4. **數學公式表達與理論奠基 (Rigorous Math & Peer-Reviewed Grounding)**：
    - 給出該篇章的數理核心表示（如 Jensen 不等式對極值的下界估計、Hessian 條件數定義、奈奎斯特取樣邊界、ELBO 互資訊分解式等）。
+   - **權威前綴約束**：每個 Slot 必須標定該機制對應的經典文獻出處，且 URL 必須指向權威學術源（`doi.org/`, `arxiv.org/abs/`, `proceedings.mlr.press/`, `jstor.org/` 或權威學會出版門戶）。
 
-### 階段四：產出知識展開藍圖 (Output Downstream Blueprint)
+### 階段四：產出知識展開藍圖與防漂移握手 (Output Downstream Blueprint & Handshake)
 
-將上述分析匯整為完整的規格書，預設輸出於對話，或依指示寫入 `.agent-scratch/` 作為下游工作流的 SSOT 輸入。
+將上述分析匯整為完整的規格書，寫入 `.agent-scratch/recrystal-<date>-<slot>/series-map.md`。藍圖對下游 `/recrystallize-post-series` 具有最高架構鎖定效力：
+- 藍圖凍結一份包含**固定槽位編號（Slot ID）、目錄 slug、不可替代角色、錨定文獻與邊界聲明**的結構化清單；
+- 下游單篇結晶時必須無條件遵守該清單，嚴禁任何篇數塌縮、目錄更名或自由度漂移。
 
 ---
 
@@ -129,19 +133,28 @@ flowchart TD
 ## 2. 篇章重組對照與拓撲決策 (Structural Decisions)
 [表格列出：新篇章 Slot | 來源素材映射 | 拓撲操作 (Merge/Split/Deepen) | 核心因果鏈]
 
-## 3. 逐篇四維結構化資產規劃 (Per-Slot Quad-structure Specifications)
+## 3. 四大 Master Reports 角色、不可替代性與閱讀順序 (Slot Manifest)
+[清單鎖定：順序 | 報告目錄 slug | 核心問題 | 不可替代角色 | 邊界聲明 | 建議 Tags]
+
+## 4. 四類展開方向盤點表 (Expansion Audit Matrix)
+[四類狀態逐項宣告：共用前提就地自含、概念地圖/拓撲、反例與邊界條件、結構化資產]
+
+## 5. 逐篇四維結構化資產工程規格 (Per-Slot Quad-structure Specifications)
 ### Slot 01: [篇名]
 - **核心問題與精神**：
+- **理論奠基文獻 (Theoretical Provenance)**：[精確文獻名與權威 URL]
 - **數理核心 (Math)**：[具體公式與定理]
 - **圖表規格 (Mermaid)**：[圖表結構與節點語意]
-- **表格規格 (Tables)**：[數值對照表與範式診斷表設計]
-- **程式碼規格 (Code)**：[驗證目標、變數設定與預期行為]
+- **表格規格 (Tables)**：[數值走一遍表與範式診斷表設計]
+- **程式碼規格 (Code)**：[驗證目標、包含 assert 斷言與預期行為]
 - **邊界與反例**：[何時不適用]
 
 [...依序規劃其餘 Slot...]
 
-## 4. 去污染稽核清單 (De-pollution Audit)
+## 6. 去污染稽核清單 (De-pollution Audit)
 [明確列出已清除之不可靠來源、文獻與替代 First-principles 方案]
+
+## 7. 品質閘門自檢 (Quality Gate Audit)
 ```
 
 ---
@@ -153,7 +166,9 @@ flowchart TD
 - [ ] **去污染徹底**：所有二手不可靠論文引用與未經檢驗的實驗數字皆已被標記剔除，並替換為數學或物理第一性原理。
 - [ ] **框架破除**：新架構明確展現出深化、合併或拆分的拓撲演進，未淪為原素材的 1:1 機械照搬。
 - [ ] **拒絕換皮照抄**：新架構的 Slot 數量與主題分工不可與原始素材呈 1:1 鏡像對應，必須有實質的跨篇章熔接或多核心解耦。
+- [ ] **文獻權威前綴合規**：所有理論奠基來源均指向真實權威前綴（`doi.org/`, `arxiv.org/abs/`, `proceedings.mlr.press/`, `jstor.org/` 等），無偽造或無連結泛稱。
 - [ ] **四維資產無缺漏**：每個新規劃的主題節點均具備流程圖、診斷表格、最小驗證代碼與數學公式之明確規劃。
-- [ ] **認知工學支架完備**：每篇報告配備至少兩類結構化表格（數值對照表 + 診斷/範式對照表），杜絕純文字疲勞。
-- [ ] **代碼零重型依賴**：規劃的模擬程式碼純度達標（僅限標準函式庫或 NumPy），且具備確定性與可重現性。
+- [ ] **認知表格非退化**：數值走一遍表具備「輸入-敏感度-極限輸出」數值鏈；範式診斷表具備「讀數-病灶-脆弱-防衛」四維對照。
+- [ ] **代碼包含 assert 自檢**：規劃的模擬程式碼純度達標（僅限標準函式庫或 NumPy），且包含 `assert` 斷言具備秒級自我驗證能力。
+- [ ] **防漂移清單凍結**：藍圖鎖定結構化 Slot Manifest，定義權威 slug、邊界與角色，防止下游執行自由度漂移。
 - [ ] **敘事因果閉合**：篇章之間的依賴關係由因果推進決定，形成完整的認識論閉環。
