@@ -41,11 +41,12 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 > **機器學習** <!-- term:MachineLearning --> (Machine Learning): 先界定可選函數的範圍，再以資料估計其中參數的建模方法。 <!-- anchor:MachineLearning -->
 
 
-一項無法被推翻的評估，在認識論上不具備任何資訊價值。本文旨在將經驗驗證從脆弱的人類個人自律，昇華為以**可證偽性**（Falsifiability） <!-- term:Falsifiability -->為核心的架構工程：建立事前不可變凍結的八欄評估契約，分析**研究者自由度**（Researcher Degrees Of Freedom） <!-- term:ResearcherDegreesOfFreedom -->的累計破壞極限，並透過資料庫級時序不變式與自動化阻斷管線，構築防篡改的經驗治理邊界。
+一項無法被推翻的評估，在認識論上不具備任何資訊價值。本文旨在將經驗驗證從脆弱的人類個人自律，昇華為以**可證偽性**（Falsifiability） <!-- term:Falsifiability -->為核心的架構工程：建立事前不可變凍結的八欄評估契約，分析**研究者自由度**（Researcher Degrees Of Freedom） <!-- term:ResearcherDegreesOfFreedom -->的累計破壞極限，並透過資料庫級時序**不變式**（Invariant） <!-- term:Invariant -->與自動化阻斷管線，構築防篡改的經驗治理邊界。
 
 > [!IMPORTANT]
 > **可證偽性** <!-- term:Falsifiability --> (Falsifiability): 宣稱必須事先指明何種觀測結果會推翻它；缺乏反駁條件的評估無法構成證據。 <!-- anchor:Falsifiability -->
 > **研究者自由度** <!-- term:ResearcherDegreesOfFreedom --> (Researcher Degrees Of Freedom): 實驗過程中未被事前固定的選擇空間，例如種子數、停止時機與指標挑選，會把偽陽性率推離名目水準。 <!-- anchor:ResearcherDegreesOfFreedom -->
+> **不變式** <!-- term:Invariant --> (Invariant): 系統在任何合法狀態下都必須成立的斷言，是把評估規則寫成可執行檢查的基本單位。 <!-- anchor:Invariant -->
 
 
 ---
@@ -124,7 +125,7 @@ flowchart TD
 
 以下表格展示評估管線在遭遇各類合約變更與測試集調用嘗試時，底層狀態機的轉移推演與最終處置結果：
 
-| 當前狀態 (State) | 輸入操作 / 嘗試行為 | 契約判定條件 / 不變式檢驗 | 狀態轉移 (Next State) | 系統處置結果與治理歸宿 |
+| 當前狀態 (State) | 輸入操作 / 嘗試行為 | 契約判定條件 / 不變式 <!-- term:Invariant -->檢驗 | 狀態轉移 (Next State) | 系統處置結果與治理歸宿 |
 | :--- | :--- | :--- | :--- | :--- |
 | **Drafting** | 填妥八欄規格並提交加密金鑰 | 檢查 8 欄是否無空值，且反駁條件是否具備可判定算式 | $\to$ **Frozen** | 產生合約 SHA-256 數位簽名，寫入只讀資料庫。 |
 | **Frozen** | 模型調參階段試圖讀取測試集資料 | 檢查請求來源是否為非隔離環境，或合約是否未進入評估態 | $\to$ **Aborted** | **物理阻斷**：拋出權限拒絕異常，記錄安全審計日誌。 |

@@ -54,12 +54,13 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 > **經驗風險** <!-- term:EmpiricalRisk --> (Empirical Risk): 模型在有限訓練樣本上的平均損失，是目標分佈期望風險的間接替代量。 <!-- anchor:EmpiricalRisk -->
 
 
-1. **第一道門：求導正確性（Derivative Correctness）**：**反向傳播**（Backpropagation） <!-- term:Backpropagation -->計算圖中所求得的向量 $g = \nabla_\theta \mathcal{L}(\theta)$，是否在數值精度意義下嚴格吻合**損失函數**（Loss Function） <!-- term:LossFunction -->對參數張量的真實全微分？
+1. **第一道門：求導正確性（Derivative Correctness）**：**反向傳播**（Backpropagation） <!-- term:Backpropagation -->**計算圖（Computational Graph） <!-- term:ComputationalGraph -->**中所求得的向量 $g = \nabla_\theta \mathcal{L}(\theta)$，是否在數值精度意義下嚴格吻合**損失函數**（Loss Function） <!-- term:LossFunction -->對參數張量的真實全微分？
 2. **第二道門：更新收斂性（Update Convergence）**：給定局部損失曲面的幾何曲率（Curvature）與最佳化器步幅策略，離散參數序列 $\{\theta_t\}_{t=1}^T$ 是否在流形上穩定收縮而非高頻振盪或發散？
 3. **第三道門：泛化 <!-- term:Generalization -->是否成立（Generalization Viability）**：參數收斂點所獲得的經驗特徵，是否在未見的資料分佈上維持預期的結構規律，而非單純記住了經驗樣本的局部幾何特異點？
 
 > [!IMPORTANT]
 > **反向傳播** <!-- term:Backpropagation --> (Backpropagation): 以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。 <!-- anchor:Backpropagation -->
+> **計算圖** <!-- term:ComputationalGraph --> (Computational Graph): 把前向運算展開成節點與邊的表示，反向傳播沿其反向鏈式求導。 <!-- anchor:ComputationalGraph -->
 > **損失函數** <!-- term:LossFunction --> (Loss Function): 把模型輸出與目標之間的差距量化為單一數值的評分函數。 <!-- anchor:LossFunction -->
 
 
@@ -82,7 +83,11 @@ flowchart LR
 
 這三道門具備強烈的非蘊涵性：
 - 梯度方向計算錯誤時（例如梯度被乘上了常數 $0.5$ 或存在微小角度偏差），只要更新向量與負真實梯度之夾角小於 90 度，**訓練損失依舊會下降**，但會導致有效學習率被隱蔽扭曲，使超參數搜索得出完全偏離物理現實的結論。
-- 更新動力學在病態條件數 <!-- term:ConditionNumber -->下收斂至局部鞍點時，損失讀數可維持極小，但參數實質被困在狹窄的幾何峽谷邊界。
+- 更新動力學在病態條件數 <!-- term:ConditionNumber -->下收斂至局部**鞍點**（Saddle Point） <!-- term:SaddlePoint -->時，損失讀數可維持極小，但參數實質被困在狹窄的幾何峽谷邊界。
+
+> [!IMPORTANT]
+> **鞍點** <!-- term:SaddlePoint --> (Saddle Point): 梯度為零但 Hessian 同時具備正負特徵值的臨界點，在高維非凸景觀中遠多於局部極小值。 <!-- anchor:SaddlePoint -->
+
 
 ---
 
@@ -155,7 +160,7 @@ $$
 | **0.100** | 1.000 | 0.980 | $1.000$ (完全無衰減) | $4.457 \times 10^{-1}$ | **平坦極限振盪**（陡峭方向在 $\pm 1$ 永恆跳變） |
 | **0.105** | 1.100 | 0.979 | $4.525 \times 10^{1}$ | $4.275 \times 10^{-1}$ | **幾何爆炸發散**（陡峭方向迅速溢出至 NaN） |
 
-表中的對比直觀證實了：在 $\eta = 0.100$ 時，陡峭方向呈現完全守恆的振盪，此時若僅監控損失函數 <!-- term:LossFunction -->純量，曲面讀數可能呈現偽平坦；而一旦學習率超出臨界僅 5%（$\eta = 0.105$），陡峭方向即在 40 步內放大 45 倍並迅速引爆計算圖。
+表中的對比直觀證實了：在 $\eta = 0.100$ 時，陡峭方向呈現完全守恆的振盪，此時若僅監控損失函數 <!-- term:LossFunction -->純量，曲面讀數可能呈現偽平坦；而一旦學習率超出臨界僅 5%（$\eta = 0.105$），陡峭方向即在 40 步內放大 45 倍並迅速引爆計算圖 <!-- term:ComputationalGraph -->。
 
 ---
 
@@ -165,7 +170,7 @@ $$
 | :--- | :--- | :--- | :--- |
 | **訓練初期 Loss 突發性衝向 Inf / NaN** | 局部曲面 Hessian 最大譜半徑 $\lambda_{\max}$ 暴增，當前學習率突破 $2/\lambda_{\max}$ 臨界。 | 盲目加入**梯度裁剪**（Gradient Clipping） <!-- term:GradientClipping -->將模長截斷為 1.0。 | 引入學習率 Warmup 或改用 Pre-LN 結構壓制初始 Jacobians 奇異值。 |
 | **加大學習率後，Loss 下降更快但驗證集表現急劇劣化** | 步幅過大躍遷至極度尖銳的局部極小（Sharp Minima），泛化 <!-- term:Generalization -->敏感度急遽升高。 | 宣稱「模型學習容量不足」，進一步增加參數量。 | 引入銳度感知最小化（SAM）或結合二階譜正則化尋找平坦極小（Flat Minima）。 |
-| **訓練損失平坦停滯，調高/調低學習率均無效** | 曲面條件數 <!-- term:ConditionNumber --> $\kappa$ 達數萬以上，參數陷入狹窄鞍點或極度非等向性峽谷。 | 隨機重啟訓練多次，碰運氣尋找良好初始權重。 | 引入自適應預條件子（Preconditioner）或殘差正交初始化（Dynamical Isometry）。 |
+| **訓練損失平坦停滯，調高/調低學習率均無效** | 曲面條件數 <!-- term:ConditionNumber --> $\kappa$ 達數萬以上，參數陷入狹窄鞍點 <!-- term:SaddlePoint -->或極度非等向性峽谷。 | 隨機重啟訓練多次，碰運氣尋找良好初始權重。 | 引入自適應預條件子（Preconditioner）或殘差正交初始化（Dynamical Isometry）。 |
 | **自定義 CUDA/C++ 算子運行正常但模型始終難以收斂** | 算子反向傳播 <!-- term:Backpropagation -->解析梯度存在微小縮放偏差（如遺漏係數 0.5）。 | 懷疑模型容量不適配任務，浪費大量算力調參。 | 在單元測試中強制執行雙精度有限差分梯度檢驗（Grad Check）。 |
 
 > [!IMPORTANT]
@@ -278,7 +283,7 @@ fn main() {
 
 上述條件數 <!-- term:ConditionNumber -->推導奠基於局部二次近似模型。在高度非凸的深度學習曲面中，以下邊界條件需要特別釐清：
 
-1. **隨機梯度噪聲（SGD Noise）的隱式正則化**：小批量隨機抽樣注入的協方差噪聲，能幫助參數逃離局部尖銳鞍點。在批次規模極小的情況下，即便學習率短暫超出確定性穩定邊界，隨機擾動亦可能阻斷共振效應。
+1. **隨機梯度噪聲（SGD Noise）的隱式正則化**：小批量隨機抽樣注入的協方差噪聲，能幫助參數逃離局部尖銳鞍點 <!-- term:SaddlePoint -->。在批次規模極小的情況下，即便學習率短暫超出確定性穩定邊界，隨機擾動亦可能阻斷共振效應。
 2. **過度參數化帶來的流形平坦谷底**：現代超大模型在極小值鄰域內通常存在龐大的零曲率子空間（$\lambda \approx 0$）。在這些方向上，誤差無法收縮亦無從發散，系統展現出高度的容錯性，但此時參數的歐幾里得距離漂移將不再直接對應損失變化。
 
 ---

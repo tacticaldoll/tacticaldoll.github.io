@@ -121,7 +121,7 @@ $$\mathbb{E}[Y] = \mathbb{E}[Y \mid T=1] P(T=1) + \mathbb{E}[Y \mid T=0] P(T=0)$
 
 $$\mathbb{E}[Y] \in \left[ \mathbb{E}[Y \mid T=1] P(T=1), \quad \mathbb{E}[Y \mid T=1] P(T=1) + P(T=0) \right]$$
 
-該區間的寬度精確等於被拒絕族群的機率質量 $P(T=0) = 1 - P(T=1)$。這意味著：**核准率越低（篩選越嚴格），未觀測的反事實 <!-- term:Counterfactual -->**不確定性**（Uncertainty） <!-- term:Uncertainty -->區間就越大**。在被篩選樣本上計算的任何驗證分數，本質上都是對真實母體風險的嚴重下界偏誤。
+該區間的寬度精確等於被拒絕族群的機率質量 $P(T=0) = 1 - P(T=1)$。這意味著：**核准率越低（篩選越嚴格），未觀測的反事實 <!-- term:Counterfactual -->**不確定性（Uncertainty） <!-- term:Uncertainty -->**區間就越大**。在被篩選樣本上計算的任何驗證分數，本質上都是對真實母體風險的嚴重下界偏誤。
 
 > [!IMPORTANT]
 > **不確定性** <!-- term:Uncertainty --> (Uncertainty): 估計值因抽樣與執行變異而帶有的波動範圍，是判定分數差異是否顯著的前提。 <!-- anchor:Uncertainty -->

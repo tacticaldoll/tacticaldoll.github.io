@@ -94,7 +94,11 @@ flowchart LR
     style Sum fill:#eebefa,stroke:#be4bdb,stroke-width:2px
 ```
 
-根據因果中介分析的奠基理論（參閱 [Pearl，2001 / 《Direct and Indirect Effects》](https://doi.org/10.5555/2074022.2074073)），一個中介變數 <!-- term:MediatingVariable --> $M$ 對結果 $Y$ 的真實因果貢獻，必須透過**自然直接效應（Natural Direct Effect, NDE）**與**自然間接效應（Natural Indirect Effect, NIE）**進行定量拆解。給定基準輸入 $x^*$ 與反事實輸入 $x$：
+根據因果中介分析的奠基理論（參閱 [Pearl，2001 / 《Direct and Indirect Effects》](https://doi.org/10.5555/2074022.2074073)），一個中介變數 <!-- term:MediatingVariable --> $M$ 對結果 $Y$ 的真實因果貢獻，必須透過**自然直接效應（Natural Direct Effect, NDE）**與**自然間接效應（Natural Indirect Effect, NIE）**進行定量拆解。給定基準輸入 $x^*$ 與**反事實**（Counterfactual） <!-- term:Counterfactual -->輸入 $x$：
+
+> [!IMPORTANT]
+> **反事實** <!-- term:Counterfactual --> (Counterfactual): 在未實際發生的處置下本應出現的結果，是因果宣稱的基準，也是觀測資料中永遠缺失的那一半。 <!-- anchor:Counterfactual -->
+
 
 $$
 \text{TE}(x, x^*) = Y(x) - Y(x^*) = \underbrace{\big[Y(x, M(x^*)) - Y(x^*, M(x^*))\big]}_{\text{NDE}} + \underbrace{\big[Y(x, M(x)) - Y(x, M(x^*))\big]}_{\text{NIE}}.
@@ -427,4 +431,4 @@ func main() {
 
 資訊在內部狀態中的殘留，不代表反向信用的打通；熱圖在特徵矩陣上的聚焦，不代表決策因果的流動。深層神經網路的複雜幾何與殘差旁路 <!-- term:ResidualBypass -->拓撲，為中間變數構建了一面高維度掩護牆，使大量的相關性偽影被誤讀為系統的「思考過程」。
 
-若要打破可解釋性領域的自欺氛圍，工程系統必須跨越「只看觀測讀數」的初級階段，全面邁向「基於介入的因果檢驗」：以權重隨機化瀑布作為解釋工具的准入門檻，以反事實激活補丁 <!-- term:ActivationPatching -->量測真實介入力度，並嚴格區分前向互資訊 <!-- term:MutualInformation -->與反向梯度流。唯有能夠在對抗性物理介入下依然屹立的因果鏈條，才能真正被確立為系統可信能力的硬核證據。
+若要打破可解釋性領域的自欺氛圍，工程系統必須跨越「只看觀測讀數」的初級階段，全面邁向「基於介入的因果檢驗」：以權重隨機化瀑布作為解釋工具的准入門檻，以反事實 <!-- term:Counterfactual -->激活補丁 <!-- term:ActivationPatching -->量測真實介入力度，並嚴格區分前向互資訊 <!-- term:MutualInformation -->與反向梯度流。唯有能夠在對抗性物理介入下依然屹立的因果鏈條，才能真正被確立為系統可信能力的硬核證據。

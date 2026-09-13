@@ -157,7 +157,11 @@ $$
 \sigma_{\text{ERF}} \propto \sqrt{\sum_{l=1}^L \text{Var}(k_l)} \propto \sqrt{L}.
 $$
 
-這意味著：邊緣像素雖然在拓撲計算圖上「可達」，但其對最終決策的實際貢獻權重呈指數級衰減。用理論感受野 <!-- term:ReceptiveField -->覆蓋整張影像來斷言「模型已看見全域上下文」，是典型的形式主義誤判。
+這意味著：邊緣像素雖然在拓撲**計算圖**（Computational Graph） <!-- term:ComputationalGraph -->上「可達」，但其對最終決策的實際貢獻權重呈指數級衰減。用理論感受野 <!-- term:ReceptiveField -->覆蓋整張影像來斷言「模型已看見全域上下文」，是典型的形式主義誤判。
+
+> [!IMPORTANT]
+> **計算圖** <!-- term:ComputationalGraph --> (Computational Graph): 把前向運算展開成節點與邊的表示，反向傳播沿其反向鏈式求導。 <!-- anchor:ComputationalGraph -->
+
 
 ---
 
@@ -293,7 +297,7 @@ testConvolutionalEquivariance();
 在實務上，面對平移或縮放失穩，最普遍的工程反應是增加「隨機資料增強（Data Augmentation）」。然而，資料增強與架構不變性在認識論層面處於完全不同的防線：
 
 1. **資料增強是經驗記誦（Memorization via Capacity Consumption）**：它迫使模型消耗有限的參數容量，去「背誦」所有可能的位移網格相位。這並未賦予模型**泛化**（Generalization） <!-- term:Generalization -->結構，一旦出現增強分佈未包含的位移量（如次像素連續位移），系統仍將脆弱崩潰。
-2. **架構誘導偏差**（Structural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
+2. **架構誘導偏差**（Structural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->：透過在計算圖 <!-- term:ComputationalGraph -->中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
 
 > [!IMPORTANT]
 > **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
@@ -369,7 +373,7 @@ class RobustBackbone(nn.Module):
 
 架構文件上宣稱的數學性質，永遠只是特定連續邊界條件下的條件命題。工程實作中為了計算效率而引入的離散網格、步幅下採樣與邊界截斷，無時無刻不在侵蝕這些理論前提。
 
-當模型在標準測試集上展現出優異的精度指標時，並不代表它真正掌握了對稱性規律。未經抗混疊設計的卷積網路，本質上只是在特定的採樣相位上記憶了特徵碎片。若要讓架構訊號轉化為真實的幾何魯棒性，工程系統必須正視訊號處理的基礎物理約束：以嚴謹的抗混疊低通濾波阻斷**步幅混疊**（Stride Aliasing） <!-- term:StrideAliasing -->，以實測的有效感受野 <!-- term:ReceptiveField -->取代形式主義的理論覆蓋宣稱。唯有將離散實作的前提漏洞在計算圖層級逐一修補，架構的幾何保證才具備可信的實質支撐。
+當模型在標準測試集上展現出優異的精度指標時，並不代表它真正掌握了對稱性規律。未經抗混疊設計的卷積網路，本質上只是在特定的採樣相位上記憶了特徵碎片。若要讓架構訊號轉化為真實的幾何魯棒性，工程系統必須正視訊號處理的基礎物理約束：以嚴謹的抗混疊低通濾波阻斷**步幅混疊**（Stride Aliasing） <!-- term:StrideAliasing -->，以實測的有效感受野 <!-- term:ReceptiveField -->取代形式主義的理論覆蓋宣稱。唯有將離散實作的前提漏洞在計算圖 <!-- term:ComputationalGraph -->層級逐一修補，架構的幾何保證才具備可信的實質支撐。
 
 > [!IMPORTANT]
 > **步幅混疊** <!-- term:StrideAliasing --> (Stride Aliasing): 跨步下採樣使取樣率低於訊號頻寬時，高頻成分摺疊進低頻而使特徵隨位移相位跳變的現象。 <!-- anchor:StrideAliasing -->
