@@ -89,6 +89,15 @@
     "forbidden": [],
     "level": 1
   },
+  "NeuralArchitectureSearch": {
+    "zh": "神經網路架構搜尋",
+    "en": [
+      "Neural Architecture Search"
+    ],
+    "description": "以自動化程序在架構空間中搜尋最佳網路結構的方法，其候選規模直接放大評估讀數的極值偏差。",
+    "forbidden": [],
+    "level": 2
+  },
   "CodeAsDocumentation": {
     "zh": "以程式碼為文件",
     "en": [
@@ -745,6 +754,33 @@
     "description": "反覆在同一測試集上查看並挑選最佳結果，使公開分數高於真實泛化能力的偏差。",
     "forbidden": [],
     "level": 2
+  },
+  "MultipleHypothesisTesting": {
+    "zh": "多重假設檢定",
+    "en": [
+      "Multiple Hypothesis Testing"
+    ],
+    "description": "同時檢驗多個假設時，單次檢定的顯著水準無法控制整體誤判率，須另行校正族系錯誤。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ArchitecturalInductiveBias": {
+    "zh": "架構誘導偏差",
+    "en": [
+      "Architectural Inductive Bias"
+    ],
+    "description": "由網路結構本身而非訓練資料帶入的先驗假設，只有在其數學前提未被實作破壞時才真正成立。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ResearcherDegreesOfFreedom": {
+    "zh": "研究者自由度",
+    "en": [
+      "Researcher Degrees Of Freedom"
+    ],
+    "description": "實驗過程中未被事前固定的選擇空間，例如種子數、停止時機與指標挑選，會把偽陽性率推離名目水準。",
+    "forbidden": [],
+    "level": 1
   },
   "Spec": {
     "zh": "約束性規格",
@@ -1555,6 +1591,33 @@
     "description": "扣除整合、人工與失誤成本後，一條完整流程實際交付給使用者的價值。",
     "forbidden": [],
     "level": 2
+  },
+  "TranslationInvariance": {
+    "zh": "平移不變性",
+    "en": [
+      "Translation Invariance"
+    ],
+    "description": "輸入平移後輸出完全不變的性質，強於等變性，在含下採樣的離散實作中通常不成立。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AntiAliasingFilter": {
+    "zh": "抗混疊濾波",
+    "en": [
+      "Anti-Aliasing Filter"
+    ],
+    "description": "在下採樣前施加低通濾波以壓低超出奈奎斯特頻率的成分，把非線性特徵提取與取樣動作解開。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CounterfactualIntervention": {
+    "zh": "反事實介入",
+    "en": [
+      "Counterfactual Intervention"
+    ],
+    "description": "主動改寫模型內部狀態並觀察輸出變化的檢驗方式，是把關聯觀測升格為因果宣稱的唯一途徑。",
+    "forbidden": [],
+    "level": 1
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -3401,6 +3464,123 @@
     "forbidden": [],
     "level": 2
   },
+  "ProxyReadout": {
+    "zh": "代理讀數",
+    "en": [
+      "Proxy Readout"
+    ],
+    "description": "以可計算的純量指標替代無法直接觀測之真實能力的量測結果，其有效性取決於替代關係是否成立。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ExtremumBias": {
+    "zh": "極值偏差",
+    "en": [
+      "Extremum Bias"
+    ],
+    "description": "從大量候選中取出最大值時，該讀數同時吸收了真實訊號與抽樣噪聲的高端尾部，因而系統性高於真值。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FalseDiscoveryRate": {
+    "zh": "假發現率",
+    "en": [
+      "False Discovery Rate"
+    ],
+    "description": "在所有被宣告為顯著的結果中，實際為偽陽性者所佔的期望比例，是多重檢定下的主要控制目標。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GradientClipping": {
+    "zh": "梯度裁剪",
+    "en": [
+      "Gradient Clipping"
+    ],
+    "description": "在參數更新前將梯度範數截斷至上限，用以抑制數值爆炸，但不改變損失曲面本身的病態幾何。",
+    "forbidden": [],
+    "level": 2
+  },
+  "StrideAliasing": {
+    "zh": "步幅混疊",
+    "en": [
+      "Stride Aliasing"
+    ],
+    "description": "跨步下採樣使取樣率低於訊號頻寬時，高頻成分摺疊進低頻而使特徵隨位移相位跳變的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "RepresentationProbing": {
+    "zh": "表徵探測",
+    "en": [
+      "Representation Probing"
+    ],
+    "description": "以輔助分類器從中間表徵讀取特定屬性的分析手法，只能證明資訊存在，不能證明該資訊參與決策。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ResidualBypass": {
+    "zh": "殘差旁路",
+    "en": [
+      "Residual Bypass"
+    ],
+    "description": "殘差連接提供的直通路徑，使決策訊號可以繞過注意力或特定子模組，讓該模組的讀數失去因果代表性。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LinearProbe": {
+    "zh": "線性探針",
+    "en": [
+      "Linear Probe"
+    ],
+    "description": "在凍結的表徵上訓練線性分類器，用以量測該層是否線性可讀出目標屬性的診斷工具。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ActivationPatching": {
+    "zh": "激活補丁",
+    "en": [
+      "Activation Patching"
+    ],
+    "description": "將某次前向傳播的中間激活替換為另一次執行的對應值，以定位特定成分對輸出的實際貢獻。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Preregistration": {
+    "zh": "事前註冊",
+    "en": [
+      "Preregistration"
+    ],
+    "description": "在接觸評估資料之前凍結假設、指標、樣本規模與成功判準的制度，用以阻斷事後合理化。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Falsifiability": {
+    "zh": "可證偽性",
+    "en": [
+      "Falsifiability"
+    ],
+    "description": "宣稱必須事先指明何種觀測結果會推翻它；缺乏反駁條件的評估無法構成證據。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TemporalContamination": {
+    "zh": "時序污染",
+    "en": [
+      "Temporal Contamination"
+    ],
+    "description": "評估資料中混入了決策時點之後才存在的資訊，使離線讀數無法代表部署時的可得條件。",
+    "forbidden": [],
+    "level": 2
+  },
+  "OptionalStopping": {
+    "zh": "任意停止",
+    "en": [
+      "Optional Stopping"
+    ],
+    "description": "邊觀察結果邊決定是否繼續收集資料或訓練，使名目顯著水準失效的取樣行為。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3536,10 +3716,10 @@
     "forbidden": [],
     "level": 2
   },
-  "Architecture": {
+  "ArchitectureLayer": {
     "zh": "架構層",
     "en": [
-      "Architecture"
+      "Architecture Layer"
     ],
     "description": "規格文件中用以客觀記錄系統「實際在做什麼」的事實陳述層。",
     "forbidden": [],
@@ -3809,6 +3989,15 @@
       "代碼"
     ],
     "level": 3
+  },
+  "ZeroPadding": {
+    "zh": "零填充",
+    "en": [
+      "Zero Padding"
+    ],
+    "description": "在輸入邊界補零以維持空間尺寸的作法，會在邊界引入原訊號不存在的內容而破壞等變前提。",
+    "forbidden": [],
+    "level": 2
   },
   "Data": {
     "zh": "數據",
