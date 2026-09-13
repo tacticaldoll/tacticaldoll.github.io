@@ -10,6 +10,49 @@ _RM_ANCHOR_BLOCK = re.compile(
     r'(?:>[ \t]*\*\*.*?\*\*[^\r\n]*<!--[ \t]*(?:anchor|term):[^\r\n]*(?:\r?\n)?)+'
 )
 
+
+# De-anchoring is the inverse of anchoring and has to agree with it about whose
+# brackets these are. It removes the gloss ONLY when the bracket holds exactly one of
+# this term's aliases — the same test the anchoring side applies. Anything else is the
+# author's （NAS）or（Effective Receptive Field, ERF）, and eating it means a reanchor
+# deletes text nobody asked it to touch: the anchor side kept it, so the round trip has
+# to as well. The span is also bounded away from a second bracket and from a table pipe.
+# With an unbounded `.*?` a "parenthetical" could start at `(Seeds)` in a table row's
+# first cell and run to a marker near the row's end, taking every cell between them —
+# which is exactly what collapsed one row to `| **3. 種子規格。 |`.
+_ANCHOR_TAIL = (r'(?:(?:[ \t]*([\(（][^()（）|\r\n]*[\)）]))?'
+                r'[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?')
+
+# Orphan sweep: terms removed from the lexicon leave a marker the term-driven cleanup
+# can no longer find. Their gloss is machine output and always plain ASCII, so keep the
+# bracket class that tight rather than letting it reach across author text.
+_ORPHAN_SWEEP = re.compile(r"(?:[ \t]*[\(（][A-Za-z0-9 ,./&'\-]*[\)）])?"
+                           r'[ \t]*<!--\s*(?:anchor|term):.*?-->')
+
+
+def _build_deanchor(lexicon):
+    """Returns (pattern, cleaner) stripping a machine anchor back to its bare term."""
+    sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
+    pattern = re.compile(
+        r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?'
+        + _ANCHOR_TAIL)
+
+    def cleaner(m):
+        pre, zh, post_val = m.group(1) or "", m.group(2), m.group(3) or ""
+        paren = m.group(4) or ""
+        aliases = {a.strip().lower() for a in lexicon.zh_to_ens.get(zh, []) if a}
+        kept = "" if paren and paren[1:-1].strip().lower() in aliases else paren
+        # A standalone **L3term** is orphan first-occurrence bold left when the term was
+        # demoted to level 3 (IGNORE_LIST): level-3 terms are never anchored, so that
+        # emphasis is residue. Symmetric markers only — one-sided means it is the edge of
+        # a longer author bold span.
+        if pre and pre == post_val and lexicon.levels.get(zh, 1) >= 3:
+            return zh + kept
+        return f"{pre}{zh}{post_val}{kept}"
+
+    return pattern, cleaner
+
+
 class TerminologyInjector:
     """Handles terminology anchoring and glossary injection into post text."""
     
@@ -75,34 +118,9 @@ class TerminologyInjector:
 
         # If in anchor_first mode, first perform a complete cleanup on protected body to ensure idempotency
         if mode == "anchor_first":
-            sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
-            cleanup_pattern = re.compile(
-                r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?' +
-                # The （bilingual） suffix is consumed ONLY as part of a
-                # marker-terminated tail. A machine anchor always carries the
-                # marker; a bare `**詞**（English）` is authored text, and eating
-                # it drops the line out of protected_alert_patterns, which is how
-                # an author callout gets anchored and then deleted as machine output.
-                r'(?:(?:[ \t]*[\(（].*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
-            )
-            def cleaner(m):
-                pre = m.group(1) or ""
-                zh = m.group(2)
-                post_val = m.group(3) or ""
-                # De-anchoring must also drop the bold it once added. A standalone
-                # **L3term** is orphan first-occurrence bold left when the term was
-                # demoted to level 3 (IGNORE_LIST) — level-3 terms are never anchored,
-                # so that emphasis is residue. Strip ONLY when the term is bolded as a
-                # symmetric standalone unit (same marker on both sides); if it is merely
-                # the edge of a longer author bold (one side only), leave it intact.
-                if pre and pre == post_val and lexicon.levels.get(zh, 1) >= 3:
-                    return zh
-                return f"{pre}{zh}{post_val}"
+            cleanup_pattern, cleaner = _build_deanchor(lexicon)
             protected_body = cleanup_pattern.sub(cleaner, protected_body)
-            # Sweep orphan anchors left by terms removed/archived from the lexicon: their ZH is
-            # no longer a key, so the term-driven cleanup above misses them. Marker-driven, so it
-            # clears the inline comment plus an attached （bilingual） while keeping the ZH text.
-            protected_body = re.sub(r'(?:[ \t]*[\(（][^\r\n]*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?-->', '', protected_body)
+            protected_body = _ORPHAN_SWEEP.sub('', protected_body)
 
         # 2. Split by <!--more--> to protect preview area from heavy anchoring
         had_more = "<!--more-->" in protected_body
@@ -215,30 +233,9 @@ class TerminologyInjector:
             text = _RM_ANCHOR_BLOCK.sub('', text)
 
             # 2. Strip all (EN) anchors and inline comments
-            sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
-            cleanup_pattern = re.compile(
-                r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?' +
-                # The （bilingual） suffix is consumed ONLY as part of a
-                # marker-terminated tail. A machine anchor always carries the
-                # marker; a bare `**詞**（English）` is authored text, and eating
-                # it drops the line out of protected_alert_patterns, which is how
-                # an author callout gets anchored and then deleted as machine output.
-                r'(?:(?:[ \t]*[\(（].*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
-            )
-            def cleaner(m):
-                pre = m.group(1) or ""
-                zh = m.group(2)
-                post_val = m.group(3) or ""
-                # Same as the anchor_first path: drop orphan standalone **L3term** bold
-                # (level-3 terms are never anchored, so the emphasis is de-anchor residue).
-                # Symmetric markers only, to avoid breaking a longer author bold span.
-                if pre and pre == post_val and lexicon.levels.get(zh, 1) >= 3:
-                    return zh
-                return f"{pre}{zh}{post_val}"
-
+            cleanup_pattern, cleaner = _build_deanchor(lexicon)
             text = cleanup_pattern.sub(cleaner, text)
-            # Sweep orphan anchors of removed/archived terms (marker-driven; see anchor_first path).
-            text = re.sub(r'(?:[ \t]*[\(（][^\r\n]*?[\)）])?[ \t]*<!--\s*(?:anchor|term):.*?-->', '', text)
+            text = _ORPHAN_SWEEP.sub('', text)
             return "".join(header_lines) + text, []
 
         # 2. Anchoring Logic
@@ -281,6 +278,7 @@ class TerminologyInjector:
         anchor_regex = re.compile(
              r'([\*_]{2})?(' + '|'.join(patterns) + r')([\*_]{2})?' +
              r'(?:[ \t]*([\(（][^\n]*?[\)）]))?' + 
+             r'([\*_]{2})?' +
              r'(?:[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
         )
 
@@ -328,8 +326,6 @@ class TerminologyInjector:
             # opening marker of 無法's bold span. Asymmetric markers are therefore
             # preserved verbatim, on their own side of the anchor, and no emphasis of
             # ours is added — the author's markup wins over the anchor's styling.
-            symmetric = pre == post_val
-
             # Whose brackets are these? Only an exact alias is the gloss this anchor is
             # entitled to rewrite. Author brackets are kept as written and suppress the
             # canonical gloss, so no post ends up carrying （Diffusion Model）（Diffusion
@@ -338,6 +334,18 @@ class TerminologyInjector:
             paren = match.group(4) or ""
             aliases = {a.strip().lower() for a in lexicon.zh_to_ens.get(zh, []) if a}
             authors_paren = paren if paren and paren[1:-1].strip().lower() not in aliases else ""
+
+            # 作者常把粗體畫在「術語＋註記」整段上：**中介誤認（Mediator Misreading）**。
+            # The closing marker then sits after the brackets, so it reads as asymmetric
+            # and the anchor came out as **術語（EN） <!-- term -->**. De-anchoring folds
+            # that back to **術語**, and the next anchoring emits **術語**（EN） <!-- term -->
+            # — correct, but a different shape, so the first reanchor of every published
+            # post rewrote lines for no reason. Recognise the pair and emit the settled
+            # shape immediately.
+            tail_emph = match.group(5) or ""
+            if pre and not post_val and tail_emph == pre:
+                post_val, tail_emph = pre, ""
+            symmetric = pre == post_val
 
             if mode == "anchor_first" and is_first and level < 3:
                 found_globally.add(zh)
@@ -350,14 +358,14 @@ class TerminologyInjector:
                 })
                 gloss = authors_paren or f"（{clean_en}）"
                 if symmetric:
-                    return f"**{clean_zh}**{gloss} <!-- term:{key_val} -->"
-                return f"{pre}{clean_zh}{gloss} <!-- term:{key_val} -->{post_val}"
+                    return f"**{clean_zh}**{gloss} <!-- term:{key_val} -->{tail_emph}"
+                return f"{pre}{clean_zh}{gloss} <!-- term:{key_val} -->{post_val}{tail_emph}"
             
             if level < 3:
                 if symmetric:
-                    return f"{pre}{clean_zh}{post_val}{authors_paren} <!-- term:{key_val} -->"
-                return f"{pre}{clean_zh}{authors_paren} <!-- term:{key_val} -->{post_val}"
-            return f"{pre}{clean_zh}{post_val}{authors_paren}"
+                    return f"{pre}{clean_zh}{post_val}{authors_paren} <!-- term:{key_val} -->{tail_emph}"
+                return f"{pre}{clean_zh}{authors_paren} <!-- term:{key_val} -->{post_val}{tail_emph}"
+            return f"{pre}{clean_zh}{post_val}{authors_paren}{tail_emph}"
    
         text = anchor_regex.sub(replacer, text)
         
