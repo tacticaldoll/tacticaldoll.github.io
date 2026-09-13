@@ -233,6 +233,60 @@
     "forbidden": [],
     "level": 2
   },
+  "RoleIsolationInvariant": {
+    "zh": "職能隔離不變式",
+    "en": [
+      "Role Isolation Invariant"
+    ],
+    "description": "生成、授權、執行與救濟四個角色中任兩者不得由同一元件承擔的結構約束。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MoralCrumpleZone": {
+    "zh": "制度性責任海綿",
+    "en": [
+      "Moral Crumple Zone"
+    ],
+    "description": "把系統性失效的法律與道德責任吸收到最末端操作員身上的組織安排。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SequentialProbabilityRatioTest": {
+    "zh": "序貫機率比檢驗",
+    "en": [
+      "Sequential Probability Ratio Test"
+    ],
+    "description": "每到達一筆觀測即更新對數似然比並與上下界比較的檢定，可在控制兩類錯誤率下提前判定。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CausalDisentanglement": {
+    "zh": "表演性因果解耦",
+    "en": [
+      "Causal Disentanglement"
+    ],
+    "description": "以盲測隔離或隨機保留組，把系統自身誘發的分佈變化與外生變化分開估計。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProxyMetricEscalationFallacy": {
+    "zh": "代理量升格謬誤",
+    "en": [
+      "Proxy Metric Escalation Fallacy"
+    ],
+    "description": "把封閉評測集上的標量分數逕自當作整條價值鏈端到端效用的等價結論。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ReturnOnInvestedCapital": {
+    "zh": "有形資本回報率",
+    "en": [
+      "Return On Invested Capital"
+    ],
+    "description": "稅後營業利益相對投入資本的比率，用以檢驗資本開支是否真正創造價值。",
+    "forbidden": [],
+    "level": 2
+  },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
     "en": [
@@ -878,6 +932,87 @@
       "Gemm"
     ],
     "description": "通用矩陣乘法的底層實作，其在不同批次大小下的浮點累加順序差異，是位元級不可重現的來源。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DiscriminatedUnion": {
+    "zh": "區分聯合型別",
+    "en": [
+      "Discriminated Union"
+    ],
+    "description": "以標籤欄位區分變體的型別構造，使編譯器能在分支未窮盡時直接拒絕編譯。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SovereignKillSwitch": {
+    "zh": "主權終止開關",
+    "en": [
+      "Sovereign Kill Switch"
+    ],
+    "description": "獨立於模型與應用程式之外、可無條件切斷一切後續執行的終止裝置。",
+    "forbidden": [],
+    "level": 2
+  },
+  "TypeStatePattern": {
+    "zh": "型別狀態模式",
+    "en": [
+      "Type-State Pattern"
+    ],
+    "description": "把物件的合法狀態編碼進型別，使未經授權的狀態轉移在編譯期就無法表達。",
+    "forbidden": [],
+    "level": 2
+  },
+  "TotalCostOfOwnership": {
+    "zh": "總體擁有成本",
+    "en": [
+      "Total Cost Of Ownership"
+    ],
+    "description": "涵蓋採購、整合、維運、稽核與人力補償在內的全生命週期成本口徑。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RefutabilityContract": {
+    "zh": "可反駁性契約",
+    "en": [
+      "Refutability Contract"
+    ],
+    "description": "在部署前明文寫定何種觀測結果將推翻效用宣稱的約定，使宣稱取得可被否證的資格。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PerformativelyStablePoint": {
+    "zh": "表演性穩定點",
+    "en": [
+      "Performatively Stable Point"
+    ],
+    "description": "模型對其自身所誘發的分佈重新最佳化後仍不改變的參數，是表演性環境下的收斂目標。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PostHocMetricDrift": {
+    "zh": "指標事後漂移",
+    "en": [
+      "Post-Hoc Metric Drift"
+    ],
+    "description": "看過結果後才更換、刪除或放寬評估指標，使結論恆為成功的操作。",
+    "forbidden": [],
+    "level": 2
+  },
+  "EquityRiskPremium": {
+    "zh": "股權風險溢價",
+    "en": [
+      "Equity Risk Premium"
+    ],
+    "description": "投資人要求股權投資高於無風險利率的額外報酬，是折現率的主要組成。",
+    "forbidden": [],
+    "level": 2
+  },
+  "HighBandwidthMemory": {
+    "zh": "高頻寬記憶體",
+    "en": [
+      "High Bandwidth Memory"
+    ],
+    "description": "以堆疊晶粒提供極高存取頻寬的記憶體，是推論吞吐與單位成本的關鍵瓶頸。",
     "forbidden": [],
     "level": 2
   },
@@ -1807,6 +1942,60 @@
     "description": "特徵與標籤的條件分佈在跨環境時保持穩定的性質，是篩除非因果捷徑特徵的判準。",
     "forbidden": [],
     "level": 1
+  },
+  "AnthropomorphicInterface": {
+    "zh": "擬人化界面",
+    "en": [
+      "Anthropomorphic Interface"
+    ],
+    "description": "以第一人稱與自然語言對話的系統外觀，會讓使用者把對話者誤認為有權限的組織代表。",
+    "forbidden": [],
+    "level": 2
+  },
+  "AuditHashChain": {
+    "zh": "審計雜湊鏈",
+    "en": [
+      "Audit Hash Chain"
+    ],
+    "description": "將每筆交互的輸入、政策版本與裁決結果逐筆串接雜湊，使任何事後竄改都會破壞整條鏈的一致性。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ContestableTransaction": {
+    "zh": "可爭訟事務",
+    "en": [
+      "Contestable Transaction"
+    ],
+    "description": "每筆自動化決定都附帶可查證依據與明確申訴路徑，使當事人具備實際推翻它的途徑。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Peeking": {
+    "zh": "窺探性檢定",
+    "en": [
+      "Peeking"
+    ],
+    "description": "在樣本累積過程中反覆查看結果並隨時決定停止，會使實際錯誤率遠高於名目水準。",
+    "forbidden": [],
+    "level": 2
+  },
+  "JevonsParadox": {
+    "zh": "傑文斯悖論",
+    "en": [
+      "Jevons Paradox"
+    ],
+    "description": "單位使用成本下降反而刺激總用量上升，使總支出不降反增。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ZeroMarginalCost": {
+    "zh": "零邊際成本",
+    "en": [
+      "Zero Marginal Cost"
+    ],
+    "description": "多服務一位使用者幾乎不增加變動成本的成本結構，是傳統軟體毛利的前提。",
+    "forbidden": [],
+    "level": 2
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -2983,7 +3172,7 @@
     "en": [
       "Sunk Cost"
     ],
-    "description": "指已經付出且無法收回的成本（如時間、精力或 token 費用）。在決策中，人們常因不願浪費已投入的資源而繼續追加投入，導致非理性决策。",
+    "description": "指已經付出且無法收回的成本（如時間、精力或 token 費用）。在決策中，人們常因不願浪費已投入的資源而繼續追加投入，導致非理性決策。",
     "forbidden": [],
     "level": 2
   },
@@ -3896,6 +4085,132 @@
     "forbidden": [],
     "level": 2
   },
+  "CognitiveManipulation": {
+    "zh": "認知操縱",
+    "en": [
+      "Cognitive Manipulation"
+    ],
+    "description": "以界面語氣、人格化措辭或資訊落差影響使用者判斷，使其在未被充分告知的情況下做出決定。",
+    "forbidden": [],
+    "level": 2
+  },
+  "BlastRadius": {
+    "zh": "爆炸半徑",
+    "en": [
+      "Blast Radius"
+    ],
+    "description": "單次或累積操作在失控時所能造成的最大損害範圍，是授權閘門必須先行界定的硬上限。",
+    "forbidden": [],
+    "level": 2
+  },
+  "StoppingTime": {
+    "zh": "停止時間",
+    "en": [
+      "Stopping Time"
+    ],
+    "description": "只依賴當前與過去觀測即可判定是否到達的時刻，用以把熔斷條件寫成不需預知未來的判準。",
+    "forbidden": [],
+    "level": 2
+  },
+  "FailSafe": {
+    "zh": "安全失效",
+    "en": [
+      "Fail-Safe"
+    ],
+    "description": "系統偵測到異常時主動進入已知安全的終止狀態，而非嘗試繼續運轉。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CrashLoop": {
+    "zh": "毒丸循環",
+    "en": [
+      "Crash Loop"
+    ],
+    "description": "崩潰後自動重啟又再次執行同一致命輸入，使故障在重試中被無限放大的循環。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SituationAwareness": {
+    "zh": "狀況警覺",
+    "en": [
+      "Situation Awareness"
+    ],
+    "description": "操作員對系統當前狀態、變化趨勢與可用處置選項的即時掌握程度。",
+    "forbidden": [],
+    "level": 2
+  },
+  "OutOfTheLoop": {
+    "zh": "迴路外部",
+    "en": [
+      "Out-Of-The-Loop"
+    ],
+    "description": "人被移出常態控制迴路後，對系統狀態失去體感與預判能力的位置。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RubberStamping": {
+    "zh": "盲目放行",
+    "en": [
+      "Rubber-Stamping"
+    ],
+    "description": "覆核流程退化為形式確認，審核者不再實際判讀內容即予通過。",
+    "forbidden": [],
+    "level": 2
+  },
+  "HumanInTheLoop": {
+    "zh": "人工覆核",
+    "en": [
+      "Human-In-The-Loop"
+    ],
+    "description": "在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Interlock": {
+    "zh": "物理聯鎖",
+    "en": [
+      "Interlock"
+    ],
+    "description": "以硬體條件強制阻斷不安全動作的機制，不依賴軟體判斷或人員反應。",
+    "forbidden": [],
+    "level": 2
+  },
+  "HypothesisGeneration": {
+    "zh": "假說生成",
+    "en": [
+      "Hypothesis Generation"
+    ],
+    "description": "探索階段自由提出候選解釋與指標的活動，其產出本身不構成效用證據。",
+    "forbidden": [],
+    "level": 2
+  },
+  "HypothesisTesting": {
+    "zh": "假說驗證",
+    "en": [
+      "Hypothesis Testing"
+    ],
+    "description": "以事前鎖定的指標與否定條件檢驗既有假說的活動，期間不得更動判準。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RegressionToTheMean": {
+    "zh": "均值回歸",
+    "en": [
+      "Regression To The Mean"
+    ],
+    "description": "極端觀測值在重複量測時傾向回到母體平均的統計現象。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CapitalExpenditure": {
+    "zh": "資本開支",
+    "en": [
+      "Capital Expenditure"
+    ],
+    "description": "為取得或延長長期資產效益而支出的資金，其回收必須在折舊年限內完成。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -4383,6 +4698,15 @@
       "Microarchitecture"
     ],
     "description": "處理器實作層級的組織方式（如批次排程、向量指令與浮點累加順序），是位元級結果差異的常見來源。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Prevalence": {
+    "zh": "盛行率",
+    "en": [
+      "Prevalence"
+    ],
+    "description": "母體中實際為陽性的比例，決定同一模型在不同場域的陽性預測值。",
     "forbidden": [],
     "level": 2
   },
