@@ -612,12 +612,30 @@ class HandoffPreparer:
                     
                 self.handoff["metadata"]["posts"].append(post_data)
             else:
+                if target_post is not None:
+                    # Refresh every script-owned field even when /init-handoff has
+                    # already authored the NLP-owned metadata.  The old duplicate
+                    # path only refreshed generation telemetry, leaving dates null,
+                    # taxonomy classification stale and header rules empty.
+                    target_post["date"] = self._calculate_post_date(
+                        self.report_dates.get(selected_report, self.session_date), post_idx)
+                    target_post["report_rel"] = (
+                        f"{slug}/{os.path.basename(selected_report)}"
+                        if slug != self.session_id else os.path.basename(selected_report)
+                    )
+                    target_post["domain_tag"] = domain_tag if domain_tag else ""
+                    if "rules" not in target_post or not isinstance(target_post["rules"], dict):
+                        target_post["rules"] = {}
+                    target_post["rules"]["headers"] = copy.deepcopy(self.taxonomy_headers)
+                    target_post["rules"].setdefault("redactions", {})
+                    target_post["rules"].setdefault("sublimations", {})
+
                 if selected_report in self.report_ai_info and target_post is not None:
                     if "ai_info" not in target_post:
                         target_post["ai_info"] = {}
                     target_post["ai_info"]["generation"] = self.report_ai_info[selected_report].get("generation", {})
 
-        for d in subdirs:
+        for post_idx, d in enumerate(subdirs, start=1):
             report_files = sorted(glob.glob(os.path.join(self.scratch_dir, d, "report.*.md")))
             if report_files:
                 found_posts = True
@@ -625,7 +643,6 @@ class HandoffPreparer:
                 default_title = slug.replace('-', ' ').title()
                 zh_reports = [f for f in report_files if 'zh' in os.path.basename(f).lower()]
                 selected_report = zh_reports[0] if zh_reports else report_files[0]
-                post_idx = len(self.handoff["metadata"]["posts"]) + 1
                 _extract_metadata(selected_report, slug, default_title, post_idx)
 
         # Final Refinement of Series Name
