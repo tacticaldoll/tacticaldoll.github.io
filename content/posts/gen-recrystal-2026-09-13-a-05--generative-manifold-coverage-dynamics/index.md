@@ -29,7 +29,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 ## 導言
 
-在**生成對抗網路**（Generative Adversarial Network） <!-- term:GenerativeAdversarialNetwork -->與深度生成架構爆發性發展的數年間，評估生成品質的核心黃金標準是一個被稱為 Inception Score（IS）的純量純值。該指標透過將生成影像輸入預訓練分類網路，以條件類別預測的熵極小化（獎勵生成單張影像時信心明確）結合邊際分佈的熵極大化（獎勵生成多樣類別），將高維度分佈的生成水準壓縮為單一純量讀數。
+在**生成對抗網路**（GAN） <!-- term:GenerativeAdversarialNetwork -->與深度生成架構爆發性發展的數年間，評估生成品質的核心黃金標準是一個被稱為 Inception Score（IS）的純量純值。該指標透過將生成影像輸入預訓練分類網路，以條件類別預測的熵極小化（獎勵生成單張影像時信心明確）結合邊際分佈的熵極大化（獎勵生成多樣類別），將高維度分佈的生成水準壓縮為單一純量讀數。
 
 > [!IMPORTANT]
 > **生成對抗網路** <!-- term:GenerativeAdversarialNetwork --> (Generative Adversarial Network): 由生成器與判別器相互競爭、以隱式方式逼近資料分佈的架構。 <!-- anchor:GenerativeAdversarialNetwork -->
@@ -37,7 +37,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 然而，嚴格的數學與實證批判隨即粉碎了該指標的權威性：評估計算過程中**完全未曾引入任何真實參考資料的分佈樣本**。這意味著：一個純粹死記硬背了一千個類別各一張完美圖片、隨後反覆循環輸出的退化生成器，能夠在 IS 指標上斬獲極高分數；相反地，一個忠實捕捉了全部資料模態及其長尾分佈的生成器，得分卻可能顯著偏低（詳見 [Barratt 與 Sharma，2018 / 《A Note on the Inception Score》](https://arxiv.org/abs/1801.01973)）。
 
-這種「純量評估盲區」在**變分自動編碼器**（Variational Autoencoder） <!-- term:VariationalAutoencoder -->與**擴散模型**（Diffusion Model） <!-- term:DiffusionModel -->中以不同數學形態同步浮現：
+這種「純量評估盲區」在**變分自動編碼器**（VAE） <!-- term:VariationalAutoencoder -->與**擴散模型**（Diffusion Models） <!-- term:DiffusionModel -->中以不同數學形態同步浮現：
 - 當 VAE 接入強大的自迴歸神經解碼器時，目標函數中的 KL 散度項迅速降至接近零——這常被工程師誤讀為「潛在空間先驗對齊良好」，實則是解碼器完全繞過潛在變數，引發**後驗坍縮（Posterior Collapse） <!-- term:PosteriorCollapse -->**，潛在通道完全空置（參閱 [Bowman 等人，2015 / 《Generating Sentences from a Continuous Space》](https://arxiv.org/abs/1511.06349)）；
 - 在擴散模型 <!-- term:DiffusionModel -->的反向採樣過程中，「增加採樣步數必然提升生成品質」的經驗直覺被數值分析擊破：當神經網路對分數函數的估計存在固有偏誤時，盲目細化時間步長不僅無法降低整體距離，反而會因反向微分方程的誤差累積使整體生成品質逆向劣化（參閱 [Song 等人，2020 / 《Score-Based Generative Modeling through Stochastic Differential Equations》](https://arxiv.org/abs/2011.13456)；以及 [Karras 等人，2022 / 《Elucidating the Design Space of Diffusion-Based Generative Models》](https://arxiv.org/abs/2206.00364)）。
 
@@ -96,13 +96,13 @@ flowchart TD
     style Defense fill:#d3f9d8,stroke:#2b8a3e,stroke-width:2px
 ```
 
-當一個生成器發生極端模式坍縮 <!-- term:ModeCollapse -->，其生成的樣本在局部幾何上甚至比真實樣本更為緊湊純淨。此時，純量品質指標（最近鄰距離、Inception Score）將回報完美的數值，甚至判定該模型超越真實資料本身。唯有 Recall 軸能忠實反映出高達 87.5% 的模式丟失。
+當一個生成器發生極端模式坍縮（例如在八模態資料集中僅僅學習了第一模態，其餘七個模態完全丟失） <!-- term:ModeCollapse -->，其生成的樣本在局部幾何上甚至比真實樣本更為緊湊純淨。此時，純量品質指標（最近鄰距離、Inception Score）將回報完美的數值，甚至判定該模型超越真實資料本身。唯有 Recall 軸能忠實反映出高達 87.5% 的模式丟失。
 
 ---
 
 ### 強解碼器下的後驗坍縮解析平衡
 
-在變分自動編碼器 <!-- term:VariationalAutoencoder -->中，純量自欺體現於**證據下界**（Evidence Lower Bound） <!-- term:EvidenceLowerBound -->的內部代數衝突：
+在變分自動編碼器（VAE） <!-- term:VariationalAutoencoder -->中，純量自欺體現於**證據下界**（Evidence Lower Bound, ELBO） <!-- term:EvidenceLowerBound -->的內部代數衝突：
 
 > [!IMPORTANT]
 > **證據下界** <!-- term:EvidenceLowerBound --> (Evidence Lower Bound): 對數邊際似然的可最佳化下界，由重建項與 KL 正則項組成。 <!-- anchor:EvidenceLowerBound -->

@@ -39,7 +39,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 然而，令人震驚的實測結果顯示：多種被廣泛採信的顯著圖算法（如 Guided Backprop、Integrated Gradients 等），在權重完全隨機化為噪聲後，其產生的熱圖在視覺上依然精準地勾勒出目標物體的輪廓邊緣（詳見 [Adebayo 等人，2018 / 《Sanity Checks for Saliency Maps》](https://arxiv.org/abs/1810.03292)）。這些算法在數學上高度退化為輸入圖像本身的邊緣偵測濾波器，其呈現的圖像高度迎合了人類工程師的先驗視覺偏好，卻與模型內部的真實因果決策過程毫無關聯。
 
-幾乎在同一時期，自然語言處理領域亦爆發了關於「注意力熱圖是否代表模型推理理由」的深層論戰。實證研究表明，透過微小擾動，完全可以構造出一組注意力權重完全相反、但最終模型預測保持不變的注意力分佈（參閱 [Jain 與 Wallace，2019 / 《Attention is not Explanation》](https://arxiv.org/abs/1902.10186)）。而在遞迴與深層網路的記憶機制中，研究者早已證實：即便透過**線性探針**（Linear Probe） <!-- term:LinearProbe -->能從末端隱藏狀態以極高精度解碼出早期輸入資訊，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->的梯度訊號依然可能因**梯度消失**（Vanishing Gradient） <!-- term:VanishingGradient -->或截斷（Truncated BPTT）而衰減為零，使早期參數無法獲得任何有效的**信用分配**（Credit Assignment） <!-- term:CreditAssignment -->。
+幾乎在同一時期，自然語言處理領域亦爆發了關於「注意力熱圖是否代表模型推理理由」的深層論戰。實證研究表明，透過微小擾動，完全可以構造出一組注意力權重完全相反、但最終模型預測保持不變的注意力分佈（參閱 [Jain 與 Wallace，2019 / 《Attention is not Explanation》](https://arxiv.org/abs/1902.10186)）。而在遞迴與深層網路的記憶機制中，研究者早已證實：即便透過**線性探針**（Linear Probe） <!-- term:LinearProbe -->能從末端隱藏狀態以極高精度解碼出早期輸入資訊，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->的梯度訊號依然可能因**梯度消失**（Vanishing Gradient） <!-- term:VanishingGradient -->或截斷（Truncated BPTT）而衰減為零，使早期參數無法獲得任何有效的**信用分配**（參閱 [Jozefowicz 等人，2015 / 《An Empirical Exploration of Recurrent Network Architectures》](https://proceedings.mlr.press/v37/jozefowicz15.html)） <!-- term:CreditAssignment -->。
 
 > [!IMPORTANT]
 > **線性探針** <!-- term:LinearProbe --> (Linear Probe): 在凍結的表徵上訓練線性分類器，用以量測該層是否線性可讀出目標屬性的診斷工具。 <!-- anchor:LinearProbe -->
@@ -70,7 +70,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 在標準架構中，資訊流由兩條主要路徑構成：
 1. **間接路徑（Indirect Path）**：$X \to M \to Y$，輸入經過注意力加權或特徵變換投影為上下文向量；
-2. **直接路徑（Direct Path / 殘差旁路 <!-- term:ResidualBypass -->）**：$X \to Y$，輸入透過殘差連接（$y = x + \text{SubLayer}(x)$）或直通前向分支，完全繞過中介變數 <!-- term:MediatingVariable --> $M$。
+2. **直接路徑（Direct Path / Residual Bypass）**：$X \to Y$，輸入透過殘差連接（$y = x + \text{SubLayer}(x)$）或直通前向分支，完全繞過中介變數 <!-- term:MediatingVariable --> $M$。
 
 ```mermaid
 flowchart LR
@@ -126,7 +126,7 @@ $$
 > **互資訊** <!-- term:MutualInformation --> (Mutual Information): 兩個隨機變數之間共享的資訊量，用來量化潛在變數是否攜帶輸入資訊。 <!-- anchor:MutualInformation -->
 
 
-然而，反向信用分配 <!-- term:CreditAssignment -->取決於雅可比連乘矩陣的奇異值譜半徑。若狀態轉移矩陣的譜半徑小於 1，連乘範數以指數速率 $\mathcal{O}(\rho^{T-k})$ 衰減至機器浮點下溢；而在工程截斷反向傳播 <!-- term:Backpropagation -->下，當 $T - k > W$ 時，梯度路徑被強制截斷為嚴格的零：
+然而，反向信用分配 <!-- term:CreditAssignment -->取決於雅可比連乘矩陣的奇異值譜半徑。若狀態轉移矩陣的譜半徑小於 1，連乘範數以指數速率 $\mathcal{O}(\rho^{T-k})$ 衰減至機器浮點下溢；而在工程截斷反向傳播（Truncated BPTT，窗口為 $W$） <!-- term:Backpropagation -->下，當 $T - k > W$ 時，梯度路徑被強制截斷為嚴格的零：
 
 $$
 \left.\frac{\partial \mathcal{L}_T}{\partial h_k}\right|_{\text{TBPTT}} = 0.
@@ -156,18 +156,14 @@ $$
 | :--- | :--- | :--- | :--- |
 | **Saliency Map 清楚框出病灶區域，宣稱具備醫療可解釋性** | 顯著圖算法在數學上退化為圖像高頻梯度邊緣濾波器，未通過權重隨機化健全性檢驗。 | 撰寫醫學論文宣稱模型「學會了病理診斷因果邏輯」。 | 強制執行 Adebayo 權重隨機化瀑布檢定；僅採信具備因果保真度的介入度量。 |
 | **注意力矩陣在關鍵實體詞高亮，但置換該詞標籤不變** | 殘差分支直接旁路傳遞上下文語義，注意力輸出在向量空間已被完全稀釋。 | 截取特定漂亮樣本的熱圖放進簡報，證明模型「理解」了句意。 | 實施 Attention Knockout（置換/遮蔽特定頭），計算反事實介入 <!-- term:CounterfactualIntervention -->輸出真實漂移量。 |
-| **線性探針 <!-- term:LinearProbe -->成功在末端層分類時態，但模型長程預測失常** | 前向特徵空間的線性可分性不蘊涵反向梯度的有效信用分配 <!-- term:CreditAssignment -->。 | 宣稱「模型已完全具備時態語法理解能力」。 | 同時量測前向探測互資訊 <!-- term:MutualInformation -->與反向梯度鏈式範數，嚴禁單一前向指標斷言。 |
-| **隨機更換隨機種子，注意力分佈完全改變而準確率恆定** | 高維機率單體存在多個非唯一的加權組合，均可產生相近的數值投影。 | 強調「模型具備多重可解釋推理路徑」。 | 引入因果追蹤（Causal Tracing / **激活補丁**（Activation Patching） <!-- term:ActivationPatching -->）鎖定真正具備因果介入力之神經元。 |
-
-> [!IMPORTANT]
-> **激活補丁** <!-- term:ActivationPatching --> (Activation Patching): 將某次前向傳播的中間激活替換為另一次執行的對應值，以定位特定成分對輸出的實際貢獻。 <!-- anchor:ActivationPatching -->
-
+| **線性探針 <!-- term:LinearProbe -->成功在末端層分類時態，但模型長程預測失常** | 前向特徵空間的線性可分性不蘊涵反向梯度的有效信用分配（TBPTT 截斷或消失） <!-- term:CreditAssignment -->。 | 宣稱「模型已完全具備時態語法理解能力」。 | 同時量測前向探測互資訊 <!-- term:MutualInformation -->與反向梯度鏈式範數，嚴禁單一前向指標斷言。 |
+| **隨機更換隨機種子，注意力分佈完全改變而準確率恆定** | 高維機率單體存在多個非唯一的加權組合，均可產生相近的數值投影。 | 強調「模型具備多重可解釋推理路徑」。 | 引入因果追蹤（Causal Tracing / Activation Patching）鎖定真正具備因果介入力之神經元。 |
 
 ---
 
 ### 最小自我驗證實施：Go 語言注意力殘差旁路與反事實介入檢驗
 
-以下 Go 實施以零外部相依形式，完整構建包含殘差旁路 <!-- term:ResidualBypass -->的**注意力機制**（Attention Mechanism） <!-- term:AttentionMechanism -->、線性探針 <!-- term:LinearProbe -->分類，以及反事實介入 <!-- term:CounterfactualIntervention -->檢驗邏輯。內含嚴格的自我驗證 `panic` 斷言：
+以下 Go 實施以零外部相依形式，完整構建包含殘差旁路 <!-- term:ResidualBypass -->的**注意力機制**（Attention Mechanism） <!-- term:AttentionMechanism -->、線性探針 <!-- term:LinearProbe -->分類，以及反事實介入（do-calculus 遮蔽） <!-- term:CounterfactualIntervention -->檢驗邏輯。內含嚴格的自我驗證 `panic` 斷言：
 
 > [!IMPORTANT]
 > **注意力機制** <!-- term:AttentionMechanism --> (Attention Mechanism): Transformer 架構中用於計算輸入序列不同位置之間關聯權重的核心機制。 <!-- anchor:AttentionMechanism -->
@@ -405,7 +401,11 @@ func main() {
 
 ### 正確工程防線：激活補丁與反事實介入審查規範
 
-符合因果工程嚴謹度的審查流程，必須強制導入激活補丁 <!-- term:ActivationPatching -->：
+符合因果工程嚴謹度的審查流程，必須強制導入**激活補丁**（Activation Patching / Causal Tracing） <!-- term:ActivationPatching -->：
+
+> [!IMPORTANT]
+> **激活補丁** <!-- term:ActivationPatching --> (Activation Patching): 將某次前向傳播的中間激活替換為另一次執行的對應值，以定位特定成分對輸出的實際貢獻。 <!-- anchor:ActivationPatching -->
+
 
 ```text
 1. 基準前向推斷：

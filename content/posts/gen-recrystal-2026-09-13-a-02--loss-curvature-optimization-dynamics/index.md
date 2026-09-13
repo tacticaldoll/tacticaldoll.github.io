@@ -35,7 +35,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 這一現象揭示了深層經驗模型最佳化中的核心盲區：**一條平滑下降的損失曲線（Loss Curve），常常掩蓋了三個本質正交、必須逐一驗證的命題**。
 
-工程實踐中，當指標受挫時，團隊往往直覺性地更換網路架構或擴增層數，卻忽略了當最底層的解析導數存在維度尺度錯誤、或是損失曲面的幾何**條件數**（Condition Number） <!-- term:ConditionNumber -->嚴重失衡時，任何外部架構調整均屬徒勞。本文旨在將損失下降的動力學過程嚴格解耦為「求導正確性」、「更新動態收斂性」與「**泛化**（Generalization） <!-- term:Generalization -->有效性」三道串聯關卡，透過微分幾何與 Hessian 譜分析推導學習率穩定上界，並確立可自動化驗證的幾何防衛機制。
+工程實踐中，當指標受挫時，團隊往往直覺性地更換網路架構或擴增層數，卻忽略了當最底層的解析導數存在維度尺度錯誤、或是損失曲面的幾何**條件數**（Condition Number） <!-- term:ConditionNumber -->嚴重失衡時，任何外部架構調整均屬徒勞。本文旨在將損失下降的動力學過程嚴格解耦為「求導正確性」、「更新動態收斂性」與「**泛化**（Generalization） <!-- term:Generalization -->是否成立」三道串聯關卡，透過微分幾何與 Hessian 譜分析推導學習率穩定上界，並確立可自動化驗證的幾何防衛機制。
 
 > [!IMPORTANT]
 > **條件數** <!-- term:ConditionNumber --> (Condition Number): 損失曲面各方向曲率的比值，決定固定學習率下梯度下降的收斂速度。 <!-- anchor:ConditionNumber -->
@@ -56,7 +56,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 1. **第一道門：求導正確性（Derivative Correctness）**：**反向傳播**（Backpropagation） <!-- term:Backpropagation -->計算圖中所求得的向量 $g = \nabla_\theta \mathcal{L}(\theta)$，是否在數值精度意義下嚴格吻合**損失函數**（Loss Function） <!-- term:LossFunction -->對參數張量的真實全微分？
 2. **第二道門：更新收斂性（Update Convergence）**：給定局部損失曲面的幾何曲率（Curvature）與最佳化器步幅策略，離散參數序列 $\{\theta_t\}_{t=1}^T$ 是否在流形上穩定收縮而非高頻振盪或發散？
-3. **第三道門：泛化 <!-- term:Generalization -->有效性（Generalization Viability）**：參數收斂點所獲得的經驗特徵，是否在未見的資料分佈上維持預期的結構規律，而非單純記住了經驗樣本的局部幾何特異點？
+3. **第三道門：泛化 <!-- term:Generalization -->是否成立（Generalization Viability）**：參數收斂點所獲得的經驗特徵，是否在未見的資料分佈上維持預期的結構規律，而非單純記住了經驗樣本的局部幾何特異點？
 
 > [!IMPORTANT]
 > **反向傳播** <!-- term:Backpropagation --> (Backpropagation): 以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。 <!-- anchor:Backpropagation -->
@@ -271,7 +271,7 @@ fn main() {
 
 面對病態曲面引發的數值震盪，工程界發展出兩套主流因應方案，但二者的物理意涵存在本質差異：
 
-1. **梯度裁剪 <!-- term:GradientClipping -->**：本質上是在事後階段將超出範數門檻的步幅向量強制投影回安全半徑內。它能有效防禦「非有限值引爆（NaN）」，但無法改善平緩方向收斂緩慢的問題。若系統長期處於需要裁剪的狀態，說明最佳化軌跡實質上在病態幾何懸崖邊緣反覆折返。
+1. **梯度裁剪（Gradient Norm Clipping） <!-- term:GradientClipping -->**：本質上是在事後階段將超出範數門檻的步幅向量強制投影回安全半徑內。它能有效防禦「非有限值引爆（NaN）」，但無法改善平緩方向收斂緩慢的問題。若系統長期處於需要裁剪的狀態，說明最佳化軌跡實質上在病態幾何懸崖邊緣反覆折返。
 2. **網路架構的動力學等距性（Dynamical Isometry）**：透過正交初始化（Orthogonal Initialization）、殘差跳躍連接（Residual Connections）以及前置層正規化（Pre-LN），使全網路在初始化時的雅可比傳遞矩陣奇異值分佈維持在 1 附近。這種方案直接從物理層重塑了損失曲面，降低全局條件數 <!-- term:ConditionNumber --> $\kappa$，從源頭消除了對極端超參數調校的依賴。
 
 ### 邊界條件與反例分析

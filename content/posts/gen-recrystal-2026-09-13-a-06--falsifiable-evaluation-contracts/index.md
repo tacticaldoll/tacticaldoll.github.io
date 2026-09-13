@@ -35,11 +35,10 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 成功率自 57% 暴跌至 8%，並非源於分子生物學的停滯或醫學科研能力的倒退。被檢驗的藥物機制與實驗設計並未改變，**唯一改變的是：研究者在「看見數據之後任意調整指標與假說」的自由度被物理級阻斷**。
 
-在當代**機器學習**（Machine Learning） <!-- term:MachineLearning -->與資料工程領域，類似的「事後合理化自由度」正處於空前泛濫的狀態。多跑十個隨機種子報最佳值、在多個指標中挑選顯著項、邊看曲線邊決定何時停止訓練（**任意停止**（Optional Stopping） <!-- term:OptionalStopping -->）、事後修正假設（HARKing, Hypothesizing After the Results are Known）——這些在工程團隊內部被冠以「敏捷迭代」之名的日常實踐，本質上將經驗科學的偽陽性率自名目的 5% 推高至近 80%（參閱 [Simmons、Nelson 與 Simonsohn，2011 / 《False-Positive Psychology》](https://doi.org/10.1177/0956797611417632)；以及 [Henderson 等人，2018 / 《Deep Reinforcement Learning That Matters》](https://arxiv.org/abs/1709.06560)）。
+在當代**機器學習**（Machine Learning） <!-- term:MachineLearning -->與資料工程領域，類似的「事後合理化自由度」正處於空前泛濫的狀態。多跑十個隨機種子報最佳值、在多個指標中挑選顯著項、邊看曲線邊決定何時停止訓練、事後修正假設（HARKing, Hypothesizing After the Results are Known）——這些在工程團隊內部被冠以「敏捷迭代」之名的日常實踐，本質上將經驗科學的偽陽性率自名目的 5% 推高至近 80%（參閱 [Simmons、Nelson 與 Simonsohn，2011 / 《False-Positive Psychology》](https://doi.org/10.1177/0956797611417632)；以及 [Henderson 等人，2018 / 《Deep Reinforcement Learning That Matters》](https://arxiv.org/abs/1709.06560)）。
 
 > [!IMPORTANT]
 > **機器學習** <!-- term:MachineLearning --> (Machine Learning): 先界定可選函數的範圍，再以資料估計其中參數的建模方法。 <!-- anchor:MachineLearning -->
-> **任意停止** <!-- term:OptionalStopping --> (Optional Stopping): 邊觀察結果邊決定是否繼續收集資料或訓練，使名目顯著水準失效的取樣行為。 <!-- anchor:OptionalStopping -->
 
 
 一項無法被推翻的評估，在認識論上不具備任何資訊價值。本文旨在將經驗驗證從脆弱的人類個人自律，昇華為以**可證偽性**（Falsifiability） <!-- term:Falsifiability -->為核心的架構工程：建立事前不可變凍結的八欄評估契約，分析**研究者自由度**（Researcher Degrees Of Freedom） <!-- term:ResearcherDegreesOfFreedom -->的累計破壞極限，並透過資料庫級時序不變式與自動化阻斷管線，構築防篡改的經驗治理邊界。
@@ -60,8 +59,12 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 然而，當研究流程賦予工程師「事後靈活決策」的空間時，全域偽陽性率將以多重檢定幾何級數迅速失控。考慮以下四種在機器學習 <!-- term:MachineLearning -->研發中極其普遍的研究者自由度 <!-- term:ResearcherDegreesOfFreedom -->：
 1. **多指標篩選（Multiple Metrics）**：在 $m$ 個評估指標（如 Accuracy, F1, AUC, BLEU, Latency）中，只要有任一指標顯著即宣稱成功；
 2. **多重隨機種子（Multiple Seeds）**：嘗試 $s$ 個隨機種子，僅挑選曲線最好看的一組寫入發布文檔；
-3. **任意停止 <!-- term:OptionalStopping -->**：邊訓練邊觀察驗證損失，一旦數值達到歷史低點即刻手動中斷訓練；
+3. **任意停止（Optional Stopping） <!-- term:OptionalStopping -->**：邊訓練邊觀察驗證損失，一旦數值達到歷史低點即刻手動中斷訓練；
 4. **子集窺探（Subgroup Mining）**：整體不顯著時，事後細分「長尾用戶」或「特定領域」子集，尋找局部高分。
+
+> [!IMPORTANT]
+> **任意停止** <!-- term:OptionalStopping --> (Optional Stopping): 邊觀察結果邊決定是否繼續收集資料或訓練，使名目顯著水準失效的取樣行為。 <!-- anchor:OptionalStopping -->
+
 
 設研究者擁有 $K$ 個互相正交的事後決策維度，在虛無假設成立的純隨機情境下，至少獲得一項「假顯著突破」的全域族系偽陽性率為：
 

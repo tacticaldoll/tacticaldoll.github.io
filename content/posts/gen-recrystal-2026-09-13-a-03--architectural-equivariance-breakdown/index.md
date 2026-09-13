@@ -141,13 +141,13 @@ $$
 
 ### 有效感受野的高斯中心衰減
 
-除了平移等變性 <!-- term:TranslationEquivariance -->破壞外，卷積架構宣稱的「全域特徵感知」亦存在嚴重的幾何前提破壞。理論上，$L$ 層核寬為 $K$、Stride 為 1 的卷積網路，其理論感受野 <!-- term:ReceptiveField -->為：
+除了平移等變性 <!-- term:TranslationEquivariance -->破壞外，卷積架構宣稱的「全域特徵感知」亦存在嚴重的幾何前提破壞。理論上，$L$ 層核寬為 $K$、Stride 為 1 的卷積網路，其理論感受野（Theoretical Receptive Field, TRF） <!-- term:ReceptiveField -->為：
 
 $$
 \text{TRF}_L = 1 + L(K - 1).
 $$
 
-然而，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->梯度在空間中心與邊緣的傳遞路徑數量極度不均勻。根據中心極限定理，複合卷積核的有效權重分佈漸近收斂於二維高斯分佈，其有效感受野 <!-- term:ReceptiveField -->半徑 $\sigma_{\text{ERF}}$ 僅隨層數平方根 $\sqrt{L}$ 增長，遠落後於理論值（參閱 [Luo 等人，2016 / 《Understanding the Effective Receptive Field in Deep Convolutional Neural Networks》](https://arxiv.org/abs/1701.04128)）：
+然而，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->梯度在空間中心與邊緣的傳遞路徑數量極度不均勻。根據中心極限定理，複合卷積核的有效權重分佈漸近收斂於二維高斯分佈，其有效感受野（Effective Receptive Field, ERF） <!-- term:ReceptiveField -->半徑 $\sigma_{\text{ERF}}$ 僅隨層數平方根 $\sqrt{L}$ 增長，遠落後於理論值（參閱 [Luo 等人，2016 / 《Understanding the Effective Receptive Field in Deep Convolutional Neural Networks》](https://arxiv.org/abs/1701.04128)）：
 
 > [!IMPORTANT]
 > **反向傳播** <!-- term:Backpropagation --> (Backpropagation): 以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。 <!-- anchor:Backpropagation -->
@@ -168,7 +168,7 @@ $$
 | **物件微幅平移 1 像素，預測標籤劇烈跳變** | 跨步卷積/最大池化直接取樣違反奈奎斯特極限，產生嚴重的空間相位混疊。 | 在訓練集加入暴力平移資料增強（Random Translation），強迫網路記憶噪聲。 | 在所有下採樣操作前，強制插入抗混疊低通濾波核（如 BlurPool 矩陣）。 |
 | **分類器對畫面邊緣的物體幾乎完全無法辨識** | 零填充 <!-- term:ZeroPadding -->在邊界處持續注入數值偽特徵，且有效感受野 <!-- term:ReceptiveField -->呈高斯中心集中。 | 誤判為「卷積深度不足」，盲目堆疊更多卷積層以擴大理論感受野 <!-- term:ReceptiveField -->。 | 採用反射填充（Reflection Padding），並引入全域自注意力或擴展卷積（Dilated Conv）。 |
 | **影像特徵圖可視化呈現細碎的高頻棋盤狀偽影** | 反卷積（轉置卷積 Transposed Conv）步幅不均勻重疊，觸發週期性空間共振。 | 增加**損失函數**（Loss Function） <!-- term:LossFunction -->的 TV 平滑正則化（Total Variation Regularization）懲罰。 | 將轉置卷積全面替換為「雙線性插值放大（Resize）＋ 標準 Stride-1 卷積」。 |
-| **宣稱模型利用了邊界背景進行語義輔助推理** | 誤將理論感受野 <!-- term:ReceptiveField -->等同於有效影響力，忽略邊緣梯度權重已衰減至機器浮點極限。 | 撰寫論文宣稱架構自帶「全域語義感知能力」。 | 執行輸入梯度顯著性空間積分分析，以量測出的有效感受野 <!-- term:ReceptiveField -->為準。 |
+| **宣稱模型利用了邊界背景進行語義輔助推理** | 誤將理論感受野 <!-- term:ReceptiveField -->等同於有效影響力，忽略邊緣梯度權重已衰減至機器浮點極限。 | 撰寫論文宣稱架構自帶「全域語義感知能力」。 | 執行輸入梯度顯著性空間積分分析，以量測出的有效感受野（ERF 90% 能量寬度） <!-- term:ReceptiveField -->為準。 |
 
 > [!IMPORTANT]
 > **損失函數** <!-- term:LossFunction --> (Loss Function): 把模型輸出與目標之間的差距量化為單一數值的評分函數。 <!-- anchor:LossFunction -->
@@ -293,7 +293,7 @@ testConvolutionalEquivariance();
 在實務上，面對平移或縮放失穩，最普遍的工程反應是增加「隨機資料增強（Data Augmentation）」。然而，資料增強與架構不變性在認識論層面處於完全不同的防線：
 
 1. **資料增強是經驗記誦（Memorization via Capacity Consumption）**：它迫使模型消耗有限的參數容量，去「背誦」所有可能的位移網格相位。這並未賦予模型**泛化**（Generalization） <!-- term:Generalization -->結構，一旦出現增強分佈未包含的位移量（如次像素連續位移），系統仍將脆弱崩潰。
-2. **架構誘導偏差（Architectural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->**：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
+2. **架構誘導偏差（Structural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->**：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
 
 > [!IMPORTANT]
 > **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
