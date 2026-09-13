@@ -271,9 +271,16 @@ class TerminologyInjector:
         
         patterns.sort(key=len, reverse=True)
         
+        # The trailing parenthetical is CAPTURED, not blindly eaten. It used to be
+        # consumed and replaced by the canonical gloss whatever it held, so everything
+        # an author put in brackets right after a term was deleted: a whole citation
+        # （參閱 [Jozefowicz 等人，2015 / 《An Empirical Exploration …》](…)）vanished,
+        # and so did the qualifier in 感受野（Effective Receptive Field, ERF）— which is
+        # the distinction that sentence exists to draw. Only an exact alias is this
+        # term's own gloss; anything else is the author's text and survives verbatim.
         anchor_regex = re.compile(
              r'([\*_]{2})?(' + '|'.join(patterns) + r')([\*_]{2})?' +
-             r'(?:[ \t]*[\(（].*?[\)）])?' + 
+             r'(?:[ \t]*([\(（][^\n]*?[\)）]))?' + 
              r'(?:[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?'
         )
 
@@ -293,6 +300,15 @@ class TerminologyInjector:
                 src = match.string
                 if (re.match(r'[ \t]+[A-Za-z]', src[match.end(2):])
                         or re.search(r'[A-Za-z][ \t]+$', src[:match.start(2)])):
+                    return match.group(0)
+                # Inside brackets the English is the author's own gloss, and rewriting
+                # it to Chinese is one-way: remove_all gives back the Chinese, never the
+                # English. （Direct Path / Residual Bypass）came back half-translated,
+                # and （Causal Tracing / Activation Patching）the same way. A term's own
+                # gloss is never reached here — the Chinese match consumes it — so every
+                # alias that lands inside brackets belongs to a phrase someone chose.
+                head = src[:match.start(2)].rsplit('\n', 1)[-1]
+                if re.search(r'[\(（][^\)）]*$', head):
                     return match.group(0)
             
             is_first = zh not in found_globally
@@ -314,6 +330,15 @@ class TerminologyInjector:
             # ours is added — the author's markup wins over the anchor's styling.
             symmetric = pre == post_val
 
+            # Whose brackets are these? Only an exact alias is the gloss this anchor is
+            # entitled to rewrite. Author brackets are kept as written and suppress the
+            # canonical gloss, so no post ends up carrying （Diffusion Model）（Diffusion
+            # Models）. The full English still reaches the reader through the
+            # [!IMPORTANT] definition block.
+            paren = match.group(4) or ""
+            aliases = {a.strip().lower() for a in lexicon.zh_to_ens.get(zh, []) if a}
+            authors_paren = paren if paren and paren[1:-1].strip().lower() not in aliases else ""
+
             if mode == "anchor_first" and is_first and level < 3:
                 found_globally.add(zh)
                 first_use_terms.append(zh)
@@ -323,15 +348,16 @@ class TerminologyInjector:
                     "description": lexicon.descriptions.get(zh, ""),
                     "key": key_val
                 })
+                gloss = authors_paren or f"（{clean_en}）"
                 if symmetric:
-                    return f"**{clean_zh}**（{clean_en}） <!-- term:{key_val} -->"
-                return f"{pre}{clean_zh}（{clean_en}） <!-- term:{key_val} -->{post_val}"
+                    return f"**{clean_zh}**{gloss} <!-- term:{key_val} -->"
+                return f"{pre}{clean_zh}{gloss} <!-- term:{key_val} -->{post_val}"
             
             if level < 3:
                 if symmetric:
-                    return f"{pre}{clean_zh}{post_val} <!-- term:{key_val} -->"
-                return f"{pre}{clean_zh} <!-- term:{key_val} -->{post_val}"
-            return f"{pre}{clean_zh}{post_val}"
+                    return f"{pre}{clean_zh}{post_val}{authors_paren} <!-- term:{key_val} -->"
+                return f"{pre}{clean_zh}{authors_paren} <!-- term:{key_val} -->{post_val}"
+            return f"{pre}{clean_zh}{post_val}{authors_paren}"
    
         text = anchor_regex.sub(replacer, text)
         
