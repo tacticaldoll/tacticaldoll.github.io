@@ -278,7 +278,6 @@ class PostAssembler:
         return self
 
     def with_telemetry(self, post_meta):
-        from infra.utils import format_model_id
         # Copy so popping does not mutate the shared handoff post_meta (it is
         # checkpointed back to disk and re-read on --mode finish retries).
         gen_info = dict(post_meta.get("ai_info", {}).get("generation", {}))
@@ -288,8 +287,10 @@ class PostAssembler:
         # tag (tags[0]); it is not persisted to the published front matter.
         gen_info.pop("scope", None)
 
-        if "model" in gen_info:
-            gen_info["model"] = format_model_id(gen_info["model"])
+        # `model` ships exactly as the report header declared it. It used to pass
+        # through a display-name heuristic that split on hyphens, so a report saying
+        # `GPT-5.5` published as `GPT 5.5`. This field records which model produced
+        # the report; reformatting an audit value can only make it less true.
 
         ref_info = post_meta.get("ai_info", {}).get("refinement", {})
 

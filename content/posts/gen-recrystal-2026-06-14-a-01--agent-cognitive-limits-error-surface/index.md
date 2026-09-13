@@ -18,7 +18,7 @@ tags = [
 series = ["失效的源頭：在治理介入之前，錯誤與污染如何取得權威"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.609.30741"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

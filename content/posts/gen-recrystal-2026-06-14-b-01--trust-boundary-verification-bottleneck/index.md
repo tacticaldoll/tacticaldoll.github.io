@@ -18,7 +18,7 @@ tags = [
 series = ["信任與權威的成立：可信不是輸出屬性，而是被非同源裁決授權的狀態"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.609.30741"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

@@ -23,7 +23,7 @@ if scripts_root not in sys.path:
     sys.path.append(scripts_root)
 
 from infra import config
-from infra.utils import log_info, log_error, format_model_id
+from infra.utils import log_info, log_error
 
 from domain.post.post import HugoPost
 from domain.post.assembler import PostAssembler
@@ -142,6 +142,20 @@ class ProductionPipeline:
             tag_forbidden = ["TODO", "待完善", "PENDING_REFINEMENT"]
             if any(any(p_str in tag for p_str in tag_forbidden) for tag in p.get("tags", [])):
                 invalid_elements.append(f"Invalid Tags (Post: {p['slug']})")
+
+            # Refinement telemetry is a self-declaration and has no fallback: nothing
+            # detects the host any more, because detection was only ever right on the
+            # few platforms it had probes for. A handoff that never received
+            # --model/--agent therefore arrives with the field empty, and an empty
+            # audit value must stop the publish rather than ship a post that cannot
+            # say what refined it.
+            ref = p.get("ai_info", {}).get("refinement", {}) or {}
+            missing = [k for k in ("model", "agent")
+                       if not str(ref.get(k, "")).strip() or ref.get(k) == "Unknown"]
+            if missing:
+                invalid_elements.append(
+                    f"Undeclared refinement {'/'.join(missing)} (Post: {p['slug']}) — rerun "
+                    f"refine_handoff.py with --model and --agent")
         
         if invalid_elements:
             log_error("Validation failed. Please resolve:")

@@ -17,7 +17,7 @@ tags = [
 series = ["知識與意圖的治理：讓承載權威的載體回到能被驗證與退場的位置"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.609.30741"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

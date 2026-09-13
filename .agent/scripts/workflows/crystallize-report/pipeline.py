@@ -15,49 +15,32 @@ sys.stdout.reconfigure(encoding='utf-8')
 scripts_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if scripts_root not in sys.path:
     sys.path.append(scripts_root)
-from infra.telemetry import detect_agent_telemetry, has_version, UNKNOWN_AGENT
+from infra.utils import has_version
 
 
 def resolve_agent(declared):
-    """Resolve the **Agent** front-matter value, enforcing the schema's
+    """Validate the **Agent** front-matter value against the schema's
     "代理平台/IDE + 版本號" requirement.
 
-    Explicit declaration is authoritative: a declaration that already carries a
-    version is used verbatim. A versionless (or empty) declaration is enriched
-    from vendor-neutral detection — but only when detection identifies the SAME
-    platform, so we never fabricate or cross-stamp a different vendor. If a
-    version still cannot be established, we abort rather than publish versionless
-    or guessed telemetry.
+    The value is the author's to declare and is returned verbatim. This used to fall
+    back to probing the environment whenever the declaration was empty or versionless,
+    and to stamp the probe's answer into the report. That only worked on the hosts the
+    probes happened to recognise; everywhere else it wrote `Unknown Agent`, or worse,
+    completed one platform's declaration with another's version. `**Agent**` is an
+    honesty field — `crystallize-report.schema.yaml` calls it `[必填] 誠實宣告` — so a
+    missing one is now a question for the author, never something to infer.
     """
     declared = (declared or "").strip()
     if has_version(declared):
         return declared
-
-    detected = detect_agent_telemetry()
-
-    if not declared:
-        # No declaration: trust detection only if it produced a real, versioned id.
-        if detected != UNKNOWN_AGENT and has_version(detected):
-            print(f"[OK] Agent auto-detected: {detected}")
-            return detected
-        _abort_agent(declared, detected)
-
-    # Declared but versionless: complete it only from the same detected platform.
-    if (detected != UNKNOWN_AGENT
-            and has_version(detected)
-            and declared.split()[0].lower() in detected.lower()):
-        print(f"[OK] Agent version completed from detection: '{declared}' -> '{detected}'")
-        return detected
-
-    _abort_agent(declared, detected)
+    _abort_agent(declared)
 
 
-def _abort_agent(declared, detected):
+def _abort_agent(declared):
     print("[ERROR] Quality Gate (Agent telemetry): schema requires '代理平台/IDE + 版本號'.")
-    print(f"        Declared: '{declared or '(empty)'}'  |  Detected: '{detected}'")
-    print("        Fix: set front_matter.agent to include a version "
-          "(e.g. 'Claude Code VSCode Extension 2.1.168'), or run the pipeline "
-          "in the authoring environment so the version can be auto-detected.")
+    print(f"        Declared: '{declared or '(empty)'}'")
+    print("        Fix: set front_matter.agent to the platform you are actually running "
+          "on, with its version (e.g. 'Claude Code VSCode Extension 2.1.270').")
     sys.exit(1)
 
 

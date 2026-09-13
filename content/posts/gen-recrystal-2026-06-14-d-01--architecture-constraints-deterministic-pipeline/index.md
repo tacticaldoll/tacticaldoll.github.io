@@ -18,7 +18,7 @@ tags = [
 series = ["結構與邊界：當權威必須落成程式與核心都會拒絕的約束"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.609.30741"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

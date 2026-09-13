@@ -187,36 +187,11 @@ def log_error(message):
     """Standardized error logger."""
     print(f"[{datetime.now().strftime('%H:%M:%S')}] ERROR: {message}", file=sys.stderr)
 
-def format_model_id(model_id):
-    """Dynamic Heuristic Formatter: Converts raw model IDs into human-readable display names.
-    Handles common AI model naming conventions: strips date suffixes, capitalizes known names.
-    Shared utility to avoid duplication across refine_handoff.py and pipeline.py.
+def has_version(label):
+    """True if a self-declared agent / model label carries an X.Y(.Z) version token.
+
+    A completeness check on what the author declared — it never supplies or guesses
+    a version. `crystallize-report.schema.yaml` requires the Agent field to name the
+    platform *and* its version, and this is how that requirement is tested.
     """
-    if not model_id:
-        return "Unknown"
-    # Strip date suffix (e.g. -20241022 or _20260330)
-    model_id = re.sub(r'[-_]\d{8,}', '', model_id)
-    # Normalize version separators: digit-dash-digit → digit.digit (e.g. 3-5 → 3.5)
-    model_id = re.sub(r'(\d)-(\d)', r'\1.\2', model_id)
-    parts = model_id.replace('-', ' ').replace('_', ' ').split()
-    # Known acronyms / mixed-case tokens that plain .capitalize() would mangle
-    # (e.g. "VSCode" -> "Vscode"). Keyed by lowercase form.
-    acronyms = {
-        "gpt": "GPT", "llm": "LLM", "ai": "AI",
-        "ide": "IDE", "oss": "OSS", "cli": "CLI", "sdk": "SDK",
-        "vscode": "VSCode",
-    }
-    normalized = []
-    for part in parts:
-        lower = part.lower()
-        if lower in acronyms:
-            normalized.append(acronyms[lower])
-        elif lower in ["gemini", "claude", "pro", "flash", "opus", "sonnet", "haiku"]:
-            normalized.append(part.capitalize())
-        else:
-            # Handle short version suffixes like "4o"
-            if part.endswith('o') and len(part) <= 3:
-                normalized.append(part)
-            else:
-                normalized.append(part.capitalize())
-    return " ".join(normalized)
+    return bool(label) and bool(re.search(r"\d+\.\d+", label))

@@ -21,10 +21,8 @@ if scripts_root not in sys.path:
 
 from domain.terminology.engine import TerminologyEngine
 from infra import config
-from infra.utils import log_info, log_error, format_model_id
+from infra.utils import log_info, log_error, has_version
 
-
-from infra.telemetry import detect_agent_telemetry, has_version, UNKNOWN_AGENT
 
 
 class TerminologyRefiner:
@@ -70,29 +68,26 @@ class TerminologyRefiner:
         return False
 
     def refine_telemetry(self, model_id, agent_name, dry_run=False):
-        """Refines and explicitly records the active environment telemetry inside handoff.posts.json."""
-        # 1. Model is NLP-Sourced (AI self-declaration)
-        formatted_model = format_model_id(model_id) if model_id else "Unknown"
-        
-        # 2. Agent: explicit self-declaration is authoritative; detection is a
-        #    vendor-neutral fallback (UNKNOWN_AGENT when no platform is recognised).
-        detected = detect_agent_telemetry()
-        if not agent_name:
-            formatted_agent = detected
-        else:
-            formatted_agent = format_model_id(agent_name)
-            # Enrich only when the declaration lacks a version AND detection found
-            # the SAME platform carrying one. Vendor-neutral: keyed off the
-            # declared name's first token, not any hardcoded vendor.
-            if (not has_version(formatted_agent)
-                    and detected != UNKNOWN_AGENT
-                    and formatted_agent.split()[0].lower() in detected.lower()):
-                formatted_agent = detected
-        # A versionless agent is honest but incomplete; surface it for the gate.
-        if formatted_agent != UNKNOWN_AGENT and not has_version(formatted_agent):
-            log_info(f"  [TELEMETRY] Agent '{formatted_agent}' has no version number "
-                     f"(spec asks for IDE + version). Pass --agent with a version to complete it.")
-            
+        """Records the self-declared model / agent verbatim in handoff.posts.json.
+
+        Both are audit values: they state which model and which tool actually did the
+        work, so nothing here derives, completes or reformats them. The previous
+        version ran the declaration through a display-name heuristic that split on
+        hyphens, and published `GPT-5.5` as `GPT 5.5` — the name of no model that
+        exists. It also fell back to environment probing when a flag was missing,
+        which only ever guessed right on the hosts it happened to know.
+
+        Declaration is now the only source. With no flags the stored telemetry is
+        left exactly as it is, so the repeated flagless runs the init-handoff task
+        list asks for cannot overwrite a declaration with a guess; the publish gate
+        in pipeline.py is what refuses a handoff that never got one.
+        """
+        declared_model = (model_id or "").strip()
+        declared_agent = (agent_name or "").strip()
+        if declared_agent and not has_version(declared_agent):
+            log_info(f"  [TELEMETRY] Agent '{declared_agent}' carries no version number; "
+                     f"the spec asks for platform + version.")
+
         posts_path = os.path.join(self.scratch_dir, "handoff.posts.json")
         if not os.path.exists(posts_path):
             fallback = os.path.join(config.ROOT_DIR, "handoff.posts.json")
@@ -114,7 +109,11 @@ class TerminologyRefiner:
         if "posts" not in posts_data["metadata"]:
             posts_data["metadata"]["posts"] = []
             
-        log_info(f"Refining active Telemetry -> Model: '{formatted_model}', Agent: '{formatted_agent}'")
+        if declared_model or declared_agent:
+            log_info(f"Recording declared telemetry -> Model: '{declared_model or '(unchanged)'}', "
+                     f"Agent: '{declared_agent or '(unchanged)'}'")
+        else:
+            log_info("No --model/--agent declared; leaving stored telemetry untouched.")
         
         modified = False
         for post in posts_data["metadata"]["posts"]:
@@ -123,13 +122,10 @@ class TerminologyRefiner:
             if "refinement" not in post["ai_info"]:
                 post["ai_info"]["refinement"] = {}
                 
-            current_model = post["ai_info"]["refinement"].get("model")
-            if model_id or not current_model or current_model == "Unknown":
-                post["ai_info"]["refinement"]["model"] = formatted_model
-
-            current_agent = post["ai_info"]["refinement"].get("agent")
-            if agent_name or not current_agent or current_agent == "Unknown":
-                post["ai_info"]["refinement"]["agent"] = formatted_agent
+            if declared_model:
+                post["ai_info"]["refinement"]["model"] = declared_model
+            if declared_agent:
+                post["ai_info"]["refinement"]["agent"] = declared_agent
                 
             modified = True
         
