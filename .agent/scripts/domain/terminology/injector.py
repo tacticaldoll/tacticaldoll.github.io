@@ -46,6 +46,18 @@ class TerminologyInjector:
         protected_body = re.sub(r'\$\$[\s\S]*?\$\$', code_replacer, protected_body)
         protected_body = re.sub(r'(?<!\$)\$(?!\$)[^\n$]+?\$(?!\$)', code_replacer, protected_body)
 
+        # A citation is not prose either. An EN alias is word-boundaried but that only
+        # stops matches INSIDE a word, not a legitimate standalone one, so the alias
+        # matched inside the English title of a cited paper and rewrote it to the
+        # Chinese term: 《Controlling the 假發現率: A Practical …》 and 《Understanding
+        # the Effective 感受野 in Deep …》. The work's title is what makes the citation
+        # checkable — rewriting it is a falsified reference, and reanchor cannot undo it
+        # because the English words are no longer in the file. The URL goes with the
+        # label for the same reason: a path segment is not prose. Labels with nested
+        # brackets are left alone rather than mis-split.
+        protected_body = re.sub(r'!?\[[^\]\n]*\]\([^()\s]*(?:[ \t]+"[^"\n]*")?\)',
+                                code_replacer, protected_body)
+
         def comment_replacer(match):
             comment = match.group(0)
             # Keep the <!--more--> separator literal so split_by_more can isolate the preview
@@ -270,6 +282,18 @@ class TerminologyInjector:
             
             # Resolve to primary ZH
             zh = lexicon.en_to_zh.get(matched_text.lower(), matched_text)
+
+            # An EN alias carries \b, which stops a match INSIDE a word but not one
+            # inside a longer English PHRASE. 泛化有效性（Generalization Viability）
+            # had its parenthetical rewritten to （泛化 Viability）: half English, half
+            # Chinese, and correct in neither. The alias is only a term when it stands
+            # on its own, so an adjacent English word means leave the author's text
+            # exactly as it is — the anchor's job never includes editing prose.
+            if matched_text != zh:
+                src = match.string
+                if (re.match(r'[ \t]+[A-Za-z]', src[match.end(2):])
+                        or re.search(r'[A-Za-z][ \t]+$', src[:match.start(2)])):
+                    return match.group(0)
             
             is_first = zh not in found_globally
             level = lexicon.levels.get(zh, 1)
@@ -281,6 +305,15 @@ class TerminologyInjector:
             clean_zh = re.sub(r'\s*[\(（].*?[\)）]\s*', '', zh).strip()
             clean_en = re.sub(r'^[\(（]+|[\)）]+$', '', en_primary.strip()) if en_primary else ""
             
+            # `pre` and `post_val` are only this term's OWN emphasis when they match.
+            # When they do not, the stray marker belongs to a NEIGHBOURING span and must
+            # stay outside the anchor: 線性探針**無法** matched with pre='' and
+            # post_val='**', and re-emitting that '**' before the comment stole the
+            # opening marker of 無法's bold span. Asymmetric markers are therefore
+            # preserved verbatim, on their own side of the anchor, and no emphasis of
+            # ours is added — the author's markup wins over the anchor's styling.
+            symmetric = pre == post_val
+
             if mode == "anchor_first" and is_first and level < 3:
                 found_globally.add(zh)
                 first_use_terms.append(zh)
@@ -290,10 +323,14 @@ class TerminologyInjector:
                     "description": lexicon.descriptions.get(zh, ""),
                     "key": key_val
                 })
-                return f"**{clean_zh}**（{clean_en}） <!-- term:{key_val} -->"
+                if symmetric:
+                    return f"**{clean_zh}**（{clean_en}） <!-- term:{key_val} -->"
+                return f"{pre}{clean_zh}（{clean_en}） <!-- term:{key_val} -->{post_val}"
             
             if level < 3:
-                return f"{pre}{clean_zh}{post_val} <!-- term:{key_val} -->"
+                if symmetric:
+                    return f"{pre}{clean_zh}{post_val} <!-- term:{key_val} -->"
+                return f"{pre}{clean_zh} <!-- term:{key_val} -->{post_val}"
             return f"{pre}{clean_zh}{post_val}"
    
         text = anchor_regex.sub(replacer, text)
