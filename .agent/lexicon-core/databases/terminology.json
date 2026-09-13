@@ -287,6 +287,15 @@
     "forbidden": [],
     "level": 2
   },
+  "MeasurabilityAsymmetry": {
+    "zh": "可計量性不對稱",
+    "en": [
+      "Measurability Asymmetry"
+    ],
+    "description": "收益容易即時量測，而延後、分散的成本難以進入同一套指標的結構性落差。",
+    "forbidden": [],
+    "level": 1
+  },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
     "en": [
@@ -1996,6 +2005,51 @@
     "description": "多服務一位使用者幾乎不增加變動成本的成本結構，是傳統軟體毛利的前提。",
     "forbidden": [],
     "level": 2
+  },
+  "AutomationBias": {
+    "zh": "自動化偏誤",
+    "en": [
+      "Automation Bias"
+    ],
+    "description": "使用者因倚賴自動化建議而降低獨立查核，未能辨識系統新引入錯誤的傾向。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CorrespondenceRequirement": {
+    "zh": "對應性需求",
+    "en": [
+      "Correspondence Requirement"
+    ],
+    "description": "必須對上法規、物理過程或外部系統等不受規格控制之事實的需求。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AttentionInvestment": {
+    "zh": "注意力投資",
+    "en": [
+      "Attention Investment"
+    ],
+    "description": "先投入測試、型別或契約檢查，以減少未來每位讀者重複驗證成本的作法。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StipulatedRequirement": {
+    "zh": "規定性需求",
+    "en": [
+      "Stipulated Requirement"
+    ],
+    "description": "其真值由決定或約定本身建立，而非由外部世界既有事實決定的需求。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LongTermUpdateRate": {
+    "zh": "長期更新率",
+    "en": [
+      "Long-Term Update Rate"
+    ],
+    "description": "變更中觸及長時間未被修改之既有程式碼的比例，用來觀察系統可修改範圍。",
+    "forbidden": [],
+    "level": 1
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -4211,6 +4265,87 @@
     "forbidden": [],
     "level": 2
   },
+  "MarketForLemons": {
+    "zh": "檸檬市場",
+    "en": [
+      "Market For Lemons"
+    ],
+    "description": "因買方無法辨識品質而按平均價值交易，進而排擠高品質供給的資訊不對稱市場。",
+    "forbidden": [],
+    "level": 1
+  },
+  "VerificationCoverage": {
+    "zh": "驗證覆蓋",
+    "en": [
+      "Verification Coverage"
+    ],
+    "description": "產物中已有獨立、可重複檢查機制保護的範圍與程度。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CostShifting": {
+    "zh": "成本轉嫁",
+    "en": [
+      "Cost Shifting"
+    ],
+    "description": "工作從產生端移往理解端後，由其他人或未來時點承擔的成本移轉。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SelfSealingClaim": {
+    "zh": "自我封閉",
+    "en": [
+      "Self-Sealing Claim"
+    ],
+    "description": "能吸收反例而不修改自身主張，因而逃避外部反駁的論證結構。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CorrelatedFailure": {
+    "zh": "相關失效",
+    "en": [
+      "Correlated Failure"
+    ],
+    "description": "多個看似獨立的系統因共享成因或分布，而在相同位置共同失敗的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ScenarioBinding": {
+    "zh": "場景綁定",
+    "en": [
+      "Scenario Binding"
+    ],
+    "description": "將自然語言場景步驟對應到可執行函式或測試程式碼的連接機制。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LocalPlausibility": {
+    "zh": "局部似真",
+    "en": [
+      "Local Plausibility"
+    ],
+    "description": "每個局部接續看似合理，但全域一致性與外部真實性未被保證的生成性質。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Distinguishability": {
+    "zh": "可區分性",
+    "en": [
+      "Distinguishability"
+    ],
+    "description": "觀察者能否依可見訊號辨別不同品質、狀態或來源之產物的性質。",
+    "forbidden": [],
+    "level": 1
+  },
+  "IntegrationCost": {
+    "zh": "導入成本",
+    "en": [
+      "Integration Cost"
+    ],
+    "description": "讓新增產物與既有系統的命名、抽象、行為及假設相容所需的成本。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -4710,6 +4845,51 @@
     "forbidden": [],
     "level": 2
   },
+  "Friction": {
+    "zh": "摩擦力",
+    "en": [
+      "Friction"
+    ],
+    "description": "流程中的阻力或成本；在約束系統中也可能是失敗點正在生效的可感知表現。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Externality": {
+    "zh": "外部性",
+    "en": [
+      "Externality"
+    ],
+    "description": "行動成本或效益由交易之外的其他人或團隊承擔的經濟現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FailurePoint": {
+    "zh": "失敗點",
+    "en": [
+      "Failure Point"
+    ],
+    "description": "能在產物偏離約束時產生拒絕、錯誤或負回饋的具體檢查位置。",
+    "forbidden": [],
+    "level": 1
+  },
+  "NegativeFeedback": {
+    "zh": "負回饋",
+    "en": [
+      "Negative Feedback"
+    ],
+    "description": "系統偏離目標時產生反向修正壓力，使行為能夠收斂的回饋機制。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Nonstationarity": {
+    "zh": "非定常",
+    "en": [
+      "Nonstationarity"
+    ],
+    "description": "資料分布、介入方式或系統性質隨時間改變，使不同時點結果不可直接視為同一母體的狀態。",
+    "forbidden": [],
+    "level": 1
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -5073,5 +5253,14 @@
     "description": "梯度為零但 Hessian 同時具備正負特徵值的臨界點，在高維非凸景觀中遠多於局部極小值。",
     "forbidden": [],
     "level": 2
+  },
+  "ReliabilityTell": {
+    "zh": "徵候",
+    "en": [
+      "Reliability Tell"
+    ],
+    "description": "洩漏產物製作過程狀態、供讀者間接估計可靠度的外觀或行為痕跡。",
+    "forbidden": [],
+    "level": 1
   }
 }
