@@ -26,6 +26,15 @@
     "forbidden": [],
     "level": 2
   },
+  "PerformativeFeedbackLoop": {
+    "zh": "執行性預測反饋迴路",
+    "en": [
+      "Performative Feedback Loop"
+    ],
+    "description": "模型的預測行為本身改寫了下游資料生成分佈，使後續資料不再獨立於模型決策。",
+    "forbidden": [],
+    "level": 2
+  },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
     "en": [
@@ -194,6 +203,33 @@
       "Organizational Complementarity"
     ],
     "description": "技術能力必須搭配流程重排與技能調整才形成產出的互補關係。",
+    "forbidden": [],
+    "level": 2
+  },
+  "EmpiricalRiskMinimization": {
+    "zh": "經驗風險最小化",
+    "en": [
+      "Empirical Risk Minimization"
+    ],
+    "description": "以訓練樣本上的平均損失最小化代替真實風險最小化的學習原則，只保證擬合關聯，不保證因果結構恆常。",
+    "forbidden": [],
+    "level": 2
+  },
+  "StructuredChannelPruning": {
+    "zh": "結構化通道剪枝",
+    "en": [
+      "Structured Channel Pruning"
+    ],
+    "description": "整條移除特徵通道的剪枝方式，硬體加速明確，但對流形拓撲的破壞遠大於等方差的量化噪聲。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ModularParameterIsolation": {
+    "zh": "模組化參數隔離",
+    "en": [
+      "Modular Parameter Isolation"
+    ],
+    "description": "以 LoRA、Adapter 等旁路模組承載新任務更新，使核心權重不被覆寫的架構隔離手段。",
     "forbidden": [],
     "level": 2
   },
@@ -781,6 +817,69 @@
     "description": "實驗過程中未被事前固定的選擇空間，例如種子數、停止時機與指標挑選，會把偽陽性率推離名目水準。",
     "forbidden": [],
     "level": 1
+  },
+  "InvariantCausalPrediction": {
+    "zh": "不變因果預測",
+    "en": [
+      "Invariant Causal Prediction"
+    ],
+    "description": "以「條件分佈是否跨環境穩定」為篩選準則，挑出具因果支撐之特徵的推論方法。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AutoregressiveDecoder": {
+    "zh": "自回歸解碼器",
+    "en": [
+      "Autoregressive Decoder"
+    ],
+    "description": "以自身已生成序列為條件逐步輸出的解碼結構，容量過剩時會繞過潛在變數通道。",
+    "forbidden": [],
+    "level": 2
+  },
+  "FreeBits": {
+    "zh": "自由位元約束",
+    "en": [
+      "Free Bits"
+    ],
+    "description": "為每個潛在維度保留最低 KL 預算的正則化手段，阻止最佳化器把潛在通道整條關閉。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ScalarAggregateMetric": {
+    "zh": "標量聚合度量",
+    "en": [
+      "Scalar Aggregate Metric"
+    ],
+    "description": "把高維行為壓縮成單一數字的評估量，其降維投影會把子群體差異與分佈權重變化一併吸收。",
+    "forbidden": [],
+    "level": 2
+  },
+  "StochasticGradientDescent": {
+    "zh": "隨機梯度下降",
+    "en": [
+      "Stochastic Gradient Descent"
+    ],
+    "description": "以小批次樣本估計梯度並更新參數的最佳化演算法，其搜尋是局部的，不保證抵達全域最優。",
+    "forbidden": [],
+    "level": 2
+  },
+  "OptimizationDynamics": {
+    "zh": "最佳化動力學",
+    "en": [
+      "Optimization Dynamics"
+    ],
+    "description": "參數在損失景觀上隨更新規則演化的過程，是獨立於架構容量之外的物理約束。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Gemm": {
+    "zh": "矩陣乘法核心",
+    "en": [
+      "Gemm"
+    ],
+    "description": "通用矩陣乘法的底層實作，其在不同批次大小下的浮點累加順序差異，是位元級不可重現的來源。",
+    "forbidden": [],
+    "level": 2
   },
   "Spec": {
     "zh": "約束性規格",
@@ -1616,6 +1715,96 @@
       "Counterfactual Intervention"
     ],
     "description": "主動改寫模型內部狀態並觀察輸出變化的檢驗方式，是把關聯觀測升格為因果宣稱的唯一途徑。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PrdRecall": {
+    "zh": "分佈召回率",
+    "en": [
+      "Prd Recall"
+    ],
+    "description": "真實分佈被生成分佈涵蓋的比例，衡量模式覆蓋程度，逼真度再高也無法代償它的歸零。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GoldenDataset": {
+    "zh": "靜態基準集",
+    "en": [
+      "Golden Dataset"
+    ],
+    "description": "一次標註後長期凍結的評測集，其與線上分佈的距離隨時間單調增加，終將失去代表性。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CompleteSpecification": {
+    "zh": "完全規格化",
+    "en": [
+      "Complete Specification"
+    ],
+    "description": "試圖以靜態規格窮舉系統所有合法行為的工程立場，對含隨機性的連續系統無法成立。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RefutationAssertion": {
+    "zh": "否定性斷言",
+    "en": [
+      "Refutation Assertion"
+    ],
+    "description": "事先寫明「出現何種觀測即判定契約被推翻」的可執行斷言，是可反駁契約的最小單位。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ExitCode": {
+    "zh": "進程退出碼",
+    "en": [
+      "Exit Code"
+    ],
+    "description": "行程結束時回傳給呼叫者的整數狀態碼，是把統計判定轉為自動化降級動作的介面。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Unidentifiability": {
+    "zh": "不可識別性",
+    "en": [
+      "Unidentifiability"
+    ],
+    "description": "模型或機制的真實狀態無法由觀測到的標量讀數唯一還原的性質，源於聚合投影具備非平凡核空間。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SimpsonSParadox": {
+    "zh": "辛普森悖論",
+    "en": [
+      "Simpson's Paradox"
+    ],
+    "description": "各子群體內部的優劣關係在合併計算後整體反轉的統計現象，成因是子群體權重改變而非能力改變。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StatisticalPower": {
+    "zh": "統計檢定力",
+    "en": [
+      "Statistical Power"
+    ],
+    "description": "在既定樣本量下偵測出真實差異的機率，決定一個切片的評估結論是否具備推論效力。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MultiTaskLearning": {
+    "zh": "多任務學習",
+    "en": [
+      "Multi-Task Learning"
+    ],
+    "description": "多個目標共享同一組參數進行訓練的範式，其收益取決於各任務梯度在共享子空間中是否相容。",
+    "forbidden": [],
+    "level": 2
+  },
+  "CausalInvariance": {
+    "zh": "因果不變性",
+    "en": [
+      "Causal Invariance"
+    ],
+    "description": "特徵與標籤的條件分佈在跨環境時保持穩定的性質，是篩除非因果捷徑特徵的判準。",
     "forbidden": [],
     "level": 1
   },
@@ -3581,6 +3770,132 @@
     "forbidden": [],
     "level": 2
   },
+  "ConceptDrift": {
+    "zh": "概念漂移",
+    "en": [
+      "Concept Drift"
+    ],
+    "description": "輸入與標籤之間的條件關係隨時間改變的現象，即使模型權重完全凍結，線上表現仍會持續退化。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ModeDropping": {
+    "zh": "模式遺失",
+    "en": [
+      "Mode Dropping"
+    ],
+    "description": "生成分佈只覆蓋目標分佈的少數模式，單點樣本品質仍高，整體覆蓋率卻已崩塌的失效型態。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PrdPrecision": {
+    "zh": "分佈精度",
+    "en": [
+      "Prd Precision"
+    ],
+    "description": "生成分佈落在真實分佈支援集內的比例，衡量樣本的逼真程度，與覆蓋率是兩個獨立軸。",
+    "forbidden": [],
+    "level": 2
+  },
+  "IntrinsicDimension": {
+    "zh": "內在維度",
+    "en": [
+      "Intrinsic Dimension"
+    ],
+    "description": "資料流形實際所需的最小座標數，決定表徵壓縮在不撕裂幾何結構下的下限。",
+    "forbidden": [],
+    "level": 2
+  },
+  "AlertFatigue": {
+    "zh": "警報疲勞",
+    "en": [
+      "Alert Fatigue"
+    ],
+    "description": "過細切片或過低門檻造成大量假陽性告警，使團隊逐漸忽略真實訊號的失效狀態。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GradientSurgery": {
+    "zh": "梯度手術",
+    "en": [
+      "Gradient Surgery"
+    ],
+    "description": "偵測任務梯度之間的負向內積，並把衝突分量投影到正交切空間的更新修正法，PCGrad 為其代表。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Verificationism": {
+    "zh": "驗證主義",
+    "en": [
+      "Verificationism"
+    ],
+    "description": "以「能被觀測證實」為意義判準的立場，對全稱命題無法提供有限步驟的確證。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Falsificationism": {
+    "zh": "證偽主義",
+    "en": [
+      "Falsificationism"
+    ],
+    "description": "以「能被觀測推翻」取代確證作為科學判準的立場，是可反駁契約的認識論基礎。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SequentialTest": {
+    "zh": "序貫檢定",
+    "en": [
+      "Sequential Test"
+    ],
+    "description": "每到達一筆新觀測即更新決策的統計檢定，可在控制兩類錯誤率的前提下，以較少樣本作出判定。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Misattribution": {
+    "zh": "錯誤歸因",
+    "en": [
+      "Misattribution"
+    ],
+    "description": "在因果尚不可識別時強行指派根因，導致錯誤處置並延誤真實故障排除的治理失效。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Ablation": {
+    "zh": "特徵消融",
+    "en": [
+      "Ablation"
+    ],
+    "description": "移除或置換特定特徵後觀察輸出變化，用以檢驗該特徵是否具備因果貢獻。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PartialIdentification": {
+    "zh": "部分識別",
+    "en": [
+      "Partial Identification"
+    ],
+    "description": "在資料不足以唯一確定目標量時，改為推導其所有可能取值的界限，而非給出單點估計。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DualTrackSeparation": {
+    "zh": "雙軌分離",
+    "en": [
+      "Dual-Track Separation"
+    ],
+    "description": "把追求低延遲的異常告警與追求高信賴度的因果歸因拆成兩條獨立軌道，各自最佳化不同的損失函數。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Reproducibility": {
+    "zh": "可重現性",
+    "en": [
+      "Reproducibility"
+    ],
+    "description": "相同輸入與設定下重跑系統得到相同輸出的程度，在含非確定性核心的硬體上只能以容差界定。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -3999,6 +4314,78 @@
     "forbidden": [],
     "level": 2
   },
+  "SoftLabels": {
+    "zh": "軟標籤",
+    "en": [
+      "Soft Labels"
+    ],
+    "description": "教師模型輸出的完整機率分佈，知識蒸餾以它取代單一硬標籤來傳遞類別之間的相對關係。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Support": {
+    "zh": "支援集",
+    "en": [
+      "Support"
+    ],
+    "description": "機率分佈中密度非零的區域，是判定生成樣本是否落在真實流形上的依據。",
+    "forbidden": [],
+    "level": 2
+  },
+  "FlipRate": {
+    "zh": "翻轉率",
+    "en": [
+      "Flip Rate"
+    ],
+    "description": "兩個模型版本之間逐樣本預測改變的比例，用來捕捉平均值所掩蓋的個案不穩定。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Invariant": {
+    "zh": "不變式",
+    "en": [
+      "Invariant"
+    ],
+    "description": "系統在任何合法狀態下都必須成立的斷言，是把評估規則寫成可執行檢查的基本單位。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ComputationalGraph": {
+    "zh": "計算圖",
+    "en": [
+      "Computational Graph"
+    ],
+    "description": "把前向運算展開成節點與邊的表示，反向傳播沿其反向鏈式求導。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Subgroup": {
+    "zh": "子群體",
+    "en": [
+      "Subgroup"
+    ],
+    "description": "依特徵切片劃分出的樣本子集合，是檢驗聚合讀數是否掩蓋局部失效的最小觀測單位。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Counterfactual": {
+    "zh": "反事實",
+    "en": [
+      "Counterfactual"
+    ],
+    "description": "在未實際發生的處置下本應出現的結果，是因果宣稱的基準，也是觀測資料中永遠缺失的那一半。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Microarchitecture": {
+    "zh": "微架構",
+    "en": [
+      "Microarchitecture"
+    ],
+    "description": "處理器實作層級的組織方式（如批次排程、向量指令與浮點累加順序），是位元級結果差異的常見來源。",
+    "forbidden": [],
+    "level": 2
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -4353,5 +4740,14 @@
       "默認"
     ],
     "level": 3
+  },
+  "SaddlePoint": {
+    "zh": "鞍點",
+    "en": [
+      "Saddle Point"
+    ],
+    "description": "梯度為零但 Hessian 同時具備正負特徵值的臨界點，在高維非凸景觀中遠多於局部極小值。",
+    "forbidden": [],
+    "level": 2
   }
 }
