@@ -38,7 +38,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 然而，嚴格的數學與實證批判隨即粉碎了該指標的權威性：評估計算過程中**完全未曾引入任何真實參考資料的分佈樣本**。這意味著：一個純粹死記硬背了一千個類別各一張完美圖片、隨後反覆循環輸出的退化生成器，能夠在 IS 指標上斬獲極高分數；相反地，一個忠實捕捉了全部資料模態及其長尾分佈的生成器，得分卻可能顯著偏低（詳見 [Barratt 與 Sharma，2018 / 《A Note on the Inception Score》](https://arxiv.org/abs/1801.01973)）。
 
 這種「純量評估盲區」在**變分自動編碼器**（Variational Autoencoder） <!-- term:VariationalAutoencoder -->與**擴散模型**（Diffusion Model） <!-- term:DiffusionModel -->中以不同數學形態同步浮現：
-- 當 VAE 接入強大的自迴歸神經解碼器時，目標函數中的 KL 散度項迅速降至接近零——這常被工程師誤讀為「潛在空間先驗對齊良好」，實則是解碼器完全繞過潛在變數，引發**後驗坍縮**（Posterior Collapse） <!-- term:PosteriorCollapse -->**，潛在通道完全空置（參閱 [Bowman 等人，2015 / 《Generating Sentences from a Continuous Space》](https://arxiv.org/abs/1511.06349)）；
+- 當 VAE 接入強大的自迴歸神經解碼器時，目標函數中的 KL 散度項迅速降至接近零——這常被工程師誤讀為「潛在空間先驗對齊良好」，實則是解碼器完全繞過潛在變數，引發**後驗坍縮（Posterior Collapse） <!-- term:PosteriorCollapse -->**，潛在通道完全空置（參閱 [Bowman 等人，2015 / 《Generating Sentences from a Continuous Space》](https://arxiv.org/abs/1511.06349)）；
 - 在擴散模型 <!-- term:DiffusionModel -->的反向採樣過程中，「增加採樣步數必然提升生成品質」的經驗直覺被數值分析擊破：當神經網路對分數函數的估計存在固有偏誤時，盲目細化時間步長不僅無法降低整體距離，反而會因反向微分方程的誤差累積使整體生成品質逆向劣化（參閱 [Song 等人，2020 / 《Score-Based Generative Modeling through Stochastic Differential Equations》](https://arxiv.org/abs/2011.13456)；以及 [Karras 等人，2022 / 《Elucidating the Design Space of Diffusion-Based Generative Models》](https://arxiv.org/abs/2206.00364)）。
 
 > [!IMPORTANT]

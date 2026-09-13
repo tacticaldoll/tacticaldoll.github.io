@@ -39,7 +39,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 然而，令人震驚的實測結果顯示：多種被廣泛採信的顯著圖算法（如 Guided Backprop、Integrated Gradients 等），在權重完全隨機化為噪聲後，其產生的熱圖在視覺上依然精準地勾勒出目標物體的輪廓邊緣（詳見 [Adebayo 等人，2018 / 《Sanity Checks for Saliency Maps》](https://arxiv.org/abs/1810.03292)）。這些算法在數學上高度退化為輸入圖像本身的邊緣偵測濾波器，其呈現的圖像高度迎合了人類工程師的先驗視覺偏好，卻與模型內部的真實因果決策過程毫無關聯。
 
-幾乎在同一時期，自然語言處理領域亦爆發了關於「注意力熱圖是否代表模型推理理由」的深層論戰。實證研究表明，透過微小擾動，完全可以構造出一組注意力權重完全相反、但最終模型預測保持不變的注意力分佈（參閱 [Jain 與 Wallace，2019 / 《Attention is not Explanation》](https://arxiv.org/abs/1902.10186)）。而在遞迴與深層網路的記憶機制中，研究者早已證實：即便透過**線性探針**（Linear Probe） <!-- term:LinearProbe -->能從末端隱藏狀態以極高精度解碼出早期輸入資訊，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->的梯度訊號依然可能因**梯度消失**（Vanishing Gradient） <!-- term:VanishingGradient -->或截斷（Truncated BPTT）而衰減為零，使早期參數無法獲得任何有效的**信用分配**（Credit Assignment） <!-- term:CreditAssignment -->）。
+幾乎在同一時期，自然語言處理領域亦爆發了關於「注意力熱圖是否代表模型推理理由」的深層論戰。實證研究表明，透過微小擾動，完全可以構造出一組注意力權重完全相反、但最終模型預測保持不變的注意力分佈（參閱 [Jain 與 Wallace，2019 / 《Attention is not Explanation》](https://arxiv.org/abs/1902.10186)）。而在遞迴與深層網路的記憶機制中，研究者早已證實：即便透過**線性探針**（Linear Probe） <!-- term:LinearProbe -->能從末端隱藏狀態以極高精度解碼出早期輸入資訊，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->的梯度訊號依然可能因**梯度消失**（Vanishing Gradient） <!-- term:VanishingGradient -->或截斷（Truncated BPTT）而衰減為零，使早期參數無法獲得任何有效的**信用分配**（Credit Assignment） <!-- term:CreditAssignment -->。
 
 > [!IMPORTANT]
 > **線性探針** <!-- term:LinearProbe --> (Linear Probe): 在凍結的表徵上訓練線性分類器，用以量測該層是否線性可讀出目標屬性的診斷工具。 <!-- anchor:LinearProbe -->
@@ -62,7 +62,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 ### 結構因果模型與中介變數的認知陷阱
 
-在因果推論體系中，觀測性讀數（Observational Readout）與介入性結果（Interventional Outcome）處於不同的認識論層級。將 Transformer 或深層網路的單元模組抽象為一個結構因果圖：輸入為 $X$，中間特徵或注意力分佈為 $M$（**中介變數**（Mediating Variable） <!-- term:MediatingVariable --> 中介變數 <!-- term:MediatingVariable -->），最終模型預測為 $Y$。
+在因果推論體系中，觀測性讀數（Observational Readout）與介入性結果（Interventional Outcome）處於不同的認識論層級。將 Transformer 或深層網路的單元模組抽象為一個結構因果圖：輸入為 $X$，中間特徵或注意力分佈為 $M$，即**中介變數**（Mediating Variable） <!-- term:MediatingVariable -->，最終模型預測為 $Y$。
 
 > [!IMPORTANT]
 > **中介變數** <!-- term:MediatingVariable --> (Mediating Variable): 位於原因與結果之間、承載並使該段因果得以被觀察的可測量變數。 <!-- anchor:MediatingVariable -->
@@ -100,7 +100,7 @@ $$
 \text{TE}(x, x^*) = Y(x) - Y(x^*) = \underbrace{\big[Y(x, M(x^*)) - Y(x^*, M(x^*))\big]}_{\text{NDE}} + \underbrace{\big[Y(x, M(x)) - Y(x, M(x^*))\big]}_{\text{NIE}}.
 $$
 
-在此架構下，**中介誤認**（Mediator Misreading） <!-- term:MediatorMisreading -->**的本質在於：工程師觀察到了高強度的條件概率相關性 $P(Y \mid M)$ 或顯著的注意力權重數值 $M_{ij} \approx 1$，便錯誤斷言 $M$ 是 $Y$ 的主導成因。
+在此架構下，**中介誤認（Mediator Misreading） <!-- term:MediatorMisreading -->**的本質在於：工程師觀察到了高強度的條件概率相關性 $P(Y \mid M)$ 或顯著的注意力權重數值 $M_{ij} \approx 1$，便錯誤斷言 $M$ 是 $Y$ 的主導成因。
 
 > [!IMPORTANT]
 > **中介誤認** <!-- term:MediatorMisreading --> (Mediator Misreading): 把因果鏈上可觀察的中介變數當成成因本身，因而以觀察性讀數回答只有干預才能回答的問題。 <!-- anchor:MediatorMisreading -->
@@ -383,7 +383,7 @@ func main() {
 
 表徵探測 <!-- term:RepresentationProbing -->與注意力熱圖並非全無工程價值，其有效性受限於特定的分析邊界：
 
-1. **資訊容量上限的診斷工具（Information Capacity Lower Bound）**：若線性探針** <!-- term:LinearProbe -->無法**從某層特徵中解碼出目標屬性，根據資料處理不等式（Data Processing Inequality），可以嚴格判定該資訊在後續層級已被永久丟棄。因此，探針具備強大的「否定性診斷」價值，但無法作為「肯定性因果」證據。
+1. **資訊容量上限的診斷工具（Information Capacity Lower Bound）**：若線性探針 <!-- term:LinearProbe -->**無法**從某層特徵中解碼出目標屬性，根據資料處理不等式（Data Processing Inequality），可以嚴格判定該資訊在後續層級已被永久丟棄。因此，探針具備強大的「否定性診斷」價值，但無法作為「肯定性因果」證據。
 2. **無殘差旁路 <!-- term:ResidualBypass -->的純前饋漏斗結構**：在不具備殘差連接、且層寬逐層遞減的經典 CNN 或 MLP 中，所有資訊必須物理穿過中間層瓶頸。在此類幾何約束下，中介變數 <!-- term:MediatingVariable -->與最終預測的相關性與因果介入效應高度重合。
 
 ---

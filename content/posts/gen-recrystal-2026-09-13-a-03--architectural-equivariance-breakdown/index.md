@@ -67,7 +67,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
    $$
    F(T_\delta x) = F(x).
    $$
-   單層卷積本身在數學上**絕不具備平移不變性** <!-- term:TranslationInvariance -->。卷積神經網路 <!-- term:ConvolutionalNeuralNetwork -->所宣稱的不變性，本質上是一個複合系統性質：由**前端的等變特徵提取器**結合**末端的位置無關讀出層（如全域平均池化 Global Average Pooling, GAP）**共同實現。
+   單層卷積本身在數學上**絕不具備平移不變性 <!-- term:TranslationInvariance -->**。卷積神經網路 <!-- term:ConvolutionalNeuralNetwork -->所宣稱的不變性，本質上是一個複合系統性質：由**前端的等變特徵提取器**結合**末端的位置無關讀出層（如全域平均池化 Global Average Pooling, GAP）**共同實現。
 
 ```mermaid
 flowchart TD
@@ -147,7 +147,7 @@ $$
 \text{TRF}_L = 1 + L(K - 1).
 $$
 
-然而，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->梯度在空間中心與邊緣的傳遞路徑數量極度不均勻。根據中心極限定理，複合卷積核的有效權重分佈漸近收斂於二維高斯分佈，其有效感受野 <!-- term:ReceptiveField -->半徑 $\sigma_{\text{ERF}}$ 僅隨層數平方根 $\sqrt{L}$ 增長，遠落後於理論值（參閱 [Luo 等人，2016 / 《Understanding the Effective 感受野 <!-- term:ReceptiveField --> in Deep Convolutional Neural Networks》](https://arxiv.org/abs/1701.04128)）：
+然而，**反向傳播**（Backpropagation） <!-- term:Backpropagation -->梯度在空間中心與邊緣的傳遞路徑數量極度不均勻。根據中心極限定理，複合卷積核的有效權重分佈漸近收斂於二維高斯分佈，其有效感受野 <!-- term:ReceptiveField -->半徑 $\sigma_{\text{ERF}}$ 僅隨層數平方根 $\sqrt{L}$ 增長，遠落後於理論值（參閱 [Luo 等人，2016 / 《Understanding the Effective Receptive Field in Deep Convolutional Neural Networks》](https://arxiv.org/abs/1701.04128)）：
 
 > [!IMPORTANT]
 > **反向傳播** <!-- term:Backpropagation --> (Backpropagation): 以連鎖律沿計算圖回傳誤差，有效求得各層參數梯度的演算法。 <!-- anchor:Backpropagation -->
@@ -293,7 +293,7 @@ testConvolutionalEquivariance();
 在實務上，面對平移或縮放失穩，最普遍的工程反應是增加「隨機資料增強（Data Augmentation）」。然而，資料增強與架構不變性在認識論層面處於完全不同的防線：
 
 1. **資料增強是經驗記誦（Memorization via Capacity Consumption）**：它迫使模型消耗有限的參數容量，去「背誦」所有可能的位移網格相位。這並未賦予模型**泛化**（Generalization） <!-- term:Generalization -->結構，一旦出現增強分佈未包含的位移量（如次像素連續位移），系統仍將脆弱崩潰。
-2. **架構誘導偏差**（Architectural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->**：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
+2. **架構誘導偏差（Architectural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->**：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
 
 > [!IMPORTANT]
 > **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
