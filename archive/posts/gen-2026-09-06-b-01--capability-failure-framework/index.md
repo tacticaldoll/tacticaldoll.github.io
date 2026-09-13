@@ -16,7 +16,7 @@ tags = [
 series = ["模型能力如何失效：在歸咎模型之前，先固定比較條件"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"

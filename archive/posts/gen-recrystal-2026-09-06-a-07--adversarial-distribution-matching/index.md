@@ -15,7 +15,7 @@ tags = [
 series = ["從有限證據到生成分佈：統計學習如何形成模型能力"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"

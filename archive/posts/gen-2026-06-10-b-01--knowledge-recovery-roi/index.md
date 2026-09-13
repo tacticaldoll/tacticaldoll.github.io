@@ -18,7 +18,7 @@ tags = [
 series = ["自洽不等於可信：AI 系統如何在流暢敘事裡守住信任邊界"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.602.71036"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

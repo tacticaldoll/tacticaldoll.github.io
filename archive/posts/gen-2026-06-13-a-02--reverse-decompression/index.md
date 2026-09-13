@@ -16,7 +16,7 @@ tags = [
 series = ["重構的重力井：AI 跨語言重寫的邊界與多維治理"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.609.30741"
     [ai_info.refinement]
         model = "Gemini 3.1 Pro"

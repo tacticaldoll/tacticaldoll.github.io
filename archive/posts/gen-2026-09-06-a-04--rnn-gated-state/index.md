@@ -18,7 +18,7 @@ tags = [
 series = ["統計模型如何學習：同一套骨架，如何長出不同的參數與表示"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"

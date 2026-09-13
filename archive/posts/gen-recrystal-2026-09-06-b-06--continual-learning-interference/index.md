@@ -16,7 +16,7 @@ tags = [
 series = ["模型能力失效：從一句「模型變差了」到可被推翻的診斷"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"

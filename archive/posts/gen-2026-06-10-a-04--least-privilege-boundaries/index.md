@@ -18,7 +18,7 @@ tags = [
 series = ["Linux 權限模型：從 Process 主體到 Sandbox 邊界的完整推理弧"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.5"
+        model = "GPT-5.5"
         agent = "Codex VS Code extension 26.602.71036"
     [ai_info.refinement]
         model = "Claude Opus 4.8"

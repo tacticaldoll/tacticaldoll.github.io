@@ -15,7 +15,7 @@ tags = [
 series = ["智慧敘事如何進入現實：不是市場受騙，而是敘事協調了投資與改造"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"

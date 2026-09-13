@@ -16,7 +16,7 @@ tags = [
 series = ["從能力宣稱到可驗證效用：AI 敘事的現實化鏈條"]
 [ai_info]
     [ai_info.generation]
-        model = "GPT 5.6 Sol"
+        model = "GPT-5.6 Sol"
         agent = "Codex VS Code extension 26.901.22334"
     [ai_info.refinement]
         model = "Claude Opus 5"
