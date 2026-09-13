@@ -22,6 +22,14 @@ def published_domain(index_path, bare_to_category):
 
     Read out of the front matter rather than recomputed, because the point is to
     compare what shipped against what the current taxonomy says.
+
+    Only tags[1] is the domain slot. PostAssembler.with_tags emits genre at [0],
+    the domain at [1] when there is one, and the harvested technical tags after —
+    with the domain deduped out of that harvest, so a category name anywhere else
+    is a term tag, never the domain. Scanning every tag conflated the two: a post
+    whose domain is legitimately absent still carries 機器學習 as a level-2 term
+    tag, and the audit read it as a shipped domain and reported a divergence
+    against the classifier's (correct) None.
     """
     with open(index_path, "r", encoding="utf-8") as f:
         src = f.read()
@@ -31,10 +39,10 @@ def published_domain(index_path, bare_to_category):
     tags = re.search(r'^tags[ \t]*=[ \t]*\[(.*?)\]', fm.group(1), re.DOTALL | re.MULTILINE)
     if not tags:
         return None
-    for tag in re.findall(r'"([^"]+)"', tags.group(1)):
-        if tag in bare_to_category:
-            return bare_to_category[tag]
-    return None
+    entries = re.findall(r'"([^"]+)"', tags.group(1))
+    if len(entries) < 2:
+        return None
+    return bare_to_category.get(entries[1])
 
 def main():
     import glob
