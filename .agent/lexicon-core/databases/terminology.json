@@ -1025,6 +1025,15 @@
     "forbidden": [],
     "level": 2
   },
+  "ArchitectureDecisionRecords": {
+    "zh": "架構決策紀錄",
+    "en": [
+      "Architecture Decision Records"
+    ],
+    "description": "記錄重要架構決策、背景與取捨理由的可追溯文件。",
+    "forbidden": [],
+    "level": 2
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -2050,6 +2059,42 @@
     "description": "變更中觸及長時間未被修改之既有程式碼的比例，用來觀察系統可修改範圍。",
     "forbidden": [],
     "level": 1
+  },
+  "NormalizationOfDeviance": {
+    "zh": "常態化偏差",
+    "en": [
+      "Normalization Of Deviance"
+    ],
+    "description": "組織因異常反覆未造成後果，而逐步將其重新定義為可接受狀態的過程。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ConceptualIntegrity": {
+    "zh": "概念完整性",
+    "en": [
+      "Conceptual Integrity"
+    ],
+    "description": "系統各部分共同遵循一致設計理念與取捨邏輯的性質。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CapacityUtilization": {
+    "zh": "產能利用率",
+    "en": [
+      "Capacity Utilization"
+    ],
+    "description": "工站實際負荷相對於可用處理能力的比例。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Overcriminalization": {
+    "zh": "過度刑罰化",
+    "en": [
+      "Overcriminalization"
+    ],
+    "description": "以過多或過廣刑事規範治理行為，進而稀釋法秩序正當性的現象。",
+    "forbidden": [],
+    "level": 2
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -4345,6 +4390,33 @@
     "description": "讓新增產物與既有系統的命名、抽象、行為及假設相容所需的成本。",
     "forbidden": [],
     "level": 1
+  },
+  "QueueLength": {
+    "zh": "佇列長度",
+    "en": [
+      "Queue Length"
+    ],
+    "description": "在處理工站前等待服務的工作項目數量。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Auditability": {
+    "zh": "可稽核性",
+    "en": [
+      "Auditability"
+    ],
+    "description": "動作與狀態留下可供事後驗證之證據的性質。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Desuetude": {
+    "zh": "廢止效力",
+    "en": [
+      "Desuetude"
+    ],
+    "description": "法規因長期未被執行而逐漸喪失實際效力的法理概念。",
+    "forbidden": [],
+    "level": 2
   },
   "Requirements": {
     "zh": "需求層",
