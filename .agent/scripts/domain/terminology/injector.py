@@ -165,6 +165,16 @@ class TerminologyInjector:
                 other_lines.append(line)
                 seq.append(line)
             else:
+                # Protection is against ANCHORING, not against the Chinese-usage
+                # safeguard. The placeholder below takes the line out of reach of the
+                # forbidden-variant substitution that runs on `text`, so a regional
+                # variant sitting in a heading (「超參數優化」) shipped uncorrected while
+                # the identical word one line down was fixed. Correct it at capture
+                # time: the substitution matches the WRONG form, so it leaves no marker
+                # and stays repeatable.
+                if lexicon.forbidden_regex:
+                    keep = lexicon.forbidden_regex.sub(
+                        lambda m: lexicon.forbidden[m.group(0)], keep)
                 token = "__PROTLINE%d__" % len(protected_map)
                 protected_map[token] = keep
                 header_lines.append(keep)
