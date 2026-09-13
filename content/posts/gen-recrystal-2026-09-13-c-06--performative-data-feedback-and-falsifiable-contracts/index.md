@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "當模型從被動觀察者變成主動參與者，資料分佈就內生為系統決策的函數，監控指標隨之退化為自我確認的儀式。本文以 Google Flu Trends 的失準與 COMPare Trials 的指標偷換為軸，剖析表演性分佈漂移的反饋結構，並以九欄位事前登記契約與 Wald 序貫比檢驗建立可反駁的驗證防線。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 經濟與社會", # term:AiEconomics
+    "機器學習", # term:MachineLearning
     "表演性預測", # term:PerformativePrediction
     "可反駁性契約", # term:RefutabilityContract
     "表演性穩定點", # term:PerformativelyStablePoint

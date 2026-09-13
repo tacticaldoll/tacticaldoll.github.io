@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "封閉測試集上的標量分數與整條價值鏈的端到端效用之間，隔著一道無法單射還原的降維投影。本文從 Epic 敗血症模型外部驗證的 AUC 崩塌回推極值順序統計量與 Best-of-K 挑選膨脹，推導多重檢定下的偽發現機制，並以 Benjamini-Hochberg 校正與脫站點盲測建立可反駁的效用宣稱防線。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 經濟與社會", # term:AiEconomics
+    "機器學習", # term:MachineLearning
     "代理量升格謬誤", # term:ProxyMetricEscalationFallacy
     "代理讀數", # term:ProxyReadout
     "選擇偏差", # term:SelectionBias

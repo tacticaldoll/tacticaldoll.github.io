@@ -7,7 +7,7 @@ isCJKLanguage = true
 description = "候選文字要成為不可逆的實體行動，必須穿過六層交付邊界，而授權函數從來不在模型權重裡。本文以 Knight Capital 的 45 分鐘與 MD Anderson 的六千二百萬美元為軸，形式化主權授權閘門的狀態機不變式，並以鞅論停止時間與爆炸半徑限額推導不可旁路的熔斷條件。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 經濟與社會", # term:AiEconomics
+    "大型語言模型", # term:LargeLanguageModel
     "爆炸半徑", # term:BlastRadius
     "停止時間", # term:StoppingTime
     "主權終止開關", # term:SovereignKillSwitch
