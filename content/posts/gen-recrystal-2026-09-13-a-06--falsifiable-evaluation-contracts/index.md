@@ -59,7 +59,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 然而，當研究流程賦予工程師「事後靈活決策」的空間時，全域偽陽性率將以多重檢定幾何級數迅速失控。考慮以下四種在機器學習 <!-- term:MachineLearning -->研發中極其普遍的研究者自由度 <!-- term:ResearcherDegreesOfFreedom -->：
 1. **多指標篩選（Multiple Metrics）**：在 $m$ 個評估指標（如 Accuracy, F1, AUC, BLEU, Latency）中，只要有任一指標顯著即宣稱成功；
 2. **多重隨機種子（Multiple Seeds）**：嘗試 $s$ 個隨機種子，僅挑選曲線最好看的一組寫入發布文檔；
-3. **任意停止（Optional Stopping） <!-- term:OptionalStopping -->**：邊訓練邊觀察驗證損失，一旦數值達到歷史低點即刻手動中斷訓練；
+3. **任意停止**（Optional Stopping） <!-- term:OptionalStopping -->：邊訓練邊觀察驗證損失，一旦數值達到歷史低點即刻手動中斷訓練；
 4. **子集窺探（Subgroup Mining）**：整體不顯著時，事後細分「長尾用戶」或「特定領域」子集，尋找局部高分。
 
 > [!IMPORTANT]

@@ -58,12 +58,12 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 在深入動力學之前，必須嚴格釐清常被混淆的兩個幾何概念。設 $x$ 為連續空間或無窮離散網格上的訊號，$T_\delta$ 表示將座標平移向量 $\delta$ 的平移算子（即 $(T_\delta x)(u) = x(u - \delta)$），$F$ 為網路運算子：
 
-1. **平移等變性 <!-- term:TranslationEquivariance -->**：運算子與平移算子滿足可交換性（Commutative Property）：
+1. **平移等變性** <!-- term:TranslationEquivariance -->：運算子與平移算子滿足可交換性（Commutative Property）：
    $$
    F(T_\delta x) = T_\delta F(x).
    $$
    輸入平移，特徵圖以完全相同的幾何關係隨之平移。輸出向量實質上發生了改變，但改變的方式是確定且等價的。
-2. **平移不變性 <!-- term:TranslationInvariance -->**：輸出對平移變換完全不敏感：
+2. **平移不變性** <!-- term:TranslationInvariance -->：輸出對平移變換完全不敏感：
    $$
    F(T_\delta x) = F(x).
    $$
@@ -293,7 +293,7 @@ testConvolutionalEquivariance();
 在實務上，面對平移或縮放失穩，最普遍的工程反應是增加「隨機資料增強（Data Augmentation）」。然而，資料增強與架構不變性在認識論層面處於完全不同的防線：
 
 1. **資料增強是經驗記誦（Memorization via Capacity Consumption）**：它迫使模型消耗有限的參數容量，去「背誦」所有可能的位移網格相位。這並未賦予模型**泛化**（Generalization） <!-- term:Generalization -->結構，一旦出現增強分佈未包含的位移量（如次像素連續位移），系統仍將脆弱崩潰。
-2. **架構誘導偏差（Structural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->**：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
+2. **架構誘導偏差**（Structural Inductive Bias） <!-- term:ArchitecturalInductiveBias -->：透過在計算圖中嚴格實施對稱群論約束（如群等變卷積 G-CNNs、抗混疊 BlurPool、完全連續座標神經表示 Implicit Neural Representation），模型在數學定義域上天然具備該對稱性，完全無需消耗資料或參數量進行事後擬合。
 
 > [!IMPORTANT]
 > **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->

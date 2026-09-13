@@ -100,7 +100,7 @@ $$
 \text{TE}(x, x^*) = Y(x) - Y(x^*) = \underbrace{\big[Y(x, M(x^*)) - Y(x^*, M(x^*))\big]}_{\text{NDE}} + \underbrace{\big[Y(x, M(x)) - Y(x, M(x^*))\big]}_{\text{NIE}}.
 $$
 
-在此架構下，**中介誤認（Mediator Misreading） <!-- term:MediatorMisreading -->**的本質在於：工程師觀察到了高強度的條件概率相關性 $P(Y \mid M)$ 或顯著的注意力權重數值 $M_{ij} \approx 1$，便錯誤斷言 $M$ 是 $Y$ 的主導成因。
+在此架構下，**中介誤認**（Mediator Misreading） <!-- term:MediatorMisreading -->的本質在於：工程師觀察到了高強度的條件概率相關性 $P(Y \mid M)$ 或顯著的注意力權重數值 $M_{ij} \approx 1$，便錯誤斷言 $M$ 是 $Y$ 的主導成因。
 
 > [!IMPORTANT]
 > **中介誤認** <!-- term:MediatorMisreading --> (Mediator Misreading): 把因果鏈上可觀察的中介變數當成成因本身，因而以觀察性讀數回答只有干預才能回答的問題。 <!-- anchor:MediatorMisreading -->

@@ -50,7 +50,7 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 ### 代理讀數與資料的三重角色衝突
 
-任何在離線驗證集上量測到的純量指標均為**代理讀數（Proxy Readout） <!-- term:ProxyReadout -->**，其數學職責是替代那無法直接觀測的對象——模型在真實部署分佈上的期望風險。設模型空間為 $\mathcal{H}$，真實部署分佈為 $\mathcal{D}$，**損失函數**（Loss Function） <!-- term:LossFunction -->為 $\ell(h(x), y)$。理論上追求的目標是泛化 <!-- term:Generalization -->期望風險：
+任何在離線驗證集上量測到的純量指標均為**代理讀數**（Proxy Readout） <!-- term:ProxyReadout -->，其數學職責是替代那無法直接觀測的對象——模型在真實部署分佈上的期望風險。設模型空間為 $\mathcal{H}$，真實部署分佈為 $\mathcal{D}$，**損失函數**（Loss Function） <!-- term:LossFunction -->為 $\ell(h(x), y)$。理論上追求的目標是泛化 <!-- term:Generalization -->期望風險：
 
 > [!IMPORTANT]
 > **代理讀數** <!-- term:ProxyReadout --> (Proxy Readout): 以可計算的純量指標替代無法直接觀測之真實能力的量測結果，其有效性取決於替代關係是否成立。 <!-- anchor:ProxyReadout -->
