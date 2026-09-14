@@ -32,7 +32,10 @@
 
 <script type="text/x-template" id="slot-aboutView-contentBottom-template">
   <div v-if="ctx.pageData && ctx.pageData.srcGroups && ctx.pageData.srcGroups.length" class="mt-10">
-    <div class="text-h5 font-weight-bold mb-4" style="font-family: var(--font-heading)" v-text="ctx.t('title')"></div>
+    <div class="adr-heading">
+      <span class="adr-heading__num">03</span>
+      <span class="adr-heading__title" v-text="ctx.t('title')"></span>
+    </div>
 
     <v-tabs
       v-model="ctx.pageData.projectTab"
