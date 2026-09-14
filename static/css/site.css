@@ -291,3 +291,352 @@ input, textarea, .v-field {
   border-radius: 0 !important;
 }
 
+/* ===========================================================================
+   14. ADR & Architecture Decision Dashboard Component System
+   High-density engineering decision layout harmonized with CRT terminal skin.
+   Colors bind dynamically to active theme tokens (--v-theme-*) with adaptive
+   phosphor signal lights for semantic states.
+   =========================================================================== */
+
+/* --- Container --- */
+.adr-container {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+/* --- Section Heading with Number Badge --- */
+.adr-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 2.75rem 0 1.25rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed rgba(var(--v-theme-primary), 0.35);
+}
+
+.adr-heading__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill, 2px);
+  color: #fff;
+  background-color: rgb(var(--v-theme-secondary));
+  box-shadow: 0 0 10px rgba(var(--v-theme-secondary), 0.4);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.adr-heading__title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgb(var(--v-theme-primary));
+  text-shadow: 0 0 2px rgba(var(--v-theme-primary), 0.6);
+  letter-spacing: 0.2px;
+}
+
+/* --- Legend Container --- */
+.adr-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  color: rgba(var(--v-theme-on-surface), 0.75);
+  margin-bottom: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(var(--v-theme-primary), 0.03);
+  border: 1px solid rgba(var(--v-theme-primary), 0.15);
+}
+
+.adr-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* --- Semantic Status Badges (Adaptive Phosphor Signal Lights) --- */
+.adr-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill, 2px);
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none !important;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+/* Green (Unified / Agreed / Resolved) */
+.adr-badge--green,
+.adr-badge--emerald {
+  background-color: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.65);
+  color: #34d399;
+  text-shadow: 0 0 6px rgba(52, 211, 153, 0.35);
+}
+
+/* Amber (Custom / Collection-specific / Opt-in) */
+.adr-badge--amber,
+.adr-badge--yellow {
+  background-color: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.65);
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.35);
+}
+
+/* Rose / Pink (Pending Decision / Divergence / Risk) */
+.adr-badge--rose,
+.adr-badge--pink {
+  background-color: rgba(244, 63, 94, 0.14);
+  border: 1px solid rgba(244, 63, 94, 0.65);
+  color: #fb7185;
+  text-shadow: 0 0 6px rgba(251, 113, 133, 0.35);
+}
+
+/* Slate / Gray (Not Needed / Domain Specific / Inactive) */
+.adr-badge--slate,
+.adr-badge--gray {
+  background-color: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  color: #94a3b8;
+  text-shadow: none;
+}
+
+/* Cyan / Blue (Informational / Suggestion) */
+.adr-badge--cyan,
+.adr-badge--blue {
+  background-color: rgba(34, 211, 238, 0.14);
+  border: 1px solid rgba(34, 211, 238, 0.65);
+  color: #38bdf8;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.35);
+}
+
+/* Theme Dynamic (Directly reflects current primary phosphor) */
+.adr-badge--theme {
+  background-color: rgba(var(--v-theme-primary), 0.14);
+  border: 1px solid rgba(var(--v-theme-primary), 0.65);
+  color: rgb(var(--v-theme-primary));
+  text-shadow: 0 0 6px rgba(var(--v-theme-primary), 0.35);
+}
+
+/* --- Decision Cards Grid --- */
+.adr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+@media (min-width: 960px) {
+  .adr-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .adr-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Decision Card Component --- */
+.adr-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(var(--v-theme-background));
+  border: 1px solid rgba(var(--v-theme-primary), 0.35);
+  border-radius: var(--radius-sm, 0px);
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.adr-card:hover {
+  border-color: rgb(var(--v-theme-primary));
+  box-shadow: 0 0 16px rgba(var(--v-theme-primary), 0.25), 0 16px 32px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.adr-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(var(--v-theme-primary), 0.18);
+}
+
+.adr-card__title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: rgb(var(--v-theme-primary));
+  letter-spacing: 0.2px;
+}
+
+.adr-card__body {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(var(--v-theme-on-surface), 0.88);
+  flex-grow: 1;
+}
+
+.adr-card__body code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  padding: 1px 5px;
+  background-color: rgba(var(--v-theme-primary), 0.12);
+  border: 1px solid rgba(var(--v-theme-primary), 0.25);
+  border-radius: var(--radius-pill, 2px);
+  color: rgb(var(--v-theme-primary));
+}
+
+.adr-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(var(--v-theme-primary), 0.18);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(var(--v-theme-on-surface), 0.6);
+}
+
+/* --- Emphasized Callout Box --- */
+.adr-callout {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgb(var(--v-theme-secondary));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-secondary), 0.08) 0%,
+    rgba(var(--v-theme-background), 0.96) 100%
+  );
+  box-shadow: 0 0 18px rgba(var(--v-theme-secondary), 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
+  position: relative;
+  border-radius: var(--radius-sm, 0px);
+}
+
+.adr-callout__label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgb(var(--v-theme-secondary));
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  margin-bottom: 0.6rem;
+}
+
+.adr-callout__content {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(var(--v-theme-on-surface), 0.92);
+}
+
+.adr-callout__content strong {
+  color: rgb(var(--v-theme-primary));
+  font-weight: 700;
+}
+
+/* --- Key-Value Spec / Risk Breakdown Matrix --- */
+.adr-spec-list {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  border-top: 1px dashed rgba(var(--v-theme-primary), 0.25);
+}
+
+.adr-spec-row {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  border-bottom: 1px dashed rgba(var(--v-theme-primary), 0.25);
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .adr-spec-row {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1.75rem;
+  }
+}
+
+.adr-spec-key {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgb(var(--v-theme-secondary));
+  flex-shrink: 0;
+  min-width: 160px;
+}
+
+.adr-spec-val {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(var(--v-theme-on-surface), 0.88);
+  flex-grow: 1;
+}
+
+.adr-spec-val code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 1px 5px;
+  background-color: rgba(var(--v-theme-primary), 0.1);
+  border: 1px solid rgba(var(--v-theme-primary), 0.25);
+  border-radius: var(--radius-pill, 2px);
+  color: rgb(var(--v-theme-primary));
+}
+
+/* --- Technical ADR Table Enhancements --- */
+.markdown-body .adr-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown-body .adr-table th {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  color: rgb(var(--v-theme-primary));
+  background-color: rgba(var(--v-theme-primary), 0.08);
+  border: 1px solid rgba(var(--v-theme-primary), 0.35);
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+}
+
+.markdown-body .adr-table td {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  border: 1px solid rgba(var(--v-theme-primary), 0.25);
+  padding: 0.65rem 0.85rem;
+  vertical-align: middle;
+}
+
+.markdown-body .adr-table td:first-child {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: rgb(var(--v-theme-secondary));
+}
+
+

@@ -1,0 +1,1 @@
+<span class="adr-badge adr-badge--{{ .Get "color" | default "green" }}">{{- with .Inner -}}{{ . | markdownify }}{{- else -}}{{- .Get "text" -}}{{- end -}}</span>

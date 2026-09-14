@@ -1,0 +1,17 @@
+<div class="adr-card">
+  <div class="adr-card__header">
+    <span class="adr-card__title">{{ .Get "title" }}</span>
+    {{ with .Get "status" }}
+    <span class="adr-badge adr-badge--{{ $.Get "statusColor" | default "green" }}">{{ . }}</span>
+    {{ end }}
+  </div>
+  <div class="adr-card__body">
+    {{ .Inner | markdownify }}
+  </div>
+  {{ if or (.Get "meta") (.Get "confidence") }}
+  <div class="adr-card__footer">
+    <span>{{ .Get "meta" | default "" }}</span>
+    <span>{{ with .Get "confidence" }}confidence: {{ . }}{{ end }}</span>
+  </div>
+  {{ end }}
+</div>

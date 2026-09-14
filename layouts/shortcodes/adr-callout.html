@@ -1,0 +1,8 @@
+<div class="adr-callout">
+  {{ with .Get "label" }}
+  <div class="adr-callout__label">{{ . }}</div>
+  {{ end }}
+  <div class="adr-callout__content">
+    {{ .Inner | markdownify }}
+  </div>
+</div>
