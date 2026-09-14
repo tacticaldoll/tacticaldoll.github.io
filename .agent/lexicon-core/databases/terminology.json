@@ -1,4 +1,13 @@
 {
+  "PoolingEquilibrium": {
+    "zh": "pooling 均衡",
+    "en": [
+      "Pooling Equilibrium"
+    ],
+    "description": "訊號賽局中所有類型的參與者發出相同訊號，使得觀察者無法藉由訊號更新對其真實狀態之先驗信念的均衡狀態。",
+    "forbidden": [],
+    "level": 1
+  },
   "ConditionalProbabilitySequenceGenerator": {
     "zh": "條件機率序列生成器",
     "en": [
@@ -34,6 +43,15 @@
     "description": "模型的預測行為本身改寫了下游資料生成分佈，使後續資料不再獨立於模型決策。",
     "forbidden": [],
     "level": 2
+  },
+  "AmdahlSLaw": {
+    "zh": "Amdahl 定律",
+    "en": [
+      "Amdahl's Law"
+    ],
+    "description": "描述在固定工作負載下，對系統局部環節進行加速所能獲得的整體加速比上限受限於未加速環節佔比的定律。",
+    "forbidden": [],
+    "level": 1
   },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
@@ -1058,6 +1076,24 @@
       "Effective Number of Detectors"
     ],
     "description": "考慮審查者之間的失效相關性後，多個驗證器等效於完全獨立驗證器的真實折算數量。",
+    "forbidden": [],
+    "level": 1
+  },
+  "RepeatabilityPremise": {
+    "zh": "可重複性前提",
+    "en": [
+      "Repeatability Premise"
+    ],
+    "description": "管理動作（如利用率最大化、壓低變異）能產生正面效益所依賴的底層假設，即生產單位必須具備同質性且可被重複複製。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ObservabilityMatrix": {
+    "zh": "可觀測性矩陣",
+    "en": [
+      "Observability Matrix"
+    ],
+    "description": "控制理論中由狀態矩陣與觀測矩陣構造的矩陣，當其秩虧時代表存在無法透過外部讀數重建的內部狀態維度。",
     "forbidden": [],
     "level": 1
   },
@@ -2201,6 +2237,51 @@
       "Excluded Observation Set"
     ],
     "description": "給定假說下，邏輯上蘊涵該假說為假的所有可能觀察結果集合；其非空為可證偽性之充要條件。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SufficientStatistic": {
+    "zh": "充分統計量",
+    "en": [
+      "Sufficient Statistic"
+    ],
+    "description": "在統計推論中，能夠完整包含樣本中關於未知參數所有資訊的統計量；當單位異質時，計數不再構成產出的充分統計量。",
+    "forbidden": [],
+    "level": 1
+  },
+  "UnitHomogeneity": {
+    "zh": "單位同質性",
+    "en": [
+      "Unit Homogeneity"
+    ],
+    "description": "各工作單位在複雜度、資訊量與所需心智投入上實質相同的性質；缺乏此性質時，直接平均與加總將產生推論謬誤。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SensitivityAnalysis": {
+    "zh": "敏感度分析",
+    "en": [
+      "Sensitivity Analysis"
+    ],
+    "description": "分析系統輸出或狀態變數對控制參數微小變動之偏導數與反應劇烈程度的方法。",
+    "forbidden": [],
+    "level": 1
+  },
+  "WipDisplacement": {
+    "zh": "在製品位移",
+    "en": [
+      "WIP Displacement"
+    ],
+    "description": "提升非瓶頸工站產能後，未被下游吸收的產出差額向下游瓶頸節點前方堆積的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ExhaustivenessCheck": {
+    "zh": "窮盡性檢查",
+    "en": [
+      "Exhaustiveness Check"
+    ],
+    "description": "由編譯器或靜態分析工具驗證所有可能的輸入情境或列舉分支皆被明確處理的保證機制。",
     "forbidden": [],
     "level": 1
   },
@@ -3393,13 +3474,13 @@
     "level": 2
   },
   "TheoryOfConstraints": {
-    "zh": "約束理論",
+    "zh": "瓶頸理論",
     "en": [
       "Theory Of Constraints"
     ],
-    "description": "一種管理學方法論，主張系統的產出受限於其最薄弱的環節（瓶頸）。在開發流程中，AI 擴充了程式碼生成產能，但瓶頸往往在於人類的驗證能力。",
+    "description": "指出任何串聯系統的整體吞吐量必然受限於產能最低的瓶頸工站，非瓶頸工站的局部最佳化只會增加庫存的系統工程理論。",
     "forbidden": [],
-    "level": 2
+    "level": 1
   },
   "TypeAnnotation": {
     "zh": "型別標註",
@@ -4625,6 +4706,240 @@
     "forbidden": [],
     "level": 1
   },
+  "InformationGain": {
+    "zh": "資訊增益",
+    "en": [
+      "Information Gain"
+    ],
+    "description": "系統在觀測到新資料或實驗結果後，不確定性（熵）減少的程度；變異為零意味著無法從中取得任何資訊增益。",
+    "forbidden": [],
+    "level": 1
+  },
+  "RDProcess": {
+    "zh": "研發流程",
+    "en": [
+      "R&D Process"
+    ],
+    "description": "研發工程中從需求探索、概念構思、架構設計到實作驗證的端到端活動序列。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MetricDesign": {
+    "zh": "度量設計",
+    "en": [
+      "Metric Design"
+    ],
+    "description": "為了反映系統運作狀態與引導組織行為，定義觀測維度、採樣方式與彙整邏輯的架構過程。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ObjectiveFunction": {
+    "zh": "目標函數",
+    "en": [
+      "Objective Function"
+    ],
+    "description": "最佳化演算法或管理決策所試圖最大化或最小化的定量目標；未進入讀數的維度在目標函數中梯度分量恆為零。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ProjectedGradient": {
+    "zh": "投影梯度",
+    "en": [
+      "Projected Gradient"
+    ],
+    "description": "在受限最佳化問題中，將目標函數的無約束梯度投影至可行域切空間的方向向量；不可觀測維度的無約束梯度為零時，其解完全由可行域邊界決定。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MetricGovernance": {
+    "zh": "度量治理",
+    "en": [
+      "Metric Governance"
+    ],
+    "description": "針對組織指標的採集口徑、失真風險、反轉效應與退化機制所建立的審計、對帳與防禦性規範體系。",
+    "forbidden": [],
+    "level": 1
+  },
+  "InformationTheory": {
+    "zh": "資訊理論",
+    "en": [
+      "Information Theory"
+    ],
+    "description": "研究訊號傳輸、資訊量化、熵與通道容量的應用數學分支，用以分析系統在不確定性下的觀測與編碼邊界。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ControlSignal": {
+    "zh": "控制訊號",
+    "en": [
+      "Control Signal"
+    ],
+    "description": "控制系統中用以調整執行機構狀態的即時回饋輸入；必須具備可及時反應偏差且敏感度不致發散之特性。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FlowGovernance": {
+    "zh": "流動治理",
+    "en": [
+      "Flow Governance"
+    ],
+    "description": "聚焦於交付前置時間、在製品數量與阻塞節點的系統性流動最佳化機制，而非個別資源的稼動率。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ThroughputConservation": {
+    "zh": "吞吐守恆",
+    "en": [
+      "Throughput Conservation"
+    ],
+    "description": "穩態串聯系統各工站的有效產出率受限於瓶頸工站處理能力的物理定律。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PerformanceClaim": {
+    "zh": "效能宣告",
+    "en": [
+      "Performance Claim"
+    ],
+    "description": "對系統局部或整體改善成果所作出的量化評估陳述，需嚴格界定其有效範圍與觀測尺度。",
+    "forbidden": [],
+    "level": 1
+  },
+  "BatchEconomics": {
+    "zh": "批量經濟",
+    "en": [
+      "Batch Economics"
+    ],
+    "description": "研究交付與生產批量大小如何透過固定交易成本與持有延遲成本之折衝決定系統總成本的經濟學模型。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TransactionCost": {
+    "zh": "交易成本",
+    "en": [
+      "Transaction Cost"
+    ],
+    "description": "啟動一次交付或批次處理所需投入的固定開銷（如設定、審查、會議、儀式等），與該批次包含的工作量無關。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FeedbackDelay": {
+    "zh": "回饋延遲",
+    "en": [
+      "Feedback Delay"
+    ],
+    "description": "從某個動作或決策被執行，到系統產生可觀測結果並被決策者感知之間的時間差。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ProcessDesign": {
+    "zh": "流程設計",
+    "en": [
+      "Process Design"
+    ],
+    "description": "規劃組織活動的流轉順序、產出標準、驗證關卡與責任劃界的架構工程。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SquareRootLaw": {
+    "zh": "平方根律",
+    "en": [
+      "Square Root Law"
+    ],
+    "description": "經濟訂購量（EOQ）模型中最佳批量與固定開銷與持有成本比值之平方根成正比的數學關係。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ResponsibilityBoundary": {
+    "zh": "職責劃界",
+    "en": [
+      "Responsibility Boundary"
+    ],
+    "description": "在架構設計或團隊協作中明確劃分由誰持有決策、決策客體為何以及其可判定範圍的邊界契約。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpecificationDesign": {
+    "zh": "規格設計",
+    "en": [
+      "Specification Design"
+    ],
+    "description": "定義系統外部契約、前置條件、後置條件與狀態不變式的正規化表達過程。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MechanismDesign": {
+    "zh": "機制設計",
+    "en": [
+      "Mechanism Design"
+    ],
+    "description": "博弈論的一個分支，研究如何設定規則與誘因結構，使得理性個體在追求自利時能達成系統期望的集體結果。",
+    "forbidden": [],
+    "level": 1
+  },
+  "IncentiveCompatibility": {
+    "zh": "誘因相容",
+    "en": [
+      "Incentive Compatibility"
+    ],
+    "description": "機制設計中的關鍵性質，要求參與者誠實揭露資訊或遵守規則的預期效益高於隱瞞或違規的預期效益。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MetricInversion": {
+    "zh": "指標反轉",
+    "en": [
+      "Metric Inversion"
+    ],
+    "description": "古德哈特定律的具體表現：當原本作為診斷用途的訊號被納入考核指標時，其誘因結構改變導致訊號失真甚至產生相反效果的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StateConstraint": {
+    "zh": "狀態約束",
+    "en": [
+      "State Constraint"
+    ],
+    "description": "系統資料層或執行環境中強制要求狀態轉換必須滿足的先決條件與客觀留痕契約。",
+    "forbidden": [],
+    "level": 1
+  },
+  "RuleEfficacy": {
+    "zh": "規則效力",
+    "en": [
+      "Rule Efficacy"
+    ],
+    "description": "條款規範能夠真實約束執行者行為並被理性遵守的程度，取決於違反行為的可偵測性與代價。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SignalingGame": {
+    "zh": "訊號賽局",
+    "en": [
+      "Signaling Game"
+    ],
+    "description": "資訊不對稱環境下，擁有私有資訊之參與者發出訊號、接收者依據訊號推斷其類型並採取行動的動態賽局模型。",
+    "forbidden": [],
+    "level": 1
+  },
+  "InertClause": {
+    "zh": "惰性條文",
+    "en": [
+      "Inert Clause"
+    ],
+    "description": "缺乏客觀檢查手段、從未產生可觀測違反紀錄但仍存在於規範手冊中的強制性文字要求。",
+    "forbidden": [],
+    "level": 1
+  },
+  "GovernanceDiagnostics": {
+    "zh": "治理診斷",
+    "en": [
+      "Governance Diagnostics"
+    ],
+    "description": "檢驗組織規範、制度條款與執行機制之間的落差與失真，並定位機制缺口位置的分析方法。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -5193,6 +5508,51 @@
       "Likelihood Ratio"
     ],
     "description": "在特定假設成立與不成立下觀測到同一徵候的條件機率之比，決定貝氏後驗更新的幅度。",
+    "forbidden": [],
+    "level": 1
+  },
+  "QueueingTheory": {
+    "zh": "排隊論",
+    "en": [
+      "Queueing Theory"
+    ],
+    "description": "研究服務系統中等待佇列形成、延遲分佈與擁塞動力學的應用數學分支。",
+    "forbidden": [],
+    "level": 1
+  },
+  "WorkInProgress": {
+    "zh": "在製品",
+    "en": [
+      "Work In Progress"
+    ],
+    "description": "已進入生產流程但尚未交付完成的所有工作項目總和（簡稱 WIP）；在研發流程中多以未合併程式碼或未驗證構思等無形資訊形式存在。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PartialFunction": {
+    "zh": "偏函數",
+    "en": [
+      "Partial Function"
+    ],
+    "description": "僅在輸入定義域的某個真子集上有定義的函數；當面對未定義的輸入時將產生未定義行為或靜默錯誤。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TotalFunction": {
+    "zh": "全函數",
+    "en": [
+      "Total Function"
+    ],
+    "description": "在其定義域的所有可能輸入上皆有明確定義與輸出之函數。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DiscountFactor": {
+    "zh": "折扣率",
+    "en": [
+      "Discount Factor"
+    ],
+    "description": "理性讀者在面對可能失效或缺乏強制的文字條款時，在事前評估與執行投入上所打折的心理折現比例。",
     "forbidden": [],
     "level": 1
   },
