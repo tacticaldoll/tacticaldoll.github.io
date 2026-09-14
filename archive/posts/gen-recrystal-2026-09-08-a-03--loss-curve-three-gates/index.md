@@ -1,7 +1,7 @@
 +++
 title = "loss 在降不代表在學：求導、更新與泛化的三道門"
 date = "2026-09-08T19:18:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "2017 年那篇提出 Transformer 的論文，在訓練設定裡藏了一個看起來像雜項的細節：學習率在前 4000 步線性上升，之後才按平方根倒數衰減。[Vaswani 等人，2017](https://arxiv.org/abs/1706.03762)"

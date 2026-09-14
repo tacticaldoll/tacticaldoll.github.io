@@ -1,7 +1,7 @@
 +++
 title = "VAE 如何學習潛在空間：機率編碼與變分推論"
 date = "2026-09-06T02:36:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "變分自動編碼器學的是給定輸入時潛在變數的分佈。以證據下界說明重建與正則化之間的結構性張力，以及重參數技巧真正解決的問題。"

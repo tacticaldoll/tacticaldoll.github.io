@@ -1,7 +1,7 @@
 +++
 title = "慣例驅動的封裝：為什麼 AI agent 元件開發預設長成 god module"
 date = "2026-07-12T01:16:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "用 AI agent 做元件開發時，你要一個薄核，生成端卻補全成一個肥平台。這篇拆解 god module 的成因：慣例聚合如何填補你沒說出口的提示空缺、為何連刻意求薄都仍過度擁有應用語義，以及「找對消費者」本身的三難。"

@@ -1,7 +1,7 @@
 +++
 title = "買到的是哪幾層：模型輸出與可追責結果之間的交付邊界"
 date = "2026-09-09T00:12:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "2017 年 2 月，德州大學系統的內部稽核報告檢視了 MD Anderson 癌症中心與 IBM 合作的腫瘤學專家顧問專案。報告指出該中心已支付約 6,200 萬美元，而系統並未進入臨床使用，採購程序也未依規定執行。[UT System internal audit report](https://www.utsystem.edu/sites/default/files/documents/UT"

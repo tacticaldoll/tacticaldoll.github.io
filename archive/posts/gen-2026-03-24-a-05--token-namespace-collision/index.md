@@ -1,7 +1,7 @@
 +++
 title = "Token Namespace Collision：LLM 協作環境的命名空間約束"
 date = "2026-03-24T23:30:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "深入分析通用詞彙被多重定義時產生的命名空間碰撞與無線電同頻干擾現象，為 AI 指引提供實用的去雙語化與命名空間隔離約束。"

@@ -1,7 +1,7 @@
 +++
 title = "結構約束與 Agent Error Surface：為 AI 協作設計 Extension Point"
 date = "2026-03-27T18:30:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討代碼結構約束如何系統性地窄化 AI 協作開發中的 Error Surface，分析術語漂移、引用完整性與語意預設偏差等失敗模式，並將 Agent Safety 提倡為 extension point 的關鍵設計維度。"

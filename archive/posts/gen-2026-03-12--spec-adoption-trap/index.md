@@ -1,7 +1,7 @@
 +++
 title = "規格導入不必是瀑布陷阱"
 date = "2026-03-12T16:00:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析將規格驅動開發引入棕地專案時的規格債概念，剖析差量開發流程的五大迷思，並闡述規格稀疏期的按需校對與增量形式化運作模式。"

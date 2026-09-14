@@ -1,7 +1,7 @@
 +++
 title = "最小可信輸入：LLM 驅動分析的證據收斂法"
 date = "2026-03-24T23:30:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "提出在 legacy 程式碼考古中應用最小可信輸入原則，分析時效性、完整性與精確性衰減之風險，並利用史學的「源泉批判」與最佳證據規則實現證據收斂。"

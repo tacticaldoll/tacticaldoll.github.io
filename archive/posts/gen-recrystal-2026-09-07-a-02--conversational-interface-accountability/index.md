@@ -1,7 +1,7 @@
 +++
 title = "會說話的介面不會自行取得責任"
 date = "2026-09-07T00:28:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Air Canada 判決顯示聊天機器人不是獨立責任主體。分離生成、授權、執行與救濟四個角色，說明擬人化為何讓使用者誤認行動權，而揭露本身並不等於治理。"

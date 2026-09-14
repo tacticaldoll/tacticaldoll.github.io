@@ -1,7 +1,7 @@
 +++
 title = "拓撲補償：用 Agent 審 Agent 的可能性與天花板"
 date = "2026-05-31T19:00:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析利用多 Agent 交叉 Review 的協作拓撲來補償注意力盲區的有效邊界，並確立共享知識盲區、速度乘數與仲裁無限回歸的三大結構性天花板。"

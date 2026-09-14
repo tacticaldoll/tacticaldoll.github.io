@@ -1,7 +1,7 @@
 +++
 title = "RNN 如何壓縮序列：隱藏狀態、梯度與門控資訊流"
 date = "2026-09-06T02:36:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "遞迴網路以共享轉換把可變長度歷史壓成固定維度狀態。說明梯度為何在長序列上失控，以及門控如何重塑資訊與梯度路徑，而不是賦予模型記憶。"

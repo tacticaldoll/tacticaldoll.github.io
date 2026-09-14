@@ -1,7 +1,7 @@
 +++
 title = "為遺留專案導入治理框架"
 date = "2026-03-05T09:07:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "詳細記錄在遺留專案中導入文件階層與治理框架的歷程，解決了專案慣例、工程標準與累積知識的結構性混亂問題。"

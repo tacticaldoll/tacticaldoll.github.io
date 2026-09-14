@@ -1,7 +1,7 @@
 +++
 title = "新知識為何覆蓋舊能力：梯度干涉與災難性遺忘"
 date = "2026-09-06T02:58:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "微調新任務後舊任務表現崩落，並不是參數自然老化。以梯度內積分析共享參數上的干涉，說明遺忘是支撐舊行為的結構被改寫。"

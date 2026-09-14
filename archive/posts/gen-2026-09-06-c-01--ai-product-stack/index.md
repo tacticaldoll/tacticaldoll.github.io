@@ -1,7 +1,7 @@
 +++
 title = "賣的不是模型：AI 商品由能力、服務與責任共同構成"
 date = "2026-09-06T03:14:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "簽約買的是「AI 助理」，交付物看似一個模型，實際還包括 API、權限、監測、整合、支援與出錯後的處理程序。把 AI 商品視為社會技術系統，拆解各層如何共同決定可靠性。"

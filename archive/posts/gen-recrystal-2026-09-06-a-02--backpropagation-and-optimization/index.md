@@ -1,7 +1,7 @@
 +++
 title = "誤差如何成為參數更新"
 date = "2026-09-06T21:16:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "求導、更新與泛化是三個不同命題。說明反向傳播如何重用計算圖中間量，以及學習率與條件數如何決定更新是否真的收斂。"

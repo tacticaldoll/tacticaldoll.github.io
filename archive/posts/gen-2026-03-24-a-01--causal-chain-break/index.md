@@ -1,7 +1,7 @@
 +++
 title = "認知負擔與因果斷裂：人機知識傳遞的隱形斷層"
 date = "2026-03-24T00:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析無狀態 AI 代理人面臨的認知負擔瓶頸，揭示僅傳遞結論而剝離推理過程所導致的「因果斷裂」風險，並重新框架 governance 文件作為因果鏈保存系統的必要性。"

@@ -1,7 +1,7 @@
 +++
 title = "未來如何被提前定價：風險投資、華爾街與 AI 選擇權"
 date = "2026-09-06T03:14:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "尚未獲利的公司能取得高額融資，成熟上市公司則同時獲得成長期待與毛利壓力。對比創投情境法與公開市場現金流，說明敘事如何進入估值假設。"

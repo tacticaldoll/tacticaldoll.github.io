@@ -1,7 +1,7 @@
 +++
 title = "墜入重力井：AI 跨語言重寫的四大陷阱"
 date = "2026-06-13T22:39:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "當一個 Legacy 系統變得難以維護，跨語言重寫看起來往往像逃生門。舊系統可能是 Python、Ruby、PHP、Java 或某個歷史版本的框架；新系統則可能選擇 Rust、Go、TypeScript、Kotlin 或更現代的雲原生架構。團隊希望藉由新語言、新型別系統、新部署模型與新工具鏈，擺脫過去累積的複雜度。"

@@ -1,7 +1,7 @@
 +++
 title = "長程訊號為何學不到：遞迴網路的信用分配失敗"
 date = "2026-09-06T22:50:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "架構存得住早期狀態，訓練後卻只對最近輸入敏感。沿著 Jacobian 連乘追蹤跨時間的梯度通道，把長程依賴的取得失敗與其他坍縮分開。"

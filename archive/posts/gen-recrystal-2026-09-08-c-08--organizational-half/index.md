@@ -1,7 +1,7 @@
 +++
 title = "組織那一半的因果：同一個工具為何產生相反的結果"
 date = "2026-09-09T01:49:08+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一項涵蓋 5,000 多名客服人員的實地研究發現，導入生成式 AI 助理後，每小時解決問題數平均提高約 15%。效果並不均勻：增益集中在較新、較低技能的工作者，而經驗最豐富的一群幾乎沒有改善。研究把機制歸給知識擴散——工具從高績效對話中萃取可用模式，讓新手更快採用那些模式。[Generative AI at Work](https://academic.oup.com/qje/article/14"

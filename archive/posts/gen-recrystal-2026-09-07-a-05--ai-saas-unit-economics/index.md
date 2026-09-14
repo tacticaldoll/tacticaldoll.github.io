@@ -1,7 +1,7 @@
 +++
 title = "AI SaaS 的單位經濟：採用越多為何不必然更賺錢"
 date = "2026-09-07T00:28:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "固定月費不會讓每次推論變免費。把推論、人工覆核與閒置容量放回每次交付，說明用量成長何時擴張貢獻利益、何時被反彈效應與尾部延遲吃掉。"

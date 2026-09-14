@@ -1,7 +1,7 @@
 +++
 title = "超越工具綁定：基於 AAIF 與 AGENTS.md 的邊界治理與反熵增實踐"
 date = "2026-03-23T16:25:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "本文旨在解構 Agentic AI Foundation (AAIF) 的 AGENTS.md 開源標準，剖析 AI 代理人治理中「能力檢索」與「知識轉移」的認知錯位。透過「入口網關」與「漸進式披露」等具體正反向範例，提出切實可行的結構即治理與反熵增實踐。"

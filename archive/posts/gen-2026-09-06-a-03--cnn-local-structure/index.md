@@ -1,7 +1,7 @@
 +++
 title = "CNN 如何利用局部結構：卷積、共享權重與感受野"
 date = "2026-09-06T02:36:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "卷積網路不是從零學會平移不變，而是先用局部連接與權重共享限制可選函數。說明結構偏置如何讓模型以較少資料學得影像規律。"

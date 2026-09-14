@@ -1,7 +1,7 @@
 +++
 title = "局部完備性：Agent 開發的約束集與治理防線"
 date = "2026-03-11T22:30:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Agent 是接龍狀態機，代碼整潔度的多個面向會製造因果斷裂，而 DRY + 集中知識庫的疊加可以將風險升級為系統性崩潰。在這些前提下，問題變成：如何在不重寫既有代碼的前提下回應這些風險？"

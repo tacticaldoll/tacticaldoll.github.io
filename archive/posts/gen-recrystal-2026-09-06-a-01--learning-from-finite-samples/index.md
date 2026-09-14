@@ -1,7 +1,7 @@
 +++
 title = "有限樣本何時足以支持能力主張"
 date = "2026-09-06T21:16:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "低訓練誤差不等於能力。拆解資料生成分佈、假設空間與選擇準則三層，說明把經驗風險外推成目標分佈能力還需要哪些條件。"

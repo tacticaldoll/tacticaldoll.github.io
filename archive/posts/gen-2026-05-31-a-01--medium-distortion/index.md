@@ -1,7 +1,7 @@
 +++
 title = "介質失真：有狀態協作與無狀態推理的結構性鴻溝"
 date = "2026-05-31T15:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析文字介質在人機協作中承載狀態的雙重失真機制（人到文字的編碼損耗，與文字到Agent的解碼變形），探討文字 artifacts 承載判斷力的承載上限與失真預算。"

@@ -1,7 +1,7 @@
 +++
 title = "能力為何沒有形成：梯度障礙、坍縮與最佳化失敗"
 date = "2026-09-06T02:58:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "架構能表示某個函數，不代表訓練找得到它。區分梯度障礙與 RNN、GAN、VAE 三種坍縮各自失去的對象，說明取得失敗不是能力老化。"

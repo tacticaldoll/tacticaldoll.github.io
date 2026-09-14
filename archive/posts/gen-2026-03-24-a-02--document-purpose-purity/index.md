@@ -1,7 +1,7 @@
 +++
 title = "文件目的純粹性：一份文件，一種預期"
 date = "2026-03-24T00:00:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "剖析服務多重目的的文件如何稀釋其效用並腐蝕心理模型，深入探討時效不對稱性帶來的信任危機，並提出欄位拆分與內容路由的修復策略。"

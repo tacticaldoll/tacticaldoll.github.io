@@ -1,7 +1,7 @@
 +++
 title = "AI Code Review 的邊界：局部一致性能被檢查，全局合理性必須被授權"
 date = "2026-06-10T17:40:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "AI 擅長驗局部一致性，但全局合理性必須由人類授權。本文劃出 AI code review 的邊界，解釋為何自洽的 diff 仍需要 owner 的責任閘門，而非格式完整就放行。"

@@ -1,7 +1,7 @@
 +++
 title = "下降不是退化：能力失效的四軸診斷座標"
 date = "2026-09-06T22:50:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分數下降是警報，不是病名。把模型參數、資料分佈、推論設定與測量契約拆成四個座標，說明同一次掉分要怎麼分辨究竟是誰變了。"

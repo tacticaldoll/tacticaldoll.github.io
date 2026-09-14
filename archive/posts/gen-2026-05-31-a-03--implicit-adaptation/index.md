@@ -1,7 +1,7 @@
 +++
 title = "隱性適應：從設問式操作到觀念化能力"
 date = "2026-05-31T15:00:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "從 Katz 管理技能模型與蘇格拉底對書寫的批評切入，探討設問式操作作為 AI 協作中觀念化能力的本質，分析此類能力抵抗外化的原因，並規劃了判斷力的內化路徑。"

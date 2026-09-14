@@ -62,7 +62,7 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
 
 [params]
   description = "exists. occasionally transmits."
-  author = "TTL::0"
+  author = "梅乾"
   customCSS = ["/css/site.css"]
   # First-visit colour mode (no stored user choice). The theme resolves this in
   # both the pre-paint splash (baseof adds .v-theme--dark before first paint, and
@@ -82,9 +82,9 @@ disableKinds = ["sitemap", "rss", "404", "robotsTXT"]
     authorLayout = "auto" # "auto" | "tabs" | "single"
 
   [[params.about.authors]]
-    id = "ttl0"
-    name = "TTL:0"
-    byline = "TTL::0"
+    id = "meigan"
+    name = "梅乾"
+    byline = "梅乾"
 
   [params.social]
     github = "https://github.com/tacticaldoll"

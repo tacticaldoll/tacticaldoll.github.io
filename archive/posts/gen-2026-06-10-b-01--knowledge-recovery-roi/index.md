@@ -1,7 +1,7 @@
 +++
 title = "知識回收的 ROI：把一次性探索轉成可重用理解"
 date = "2026-06-10T17:58:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探索成本花掉了，不代表內容就值得保存。本文用 ROI 視角拆解知識回收：哪些一次性探索值得蒸餾成可重用結構，哪些只是把低價值內容整理得更漂亮的浪費。"

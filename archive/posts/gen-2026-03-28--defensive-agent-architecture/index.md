@@ -1,7 +1,7 @@
 +++
 title = "防禦型 Agent 架構：在多模型協作中實踐最小注入與血統追蹤"
 date = "2026-03-28T17:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討在多模型協作管線中，如何透過語意隔離原則（如 YAML 法拉第籠）與環境區分的溯源標記，防範大型語言模型產生語意污染與越權修改，建立穩健的防禦型 Agent 架構。"

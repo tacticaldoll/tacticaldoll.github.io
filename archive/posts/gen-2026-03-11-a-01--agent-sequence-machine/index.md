@@ -1,7 +1,7 @@
 +++
 title = "接龍狀態機的因果斷裂：Agent 推理的本質限制"
 date = "2026-03-11T22:30:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "軟體工程中，我們習慣將 AI agent 視為「會推理但有時推錯」的開發者。這個心智模型決定了我們如何設計代碼、如何組織知識、如何建立治理機制。但如果這個心智模型從根本上就是錯的呢？"

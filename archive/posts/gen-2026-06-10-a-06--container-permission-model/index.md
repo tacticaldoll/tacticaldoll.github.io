@@ -1,7 +1,7 @@
 +++
 title = "Container 權限模型：Root、Namespace 與 Host Object 的邊界"
 date = "2026-06-10T16:56:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Container 不是單一安全機制，而是 namespace、cgroup、capabilities、mount、seccomp 與 LSM 的組合。本文解釋為什麼 container root 不等於 host root，以及哪些設定會讓這道邊界整個崩塌。"

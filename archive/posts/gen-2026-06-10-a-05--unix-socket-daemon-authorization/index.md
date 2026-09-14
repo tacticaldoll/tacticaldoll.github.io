@@ -1,7 +1,7 @@
 +++
 title = "Unix Socket Daemon 的授權邊界：從入口權限到 Protocol 權限"
 date = "2026-06-10T16:56:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Unix socket daemon 的授權不只看 socket file mode。本文拆出四層授權邊界：誰找得到入口、誰連得進來、protocol 允許做什麼，以及 daemon 自身握有多大權力。"

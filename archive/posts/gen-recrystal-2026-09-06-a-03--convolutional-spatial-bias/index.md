@@ -1,7 +1,7 @@
 +++
 title = "卷積何時能把局部性換成樣本效率"
 date = "2026-09-06T21:16:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "權重共享把平移結構寫進架構，用自由度換樣本效率。說明這項空間偏置何時降低樣本需求，又在何時刪掉任務需要的資訊。"

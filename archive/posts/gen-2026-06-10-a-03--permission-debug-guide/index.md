@@ -1,7 +1,7 @@
 +++
 title = "Permission Denied 不是一種錯：Linux 權限排查地圖"
 date = "2026-06-10T16:56:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "EACCES、EPERM 與 ECONNREFUSED 不是同一種「Permission denied」。本文把 process 主體與 kernel object 模型轉成一張排查地圖，協助定位 kernel 究竟在哪一層、為什麼拒絕了操作。"

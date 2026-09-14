@@ -1,7 +1,7 @@
 +++
 title = "不能做實驗的時候：因果階梯上還剩什麼"
 date = "2026-09-09T00:35:14+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個信用風險團隊要回報放款部位的違約風險。他們的模型只在被核准的申請上取得標籤——被拒絕的申請沒有後續，也就沒有結果可觀察。"

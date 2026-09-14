@@ -1,7 +1,7 @@
 +++
 title = "一個效用宣稱要附什麼：驗證契約的九個欄位"
 date = "2026-09-09T03:34:14+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "2016 年，一組研究者系統性地比對了發表在五份頂尖醫學期刊上的 67 篇臨床試驗報告與它們事前登記的計畫。結果是：只有 9 篇正確報告了全部事先指定的結果指標；累計有 354 個事先指定的指標沒有被報告，而 357 個未經事先指定的新指標被加了進來。[COMPare Trials Project](https://compare-trials.org/)"

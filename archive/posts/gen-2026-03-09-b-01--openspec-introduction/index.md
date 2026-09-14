@@ -1,7 +1,7 @@
 +++
 title = "以結構承載語意：OpenSpec 的規格驅動開發模型"
 date = "2026-03-09T21:30:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "當一個長期運行的遺留專案完成治理框架建設，下一個挑戰是從「有流程約束但無規格」過渡到「規格驅動開發」。本文深入剖析 OpenSpec 框架中規格即真相、差量變更模型與結構即治理的核心理念。"

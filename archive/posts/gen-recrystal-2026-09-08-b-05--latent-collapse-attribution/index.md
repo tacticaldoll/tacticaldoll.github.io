@@ -1,7 +1,7 @@
 +++
 title = "同一個低 KL，四種病因：潛在通道失用的成因分流"
 date = "2026-09-08T22:03:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個團隊訓練帶潛在變數的生成模型，儀表板上的 KL 項在第三個 epoch 之後貼在 $0.003$ 附近不動。有人查了常見的處方，把 KL 的權重從 $1.0$ 降到 $0.1$。"

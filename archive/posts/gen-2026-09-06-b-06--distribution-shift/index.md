@@ -1,7 +1,7 @@
 +++
 title = "模型沒有改變，世界卻改變了：分佈漂移與回饋迴圈"
 date = "2026-09-06T02:58:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "參數完全不變，模型仍可能失去效用。拆解分佈漂移與模型內部退化為何症狀相同，以及輸出影響行動後形成的動態回饋。"

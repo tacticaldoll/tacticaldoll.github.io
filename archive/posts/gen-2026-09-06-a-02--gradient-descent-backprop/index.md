@@ -1,7 +1,7 @@
 +++
 title = "梯度如何塑造參數：從線性模型到反向傳播"
 date = "2026-09-06T02:36:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "模型能表示某個函數，不代表訓練找得到它。拆解反向傳播如何把輸出誤差分配到各層參數，以及梯度下降如何把這些訊號轉成實際更新。"

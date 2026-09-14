@@ -1,7 +1,7 @@
 +++
 title = "檔案、Socket 與 Kernel Object：權限檢查如何把主體接到客體"
 date = "2026-06-10T16:56:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "process credentials 是主體，檔案、目錄、socket、device 則是客體。本文說明 kernel 如何把主體接到不同類型的 kernel object，並解析 Unix socket file 為何同時受 filesystem 權限與 socket IPC 規則約束。"

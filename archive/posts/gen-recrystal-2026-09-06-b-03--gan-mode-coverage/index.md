@@ -1,7 +1,7 @@
 +++
 title = "漂亮樣本為何仍可能失覆：GAN 的模式坍縮診斷"
 date = "2026-09-06T22:50:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "幾張逼真的圖不等於覆蓋了分佈。分開樣本品質與模式覆蓋兩組觀察量，說明要證明模式坍縮失去的是模式，還需要哪些對照。"

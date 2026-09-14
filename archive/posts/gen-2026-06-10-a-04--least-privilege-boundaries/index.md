@@ -1,7 +1,7 @@
 +++
 title = "最小權限的現代形狀：從降權到 Sandbox 邊界"
 date = "2026-06-10T16:56:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "最小權限不是「不要用 root」一句話就能交代。本文拆解 process identity、capabilities、namespace、seccomp、LSM 與 cgroup 如何在 daemon 生命週期的各階段，共同收斂出一道現代化的權限邊界。"

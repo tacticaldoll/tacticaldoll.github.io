@@ -1,7 +1,7 @@
 +++
 title = "設計知識萃取工具"
 date = "2026-03-05T09:13:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析對話知識的揮發性問題，並介紹了知識萃取管線（蒸餾、結晶、沉澱）的設計邏輯及其在專案知識保留上的應用。"

@@ -1,7 +1,7 @@
 +++
 title = "系統參與造成的世界：回流資料與表演性預測"
 date = "2026-09-09T03:15:13+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Google Flu Trends 在 2009 年前後以搜尋查詢估計流感活動，早期表現與官方監測數據相當接近。2013 年初的流感季，它的估計高出美國疾病管制中心事後公布數值約兩倍。2014 年發表於 Science 的分析指出幾個原因，其中一項特別值得記下來：媒體對流感的報導本身改變了人們的搜尋行為，而該系統的輸入正是搜尋行為。[Lazer 等人，Science 2014](https://w"

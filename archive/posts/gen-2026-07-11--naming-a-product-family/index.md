@@ -1,7 +1,7 @@
 +++
 title = "為一族產品命名：兩層分離、名實貼合、避開錯誤聯想"
 date = "2026-07-11T00:36:00+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討為產品家族命名的方法論：區分品牌與API語彙兩層，建立名實貼合的標準，避開錯誤聯想與讀音摩擦，並利用多語源打破「同一世界觀」的錯覺。"

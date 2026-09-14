@@ -1,7 +1,7 @@
 +++
 title = "Agent 認知限制與錯誤表面：從因果斷裂到結構約束"
 date = "2026-06-14T15:42:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "把 agent 想成「偶爾失誤的開發者」是危險誤解——它是無狀態序列生成系統。本文追蹤因果斷裂如何被封裝、runtime 落差、過度自由度與命名碰撞放大成錯誤表面，並以局部完備性與結構約束兩道防線，把 agent safety 從「希望模型別犯錯」轉為「讓錯誤更難發生、更難擴散」。"

@@ -1,7 +1,7 @@
 +++
 title = "概念完整性可以被分工，但不能被交接"
 date = "2026-09-11T05:36:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "從 Brooks 與 Taylor 的不同切割線，辨識規格流程如何拆散構思，以及可觀測的受阻動作如何補償交接損失。"

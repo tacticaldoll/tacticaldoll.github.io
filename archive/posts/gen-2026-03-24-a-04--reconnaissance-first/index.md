@@ -1,7 +1,7 @@
 +++
 title = "Reconnaissance-first：LLM Agent 多階段分析的分工模式"
 date = "2026-03-24T23:30:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分享在大型 C 語言函式庫考古中採用先偵察後挖掘（Reconnaissance-first）模式的實戰經驗，設計多階段分析與分工模式以有效降低 AI 代理人的認知負荷。"

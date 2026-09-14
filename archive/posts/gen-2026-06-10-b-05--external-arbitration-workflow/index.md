@@ -1,7 +1,7 @@
 +++
 title = "自動化工作流的外部裁決：為什麼防禦不能只由 LLM 自己生成"
 date = "2026-06-10T17:40:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "當 LLM 自己生成、評估、批准又執行，防禦就退化成自洽敘事。本文主張自動化只能產生候選結構，信任狀態必須交由非同源的外部裁決授權。"

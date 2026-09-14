@@ -1,7 +1,7 @@
 +++
 title = "兩個口徑不同步：用量成長為何吃掉貢獻利益"
 date = "2026-09-09T02:24:10+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Microsoft 截至 2026 年 6 月的年報同時記載兩件事：AI 產品的席次與用量成長推升營收，以及 AI 基礎設施投資與使用量對雲端毛利率造成壓力，其中部分由效率改善抵銷。[Microsoft 2026 Form 10-K](https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/msft-20260630.ht"

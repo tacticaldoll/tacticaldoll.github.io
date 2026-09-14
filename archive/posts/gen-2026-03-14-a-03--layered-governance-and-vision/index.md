@@ -1,7 +1,7 @@
 +++
 title = "架構倒置：以雙層治理防禦權威漂移"
 date = "2026-03-14T16:50:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討外部規格 (Spec) 作為靜態文件，必須依賴動態的自動化治理機制 (Governance Agents) 來維護與守護的架構倒置原理。"

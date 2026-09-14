@@ -1,7 +1,7 @@
 +++
 title = "領域驅動架構與 AI Agent 的協作效能：從認知壓縮到行為護攔"
 date = "2026-03-29T02:25:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析如何透過領域驅動架構（DDD）進行系統重組，將散亂的程序化腳本壓縮為具備自癒能力的領域實體，以降低 AI Agent 的認知摩擦與搜尋熵，從而建立行為護攔並提升人機協作效率。"

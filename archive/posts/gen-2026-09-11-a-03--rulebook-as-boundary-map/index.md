@@ -1,7 +1,7 @@
 +++
 title = "規則書是一張未對帳邊界的地圖"
 date = "2026-09-11T05:05:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "未受檢查的強制條款不是單純冗餘，而是未對帳邊界的證據；規則書可據此轉化為可估價的機制缺口清單。"

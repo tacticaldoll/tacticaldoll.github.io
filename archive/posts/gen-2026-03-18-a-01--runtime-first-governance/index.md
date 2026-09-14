@@ -1,7 +1,7 @@
 +++
 title = "Runtime 優先，共存為先 — 多作者 AI 專案的治理妥協學"
 date = "2026-03-18T22:30:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個多人維護的 Rust 專案，在導入結構化工作流約兩週後，面臨一個非技術問題：規則散落在三處，沒有人知道衝突時聽誰的。"

@@ -1,7 +1,7 @@
 +++
 title = "模型為何學錯：資料雜訊、偽相關與捷徑學習"
 date = "2026-09-06T02:58:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "測試分數高不代表理由正確。只要表面特徵在訓練資料上穩定預測標籤，經驗風險最小化就有理由採用它，形成只在同分佈環境有效的捷徑。"

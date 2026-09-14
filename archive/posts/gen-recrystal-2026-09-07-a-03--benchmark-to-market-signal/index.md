@@ -1,7 +1,7 @@
 +++
 title = "評測分數如何成為市場訊號"
 date = "2026-09-07T00:28:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分數只估計該資料集與指標所定義的任務。拆開樣本代表性、評分一致性與部署差異三道中介，說明有限測量何時才撐得起產品或職業層級的能力宣稱。"

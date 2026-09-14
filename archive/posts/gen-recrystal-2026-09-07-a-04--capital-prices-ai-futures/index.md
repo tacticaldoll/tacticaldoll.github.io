@@ -1,7 +1,7 @@
 +++
 title = "資本如何替 AI 未來定價"
 date = "2026-09-07T00:28:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "敘事不會取消現金流，只會改寫成長、成功機率、成本與折現假設。區分創投尾部報酬與上市公司折現，並追蹤資本是否真的轉成產能、採用與扣除成本後的現金流。"

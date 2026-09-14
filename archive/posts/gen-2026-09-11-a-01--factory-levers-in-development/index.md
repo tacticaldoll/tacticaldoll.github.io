@@ -1,7 +1,7 @@
 +++
 title = "工廠的美德在研發是災難"
 date = "2026-09-11T05:11:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "製造業的利用率、變異、產出與標準化直覺，為何搬進研發後方向反轉，並讓局部產能提升轉化為下游佇列。"

@@ -1,7 +1,7 @@
 +++
 title = "VAE 的潛在變數何時會被使用"
 date = "2026-09-06T21:16:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "ELBO 同時獎勵重建與先驗匹配，強解碼器卻可能繞過潛在通道。說明潛在空間何時被實際使用，何時容許潛在資訊消失。"

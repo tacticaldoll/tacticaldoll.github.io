@@ -1,7 +1,7 @@
 +++
 title = "如何證明能力真的退化：控制變因、行為切片與因果診斷"
 date = "2026-09-06T02:58:07+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "表現下降只是警報，不是根因。以可重放版本、單變因對照、行為切片與不確定性估計，把下降轉成可反駁的因果主張。"

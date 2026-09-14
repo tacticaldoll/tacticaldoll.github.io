@@ -1,7 +1,7 @@
 +++
 title = "反向指引：以「負面經驗」實體化為核心的 AI 治理範式"
 date = "2026-03-10T13:40:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "隨著「隱性污染」全景圖的揭示，我們發現傳統的「正向指引」不足以對抗 AI 的認知偏誤。當 AI 陷於「憑空重構」的泥淖時，我們需要更高解析度的治理模式：反向指引。"

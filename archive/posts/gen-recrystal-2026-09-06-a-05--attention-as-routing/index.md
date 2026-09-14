@@ -1,7 +1,7 @@
 +++
 title = "注意力如何路由資訊而不等於記憶"
 date = "2026-09-06T21:16:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "內容相依加權縮短了位置之間的路徑，卻不等於保存也不等於解釋。界定注意力作為資訊路由的能力範圍與兩種常見過度推論。"

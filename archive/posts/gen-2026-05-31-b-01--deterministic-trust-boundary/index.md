@@ -1,7 +1,7 @@
 +++
 title = "確定性邊界即信任邊界：統計模型作為治理執行層的結構性限制"
 date = "2026-05-31T18:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析規格驅動開發中統計模型（LLM）作為治理執行層的侷限性，探討為何 prompt 的調整無法消除機率性錯誤，並提出劃分確定性層與統計層以重建信任邊界的架構原則。"

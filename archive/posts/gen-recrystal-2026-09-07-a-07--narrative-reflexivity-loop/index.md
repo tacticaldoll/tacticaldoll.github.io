@@ -1,7 +1,7 @@
 +++
 title = "敘事的反身性何時閉合"
 date = "2026-09-07T00:28:07+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "預期能透過資本改造現實，但只有四段轉換都留下證據才算閉合：資本形成產能、產能改善產品、產品形成留存、留存產生扣除成本與事故後的效用。"

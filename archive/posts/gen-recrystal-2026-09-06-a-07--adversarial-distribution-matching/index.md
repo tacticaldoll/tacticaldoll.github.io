@@ -1,7 +1,7 @@
 +++
 title = "GAN 為何能生成銳利樣本卻漏掉模式"
 date = "2026-09-06T21:16:07+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "樣本像真與分佈覆蓋完整是兩個目標。說明兩個同步移動的目標如何提供學習訊號，又為何在有限模型下產生模式坍縮。"

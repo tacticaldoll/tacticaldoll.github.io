@@ -1,7 +1,7 @@
 +++
 title = "概念採納：外部框架整合時的權威衝突與選擇性吸收"
 date = "2026-03-09T22:00:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個遺留專案在引入 OpenSpec 時面臨與既有治理框架的權威衝突。本文記錄了如何透過鷹架辨識、概念與工具解耦，最終採納概念並實現四步過渡的實踐歷程。"

@@ -1,7 +1,7 @@
 +++
 title = "技能幻覺：當 AI 賦能製造能力的錯覺"
 date = "2026-05-31T19:00:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "剖析 AI 賦能製造的「技能幻覺」及其自我強化機制，反思當自動化產出與真實理解脫鉤時，組織如何面臨能力中空化的脆弱風險。"

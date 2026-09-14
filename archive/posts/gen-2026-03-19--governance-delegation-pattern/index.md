@@ -1,7 +1,7 @@
 +++
 title = "不要複製權威 — 治理文件的預設委託模式"
 date = "2026-03-19T23:50:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析治理文件設計的「預設委託模式」，探討在外部權威來源（如 ESLint 預設）存在時，如何避免低效的知識複製。藉由對比「教科書模型」與「政策聲明模型」，說明該模式如何大幅降低專案維護負擔與 AI Agent 的 Context Token 消耗。"

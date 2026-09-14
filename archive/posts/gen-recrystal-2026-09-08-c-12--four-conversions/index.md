@@ -1,7 +1,7 @@
 +++
 title = "四段轉換：反身迴圈在哪一段沒有閉合"
 date = "2026-09-09T02:58:12+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Alphabet 在 2025 年投入約 910 億美元資本支出，並表示 2026 年將顯著增加；其中約六成投向伺服器，四成投向資料中心與網路等長期資產。公司同時說明折舊與資料中心營運成本正在上升。[Alphabet 2025 Q4 earnings call](https://abc.xyz/investor/events/event-details/2026/2025-Q4-Earnings-"

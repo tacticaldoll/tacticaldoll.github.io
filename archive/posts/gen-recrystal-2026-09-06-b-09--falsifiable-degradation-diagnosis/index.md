@@ -1,7 +1,7 @@
 +++
 title = "把退化警報變成可反駁診斷：版本、切片與停止條件"
 date = "2026-09-06T22:50:09+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "監測紅線只表示某個數字越界。用版本向量、交叉重放、行為切片與統計停止條件，把退化故事收束成可以被觀察推翻的因果判斷。"

@@ -1,7 +1,7 @@
 +++
 title = "敘事寫進哪一個參數：成長、機率、成本與折現率的重分配"
 date = "2026-09-09T02:41:11+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "2023 年 5 月 1 日，線上教育服務商 Chegg 在季報說明會上表示，生成式 AI 聊天服務正在影響新客戶的成長。隔日該公司股價下跌約 48%。"

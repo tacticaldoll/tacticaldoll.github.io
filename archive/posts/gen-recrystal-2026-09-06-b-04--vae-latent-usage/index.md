@@ -1,7 +1,7 @@
 +++
 title = "低 KL 為何不是唯一診斷：VAE 的潛在通道失用"
 date = "2026-09-06T22:50:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "低 KL 只是症狀，不是判決。用 ELBO 分解檢查解碼器是否已繞過潛在通道，並區分目標權衡、推論落後與模型容量三種候選機制。"

@@ -1,7 +1,7 @@
 +++
 title = "在規格稀疏期中存活：觀察性 Schema 與債務清創指南"
 date = "2026-03-14T16:50:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "提出在缺乏完整規範的階段，利用帶有標記的觀察性綱要 (Descriptive Schema) 收集現狀，並轉化技術債務的方法論。"

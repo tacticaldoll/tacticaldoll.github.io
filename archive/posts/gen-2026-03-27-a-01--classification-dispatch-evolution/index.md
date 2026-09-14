@@ -1,7 +1,7 @@
 +++
 title = "分類 Dispatch 演進：Decorator Chain 語意斷裂的根因、三段取捨、與不可能三角"
 date = "2026-03-27T18:30:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "剖析 GoF Decorator Pattern 在路徑解析與資源分類中的語意斷裂根因，探討集中式 Helper 模組到宣告式資料表的演進取捨，並揭示不 facade、不 god function、不分散分類的「不可能三角」。"

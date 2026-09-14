@@ -1,7 +1,7 @@
 +++
 title = "早發現與正確歸因：兩個目標，兩個損失函數"
 date = "2026-09-09T00:18:13+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個組織為了縮短事故處理時間，訂了一條規則：每一個模型品質告警都必須附上一個「可能根因」欄位，讓值班人員一眼知道該找誰。"

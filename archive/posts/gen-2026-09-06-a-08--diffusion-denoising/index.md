@@ -1,7 +1,7 @@
 +++
 title = "Diffusion 如何從噪聲生成：加噪分佈、去噪目標與反向採樣"
 date = "2026-09-06T02:36:08+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "擴散模型把生成拆成多個小步驟：前向逐步加噪，模型在各噪聲尺度預測噪聲，生成時反向採樣。說明多步轉移為何比一次映射更容易訓練。"

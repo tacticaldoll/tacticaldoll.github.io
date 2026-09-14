@@ -1,7 +1,7 @@
 +++
 title = "知識分層：AI 輔助團隊的記憶架構"
 date = "2026-03-12T16:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討 AI Agent 引入後的倉庫層、個人記憶層與對話層三層知識模型，以及當上層缺失時的優雅退化設計與知識晉升觸發條件。"

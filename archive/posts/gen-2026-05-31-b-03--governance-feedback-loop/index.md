@@ -1,7 +1,7 @@
 +++
 title = "回饋迴路：從 Open-Loop 治理到 Closed-Loop 觀測"
 date = "2026-05-31T18:00:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "系統性設計規格驱动開發的閉環觀測與回饋迴路，將觀測區分為規則遵守率、規則有效性與治理摩擦成本三個層次，並指出治理決策最終必須保留人在迴路中的判斷本質。"

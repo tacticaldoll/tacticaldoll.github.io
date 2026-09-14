@@ -1,7 +1,7 @@
 +++
 title = "不可見能力如何被展示：Demo、Benchmark 與行銷敘事"
 date = "2026-09-06T03:14:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "汽車可以試駕，模型涵蓋多少情境卻難以直接檢查。Demo 與 Benchmark 把不可見能力轉成市場可讀訊號，而展示總是一種選擇。"

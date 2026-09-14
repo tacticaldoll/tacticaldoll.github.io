@@ -1,7 +1,7 @@
 +++
 title = "當權威文件出錯時"
 date = "2026-03-05T09:20:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一次針對文件內部一致性的系統性審計經驗，探討當外部權威（如官方文件）與系統執行時行為發生矛盾時的解決方案與教訓。"

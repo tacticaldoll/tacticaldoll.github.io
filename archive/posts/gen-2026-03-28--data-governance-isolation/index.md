@@ -1,7 +1,7 @@
 +++
 title = "絕對歸屬架構：從物理隔離收斂多代理系統的語意發散"
 date = "2026-03-28T17:45:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "針對多代理協作中的語意坍塌與狀態混淆隱患，提出等效於哈佛架構的四象限實體隔離，結合扁平化 Schema 命名，確立系統資源的絕對歸屬關係以實現安全治理。"

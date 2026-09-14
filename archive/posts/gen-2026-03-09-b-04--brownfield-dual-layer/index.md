@@ -1,7 +1,7 @@
 +++
 title = "棕地雙層結構：在觀察與意圖之間建立誠實的邊界"
 date = "2026-03-09T23:30:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "棕地專案導入規格常面臨「描述現況」與「定義意圖」的混淆。本文探討如何透過 Architecture 與 Requirements 雙層結構誠實區分觀察與契約，並藉由畢業機制與退化防線引導規格演進。"

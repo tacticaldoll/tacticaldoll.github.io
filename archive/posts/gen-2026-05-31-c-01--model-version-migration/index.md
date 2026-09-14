@@ -1,7 +1,7 @@
 +++
 title = "地基會動：模型版本遷移的無聲漂移"
 date = "2026-05-31T19:00:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析底層大型語言模型無聲更替帶來的全局語意漂移，探討其對規格驅動開發（SDD）治理機制及人機協作認知基準的根本性挑戰。"

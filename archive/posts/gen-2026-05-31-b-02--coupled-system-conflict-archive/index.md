@@ -1,7 +1,7 @@
 +++
 title = "耦合系統的衝突與封存：當回滾成為衝突的子類"
 date = "2026-05-31T18:00:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討在規格與程式碼緊密耦合的系統中，回滾操作如何因語意圖的複雜度而成為新的衝突來源，並剖析歷史版本封存（archive）機制在漂移溯源上的精妙設計與三個結構性盲區。"

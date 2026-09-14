@@ -1,7 +1,7 @@
 +++
 title = "壓縮保留了分數，是否保留了能力：剪枝、量化與蒸餾"
 date = "2026-09-06T02:58:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "平均準確率不變，不代表決策邊界、罕見類別與校準程度都沒變。比較剪枝、量化與知識蒸餾三種近似機制各自改變了什麼。"

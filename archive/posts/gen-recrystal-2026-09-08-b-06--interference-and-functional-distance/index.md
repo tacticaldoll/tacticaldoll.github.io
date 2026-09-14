@@ -1,7 +1,7 @@
 +++
 title = "新任務如何改寫舊行為：共享方向上的干涉與功能距離"
 date = "2026-09-08T22:31:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個團隊在既有模型上微調新任務。新任務的表現達標，舊任務的準確率掉了 20 個百分點。"

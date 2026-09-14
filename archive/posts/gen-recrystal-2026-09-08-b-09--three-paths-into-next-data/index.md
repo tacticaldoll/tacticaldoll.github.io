@@ -1,7 +1,7 @@
 +++
 title = "模型是常數，風險仍上升：通往下一期資料的三條路"
 date = "2026-09-08T23:14:09+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一個詐騙偵測模型的權重被凍結了八個月，一個位元都沒改。告警精確率從 0.71 降到 0.48。"

@@ -1,7 +1,7 @@
 +++
 title = "脆弱的正則陷阱與 SSOT 突圍：打造必定收斂的決定性文檔管線"
 date = "2026-03-28T17:00:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析基於正則表達式等啟發式匹配之文檔管線的脆弱性，並提出導入單一事實來源（SSOT）與單向資料流的設計，建立必定收斂且零崩潰的決定性文檔處理管線。"

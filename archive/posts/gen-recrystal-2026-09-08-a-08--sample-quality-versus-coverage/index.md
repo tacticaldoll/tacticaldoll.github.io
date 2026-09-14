@@ -1,7 +1,7 @@
 +++
 title = "品質分數為何看不見缺模式：生成評估的二維前緣"
 date = "2026-09-08T20:24:08+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "有好幾年時間，生成影像模型的主要評分標準是一個叫做 Inception Score 的數字。它的計算方式是把生成的影像送進一個預訓練分類器，然後獎勵兩件事：每張圖被分得很有把握，以及不同的圖被分到不同類別。[Salimans 等人，2016](https://arxiv.org/abs/1606.03498)"

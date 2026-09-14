@@ -1,7 +1,7 @@
 +++
 title = "獨立產品，還是既有核心的 pattern？"
 date = "2026-07-11T00:36:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "假設你已經判斷某個候選是 runtime 產品(而非治理引擎的能力)。還有一刀要切：**它是 一個獨立產品，還是一個圍繞既有核心的 pattern？**"

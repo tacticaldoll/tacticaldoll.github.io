@@ -1,7 +1,7 @@
 +++
 title = "高分模型為何仍可能學錯：偽相關與跨環境反例"
 date = "2026-09-06T22:50:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "同分佈的高分可能建立在錯的理由上。用環境切分與跨環境反例分離偽相關形成的捷徑，說明測試分數為何不能代替穩定性證據。"

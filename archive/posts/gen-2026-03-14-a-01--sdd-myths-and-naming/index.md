@@ -1,7 +1,7 @@
 +++
 title = "戳破 SDD 的集體幻覺與命名約束的物理邊界"
 date = "2026-03-14T16:50:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "分析業界推行規格驅動開發 (SDD) 的常見迷思，確立命名必須被實作於編譯或驗證閘門 (Validation Gate) 的底層原則。"

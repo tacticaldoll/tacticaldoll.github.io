@@ -1,7 +1,7 @@
 +++
 title = "長時間 Agent 的語境污染：為什麼 Context Window 也是攻擊面"
 date = "2026-06-10T17:40:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "長時間運行的 AI agent 不只累積能力，也累積語境。本文說明 context window 為何是攻擊面，以及語境最小權限如何成為 agent runtime 安全的核心，而非 UX 細節。"

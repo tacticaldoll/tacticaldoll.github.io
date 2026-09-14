@@ -1,7 +1,7 @@
 +++
 title = "代碼整潔度的隱性危害：從單點風險到系統性崩潰"
 date = "2026-03-11T22:30:02+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "Agent 是接龍狀態機——它的「存在」等於 context window 中可見的 token。在這個前提下，傳統代碼品質實踐的多個面向都可能製造因果斷裂（causal breakpoint）：封裝刪掉了局部上下文、設計模式引入了 runtime 才確定的綁定、抽象層數超出了 agent 的追蹤能力。"

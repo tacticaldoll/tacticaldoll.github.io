@@ -1,7 +1,7 @@
 +++
 title = "AI 為何不是普通 SaaS：推論成本、雲端租金與毛利結構"
 date = "2026-09-06T03:14:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "一份程式服務大量客戶的想像，遇上每次請求都要推論的現實。追蹤貢獻利益如何隨使用強度變化，以及雲端平台在這個市場的雙重位置。"

@@ -1,7 +1,7 @@
 +++
 title = "速度陷阱：當生成速度超過驗證容量"
 date = "2026-05-31T19:00:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "探討 AI 高速生成代碼與規格書時，與人類有限驗證容量之間的速度不對稱，以及由此產生的不可見技術債與三層防禦層級的限制。"

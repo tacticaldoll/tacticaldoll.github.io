@@ -1,7 +1,7 @@
 +++
 title = "AI 商品的可交付邊界：從模型輸出到可追責結果"
 date = "2026-09-07T00:28:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "模型分數不是商品。把 API、整合、授權閘門、人工覆核與救濟放回同一條交付鏈，用端到端效用式盤點哪一層讓漂亮輸出仍變不成可追責的結果。"

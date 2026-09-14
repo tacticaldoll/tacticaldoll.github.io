@@ -1,7 +1,7 @@
 +++
 title = "GAN 如何透過對抗學習生成：生成器、判別器與動態平衡"
 date = "2026-09-06T02:36:07+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "對抗生成不指定重建目標，而以判別器提供可學習的比較訊號。說明非定態目標如何同時帶來生成能力與訓練不穩定。"

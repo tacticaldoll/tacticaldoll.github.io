@@ -1,7 +1,7 @@
 +++
 title = "代理量升格謬誤與基準測試選擇偏差：高階統計失真、極值排序反轉與多重檢定校正"
 date = "2026-09-13T17:50:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "封閉測試集上的標量分數與整條價值鏈的端到端效用之間，隔著一道無法單射還原的降維投影。本文從 Epic 敗血症模型外部驗證的 AUC 崩塌回推極值順序統計量與 Best-of-K 挑選膨脹，推導多重檢定下的偽發現機制，並以 Benjamini-Hochberg 校正與脫站點盲測建立可反駁的效用宣稱防線。"

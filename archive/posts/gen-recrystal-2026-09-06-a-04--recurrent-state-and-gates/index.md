@@ -1,7 +1,7 @@
 +++
 title = "遞迴狀態何時能保留可學習的歷史"
 date = "2026-09-06T21:16:04+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "同一個連乘同時牽動前向記憶與反向梯度。分離狀態是否仍受歷史影響、與誤差是否教得動早期轉移這兩個不同問題。"

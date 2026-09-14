@@ -1,7 +1,7 @@
 +++
 title = "重建宇宙：抵禦技術熵增的多維 SSOT 框架"
 date = "2026-06-13T22:39:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "在傳統工程治理中，團隊常說需要 SSOT，也就是 Single Source of Truth。對資料系統而言，SSOT 可能是某張資料表；對 API 而言，可能是 OpenAPI schema；對架構而言，可能是一份設計文件。這個概念的核心很簡單：當不同描述互相衝突時，團隊必須知道哪一個說法具有權威。"

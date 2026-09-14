@@ -1,7 +1,7 @@
 +++
 title = "生產力由模型與組織共同生產"
 date = "2026-09-07T00:28:06+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "同一個工具在不同組織產生不同結果。用互補函數拆開流程適配、技能異質性、人工補償與資料回流，說明只量登入率為何會讓一半的因果消失。"

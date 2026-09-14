@@ -1,7 +1,7 @@
 +++
 title = "Transformer 如何建立直接關聯：注意力、位置與平行計算"
 date = "2026-09-06T02:36:05+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "自我注意力讓任意位置直接聚合彼此的表示，縮短計算路徑也允許平行訓練。拆解縮放點積注意力、位置編碼與多頭投影各自承擔什麼。"

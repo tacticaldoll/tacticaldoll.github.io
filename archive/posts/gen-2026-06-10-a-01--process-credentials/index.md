@@ -1,7 +1,7 @@
 +++
 title = "一個 Process 到底是誰：Linux Credentials 的主體模型"
 date = "2026-06-10T16:56:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "在 kernel 眼中，一個 process 不是單一 UID，而是一組可轉換的 credentials。本文建立 process 作為權限主體的狀態模型，解析 real / effective / saved UID、setuid 與降權如何決定它當下與未來能做什麼。"

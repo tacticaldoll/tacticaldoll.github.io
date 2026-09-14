@@ -1,7 +1,7 @@
 +++
 title = "擴散去噪如何把生成拆成可學習步驟"
 date = "2026-09-06T21:16:08+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "已知的加噪程序讓任意噪聲尺度都能構造監督訊號。說明生成如何被拆成可學習的局部問題，以及採樣誤差從哪裡進入。"

@@ -1,7 +1,7 @@
 +++
 title = "提及即引導，沉默即邊界 — AI Agent 注意力與多人協作的資訊架構"
 date = "2026-03-18T22:30:03+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "在一次治理重構的規劃中，設計者寫了一段看似無害的文字："

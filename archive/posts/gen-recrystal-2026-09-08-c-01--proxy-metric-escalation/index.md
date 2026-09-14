@@ -1,7 +1,7 @@
 +++
 title = "一段的證據，整條鏈的結論：代理量升格的形式錯誤"
 date = "2026-09-08T23:58:01+08:00"
-author = "TTL::0"
+author = "梅乾"
 draft = false
 isCJKLanguage = true
 description = "2021 年 11 月，Zillow 宣布關閉 Zillow Offers，並在該季認列約 3.04 億美元的存貨減損，同時裁減約四分之一員工。公司對外的解釋集中在一個技術判斷上：房價預測的不可預測性遠超預期。[Zillow 2021 Q3 shareholder letter](https://s24.q4cdn.com/723050407/files/doc_financials/2021/q"
