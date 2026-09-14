@@ -296,6 +296,15 @@
     "forbidden": [],
     "level": 1
   },
+  "MultiversionProgramming": {
+    "zh": "多版本程式設計",
+    "en": [
+      "Multiversion Programming"
+    ],
+    "description": "依據同一規格由不同團隊獨立實作多個版本以期透過多樣性降低共同失效機率的容錯架構。",
+    "forbidden": [],
+    "level": 1
+  },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
     "en": [
@@ -1033,6 +1042,24 @@
     "description": "記錄重要架構決策、背景與取捨理由的可追溯文件。",
     "forbidden": [],
     "level": 2
+  },
+  "InspectionIntensityLadder": {
+    "zh": "檢查強度階梯",
+    "en": [
+      "Inspection Intensity Ladder"
+    ],
+    "description": "驗證機制因感知成本即時而收益反事實，在組織追求降低摩擦中被逐級弱化、下拆之演進路徑。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EffectiveNumberOfDetectors": {
+    "zh": "有效偵測器數",
+    "en": [
+      "Effective Number of Detectors"
+    ],
+    "description": "考慮審查者之間的失效相關性後，多個驗證器等效於完全獨立驗證器的真實折算數量。",
+    "forbidden": [],
+    "level": 1
   },
   "Spec": {
     "zh": "約束性規格",
@@ -2095,6 +2122,87 @@
     "description": "以過多或過廣刑事規範治理行為，進而稀釋法秩序正當性的現象。",
     "forbidden": [],
     "level": 2
+  },
+  "ConstraintCoverage": {
+    "zh": "約束覆蓋率",
+    "en": [
+      "Constraint Coverage"
+    ],
+    "description": "部署之拒絕算子族所拒絕的違規產物集合，佔全體違規產物集合的比例，為衡量規格實際效力的形式底座。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Undecidability": {
+    "zh": "不可判定性",
+    "en": [
+      "Undecidability"
+    ],
+    "description": "依據萊斯定理，任何程式的非平凡語意性質皆無法由通用演算法在有限時間內做出健全且完備的判定。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ModifiabilityRadius": {
+    "zh": "可修改半徑",
+    "en": [
+      "Modifiability Radius"
+    ],
+    "description": "在有限注意力與脈絡預算下，單次變更所能安全觸及與對帳的既有系統單元比例。",
+    "forbidden": [],
+    "level": 1
+  },
+  "OptimalSolutionShift": {
+    "zh": "最適解偏移",
+    "en": [
+      "Optimal Solution Shift"
+    ],
+    "description": "因度量指標遺漏隱性成本，導致依照指標最佳化所選出之方案與真實效用最佳方案發生系統性背離的現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AutoregressiveDecomposition": {
+    "zh": "自回歸分解",
+    "en": [
+      "Autoregressive Decomposition"
+    ],
+    "description": "將序列的聯合機率依鏈式法則分解為各步驟條件機率乘積的數學形式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CommitmentIrreversibility": {
+    "zh": "承諾不可逆",
+    "en": [
+      "Commitment Irreversibility"
+    ],
+    "description": "生成過程中離散取樣的符號被納入前綴濾過後即不可撤回，早期微小錯誤將致使後續全域約束永久違反。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CoherentFixedPoint": {
+    "zh": "連貫不動點",
+    "en": [
+      "Coherent Fixed Point"
+    ],
+    "description": "多輪精煉循環最終收斂於內部表述連貫流暢，而非外部事實正確性的自我一致狀態。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FiltrationMonotonicity": {
+    "zh": "濾過單調性",
+    "en": [
+      "Filtration Monotonicity"
+    ],
+    "description": "隨生成步數推進，由前綴所產生的 sigma 代數序列單調遞增，歷史承諾資訊永遠被保留且不可撤銷。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ExcludedObservationSet": {
+    "zh": "排除觀察集",
+    "en": [
+      "Excluded Observation Set"
+    ],
+    "description": "給定假說下，邏輯上蘊涵該假說為假的所有可能觀察結果集合；其非空為可證偽性之充要條件。",
+    "forbidden": [],
+    "level": 1
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -4418,6 +4526,105 @@
     "forbidden": [],
     "level": 2
   },
+  "Rejector": {
+    "zh": "拒絕算子",
+    "en": [
+      "Rejector"
+    ],
+    "description": "將產物空間映射為接受或拒絕二元判定的一種形式化映射或工程閘門，其拒絕判定所對應之輸入原像構成拒絕集。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpecificationEfficacy": {
+    "zh": "規格效力",
+    "en": [
+      "Specification Efficacy"
+    ],
+    "description": "一份規格透過其實際部署之拒絕算子對違規產物空間產生的實質約束能力，形式上等價於約束覆蓋率。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Typestate": {
+    "zh": "型別狀態",
+    "en": [
+      "Typestate"
+    ],
+    "description": "將物件的執行期狀態與生命週期約束編碼至靜態型別系統中，使非法狀態轉移在編譯期即被攔截的技術。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StochasticApproximation": {
+    "zh": "隨機逼近",
+    "en": [
+      "Stochastic Approximation"
+    ],
+    "description": "在帶有隨機噪聲的觀測與誤差訊號下，逐步迭代逼近極值點或根的隨機過程演算法架構。",
+    "forbidden": [],
+    "level": 1
+  },
+  "QualityDrift": {
+    "zh": "品質漂移",
+    "en": [
+      "Quality Drift"
+    ],
+    "description": "當負回饋與誤差梯度歸零時，系統狀態並非單調劣化，而是方差隨時間線性發散的無方向隨機遊走。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FrictionDiscriminator": {
+    "zh": "摩擦判別",
+    "en": [
+      "Friction Discriminator"
+    ],
+    "description": "以拒絕集是否為空，區分流程阻礙是純粹耗時成本或具備攔截違規產物之有效失效點的操作型準則。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ProductionCost": {
+    "zh": "生產成本",
+    "en": [
+      "Production Cost"
+    ],
+    "description": "將單一功能或模組在隔離環境下單獨實作出來的成本，複雜度通常與全系統規模無關。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TechnicalRunway": {
+    "zh": "技術跑道",
+    "en": [
+      "Technical Runway"
+    ],
+    "description": "系統在可修改半徑收縮至臨界安全閾值以下前，所剩餘的可持續安全修改時間跨度或變更次數。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DiscountingBias": {
+    "zh": "折現偏誤",
+    "en": [
+      "Discounting Bias"
+    ],
+    "description": "決策過度偏重眼前可見收益而低估未來維護與對帳成本的時間偏好扭曲（技術債的核心動力）。",
+    "forbidden": [],
+    "level": 1
+  },
+  "OneSidedEfficacy": {
+    "zh": "單邊效力",
+    "en": [
+      "One-Sided Efficacy"
+    ],
+    "description": "在高相關性審查中，多個審查者的一致結論不攜帶資訊，而分歧結論高度指示規格欠指定的非對稱性判準。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PreRegistration": {
+    "zh": "事前登記",
+    "en": [
+      "Pre-Registration"
+    ],
+    "description": "在觀測或實驗執行前預先凍結假設、度量指標與反駁門檻，防止事後調整假說以符合資料的科學契約。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -4962,6 +5169,33 @@
     "forbidden": [],
     "level": 1
   },
+  "ViolationSet": {
+    "zh": "違規集",
+    "en": [
+      "Violation Set"
+    ],
+    "description": "在產物空間中不滿足規格語意所界定之合法集合的非法產物補集。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Soundness": {
+    "zh": "健全性",
+    "en": [
+      "Soundness"
+    ],
+    "description": "拒絕算子絕不誤判合法產物的性質，即算子之拒絕集必為違規集之子集。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LikelihoodRatio": {
+    "zh": "似然比",
+    "en": [
+      "Likelihood Ratio"
+    ],
+    "description": "在特定假設成立與不成立下觀測到同一徵候的條件機率之比，決定貝氏後驗更新的幅度。",
+    "forbidden": [],
+    "level": 1
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -5332,6 +5566,15 @@
       "Reliability Tell"
     ],
     "description": "洩漏產物製作過程狀態、供讀者間接估計可靠度的外觀或行為痕跡。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Screening": {
+    "zh": "篩選",
+    "en": [
+      "Screening"
+    ],
+    "description": "在訊號機制失效時，由驗證方主動設計具分離特性的測試或契約以檢驗產物真實能力的機制。",
     "forbidden": [],
     "level": 1
   }
