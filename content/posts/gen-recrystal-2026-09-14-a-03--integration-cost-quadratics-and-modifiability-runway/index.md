@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "生產成本屬於偶然複雜度，導入成本屬於本質複雜度。本文推導 O(1) 線性生產撞上與系統規模正比的 O(N) 對帳時所引發的 O(N^2) 累計成本爬升，形式化定義有限注意力下的可修改半徑，並揭示繞過既有程式碼的局部理性如何加速技術跑道耗盡。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "導入成本", # term:IntegrationCost
     "可修改半徑", # term:ModifiabilityRadius
     "生產成本", # term:ProductionCost

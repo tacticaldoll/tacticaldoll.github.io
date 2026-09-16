@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "檢查機制的成本即時可歸因，收益分散且反事實，使拆除檢查在局部最佳化下成為必然。本文將品質演化建模為隨機逼近過程，證明移除負回饋的後果不是單調劣化，而是誤差梯度歸零後方差線性發散的無向漂移，並提供摩擦是否為有效失效點的操作型判別式。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "負回饋", # term:NegativeFeedback
     "隨機逼近", # term:StochasticApproximation
     "品質漂移", # term:QualityDrift

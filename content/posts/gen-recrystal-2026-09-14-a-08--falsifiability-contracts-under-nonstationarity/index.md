@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "排除觀察集為空的主張能吸收一切反例，取得經驗描述的權威卻不承擔被推翻的義務。本文證明缺乏決定論因果不蘊涵不可證偽，非定常環境的本質後果是假說被淘汰而非被反駁；進而透過母體層檢定、部分識別界限與資料處理不等式，建立嚴格的六欄位可反駁性契約。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "可證偽性", # term:Falsifiability
     "非定常", # term:Nonstationarity
     "自我封閉", # term:SelfSealingClaim

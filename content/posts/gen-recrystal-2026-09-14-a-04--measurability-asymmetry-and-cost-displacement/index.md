@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "當決策依賴指標而指標遺漏隱性成本時，最佳化壓力必然將系統推向指標漂亮而真實效用惡化的角落。本文形式化最適解偏移，將後續維護困難嚴格分流為空間錯配（外部性）與時間錯配（債），並推導附帶檢查的注意力乘數盈虧點與硬性失敗轉換機制。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "可計量性不對稱", # term:MeasurabilityAsymmetry
     "外部性", # term:Externality
     "注意力投資", # term:AttentionInvestment
