@@ -156,6 +156,14 @@ class ProductionPipeline:
                 invalid_elements.append(
                     f"Undeclared refinement {'/'.join(missing)} (Post: {p['slug']}) — rerun "
                     f"refine_handoff.py with --model and --agent")
+
+            # Check domain_tag validity against taxonomy closed set
+            d_tag = p.get("domain_tag", "")
+            if d_tag:
+                from infra.taxonomy import TaxonomyEngine
+                if TaxonomyEngine().canonicalize_domain(d_tag) is None:
+                    invalid_elements.append(
+                        f"Invalid domain_tag '{d_tag}' (Post: {p['slug']}) — must be registered in taxonomy.json or ''")
         
         if invalid_elements:
             log_error("Validation failed. Please resolve:")

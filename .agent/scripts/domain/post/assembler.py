@@ -80,28 +80,23 @@ class PostAssembler:
         # that had to move into the engine rather than be remembered by every caller.
         # Both literals were also program-internal copies of a taxonomy category value,
         # which is the drift 7f958bf removed from classify_domain itself.
-        domain_tag = post_meta.get("domain_tag") or ""
-        ai_categories = lexicon.taxonomy.get("ai_taxonomy", {}).get("categories", [])
-        if domain_tag in ai_categories:
-            return domain_tag
-
         from infra.taxonomy import TaxonomyEngine
         from infra.utils import log_error, log_info
         tax_engine = TaxonomyEngine()
-        # No window. This is the fallback path — prepare_handoff already classified
-        # the full report and wrote domain_tag, and classify_posts re-derives it the
-        # same way — so a window here would classify on a different basis than the
-        # authoritative path and hand the same post a different domain depending on
-        # which caller reached it. The body is still pre-anchoring at this point
-        # (with_tags runs before PostOrchestrator.cleanup), so no injected term
-        # vocabulary can vote.
-        #
-        # The evidence, not just the answer. prepare_handoff reports an ambiguous
-        # classification while a human still holds the handoff, but this path is
-        # reached only when that run wrote no domain_tag at all — so it is the one
-        # classification nobody has looked at, and it was the last one still
-        # deciding in silence. Same severity split as there: a winner the evidence
-        # argues against interrupts, the rest is context.
+        ai_categories = lexicon.taxonomy.get("ai_taxonomy", {}).get("categories", [])
+
+        # Respect author's / NLP handoff declaration first:
+        # An explicit empty string "" declares a non-AI domain (Asymmetric Tagging)
+        # and must not be hijacked by keyword scanning.
+        if "domain_tag" in post_meta and post_meta["domain_tag"] is not None:
+            declared = post_meta["domain_tag"]
+            canonical = tax_engine.canonicalize_domain(declared)
+            if canonical == "":
+                return ""
+            if canonical in ai_categories:
+                return canonical
+
+        # Fallback path: reached only when post_meta had no domain_tag at all.
         evidence = tax_engine.classify_domain_evidence(body_content)
         domain_tag = evidence["domain"] or ""
         if domain_tag and evidence["flags"]:

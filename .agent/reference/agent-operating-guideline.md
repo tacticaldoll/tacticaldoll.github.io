@@ -42,9 +42,9 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 ### init-handoff
 
 - 職責：將結晶報告萃取為 `handoff.posts.json` 與 `handoff.terms.json`。
-- NLP 權責：標題、摘要、一般 tags、`rules.headers`、`rules.redactions`、`rules.sublimations`、`terms.declared`。
+- NLP 權責：標題、摘要、`domain_tag` 領域宣告、一般 tags、`rules.headers`、`rules.redactions`、`rules.sublimations`、`terms.declared`。
 - Script 權責：`prepare_handoff.py` 掃描術語與禁語；`refine_handoff.py` 晉升 locked terms 並攔截 placeholder。
-- 禁止：AI 不得填寫 `domain_tag`。
+- Linter 守門：`domain_tag` 必須落在 taxonomy 封閉枚舉或 `""`，並受雙軌證據檢驗防禦。
 - 停機：Handoff 完成後必須停止，交還人類審查。
 
 ### publish-article
@@ -82,7 +82,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 | Surface | Owner | Consumer | Mutation Rule |
 | :--- | :--- | :--- | :--- |
 | `metadata.posts[].tags` | `/init-handoff` NLP | `pipeline.py` | AI 可在 Stage 0 填寫一般技術標籤。 |
-| `metadata.posts[].domain_tag` | `TaxonomyEngine` | `pipeline.py` | AI 不得填寫。 |
+| `metadata.posts[].domain_tag` | `/init-handoff` NLP | `pipeline.py` | NLP 依巨觀問題域宣告（閉聯集或 ""），由 Linter 雙軌驗證。 |
 | `metadata.posts[].rules.redactions` / `.sublimations` | `/init-handoff` NLP | `pipeline.py` | NLP 寫入語意脫敏與敘事昇華；pipeline 只消費。 |
 | `metadata.posts[].rules.headers` | `prepare_handoff.py` | `formatter.py` | 由 `taxonomy.json` 的 `header_normalization` 推導，非 NLP 撰寫。標頭詞彙的 SSOT 是 taxonomy，不是逐 session 的判斷。 |
 | `terms.declared` | `/init-handoff` NLP | `refine_handoff.py` | 享有 declaration immunity，但不得含敘事雜訊。 |
@@ -105,7 +105,7 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 系列宣告資格由 `guide*.md` 的實體存在單一決定；單篇報告 session 為 Standalone，不得在 `series-map.md` 宣告 `series`。
 - 禁止建立、手動修復或操作 `terminology.md` 類型的術語投影；術語變更必須對準 `terminology.json` 與 promote 流程。
 - Agent 操作意圖只能有一個 active reference：`.agent/reference/agent-operating-guideline.md`，並必須由 `GUIDE.md` 明確引用。
-- 領域分類由 `taxonomy.json` 的分類順序決定，依序取首個命中者。此為定案而非產物：較具體的讀法應勝過較寬泛的讀法，即使只命中一個詞。歧義以 `classify_domain_evidence` 的旗標曝光，不得改為加權或最低證據門檻——那會反轉此定案當初為之而立的貼文。
+- 領域分類由 `/init-handoff` NLP 基於全文巨觀問題域宣告，並由 Linter 透過 `taxonomy.json` 進行封閉枚舉與雙軌證據檢驗。若未宣告或未定義，`TaxonomyEngine` 依分類順序（取首個命中者）提供初始建議；歧義以 `classify_domain_evidence` 的旗標曝光。
 - 引擎宣告的契約由引擎保證，不由呼叫點各自記得。呼叫點不得取消引擎已決定的政策。
 - 術語錨定對中文不設字界，因此短鍵會匹配到更長詞的內部（`量化` 落在「輕量化」、`技術債` 落在「技術債務」、`導讀` 落在「誤導讀者」）。英文別名以 `\b` 防住同一類破壞，中文沒有對應機制：中文無正字法字界，`\b` 不適用，正確的防護需要分詞或最長匹配排除表，兩者皆不存在。因此**降級判定不得只檢視定義，必須檢視命中位置**；此判定無機械解（真陽性率不可機械判定：「輕量化」是撞名，「擁有權是核心自己長出來」是正確用法），故它是操作規則而非稽核項。
 - 作者撰寫的 `> [!IMPORTANT]` 定義框不得取得 `<!-- term:/anchor: -->` 標記。標記是「機器產物」的唯一判準，移除端據此整塊清除，所以一旦作者的行取得標記，下一輪就會連同作者文字被刪除——這正是 reanchor 造成已發布內容遺失的機制。`（English）` 註記只在後接標記時才算機器產物；無標記的註記是作者文字，消除它會讓該行掉出 `protected_alert_patterns` 而失去保護。

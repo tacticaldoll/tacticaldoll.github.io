@@ -125,6 +125,69 @@ class TaxonomyEngine:
 
         return {"domain": winner, "hits": hits, "flags": flags}
 
+    def canonicalize_domain(self, domain_tag):
+        """Resolves a declared domain tag to its canonical form in taxonomy.json.
+        Returns canonical category string, or "" if empty/None, or None if invalid."""
+        if not domain_tag:
+            return ""
+        domain_tag = domain_tag.strip()
+        if not domain_tag:
+            return ""
+        categories = self.data.get("ai_taxonomy", {}).get("categories", [])
+        if domain_tag in categories:
+            return domain_tag
+        bare_declared = re.sub(r'\s*[(（].*?[)）]', '', domain_tag).strip().lower()
+        for cat in categories:
+            bare_cat = re.sub(r'\s*[(（].*?[)）]', '', cat).strip().lower()
+            if bare_declared == bare_cat:
+                return cat
+        return None
+
+    def verify_domain_declaration(self, declared_domain, content):
+        """Validates an NLP-declared domain tag against taxonomy closed set and prose evidence.
+
+        Returns:
+            dict: {
+                "valid": bool,
+                "canonical": str or "",
+                "error": str or None,
+                "warning": str or None,
+                "evidence": dict
+            }
+        """
+        evidence = self.classify_domain_evidence(content)
+        canonical = self.canonicalize_domain(declared_domain)
+
+        if canonical is None:
+            categories = self.data.get("ai_taxonomy", {}).get("categories", [])
+            return {
+                "valid": False,
+                "canonical": None,
+                "error": f"Domain tag '{declared_domain}' is not registered in taxonomy.json ({', '.join(categories)} or '')",
+                "warning": None,
+                "evidence": evidence
+            }
+
+        warning = None
+        if canonical:
+            hits = evidence.get("hits", {}).get(canonical, [])
+            if not hits:
+                warning = f"Declared domain '{canonical}' has 0 keyword hits in prose evidence."
+        else:
+            winner = evidence.get("domain")
+            if winner:
+                winner_hits = evidence.get("hits", {}).get(winner, [])
+                if len(winner_hits) >= 3 and self.SINGLE_HIT not in evidence.get("flags", []):
+                    warning = f"Declared non-AI (''), but prose has strong evidence for '{winner}' ({len(winner_hits)} hits)."
+
+        return {
+            "valid": True,
+            "canonical": canonical,
+            "error": None,
+            "warning": warning,
+            "evidence": evidence
+        }
+
     def header_normalization(self):
         """The section-header vocabulary: {standard: [variations]}.
 

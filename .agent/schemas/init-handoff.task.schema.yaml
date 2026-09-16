@@ -38,7 +38,7 @@ template: |
     - 再次執行 `python3 .agent/scripts/workflows/generate-article/refine_handoff.py <session_id>`，確認無 `PENDING terms need description` 與 `0 locked terms` 警告，全部術語鎖定成功。
   - `[ ]` **Task 11: 篩選術語標籤 (Tag Filtering)**
     - 依據 1+1+6 協議標籤為每篇文章配置 `tags`（文體分類 + 核心領域 + 最多 6 個技術細節）。
-    - **嚴禁** AI 手動填寫 `domain_tag`，保留預設值或留空。
+    - **NLP 宣告領域標籤**：依報告全文巨觀問題域於 `domain_tag` 宣告合法分類（5 大類之一）或留空 `""`（非 AI 純技術/工程治理），受 Linter 閉聯集與雙軌證據檢驗。
   
   ## 階段四：封裝交接 (Handoff & Halt)
   - `[ ]` **Task 12: 實體驗證與停機 (Finalize & Halt)**

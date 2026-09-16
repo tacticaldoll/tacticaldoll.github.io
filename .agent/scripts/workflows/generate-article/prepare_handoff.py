@@ -623,7 +623,18 @@ class HandoffPreparer:
                         f"{slug}/{os.path.basename(selected_report)}"
                         if slug != self.session_id else os.path.basename(selected_report)
                     )
-                    target_post["domain_tag"] = domain_tag if domain_tag else ""
+                    # Preserve NLP-authored domain_tag if present; run verification lint
+                    existing_domain = target_post.get("domain_tag")
+                    if existing_domain is not None and existing_domain != "PENDING_NLP_DIGESTION":
+                        v_res = self.tax_engine.verify_domain_declaration(existing_domain, report_content)
+                        if not v_res["valid"]:
+                            log_error(f"  [DOMAIN VALIDATION ERROR] {slug}: {v_res['error']}")
+                        elif v_res["warning"]:
+                            log_info(f"  [DOMAIN VALIDATION WARNING] {slug}: {v_res['warning']}")
+                        if v_res["canonical"] is not None:
+                            target_post["domain_tag"] = v_res["canonical"]
+                    else:
+                        target_post["domain_tag"] = domain_tag if domain_tag else ""
                     if "rules" not in target_post or not isinstance(target_post["rules"], dict):
                         target_post["rules"] = {}
                     target_post["rules"]["headers"] = copy.deepcopy(self.taxonomy_headers)

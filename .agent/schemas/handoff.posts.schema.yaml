@@ -12,7 +12,7 @@
 #    - [對話式節奏]: 鼓勵在轉折處使用反問句或假設語氣來引導思考，並在解釋抽象概念時使用日常比喻。
 #    - [拒絕冰冷結構]: 任何表格、程式碼或呼叫框 (Callouts) 之前，都必須有口語化的引言，嚴禁無敘事上下文的孤立結構。
 # Ownership:
-# - `metadata.posts[].domain_tag`: script-owned，由 TaxonomyEngine 寫入。
+# - `metadata.posts[].domain_tag`: NLP-owned，由 `/init-handoff` 依巨觀主題宣告，受到 Linter 封閉枚舉與證據驗證約束。
 # - `metadata.posts[].rules`: NLP-owned，由 `/init-handoff` 寫入，pipeline 只消費。
 # - `ai_info.generation`: script-owned，由 prepare_handoff.py 以 regex 從報告頭萃取（`**Structure**`→scope / `**Model**` / `**Agent**`）並寫入（會覆蓋 AI 內容）。
 # - `metadata.posts[].date`: script-owned，由 prepare_handoff.py 產出 —— 時:分取自報告 `**Date**`，秒數槽放 session 內排序序號；AI 嚴禁手填。
@@ -49,11 +49,10 @@ metadata:
       tags: ["[必填] 標籤1", "[必填] 標籤2"]
       
       # [SSOT] AI 領域標籤 (AI Tag):
-      # 此欄位採用非對稱架構，專門用來衡量 AI 涉入的方向。
-      # 為避免 LLM 產生上下文滲透 (Context Bleed)，此欄位由 TaxonomyEngine
-      # 透過機械式掃描內文主題自動產生。Stage 0 (AI) 嚴禁手動介入填寫。
-      # 若內文未命中任何 AI 關鍵字，此欄位將留空，保護純技術文章的純淨性。
-      # 選項: AI 代理人 (AI Agent) | 大型語言模型 (LLM) | AI | "" (留空)
+      # 此欄位採用非對稱架構，由 /init-handoff NLP 依據報告全文巨觀問題域宣告。
+      # 受到 Linter 封閉枚舉約束與雙軌證據檢驗防禦（防止 Context Bleed 幻覺與漏標）。
+      # 若文章為純技術/工程/系統治理（非 AI 涉入方向），此欄位必須填寫 "" (留空)。
+      # 選項: AI 經濟與社會 (AI Economics) | AI 代理人 (AI Agent) | 機器學習 (Machine Learning) | 大型語言模型 (LLM) | AI | "" (留空)
       domain_tag: ""
       
       ai_info:
