@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "從控制理論與投影梯度出發，證明系統中缺乏觀測讀數的維度並非被低估，而是梯度更新恆為零，終值僅能由約束邊界決定，揭示指標只量測活動造成的系統性失真。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "度量治理", # term:MetricGovernance
     "可觀測性", # term:Observability
     "目標函數", # term:ObjectiveFunction

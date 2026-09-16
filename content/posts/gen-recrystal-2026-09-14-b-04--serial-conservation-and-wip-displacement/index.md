@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "依據瓶頸理論與 Amdahl 定律證明串聯系統吞吐受限於瓶頸工站，局部服務率提升只會導致差額在製品向下游線性堆積，嚴格區分單件延遲加速與系統吞吐加速的本質差異。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "瓶頸理論", # term:TheoryOfConstraints
     "吞吐守恆", # term:ThroughputConservation
     "在製品位移", # term:WipDisplacement

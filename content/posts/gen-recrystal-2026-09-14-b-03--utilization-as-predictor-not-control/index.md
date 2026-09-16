@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "透過 Kingman VUT 公式與佇列敏感度發散推導，解析高變異環境下產能利用率無法作為控制槓桿的數學機理，論證將控制訊號替換為在製品佇列長度並主動拒絕新工作的必要性。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "機器學習", # term:MachineLearning
     "流動治理", # term:FlowGovernance
     "排隊論", # term:QueueingTheory
     "控制訊號", # term:ControlSignal

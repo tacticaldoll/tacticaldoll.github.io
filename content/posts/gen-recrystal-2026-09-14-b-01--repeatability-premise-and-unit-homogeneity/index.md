@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "探討研發團隊指標全綠但交付週期反常拉長的根本成因，形式化證明四條製造業管理槓桿共用「單位同質且可重複」假設，並推導變異為零時資訊增益為零的理論極限。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 代理人", # term:AiAgent
     "研發流程", # term:RDProcess
     "可重複性前提", # term:RepeatabilityPremise
     "充分統計量", # term:SufficientStatistic

@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "剖析自我評估規則缺乏拒絕能力的困境，形式化推導可稽核狀態轉換的誘因相容不等式，並揭示將阻力訊號轉化為考核指標時機制必然發生的反轉與訊號蒸發。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "大型語言模型", # term:LargeLanguageModel
     "機制設計", # term:MechanismDesign
     "可稽核性", # term:Auditability
     "誘因相容", # term:IncentiveCompatibility

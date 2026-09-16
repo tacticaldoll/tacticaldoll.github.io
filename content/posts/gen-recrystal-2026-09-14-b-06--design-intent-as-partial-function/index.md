@@ -7,7 +7,6 @@ isCJKLanguage = true
 description = "將設計理念形式化為定義於全情境的全函數，指出規格僅是有限定義域上的偏函數查表，揭示分工交接時未定義域外推失敗與跨模組相容約束失去持有者的結構性根源。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "AI 經濟與社會", # term:AiEconomics
     "規格設計", # term:SpecificationDesign
     "概念完整性", # term:ConceptualIntegrity
     "偏函數", # term:PartialFunction
