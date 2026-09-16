@@ -7,13 +7,13 @@ isCJKLanguage = true
 description = "多跑幾個種子報最好、邊看邊停、事後調換指標，足以把名目 5% 的偽陽性率推高到接近 80%。本文借鏡臨床試驗的事前註冊制度，提出含反駁條件的八欄事前凍結評估契約，並以資料庫時序不變量與自動化阻斷管線，把誠實的折價固化成系統架構。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "機器學習", # term:MachineLearning
     "研究者自由度", # term:ResearcherDegreesOfFreedom
     "事前註冊", # term:Preregistration
     "可證偽性", # term:Falsifiability
     "時序污染", # term:TemporalContamination
     "選擇偏差", # term:SelectionBias
     "物理隔離", # term:PhysicalIsolation
-    "機器學習", # term:MachineLearning
   ]
 series = ["代理讀數與能力本體：六種指標失真機制與可驗證的工程防線"]
 [ai_info]
