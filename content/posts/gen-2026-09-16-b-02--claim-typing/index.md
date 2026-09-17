@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "指出自然語言需求常混淆觀察、意圖、假說、規範、決策與完成六種主張型別。為主張建立包含適用範圍、來源、反駁條件與授權主體的契約結構，防止進入規格文件的文字被誤認為已證驗的事實。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "主張型別", # term:ClaimTyping
     "反駁條件", # term:Defeater
     "不變式", # term:Invariant

@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "剖析提案、規格、設計與工作清單形式分立卻仍共同出錯的「規格坍縮」機制。揭示缺乏非同源新資訊輸入時，各層文件僅是複述同一個未驗證前提，內部自洽反向掩蓋了外部無效性。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "規格坍縮", # term:SpecificationCollapse
     "認識論角色", # term:EpistemologicalRole
     "不變式", # term:Invariant

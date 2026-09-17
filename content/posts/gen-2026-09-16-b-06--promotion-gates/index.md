@@ -7,13 +7,13 @@ isCJKLanguage = true
 description = "將二元完成旗標重構為可撤銷的主張升格狀態機。依影響範圍、不可逆性與不確定性三個維度建立相稱准入閘門，明確界定完成、授權、生效與驗證四個事件，並保留過期與撤銷退出路徑。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "主張升格", # term:ClaimPromotion
     "升格狀態機", # term:PromotionStateMachine
     "不可逆性", # term:Irreversibility
     "不確定性", # term:Uncertainty
     "不變式", # term:Invariant
     "可證偽性", # term:Falsifiability
-    "異源證據", # term:HeterogeneousEvidence
   ]
 series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 [ai_info]

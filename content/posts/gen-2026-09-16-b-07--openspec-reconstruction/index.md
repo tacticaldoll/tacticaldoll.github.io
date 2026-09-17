@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "保留 OpenSpec 差量規格與工作夾優勢，將其定位重建為記錄責任與承諾的變更帳本。分離生成相依與升格相依兩張圖，結合型別化產物、異源證據與外部控制，實現嚴謹的可撤銷升格治理。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "變更帳本", # term:ChangeLedger
     "認識論角色", # term:EpistemologicalRole
     "外部有效性", # term:ExternalValidity

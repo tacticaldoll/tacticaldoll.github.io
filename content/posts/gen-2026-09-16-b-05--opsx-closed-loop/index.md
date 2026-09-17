@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "分析驗證拓撲中「一致性」與「外部有效性」的本質差異。透過租戶管理員權限漏洞案例，揭示當規格、設計與程式碼共享同一個錯誤前提時，封閉式驗證全綠只代表錯誤被更完整地實作，必須引入異源證據打破共同原因。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "封閉驗證", # term:ClosedLoopVerification
     "外部有效性", # term:ExternalValidity
     "異源證據", # term:HeterogeneousEvidence

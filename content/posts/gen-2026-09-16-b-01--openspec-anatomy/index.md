@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "解剖 OpenSpec 的儲存平面、操作平面與認識平面。指出其能有效將變更組織為可追蹤的檔案與工作流，但預設結構無法自行產生需求正當性、外部有效性或組織授權，必須精準標定工具的保證範圍。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "不變式", # term:Invariant
     "外部有效性", # term:ExternalValidity
     "反駁條件", # term:Defeater

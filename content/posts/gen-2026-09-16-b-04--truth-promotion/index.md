@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "解構將主規格視為單一真理來源的升格風險。區分觀測值、基線值、規範值與授權值四種真值層，指出單一欄位必然隱匿漂移，必須透過對帳機制與責任狀態機暴露規格與現實的落差。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "真值層", # term:TruthLayer
     "身分", # term:Identity
   ]
