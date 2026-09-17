@@ -323,6 +323,15 @@
     "forbidden": [],
     "level": 1
   },
+  "LifecycleCompleteness": {
+    "zh": "生命週期完整性",
+    "en": [
+      "Lifecycle Completeness"
+    ],
+    "description": "指例外裁決與升級處理必須保留結構化理由，並具備回寫為未來新政策的閉環流程。",
+    "forbidden": [],
+    "level": 2
+  },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
     "en": [
@@ -2284,6 +2293,33 @@
     "description": "由編譯器或靜態分析工具驗證所有可能的輸入情境或列舉分支皆被明確處理的保證機制。",
     "forbidden": [],
     "level": 1
+  },
+  "ConflictCompleteness": {
+    "zh": "衝突完整性",
+    "en": [
+      "Conflict Completeness"
+    ],
+    "description": "指多項業務或安全規則同時命中且衝突時，具備機械化的衝突偵測與具名授權裁決機制。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ObservationalCompleteness": {
+    "zh": "觀察完整性",
+    "en": [
+      "Observational Completeness"
+    ],
+    "description": "指作出工程判定所需的觀測資料具備客觀可取得性，且資料缺漏時具有顯式狀態。",
+    "forbidden": [],
+    "level": 2
+  },
+  "BehavioralCompleteness": {
+    "zh": "行為完整性",
+    "en": [
+      "Behavioral Completeness"
+    ],
+    "description": "指系統在已定義的情境集合內皆具備可判定且明確的執行結果。",
+    "forbidden": [],
+    "level": 2
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -4939,6 +4975,87 @@
     "description": "檢驗組織規範、制度條款與執行機制之間的落差與失真，並定位機制缺口位置的分析方法。",
     "forbidden": [],
     "level": 1
+  },
+  "TypeMisidentification": {
+    "zh": "型別誤認",
+    "en": [
+      "Type Misidentification"
+    ],
+    "description": "指將生成模型產出之流暢候選句，誤認為已具備適用範圍、反例、真值來源與處置規範的工程主張。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EngineeringContainment": {
+    "zh": "工程圍籬",
+    "en": [
+      "Engineering Containment"
+    ],
+    "description": "藉由能力邊界、升格邊界、風險預算與撤銷機制，將機率輸出工具之潛在故障截斷在可承受範圍內的控制架構。",
+    "forbidden": [],
+    "level": 1
+  },
+  "RiskBoundary": {
+    "zh": "風險邊界",
+    "en": [
+      "Risk Boundary"
+    ],
+    "description": "限制自動化或生成系統單次執行失敗時之最大影響半徑與損失上限的硬性防線。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProvenanceBoundary": {
+    "zh": "來源邊界",
+    "en": [
+      "Provenance Boundary"
+    ],
+    "description": "將建議產生者與動作執行者的責任主體進行物理分立，確保系統可追溯與不可否認性的安全邊界。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DiverseSourceVerification": {
+    "zh": "異源驗證",
+    "en": [
+      "Diverse-Source Verification"
+    ],
+    "description": "透過引入具備不同失敗模式之獨立觀察源或外部客觀事實，打破同源模型相互驗證盲區的驗證方法。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ResidualIntent": {
+    "zh": "剩餘意圖",
+    "en": [
+      "Residual Intent"
+    ],
+    "description": "指規格未能承載、尚未承載或不應預先封死的決策空間，包含未知情境、價值衝突與現場例外裁量。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SelfConsistentFailure": {
+    "zh": "自洽失敗",
+    "en": [
+      "Self-Consistent Failure"
+    ],
+    "description": "指多個驗證節點或模型因共用相同假設或生成脈絡，產出彼此吻合卻共同偏離外部真實世界的失誤模式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EscalationBoundary": {
+    "zh": "升格邊界",
+    "en": [
+      "Escalation Boundary"
+    ],
+    "description": "在工程控制中，規範需要何種獨立證據與具名授權角色，方可將機率候選轉換為可執行憑證的結構門檻。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RevocationBoundary": {
+    "zh": "撤銷邊界",
+    "en": [
+      "Revocation Boundary"
+    ],
+    "description": "定義授權憑證的自動過期、手動收回與異常條件下立即中斷執行的撤銷機制。",
+    "forbidden": [],
+    "level": 2
   },
   "Requirements": {
     "zh": "需求層",
