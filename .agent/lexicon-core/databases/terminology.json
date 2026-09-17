@@ -2321,6 +2321,33 @@
     "forbidden": [],
     "level": 2
   },
+  "EpistemologicalRole": {
+    "zh": "認識論角色",
+    "en": [
+      "Epistemological Role"
+    ],
+    "description": "指工程文件中各組成部分在知識證成鏈條中所承擔的功能定位（如事實觀察、意圖陳述、規範約束或授權憑證），各角色必須由對應的外部證據與授權者支撐，不能由文字容器形式直接替代。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PromotionStateMachine": {
+    "zh": "升格狀態機",
+    "en": [
+      "Promotion State Machine"
+    ],
+    "description": "取代二元完成旗標的治理模型，定義主張從提議、證據支持、授權、生效到觀測的生命週期狀態，並提供對應的拒絕、過期與撤銷退出路徑。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ExternalValidity": {
+    "zh": "外部有效性",
+    "en": [
+      "External Validity"
+    ],
+    "description": "評估系統承諾與規格是否真正解決實際問題並符合真實環境、政策與使用者限制的驗證維度，無法單純由內部程式碼與文件的自洽性推導成立。",
+    "forbidden": [],
+    "level": 1
+  },
   "SemanticBoundary": {
     "zh": "語意邊界",
     "en": [
@@ -5057,6 +5084,78 @@
     "forbidden": [],
     "level": 2
   },
+  "ClaimTyping": {
+    "zh": "主張型別",
+    "en": [
+      "Claim Typing"
+    ],
+    "description": "將規格與工程文件中的自然語言陳述依語意與責任邊界劃分為觀察、意圖、假說、規範、決策與完成等範疇的型別系統，要求各範疇提供獨立的來源、反駁條件與授權主體，防止未經證驗的假設被自動升格為事實。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpecificationCollapse": {
+    "zh": "規格坍縮",
+    "en": [
+      "Specification Collapse"
+    ],
+    "description": "指提案、規格、設計與工作清單等各層文件形式上各自獨立，但其認識論角色均源自同一個未經外部檢驗的假設或誤解，導致內部一致性掩蓋外部無效性的系統性失效現象。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ClaimPromotion": {
+    "zh": "主張升格",
+    "en": [
+      "Claim Promotion"
+    ],
+    "description": "在指定的適用範圍、證據強度與有效期限下，允許某個陳述或技術決定暫時驅動系統行為的狀態轉移機制；若執行觀測與預期不符，系統必須具備明確的撤銷或修訂路徑。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ClosedLoopVerification": {
+    "zh": "封閉驗證",
+    "en": [
+      "Closed-Loop Verification"
+    ],
+    "description": "驗證套件與被驗證系統共用相同的世界模型或錯誤前提，僅能證明實作與內部文件高度自洽，而無法提供能反駁前提的外部有效性資訊的迴圈驗證結構。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ChangeLedger": {
+    "zh": "變更帳本",
+    "en": [
+      "Change Ledger"
+    ],
+    "description": "將變更規格視為承諾與責任的審計記錄器，負責保存提案、差量、證據鏈、授權範圍與撤銷條件，而非將文件自身視為能無中生有創造正當性的真理來源。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Irreversibility": {
+    "zh": "不可逆性",
+    "en": [
+      "Irreversibility"
+    ],
+    "description": "評估系統變更或主張升格風險的核心維度，指狀態改變或操作執行後無法透過反向操作完全復原的程度，決定了准入閘門所需的最小外部證據與授權層級。",
+    "forbidden": [],
+    "level": 1
+  },
+  "HeterogeneousEvidence": {
+    "zh": "異源證據",
+    "en": [
+      "Heterogeneous Evidence"
+    ],
+    "description": "來自與待驗系統及其規格生成過程相互獨立的真實觀測、政策約束或外部裁決來源，能打破封閉迴圈並提供具備反駁能力的新資訊。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Defeater": {
+    "zh": "反駁條件",
+    "en": [
+      "Defeater"
+    ],
+    "description": "在主張契約中明確定義的證偽觀測或環境條件，一旦在系統執行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -5670,6 +5769,15 @@
       "Discount Factor"
     ],
     "description": "理性讀者在面對可能失效或缺乏強制的文字條款時，在事前評估與執行投入上所打折的心理折現比例。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TruthLayer": {
+    "zh": "真值層",
+    "en": [
+      "Truth Layer"
+    ],
+    "description": "將軟體工程中的真值狀態解耦為觀測值、基線值、規範值與授權值四個維度，嚴禁由單一資料欄位或主要文件位置推導出規範正當性或授權狀態，以精確捕捉並暴露各層間的漂移。",
     "forbidden": [],
     "level": 1
   },
