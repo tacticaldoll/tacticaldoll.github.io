@@ -137,6 +137,16 @@ class TaxonomyEngine:
         if domain_tag in categories:
             return domain_tag
         bare_declared = re.sub(r'\s*[(（].*?[)）]', '', domain_tag).strip().lower()
+        aliases = {
+            "軟體工程": "軟體工程與規格 (Software Engineering & Specifications)",
+            "軟體規格": "軟體工程與規格 (Software Engineering & Specifications)",
+            "規格工程": "軟體工程與規格 (Software Engineering & Specifications)",
+            "系統工程": "系統工程與研發治理 (Systems Governance & Operations)",
+            "研發治理": "系統工程與研發治理 (Systems Governance & Operations)",
+            "系統治理": "系統工程與研發治理 (Systems Governance & Operations)",
+        }
+        if bare_declared in aliases:
+            return aliases[bare_declared]
         for cat in categories:
             bare_cat = re.sub(r'\s*[(（].*?[)）]', '', cat).strip().lower()
             if bare_declared == bare_cat:

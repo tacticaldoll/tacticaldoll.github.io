@@ -36,6 +36,28 @@ class TaxonomyTester(unittest.TestCase):
             "AI 代理人 (AI Agent)"
         )
 
+        # Non-AI Engineering Domains
+        self.assertEqual(
+            self.engine.canonicalize_domain("軟體工程與規格 (Software Engineering & Specifications)"),
+            "軟體工程與規格 (Software Engineering & Specifications)"
+        )
+        self.assertEqual(
+            self.engine.canonicalize_domain("軟體工程與規格"),
+            "軟體工程與規格 (Software Engineering & Specifications)"
+        )
+        self.assertEqual(
+            self.engine.canonicalize_domain("軟體工程"),
+            "軟體工程與規格 (Software Engineering & Specifications)"
+        )
+        self.assertEqual(
+            self.engine.canonicalize_domain("系統工程與研發治理"),
+            "系統工程與研發治理 (Systems Governance & Operations)"
+        )
+        self.assertEqual(
+            self.engine.canonicalize_domain("研發治理"),
+            "系統工程與研發治理 (Systems Governance & Operations)"
+        )
+
         # Invalid domain
         self.assertIsNone(self.engine.canonicalize_domain("AI 治理"))
         self.assertIsNone(self.engine.canonicalize_domain("NotACategory"))
@@ -48,6 +70,18 @@ class TaxonomyTester(unittest.TestCase):
         self.assertIsNone(res["error"])
         self.assertIsNone(res["warning"])
 
+        se_text = "本文分析規格驅動開發中的形式規格、差量規格與架構邊界。"
+        res_se = self.engine.verify_domain_declaration("軟體工程與規格", se_text)
+        self.assertTrue(res_se["valid"])
+        self.assertEqual(res_se["canonical"], "軟體工程與規格 (Software Engineering & Specifications)")
+        self.assertIsNone(res_se["error"])
+
+        sys_text = "本文以排隊理論與利特爾法則分析研發流程中的在製品與交付週期瓶頸。"
+        res_sys = self.engine.verify_domain_declaration("系統工程與研發治理", sys_text)
+        self.assertTrue(res_sys["valid"])
+        self.assertEqual(res_sys["canonical"], "系統工程與研發治理 (Systems Governance & Operations)")
+        self.assertIsNone(res_sys["error"])
+
     def test_verify_domain_declaration_invalid_category(self):
         res = self.engine.verify_domain_declaration("AI 治理", "隨意內容")
         self.assertFalse(res["valid"])
@@ -56,7 +90,7 @@ class TaxonomyTester(unittest.TestCase):
 
     def test_verify_domain_declaration_suppresses_weak_noise(self):
         # Queuing theory text with single generic keyword "量化"
-        queuing_text = "本文討論排隊論中的利用率敏感度，以及在製品流動指標的量化問題。"
+        queuing_text = "本文討論利用率敏感度，以及在製品流動指標的量化問題。"
         res = self.engine.verify_domain_declaration("", queuing_text)
         self.assertTrue(res["valid"])
         self.assertEqual(res["canonical"], "")
@@ -75,3 +109,4 @@ class TaxonomyTester(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -48,11 +48,10 @@ metadata:
       # - 剩餘: 最多 6 個技術細節標籤。
       tags: ["[必填] 標籤1", "[必填] 標籤2"]
       
-      # [SSOT] AI 領域標籤 (AI Tag):
-      # 此欄位採用非對稱架構，由 /init-handoff NLP 依據報告全文巨觀問題域宣告。
+      # [SSOT] 宏觀領域標籤 (Domain Tag):
+      # 此欄位由 /init-handoff NLP 依據報告全文巨觀問題域宣告。
       # 受到 Linter 封閉枚舉約束與雙軌證據檢驗防禦（防止 Context Bleed 幻覺與漏標）。
-      # 若文章為純技術/工程/系統治理（非 AI 涉入方向），此欄位必須填寫 "" (留空)。
-      # 選項: AI 經濟與社會 (AI Economics) | AI 代理人 (AI Agent) | 機器學習 (Machine Learning) | 大型語言模型 (LLM) | AI | "" (留空)
+      # 選項: AI 經濟與社會 (AI Economics) | AI 代理人 (AI Agent) | 機器學習 (Machine Learning) | 大型語言模型 (LLM) | 軟體工程與規格 (Software Engineering & Specifications) | 系統工程與研發治理 (Systems Governance & Operations) | AI | "" (留空)
       domain_tag: ""
       
       ai_info:

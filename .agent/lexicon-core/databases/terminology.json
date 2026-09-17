@@ -6162,5 +6162,23 @@
     "description": "在訊號機制失效時，由驗證方主動設計具分離特性的測試或契約以檢驗產物真實能力的機制。",
     "forbidden": [],
     "level": 1
+  },
+  "SoftwareEngineeringSpecifications": {
+    "zh": "軟體工程與規格",
+    "en": [
+      "Software Engineering & Specifications"
+    ],
+    "description": "涵蓋形式規格、架構契約、型別系統、變更帳本與可撤銷升格等軟體工程理論與治理實踐之核心技術範疇。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SystemsGovernanceOperations": {
+    "zh": "系統工程與研發治理",
+    "en": [
+      "Systems Governance & Operations"
+    ],
+    "description": "涵蓋排隊理論、流量守恆、組織度量、控制迴路與研發決策責任等系統工程與研發營運治理範疇。",
+    "forbidden": [],
+    "level": 1
   }
 }
