@@ -191,7 +191,7 @@ class HandoffPreparer:
                     r'^[ \t]*\*\*Structure\*\*:', content[:1000], re.MULTILINE):
                 log_error(f"  [GENRE FALLBACK] No **Structure** header in {os.path.basename(rf)}; "
                           f"publishing as '{config.GENRE_FALLBACK_SCOPE}'. Declare it per "
-                          f"crystallize-report.schema.yaml to pick the genre deliberately.")
+                          f"post-format-spec.md to pick the genre deliberately.")
 
             # Strip markdown code blocks before processing to prevent false positives
             content_no_code = re.sub(r'```[\s\S]*?```', '', content)

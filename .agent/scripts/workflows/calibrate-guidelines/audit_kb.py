@@ -231,9 +231,7 @@ class KBAuditor:
                 if ".agent/lexicon-core/databases/taxonomy.md` 定義" in content:
                     errors.append("[Governance] GUIDE.md treats taxonomy.md as taxonomy SSOT")
 
-            if rel_path == os.path.join(".agent", "workflows", "distill-knowledge.md"):
-                if "../schemas/" in content or ".agent/" in content:
-                    errors.append("[Governance] distill-knowledge workflow is project-coupled despite zero-coupling boundary")
+
         return errors
 
     def _check_workflow_front_matter(self):
@@ -718,107 +716,36 @@ class KBAuditor:
         return errors
 
     def _check_knowledge_funnel(self):
-        """GUIDE's funnel must place evaluation before crystallization, and §10.2 must not contradict the workflow."""
+        """GUIDE's content lifecycle must name post-format-spec.md, init-handoff, publish-article, and calibrate-guidelines."""
         errors = []
-        # The knowledge funnel must place evaluation before crystallization. §7.2 numbers
-        # distill-knowledge as the first of three states, but §7's funnel once listed only
-        # dialogue, crystallize and consolidate — so nothing in the funnel said that
-        # crystallizing without evaluating first writes reports out of material already
-        # judged too thin or belonging elsewhere. An ordering stated in one section and
-        # not the other is an ordering an executor will skip.
-        #
-        # GUIDE is read here rather than borrowed from another check. A first version of
-        # this block referenced a variable bound further down the method, so every branch
-        # was skipped and all four falsifiers passed: an absent input made the check
-        # vacuous while it still reported HEALTHY.
         guide_md_path = os.path.join(config.ROOT_DIR, "GUIDE.md")
         if not os.path.exists(guide_md_path):
-            errors.append("[Governance] Missing GUIDE.md; the knowledge funnel and the "
-                          "crystallization-report scope cannot be verified")
+            errors.append("[Governance] Missing GUIDE.md; the content lifecycle cannot be verified")
         else:
             with open(guide_md_path, 'r', encoding='utf-8-sig') as f:
                 guide_md = f.read()
 
             funnel_lines = re.findall(r'^- \*\*第[一二三四五]級[：:].*$', guide_md, re.M)
-            stages = [m.group(1) for m in
-                      (re.search(r'`([a-z][a-z-]+)`', ln) for ln in funnel_lines) if m]
             if not funnel_lines:
-                errors.append("[Governance] Cannot locate GUIDE's 知識漏斗 levels; the "
-                              "evaluation-before-crystallization order cannot be verified")
-            elif "distill-knowledge" not in stages:
-                errors.append(f"[Governance] GUIDE's 知識漏斗 does not name "
-                              f"`distill-knowledge` as a level (found {stages}); §7.2 "
-                              f"numbers it the first of the three states, and a funnel that "
-                              f"omits it lets crystallization run on unevaluated material.")
-            elif "crystallize-report" in stages and \
-                    stages.index("distill-knowledge") > stages.index("crystallize-report"):
-                errors.append(f"[Governance] GUIDE's 知識漏斗 places `crystallize-report` "
-                              f"before `distill-knowledge` ({stages}); evaluation is the "
-                              f"precondition, not a later refinement.")
-
-            # And §10.2 must not conscript the crystallization report as a
-            # change-traceability attachment. crystallize-report.md defines the report as
-            # a write-once internalization asset, and its schema forbids the report from
-            # keeping a Commit ID or a concrete path — so a compliant report cannot name
-            # the change it would be tracing. §10.2 nonetheless demanded one for every
-            # submodule bump, which is unenforced and was ignored the one time a theme
-            # was repinned. Traceability rides commit messages and guideline calibration;
-            # crystallization is decided by §7's funnel on whether a lesson was distilled.
-            cr_path = os.path.join(config.AGENT_DIR, "workflows", "crystallize-report.md")
-            schema_path = os.path.join(config.AGENT_DIR, "schemas",
-                                       "crystallize-report.schema.yaml")
-            sec = re.search(r'^### 10\.2 .*?(?=^### |\Z)', guide_md, re.M | re.S)
-            if not os.path.exists(cr_path):
-                errors.append("[Governance] Missing .agent/workflows/crystallize-report.md")
-            elif not os.path.exists(schema_path):
-                errors.append("[Governance] Missing crystallize-report.schema.yaml; §10.2's "
-                              "separation of traceability from crystallization rests on "
-                              "its de-projectization gate and cannot be verified")
-            elif not sec:
-                errors.append("[Governance] Cannot locate GUIDE §10.2; the "
-                              "crystallization-report scope cannot be verified")
+                errors.append("[Governance] Cannot locate GUIDE's 內容/知識流向 levels")
             else:
-                with open(cr_path, 'r', encoding='utf-8-sig') as f:
-                    cr_src = f.read()
-                with open(schema_path, 'r', encoding='utf-8-sig') as f:
-                    schema_src = f.read()
+                stages_text = " ".join(funnel_lines)
+                for req in ["post-format-spec.md", "init-handoff", "publish-article", "calibrate-guidelines"]:
+                    if req not in stages_text:
+                        errors.append(f"[Governance] GUIDE's content lifecycle does not reference `{req}`")
+
+            spec_path = os.path.join(config.AGENT_DIR, "reference", "post-format-spec.md")
+            sec = re.search(r'^### 10\.2 .*?(?=^### |\Z)', guide_md, re.M | re.S)
+            if not os.path.exists(spec_path):
+                errors.append("[Governance] Missing .agent/reference/post-format-spec.md")
+            elif not sec:
+                errors.append("[Governance] Cannot locate GUIDE §10.2; change traceability cannot be verified")
+            else:
                 sec_src = sec.group(0)
-                demand = re.search(r'^- \*\*架構級變更\*\*[：:](.*)$', sec_src, re.M)
-                # Both premises the rule rests on. Either one going away reopens the call.
-                if "禁止執行結晶" not in cr_src or "治理" not in cr_src:
-                    errors.append("[Governance] crystallize-report.md no longer forbids "
-                                  "crystallizing governance material; GUIDE §10.2's "
-                                  "exclusion now rests on nothing and the pair must be "
-                                  "re-decided together")
-                elif "去專案化" not in schema_src or "Commit ID" not in schema_src:
-                    errors.append("[Governance] crystallize-report.schema.yaml no longer "
-                                  "forbids keeping a Commit ID; §10.2 separates traceability "
-                                  "from crystallization because a compliant report cannot "
-                                  "name its own change, and that premise is gone")
-                elif not demand:
-                    errors.append("[Governance] Cannot locate GUIDE's 架構級變更 "
-                                  "requirement; the crystallization-report scope cannot "
-                                  "be verified")
-                elif "治理" in demand.group(1):
-                    errors.append("[Governance] GUIDE §10.2 requires a crystallization "
-                                  "report for 治理 changes, which crystallize-report.md's "
-                                  "first stage forbids crystallizing and routes to "
-                                  "calibrate-guidelines. Two rules pointing one change at "
-                                  "opposite processes resolve by whichever an executor "
-                                  "reads first.")
-                elif "結晶" in demand.group(1):
-                    errors.append("[Governance] GUIDE §10.2 makes a crystallization report "
-                                  "a consequence of the change type (架構級變更). The report "
-                                  "is a write-once internalization asset whose own schema "
-                                  "forbids keeping a Commit ID or a path, so it cannot name "
-                                  "the change it would trace; conscripting it yields empty "
-                                  "reports for changes that taught nothing.")
-                elif "結晶不由變更類型觸發" not in sec_src:
-                    errors.append("[Governance] GUIDE §10.2 no longer states that "
-                                  "crystallization is not triggered by change type. Without "
-                                  "it the section reads as a list of traceability duties "
-                                  "with the crystallization decision unowned, which is how "
-                                  "the report became a filing requirement.")
+                if "post-format-spec.md" not in sec_src:
+                    errors.append("[Governance] GUIDE §10.2 does not reference post-format-spec.md")
+                if "commit 訊息" not in sec_src or "指引校正" not in sec_src:
+                    errors.append("[Governance] GUIDE §10.2 does not establish traceability via commit messages and guideline calibration")
         return errors
 
     def _check_terminology_schema_conformance(self):
@@ -1492,56 +1419,42 @@ class KBAuditor:
         return errors
 
     def _check_schema_header_titles(self):
-        """Every section title the report schema prescribes must be a canonical header."""
+        """Standard headers prescribed in post-format-spec.md must align with taxonomy.json."""
         errors = []
-        # This is where the two authority hierarchies meet. GUIDE §0 makes taxonomy.json
-        # authoritative for classification and vocabulary; §9 makes the schema the
-        # highest authority for structure. Neither referenced the other, which is how
-        # the schema came to prescribe a section named 反思 while the taxonomy listed
-        # 反思 as a variation to be normalized into 結論 — a section the schema also
-        # prescribes, so applying the rule would have merged two sections with different
-        # mandates. Nothing detected it because nothing compared the two files.
-        #
-        # The boundary: the schema decides which sections a genre has and what each must
-        # accomplish; the taxonomy decides what they are called. So each title must
-        # appear as a standard in header_normalization, and this check is the seam.
         try:
             from infra.taxonomy import TaxonomyEngine
         except ImportError as exc:
-            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify schema "
+            errors.append(f"[Governance] Cannot import TaxonomyEngine to verify spec "
                           f"header titles: {exc}")
             return errors
-
         standards = TaxonomyEngine().standard_headers()
         if not standards:
             errors.append("[Governance] taxonomy.json defines no header_normalization; "
-                          "the schema's section titles cannot be checked against it")
+                          "the spec's section titles cannot be checked against it")
             return errors
 
-        schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
-        if not os.path.exists(schema_path):
-            errors.append(f"[Governance] Missing {self.rel(schema_path)}; the section "
+        spec_path = os.path.join(config.AGENT_DIR, "reference", "post-format-spec.md")
+        if not os.path.exists(spec_path):
+            errors.append(f"[Governance] Missing {self.rel(spec_path)}; the section "
                           f"titles it prescribes cannot be checked")
             return errors
-        with open(schema_path, 'r', encoding='utf-8') as f:
-            schema_text = f.read()
+        with open(spec_path, 'r', encoding='utf-8') as f:
+            spec_text = f.read()
 
-        titles = re.findall(r'^[ \t]+- title:[ \t]*"([^"]+)"', schema_text, re.MULTILINE)
+        titles = re.findall(r'^[ \t]*-[ \t]*`##[ \t]+([^`]+)`', spec_text, re.MULTILINE)
         if not titles:
-            errors.append(f"[Governance] {self.rel(schema_path)} prescribes no section "
-                          f"titles; this check would pass a schema with no structures")
+            errors.append(f"[Governance] {self.rel(spec_path)} prescribes no section "
+                          f"titles; this check would pass a spec with no structures")
             return errors
 
         for title in titles:
-            # Titles are bilingual — `導言 (Introduction)` — and the taxonomy keys on the
-            # Chinese, which is what a published header reduces to.
             zh = re.sub(r'\s*[(（].*?[)）]', '', title).strip()
             zh = re.sub(r'\s*\[[^\]]+\]\s*$', '', zh).strip()
             if zh not in standards:
                 errors.append(
-                    f"[Governance] the report schema prescribes a section titled "
+                    f"[Governance] the post format spec prescribes a section titled "
                     f"{title!r}, but {zh!r} is not a standard header in taxonomy.json. "
-                    f"The schema decides which sections exist; the taxonomy decides what "
+                    f"The spec decides which sections exist; the taxonomy decides what "
                     f"they are called. Either add it to header_normalization or use the "
                     f"canonical name — a title that is a normalizable variation gets "
                     f"rewritten into a different section on publish.")
@@ -1550,21 +1463,7 @@ class KBAuditor:
     def _check_genre_projections(self):
         """Every projection of the genre set — taxonomy, aliases, offered, defined — must agree."""
         errors = []
-        # Genre is tags[0] on every post, and four projections describe the same set:
-        # taxonomy.json's canonical `中文 (English)` genres (the tag SSOT, GUIDE §0) and
-        # their slug aliases, the Structure line the report template offers an author,
-        # and the `structures:` definitions saying what each genre must contain. All
-        # four have drifted at some point — the schema named 分析論文 and 技術隨筆 where
-        # taxonomy says 分析論述 and 技術筆記, and taxonomy offered a 案例研究 that no
-        # structure defined. A genre is real only when every projection agrees.
-        #
-        # Each projection is extracted unconditionally and an empty one is a finding.
-        # Guarding the comparisons behind `if projection:` is how two of these rules
-        # previously passed a repo that had deleted the thing being audited.
-        schema_path = os.path.join(config.AGENT_DIR, "schemas", "crystallize-report.schema.yaml")
-        # Read the JSON SSOT directly. This used to be a warning against load_taxonomy,
-        # which scraped the genre names out of a Markdown projection; that projection is
-        # gone and load_taxonomy reads the same JSON now.
+        spec_path = os.path.join(config.AGENT_DIR, "reference", "post-format-spec.md")
         genres = {}
         if not os.path.exists(config.TAXONOMY_JSON):
             errors.append("[Governance] Missing taxonomy.json; genre has no source of truth")
@@ -1577,21 +1476,21 @@ class KBAuditor:
 
         canonical = {en: zh for en, zh in genres.items() if " " in en}
         aliases = {en: zh for en, zh in genres.items() if " " not in en}
-        schema_text = ""
-        if not os.path.exists(schema_path):
-            errors.append(f"[Governance] Missing report schema {self.rel(schema_path)}; the genre "
+        spec_text = ""
+        if not os.path.exists(spec_path):
+            errors.append(f"[Governance] Missing post format spec {self.rel(spec_path)}; the genre "
                           f"set cannot be reconciled against taxonomy.json")
         else:
-            with open(schema_path, 'r', encoding='utf-8') as f:
-                schema_text = f.read()
+            with open(spec_path, 'r', encoding='utf-8') as f:
+                spec_text = f.read()
 
         defined = {}
-        for zh, en in re.findall(r'^[ \t]*name:\s*"([^"(]+?)\s*\(([^)"]+)\)"', schema_text, re.MULTILINE):
+        for zh, en in re.findall(r'###[ \t]+體裁[一二三四五]：([^(\n]+)\s*\(([^)]+)\)', spec_text):
             defined[en.strip()] = zh.strip()
         offered = set()
-        offered_match = re.search(r'\*\*Structure\*\*:.*?從\s*(.+?)\s*中擇一', schema_text)
+        offered_match = re.search(r'\*\*Structure\*\*:.*?\[(.+?)\]', spec_text)
         if offered_match:
-            offered = {g.strip() for g in offered_match.group(1).split("/") if g.strip()}
+            offered = {g.strip() for g in offered_match.group(1).split("|") if g.strip()}
 
         if not genres:
             errors.append("[Governance] taxonomy.json defines no `genres`; genre is tags[0] on "
@@ -1599,19 +1498,13 @@ class KBAuditor:
         if genres and not canonical:
             errors.append("[Governance] taxonomy.json `genres` has no canonical `中文 (English)` "
                           "entries; only slug aliases were found")
-        if schema_text and not offered:
-            errors.append(f"[Governance] {self.rel(schema_path)} has no **Structure** line offering "
+        if spec_text and not offered:
+            errors.append(f"[Governance] {self.rel(spec_path)} has no **Structure** line offering "
                           f"a genre choice; an author is given nothing to declare")
-        if schema_text and not defined:
-            errors.append(f"[Governance] {self.rel(schema_path)} defines no genre `structures:`; "
+        if spec_text and not defined:
+            errors.append(f"[Governance] {self.rel(spec_path)} defines no genre structures; "
                           f"no genre says what it must contain")
 
-        # TagAnchorer folds canonical names and slug aliases into one map keyed by
-        # camel_key, and taxonomy.json lists the aliases second, so an alias silently
-        # overrides the canonical display at runtime. A single wrong alias value
-        # retags every post of that genre, with nothing in the data looking wrong.
-        # Each canonical genre therefore needs exactly its own slug, carrying the
-        # identical display.
         expected_aliases = {en.lower().replace(" ", "-"): (en, zh) for en, zh in canonical.items()}
         for slug, (en, zh) in sorted(expected_aliases.items()):
             if slug not in aliases:
@@ -1625,19 +1518,16 @@ class KBAuditor:
             errors.append(f"[Governance] taxonomy.json has genre alias '{stray}' with no canonical "
                           f"`中文 (English)` entry behind it")
 
-        # The remaining comparisons are unconditional: an empty projection is already
-        # reported above, and comparing against it surfaces the same drift again rather
-        # than hiding it.
         for en, zh in sorted(defined.items()):
             expected = canonical.get(en)
             if expected and expected != zh:
-                errors.append(f"[Governance] {self.rel(schema_path)} names genre '{en}' as "
+                errors.append(f"[Governance] {self.rel(spec_path)} names genre '{en}' as "
                               f"'{zh}' but taxonomy.json says '{expected}'")
         for missing in sorted(set(canonical) - offered):
             errors.append(f"[Governance] taxonomy.json defines genre '{missing}' but "
-                          f"{self.rel(schema_path)} does not offer it in **Structure**")
+                          f"{self.rel(spec_path)} does not offer it in **Structure**")
         for extra in sorted(offered - set(canonical)):
-            errors.append(f"[Governance] {self.rel(schema_path)} offers genre '{extra}' in "
+            errors.append(f"[Governance] {self.rel(spec_path)} offers genre '{extra}' in "
                           f"**Structure** but taxonomy.json does not define it")
         for undefined in sorted(set(canonical) - set(defined)):
             errors.append(f"[Governance] genre '{undefined}' is offerable but has no "

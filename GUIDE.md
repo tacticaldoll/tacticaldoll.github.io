@@ -35,7 +35,7 @@
 
 - **AI 輔助開發**：由 AI Agent 協助內容寫作與技術實作是本專案的核心開發模式。
 - **邊界與忽略清單 (AI Scope Limits)**：AI Agent **絕對禁止**自主掃描、讀取或修改被列入 `.antigravityignore` 的目錄（`archetypes/`, `content/`, `themes/`, `.agent-scratch/`）；即使被要求「掃描或檢查所有文件」，也必須排除這些區域。
-    - **唯一例外**：以該目錄為明確作用域的受認可工作流——`reanchor-posts` 寫入 `content/`、`crystallize-report` 在 `--force-write` 下寫入 `.agent-scratch/`。例外的邊界由該工作流自身的閘門約束（dry-run、隔離、稽核、人工旗標），不由本條放寬；本條禁止的是**未經工作流授權的自主觸碰**。
+    - **唯一例外**：以該目錄為明確作用域的受認可工作流——`reanchor-posts` 寫入 `content/`、在人類明確指示或發布管線引導下寫入 `.agent-scratch/`。例外的邊界由該工作流自身的閘門約束（dry-run、隔離、稽核、人工旗標），不由本條放寬；本條禁止的是**未經授權的自主觸碰**。
     - `archetypes/` 與 `themes/` 無此類工作流，維持絕對唯讀。
 - **目錄保護絕對規則 (CRITICAL)**：
     - **`archetypes/`**：本目錄為重要範本來源，定義為「僅限人工操作 (Human-Only)」。AI Agent **絕對禁止**讀取、掃描或以任何方式修改此目錄下的檔案。
@@ -128,12 +128,12 @@
 
 ## 7. 知識流向與治理 (Knowledge Flow & Governance)
 
-為了對抗 Session 效能衰退（熵增）並維持高品質的技術記憶，本專案採用「知識漏斗」機制管理資訊流向：
+為了維持高品質的技術記憶並確保發布管線的確定性，本專案採用分級流向管理內容生命週期：
 
-- **第一級：對話 (Dialogue)**：Session 內的原始討論，具備高雜訊與流動性。
-- **第二級：評估 (Distill)**：透過 `distill-knowledge` 判定各主題的性質、成熟度、歸屬傾向與體量。此級為結晶的**前置條件**：未經評估即結晶，會把體量不足或應外化的素材寫成報告。評估只產出表格，不決定去向，亦不得給出下一步指引。
-- **第三級：結晶 (Crystallize)**：透過 `crystallize-report` 生成結構化報告，存放在 `.agent-scratch/` 對應的 Session 目錄下。將雜亂對話轉化為具備「抗抽象化」特性的階段性資產。消費第二級的評估結果：歸屬為外化者導向沉澱 (Precipitate)，不進入結晶。
-- **第四級：綱領 (Consolidate)**：透過 `calibrate-guidelines` 將結晶報告中的成熟知識併入 `GUIDE.md` 等核心指引，並視情況移除過時的報告。在此階段應確保指引文件遵循「瘦身與委派」架構，防止規則冗餘。
+- **第一級：草稿 (Draft)**：由全域認知工具（如 `fornax-write-learning-report`）或人類撰寫的 Markdown 報告散文，存放於 `.agent-scratch/<session_id>/<slug>/report.zh-TW.md`。格式依 [.agent/reference/post-format-spec.md](.agent/reference/post-format-spec.md) 規範。
+- **第二級：交接 (Handoff)**：透過 `/init-handoff` 執行純粹認知與元數據萃取，生成審查用 JSON 交接檔。
+- **第三級：發布 (Publish)**：透過 `/publish-article` 執行確定性管線腳本，進行雙語術語錨定、Linter 審計與 Hugo 編譯，並執行 `manage.py --promote` 晉升術語庫。
+- **第四級：綱領 (Consolidate)**：透過 `/calibrate-guidelines` 將專案演進與經驗校準併入 `GUIDE.md` 等核心指引，維持政體階層一致性。
 
 **熵增控制 (Entropy Control)**：
 - **冗餘禁止**：嚴禁建立語意與現有指引高度重疊的規則。
@@ -141,8 +141,8 @@
 
 **核心治理原則**：
 - **原子化先行**：任何針對指引的修正或內容轉化，必須先執行任務拆解，確保 AI 的「語意視野」始終被限制在最小的、可控的範圍內。
-- **負債削減**：知識結晶、過時指引均視為「結構化技術負債」或「重複佈署」，應定期透過「瘦身與委派」機制最佳化。
-- **重啟 Session**：當知識完成結晶或指引校正後，應積極開啟新 Session 以重置脈絡視窗效能。
+- **負債削減**：過時指引與陳舊規格視為「結構化技術負債」，應定期透過校準機制清理與最佳化。
+- **重啟 Session**：當文章完成發布或指引校正後，應積極開啟新 Session 以重置脈絡視窗效能。
 
 ---
 
@@ -154,17 +154,17 @@
 
 ### 7.2 知識管線三態分離邊界 (Knowledge Pipeline Boundaries) [CRITICAL]
 
-為了防止 AI 將「對話評估」、「報告產出」與「發表組裝」的職責混淆，所有涉及內容生成的管線任務必須嚴格遵守以下三態分離護欄。完整邊界以 [.agent/reference/agent-operating-guideline.md](.agent/reference/agent-operating-guideline.md) 為準。
+為了防止 AI 將「草稿產出」、「交接萃取」與「發布組裝」的職責混淆，所有涉及內容生成的管線任務必須嚴格遵守以下三態分離護欄。完整邊界以 [.agent/reference/agent-operating-guideline.md](.agent/reference/agent-operating-guideline.md) 為準。
 
 > [!IMPORTANT]
-> **散文只寫一次 (CRITICAL)**：貼文正文即為結晶報告正文。發表階段只注入術語錨點與元數據，不改寫任何一句話——見 `publish-article` 附錄的「NLP 不越界」與「填充即法律」。因此可讀性、流暢度與知識密度必須在**結晶階段**達成，不得寄望後段修飾。本節劃分的是職責，不是語氣：同一份文字不可能在兩個階段有兩種語氣，而中間沒有轉換者。
+> **散文只寫一次 (CRITICAL)**：貼文正文即為草稿正文。發表階段只注入術語錨點與元數據，不改寫任何一句話——見 `publish-article` 附錄的「NLP 不越界」與「填充即法律」。因此可讀性、流暢度與知識密度必須在**草稿撰寫階段**達成，不得寄望後段修飾。本節劃分的是職責，不是語氣：同一份文字不可能在兩個階段有兩種語氣，而中間沒有轉換者。
 
-1. **`distill-knowledge` (評估階段)**
-   - **職責邊界**：只評估，不起草。禁止產出內容或給出行動建議。
-2. **`crystallize-report` (結晶階段)**
-   - **職責邊界**：產出最終散文。強制套用決策結構與密度基準；此處寫成什麼樣，讀者就讀到什麼樣。
-3. **`init-handoff` + `publish-article` (發表階段)**
-   - **職責邊界**：只做萃取、錨定與組裝。`init-handoff` 產出 JSON 交接檔，`publish-article` 執行管線腳本。兩者皆不介入正文。
+1. **草稿產出層 (Fornax / 人工撰寫)**
+   - **職責邊界**：產出符合 `post-format-spec.md` 的 Markdown 散文草稿，存於 `.agent-scratch/`。
+2. **交接萃取層 (`init-handoff`)**
+   - **職責邊界**：只做元數據解析、標題重塑與術語精煉，產出 JSON 交接檔供人類審查，不介入正文。
+3. **發布生產層 (`publish-article`)**
+   - **職責邊界**：只做注入、錨定、組裝與詞庫晉升。管線腳本消費 Handoff，不改寫正文散文。
 
 ---
 
@@ -227,12 +227,11 @@
 
 ### 10.2 變更溯源 (Change Traceability)
 
-溯源與結晶是兩種產物，本節曾把後者當成前者的附件。[crystallize-report.md](.agent/workflows/crystallize-report.md) 定義結晶報告為「一次性內化資產」，用途是知識內化；[crystallize-report.schema.yaml](.agent/schemas/crystallize-report.schema.yaml) 的「高解析度去專案化」閘門更明文禁止報告保留 Commit ID 與特定路徑。一份合規的報告無法指名它要溯源的那次變更——這個產物在結構上就做不了溯源。
+溯源與內容發布是兩種不同性質的產物。貼文草稿為一次性技術資產，禁止在內文混入開發期 Commit ID 或特定路徑；專案變更的溯源則由版本控制與指引校正承接。
 
 - **架構級變更**：任何涉及子模組異動或核心管線重構的變更，其溯源形式為 commit 訊息，記載關鍵決策路徑與被否決的替代方案。
-- **指引變更**：涉及治理模式、目錄權限或核心指引（`GUIDE.md`、reference）者，溯源形式為指引校正與永久防線落成，見 §8「校正優先」與 §9「定義先行」。[crystallize-report.md](.agent/workflows/crystallize-report.md) 第一階段對此類素材禁止結晶並導向 `calibrate-guidelines`。
-- **結晶不由變更類型觸發 (CRITICAL)**：是否結晶由 §7 知識漏斗決定——`distill-knowledge` 評估出值得留存的教訓，才進入結晶。以「動了某類檔案」為條件強制附帶報告，是把溯源義務誤植到結晶產物上，並讓沒有教訓的變更產出空報告。
-- **報告內容**：由 [crystallize-report.schema.yaml](.agent/schemas/crystallize-report.schema.yaml) 定義，本文件不重述。
+- **指引變更**：涉及治理模式、目錄權限或核心指引（`GUIDE.md`、reference）者，溯源形式為指引校正與永久防線落成，見 §8「校正優先」與 §9「定義先行」。
+- **草稿規格**：由 [.agent/reference/post-format-spec.md](.agent/reference/post-format-spec.md) 定義，本文件不重述。
 
 ### 10.3 自動化稽核義務 (Automated Audit)
 - 提交重大變更前 **必須** 執行 `python3 .agent/scripts/workflows/calibrate-guidelines/audit_kb.py`。此腳本為治理防線的執行點，非零退出即為阻斷，不得以人工判斷覆寫。

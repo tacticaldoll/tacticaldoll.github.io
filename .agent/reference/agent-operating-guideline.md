@@ -26,22 +26,16 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 
 ## 3. Workflow Boundaries
 
-### distill-knowledge
+### 上游草稿規格 (Upstream Post Draft)
 
-- 職責：客觀評估對話中的可萃取知識價值。
-- 輸出：只輸出評估表。
-- 禁止：不得起草文章、不得建檔、不得建議下一步、不得引用專案資料夾或其他工作流。
-
-### crystallize-report
-
-- 職責：把對話或素材轉成內部知識報告。
-- 語氣：嚴謹、客觀、高密度、自包含。
-- 禁止：不得混入 `publish-article` 的口語寫作風格；不得把報告互相引用成系列文章正文；報告本文不得經術語錨定處理——散文中不得出現 `<!-- term:/anchor: -->` 錨點、`（English）` 雙語錨定或 `> [!IMPORTANT]` 術語定義框（術語錨定是 `publish-article` 對 Hugo 貼文的專屬職責）。說明用的語法示例必須置於程式碼區塊內。
-- 例外：批次導讀 `guide.zh-TW.md` 可以記錄跨報告閱讀順序，但報告本文必須自包含。
+- 規格參照：`.agent/reference/post-format-spec.md`。
+- 輸入來源：由全域認知工具（如 `fornax-write-learning-report`）或人類撰寫之 Markdown 散文，存放於 `.agent-scratch/<session_id>/<slug>/report.zh-TW.md`。
+- 散文只寫一次：貼文正文即為草稿正文，發布管線只注入術語錨點與後設資料，不改寫任何散文。
+- 禁制：草稿正文不得提前注入 `<!-- term:/anchor: -->` 錨點，錨定為 `publish-article` 的專屬職責。
 
 ### init-handoff
 
-- 職責：將結晶報告萃取為 `handoff.posts.json` 與 `handoff.terms.json`。
+- 職責：將草稿報告萃取為 `handoff.posts.json` 與 `handoff.terms.json`。
 - NLP 權責：標題、摘要、`domain_tag` 領域宣告、一般 tags、`rules.headers`、`rules.redactions`、`rules.sublimations`、`terms.declared`。
 - Script 權責：`prepare_handoff.py` 掃描術語與禁語；`refine_handoff.py` 晉升 locked terms 並攔截 placeholder。
 - Linter 守門：`domain_tag` 必須落在 taxonomy 封閉枚舉或 `""`，並受雙軌證據檢驗防禦。
@@ -64,18 +58,6 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 
 - 職責：處理嚴重污染、舊路徑殘留或本地 Git 狀態混亂。
 - 限制：任何 destructive Git 行為都必須取得人類明確確認。
-
-### expand-knowledge-arc
-
-- 職責：作為重新結晶的上游展開工序。突破既有框架，萃取議題、精神與客觀知識，清洗不可靠引用；自由進行深化、合併、拆分以重構最佳敘事弧，並規劃流程圖、程式碼與數學公式規格。
-- 輸出：知識展開藍圖（Dossier / Blueprint），交由下游結晶。
-- 禁止：不得撰寫最終發布文章，不得修改 `content/` 原文。
-
-### recrystallize-post-series
-
-- 職責：吸收既有貼文或消費上游展開藍圖，進行因果覆蓋性重寫與系列重鑄。
-- 輸出：自洽的結晶報告（`report.zh-TW.md`）、`guide.zh-TW.md` 與 `series-map.md`。
-- 限制：輸出僅限 `.agent-scratch/recrystal-*` 目錄，嚴禁更動 `content/`。
 
 ## 4. Ownership Matrix
 
@@ -138,7 +120,6 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - 標籤候選的去留不得由字串長度決定。GUIDE §3.2 將 Level 1 定為優先標籤，依長度排序會讓 Level 1 術語在 `TAG_CAP` 處輸給較長的 Level 2 術語。
 - Level 3（IGNORE_LIST）術語不得進入標籤候選，也不得出現在丟棄報告中。`anchor_by_display` 依政策拒絕它們，那不是損失；報進損失通道只會淹掉真正的損失，與去重同屬豁免。
 - `.antigravityignore` 與 `GUIDE.md` 的 `目錄保護絕對規則` 必須指名同一組受保護目錄。忽略清單多出未經宣告的路徑，或宣告了絕對保護卻未列入忽略清單，兩者皆為漂移；後者使宣告看似已被強制，而 GUIDE 所委派的機制並未涵蓋該路徑。
-- `GUIDE.md` 的知識漏斗必須指名 `distill-knowledge` 且排在 `crystallize-report` 之前。評估是結晶的前置條件；漏斗漏掉評估級，會讓結晶跑在未經評估的素材上。
+- `GUIDE.md` 的內容流向必須指名以 `post-format-spec.md` 為草稿依據，並依序涵蓋草稿、交接（`/init-handoff`）與發布（`/publish-article`）。
 - `lexicon-core/databases/` 的每一份現行資料庫都必須有 schema，且頂層鍵兩向相符。`taxonomy.json` 是 `GUIDE.md` §0 第三順位的 SSOT，治理分類、genre 與標頭詞彙，卻與 `rules.json` 同樣完全沒有 L0 規約——§9 宣稱的階層保證對它們從未生效，因為沒有宣告就沒有東西可漂移。另攔：偵測詞指向不存在的分類（永遠無法到達）、分類沒有偵測詞（佔著優先序卻不可能勝出）、標頭正規名被列為另一個正規名的變體（正規化會併掉兩個任務不同的章節）、`rules.json` 的 regex 無法編譯（宣告的保護靜默消失）。
 - `terminology.schema.yaml` 必須描述實際存在的 `terminology.json`，兩向比對：schema 宣告的頂層型別、required 欄位、屬性集合，與資料實際使用的欄位必須一致。此前無任何機制比對過這兩個檔，於是同時漂移三處——schema 宣告 `type: array` 且以 `zh` 為主鍵，實際是以 PascalCase id 為鍵的物件；`level` 從未被宣告，而 458 筆全部都有、`injector` 與 `tag_anchor` 靠它決定是否錨定；`category`／`tags` 有宣告而零使用。`level` 的行為語意由 `GUIDE.md` §3.2 單獨擁有，schema 只約束結構與可用值：schema 曾另立五級制，其 Level 3 是「核心架構術語」而 GUIDE 的 Level 3 是 IGNORE_LIST，極性相反，且程式跟的是 GUIDE。
-- `GUIDE.md` §10.2 不得以變更類型強制附帶結晶報告，也不得對 `crystallize-report` 拒絕結晶的素材要求結晶報告。結晶報告的品質閘門禁止保留 Commit ID 與特定路徑，它在結構上無法指名自己要溯源的那次變更；徵用它作溯源附件，會讓沒有教訓的變更產出空報告，並在治理素材上與該工作流的拒絕指向相反流程。溯源由 commit 訊息與指引校正承接；結晶由 §7 漏斗依素材是否蒸餾出教訓決定。此判定所依賴的兩個前提——工作流拒絕治理素材、schema 禁止保留 Commit ID——任一消失，本條與 §10.2 必須一起重新裁決。
