@@ -7,6 +7,7 @@ isCJKLanguage = true
 description = "藉由固定交易成本與持有延遲成本的對偶推導平方根律，證明偽拆分關卡如何在不縮減批量的情況下成倍推升固定開銷，指出降低單批固定交易成本才是縮減批量的唯一出路。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "系統工程與研發治理", # term:SystemsGovernanceOperations
     "批量經濟", # term:BatchEconomics
     "交易成本", # term:TransactionCost
     "回饋延遲", # term:FeedbackDelay

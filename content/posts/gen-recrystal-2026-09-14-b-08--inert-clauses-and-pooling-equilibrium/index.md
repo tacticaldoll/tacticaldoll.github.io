@@ -7,13 +7,13 @@ isCJKLanguage = true
 description = "結合訊號賽局與貝氏推論，證明無檢查機制之惰性條文與剛性約束混排時似然比為一，促使理性讀者陷入 Pooling 均衡並採取單一折扣率，提出按接縫位置診斷機制缺口之方法。"
 tags = [
     "分析論述", # term:AnalyticalEssay
+    "系統工程與研發治理", # term:SystemsGovernanceOperations
     "治理診斷", # term:GovernanceDiagnostics
     "規則效力", # term:RuleEfficacy
     "訊號賽局", # term:SignalingGame
     "可區分性", # term:Distinguishability
     "似然比", # term:LikelihoodRatio
     "互資訊", # term:MutualInformation
-    "可觀測性", # term:Observability
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
 [ai_info]
