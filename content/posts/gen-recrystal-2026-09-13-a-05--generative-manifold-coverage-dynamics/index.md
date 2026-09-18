@@ -38,12 +38,13 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 然而，嚴格的數學與實證批判隨即粉碎了該指標的權威性：評估計算過程中**完全未曾引入任何真實參考資料的分佈樣本**。這意味著：一個純粹死記硬背了一千個類別各一張完美圖片、隨後反覆循環輸出的退化生成器，能夠在 IS 指標上斬獲極高分數；相反地，一個忠實捕捉了全部資料模態及其長尾分佈的生成器，得分卻可能顯著偏低（詳見 [Barratt 與 Sharma，2018 / 《A Note on the Inception Score》](https://arxiv.org/abs/1801.01973)）。
 
 這種「純量評估盲區」在**變分自動編碼器**（VAE） <!-- term:VariationalAutoencoder -->與**擴散模型**（Diffusion Models） <!-- term:DiffusionModel -->中以不同數學形態同步浮現：
-- 當 VAE 接入強大的自迴歸神經解碼器時，目標函數中的 KL 散度項迅速降至接近零——這常被工程師誤讀為「潛在空間先驗對齊良好」，實則是解碼器完全繞過潛在變數，引發**後驗坍縮**（Posterior Collapse） <!-- term:PosteriorCollapse -->，潛在通道完全空置（參閱 [Bowman 等人，2015 / 《Generating Sentences from a Continuous Space》](https://arxiv.org/abs/1511.06349)）；
+- 當 VAE 接入強大的自迴歸神經解碼器時，**目標函數**（Objective Function） <!-- term:ObjectiveFunction -->中的 KL 散度項迅速降至接近零——這常被工程師誤讀為「潛在空間先驗對齊良好」，實則是解碼器完全繞過潛在變數，引發**後驗坍縮**（Posterior Collapse） <!-- term:PosteriorCollapse -->，潛在通道完全空置（參閱 [Bowman 等人，2015 / 《Generating Sentences from a Continuous Space》](https://arxiv.org/abs/1511.06349)）；
 - 在擴散模型 <!-- term:DiffusionModel -->的反向採樣過程中，「增加採樣步數必然提升生成品質」的經驗直覺被數值分析擊破：當神經網路對分數函數的估計存在固有偏誤時，盲目細化時間步長不僅無法降低整體距離，反而會因反向微分方程的誤差累積使整體生成品質逆向劣化（參閱 [Song 等人，2020 / 《Score-Based Generative Modeling through Stochastic Differential Equations》](https://arxiv.org/abs/2011.13456)；以及 [Karras 等人，2022 / 《Elucidating the Design Space of Diffusion-Based Generative Models》](https://arxiv.org/abs/2206.00364)）。
 
 > [!IMPORTANT]
 > **變分自動編碼器** <!-- term:VariationalAutoencoder --> (Variational Autoencoder): 學習潛在變數的條件分佈，並以證據下界同時訓練編碼器與解碼器的生成模型。 <!-- anchor:VariationalAutoencoder -->
 > **擴散模型** <!-- term:DiffusionModel --> (Diffusion Model): 以前向加噪與反向去噪的多步轉移建立生成程序的模型族。 <!-- anchor:DiffusionModel -->
+> **目標函數** <!-- term:ObjectiveFunction --> (Objective Function): 最佳化演算法或管理決策所試圖最大化或最小化的定量目標；未進入讀數的維度在目標函數中梯度分量恆為零。 <!-- anchor:ObjectiveFunction -->
 > **後驗坍縮** <!-- term:PosteriorCollapse --> (Posterior Collapse): 近似後驗退化為先驗、潛在變數不再攜帶輸入資訊的失效現象。 <!-- anchor:PosteriorCollapse -->
 
 
@@ -114,11 +115,16 @@ $$
 
 重構項要求潛在變數 $z$ 攜帶足夠的輸入資訊以重建 $x$；KL 散度項則懲罰後驗與先驗 $p(z) = \mathcal{N}(0, I)$ 的偏離，力求將潛在通道資訊量壓制為零。
 
-設解碼器本身具有自迴歸生成能力（如 Transformer 或 PixelCNN），其僅憑自身參數量即可解釋資料變異的比例為 $c \in [0, 1]$（強解碼器對應 $c \to 1$）。設潛在通道傳遞的實質資訊增益為 $a \in [0, 1]$。則簡化的局部能量代價模型為：
+設解碼器本身具有自迴歸生成能力（如 Transformer 或 PixelCNN），其僅憑自身參數量即可解釋資料變異的比例為 $c \in [0, 1]$（強解碼器對應 $c \to 1$）。設潛在通道傳遞的實質**資訊增益**（Information Gain） <!-- term:InformationGain -->為 $a \in [0, 1]$。則簡化的局部能量代價模型為：
+
+> [!IMPORTANT]
+> **資訊增益** <!-- term:InformationGain --> (Information Gain): 系統在觀測到新資料或實驗結果後，不確定性（熵）減少的程度；變異為零意味著無法從中取得任何資訊增益。 <!-- anchor:InformationGain -->
+
 
 $$
-\mathcal{L}(a) = \underbrace{(1 - c)(1 - a)^2}_{\text{未重建殘差損失}} + \underbrace{\beta a^2}_{\text{KL 資訊成本}}.
+\mathcal{L}(a) = (1 - c)(1 - a)^2 + \beta a^2.
 $$
+其中首項 $(1 - c)(1 - a)^2$ 為未重建殘差損失，次項 $\beta a^2$ 為 KL 資訊成本。
 
 對 $a$ 求一階導極值 $\frac{\partial \mathcal{L}}{\partial a} = -2(1 - c)(1 - a) + 2\beta a = 0$，可得最佳潛在增益的封閉解析解：
 
@@ -130,7 +136,7 @@ $$
 - 當解碼器較弱時（$c \to 0$），$a^* \approx 1/(1 + \beta)$，潛在通道被迫承載資訊；
 - **當解碼器高度強大時（$c \to 1$），分子 $(1 - c) \to 0$，即便在標準 $\beta = 1$ 的未加權設定下，最優潛在增益 $a^*$ 亦精確塌縮至 0**。
 
-此時，KL 散度趨近於零是目標函數在強解碼器拓撲下的**全局數學最優解**，而非最佳化未收斂的缺陷。若工程師僅監控 ELBO 總值或讚嘆於微小的 KL 讀數，實質上完全無視了潛在表徵空間已經淪為無用的雜訊通道。
+此時，KL 散度趨近於零是目標函數 <!-- term:ObjectiveFunction -->在強解碼器拓撲下的**全局數學最優解**，而非最佳化未收斂的缺陷。若工程師僅監控 ELBO 總值或讚嘆於微小的 KL 讀數，實質上完全無視了潛在表徵空間已經淪為無用的雜訊通道。
 
 ---
 
@@ -145,8 +151,9 @@ $$
 生成推斷即是使用數值積分器（如 Euler-Maruyama、DDIM 或高階 Runge-Kutta）自純高斯噪聲 $x_T \sim \mathcal{N}(0, I)$ 反向積分至 $x_0$。終端生成樣本的誤差可被嚴格分解為三項互不相通的來源：
 
 $$
-\text{Total Error} = \underbrace{\mathcal{E}_{\text{est}}(\theta)}_{\text{神經網路分數估計偏誤}} + \underbrace{\mathcal{E}_{\text{disc}}(N)}_{\text{離散化時間步長截斷誤差}} + \underbrace{\mathcal{E}_{\text{term}}(T)}_{\text{先驗邊界分佈不匹配}}.
+\mathcal{E}_{\text{total}} = \mathcal{E}_{\text{est}}(\theta) + \mathcal{E}_{\text{disc}}(N) + \mathcal{E}_{\text{term}}(T).
 $$
+各項物理來源分別為：神經網路分數估計偏誤 $\mathcal{E}_{\text{est}}(\theta)$、離散化時間步長截斷誤差 $\mathcal{E}_{\text{disc}}(N)$，以及先驗邊界分佈不匹配 $\mathcal{E}_{\text{term}}(T)$。
 
 1. **離散化截斷誤差 $\mathcal{E}_{\text{disc}}$**：隨採樣步數 $N$ 增加而單調下降，對於一階積分器呈 $\mathcal{O}(1/N)$。
 2. **分數估計偏誤 $\mathcal{E}_{\text{est}}$**：神經網路容量有限或訓練不完全造成的固有偏誤（例如平滑收縮效應）。**該誤差與採樣步數無關，甚至會隨步數增加而沿著軌跡積分持續累積**。

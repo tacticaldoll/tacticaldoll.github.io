@@ -57,7 +57,7 @@ series = ["進不了控制迴路的量：研發治理中的可重複性前提、
 對於一般到達與一般服務時間分佈的單工站系統，等待時間有一個廣泛使用的近似，其重尾流量下的漸近結果建立於 [Kingman，1961 / 《The single server queue in heavy traffic》](https://doi.org/10.1017/S0305004100036094)：
 
 $$
-W_q \;\approx\; \underbrace{\left(\frac{c_a^2 + c_s^2}{2}\right)}_{\text{變異項 V}} \cdot \underbrace{\left(\frac{\rho}{1-\rho}\right)}_{\text{利用率項 U}} \cdot \underbrace{\mathbb{E}[S]}_{\text{時間項 T}}
+W_q \;\approx\; V \cdot U \cdot T \;=\; \left(\frac{c_a^2 + c_s^2}{2}\right) \cdot \left(\frac{\rho}{1-\rho}\right) \cdot \mathbb{E}[S]
 $$
 
 其中 $c_a^2$ 與 $c_s^2$ 分別是到達間隔與服務時間的平方變異係數，$\mathbb{E}[S]$ 是平均服務時間。這個分解把三個獨立的因素分開：**變異有多大、系統有多滿、單件要多久。**

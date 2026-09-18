@@ -13,6 +13,7 @@ tags = [
     "不可判定性", # term:Undecidability
     "確定性邊界", # term:DeterministicTrustBoundary
     "約束覆蓋率", # term:ConstraintCoverage
+    "場景綁定", # term:ScenarioBinding
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]
@@ -72,7 +73,7 @@ $$g: A \to \{\top, \bot\}, \qquad \mathrm{Rej}(g) = g^{-1}(\bot)$$
 > **規格效力** <!-- term:SpecificationEfficacy --> (Specification Efficacy): 一份規格透過其實際部署之拒絕算子對違規產物空間產生的實質約束能力，形式上等價於約束覆蓋率。 <!-- anchor:SpecificationEfficacy -->
 
 
-$$\bigcup_i \mathrm{Rej}(g_i) = \varnothing \;\Longrightarrow\; \mathrm{Eff}(S, G) = 0 \quad \text{對任意 } S$$
+$$\bigcup_i \mathrm{Rej}(g_i) = \varnothing \;\Longrightarrow\; \forall S, \; \mathrm{Eff}(S, G) = 0$$
 
 也就是說，**文字完備性與效力在形式上正交**。一份寫得極其詳盡的規格，只要沒有任何算子會因它而拒絕任何東西，它對系統行為的約束力就是零——不是「比較弱」，是恰好為零。
 
@@ -179,12 +180,13 @@ $\mathrm{Rej}(g) = \varnothing$ 有兩個來源，而它們的可偵測性相差
 | 表面讀數 / 現象 | 底層架構病灶 | 舊代脆弱做法 | 新代嚴格工程防線 |
 | :--- | :--- | :--- | :--- |
 | 規格文件字數與章節數持續增長 | 文字完備性與 $\mathrm{Cov}(G,S)$ 正交，增長不改變覆蓋 | 以文件完整度作為治理成熟度指標 | 每條驗收條件強制標注其拒絕算子 <!-- term:Rejector -->實體；無算子者歸類為文件而非治理 |
-| 驗收條件覆蓋率報表 100% | 覆蓋率統計的是「條件有無被記錄」，不是「違規有無被拒絕」 | 統計已撰寫條件數量／總需求數 | 統計 $|V_S \cap \bigcup \mathrm{Rej}|/|V_S|$ 的代理：變異體被殺率 |
+| 驗收條件覆蓋率報表 100% | 覆蓋率統計的是「條件有無被記錄」，不是「違規有無被拒絕」 | 統計已撰寫**條件數**（Condition Number） <!-- term:ConditionNumber -->／總需求數 | 統計 $|V_S \cap \bigcup \mathrm{Rej}|/|V_S|$ 的代理：變異體被殺率 |
 | **場景綁定**（Scenario Binding） <!-- term:ScenarioBinding -->全部通過、無斷鏈 | 綁定只驗到「句子有實作」，不驗「句子描述了該實作」 | 以綁定完整性作為規格與實作一致的證據 | 對綁定層注入語意變異（改實作不改句子），要求變異體被殺 |
 | 流程稽核零缺失 | 缺席的自訊息量為零，稽核觀測不到未發生的事 | 以流程執行紀錄推論檢查存在 | 主動變異注入；以存活變異體清單作為缺口定位的唯一憑證 |
 | 靜態分析與格式檢查全綠 | 語法代理與語意性質之間無蘊涵關係（Rice 定理） | 以綠燈推論架構健康 | 明確區分確定性邊界 <!-- term:DeterministicTrustBoundary -->所守的可判定子集，與必須由人的碰撞覆蓋的判斷子集 |
 
 > [!IMPORTANT]
+> **條件數** <!-- term:ConditionNumber --> (Condition Number): 損失曲面各方向曲率的比值，決定固定學習率下梯度下降的收斂速度。 <!-- anchor:ConditionNumber -->
 > **場景綁定** <!-- term:ScenarioBinding --> (Scenario Binding): 將自然語言場景步驟對應到可執行函式或測試程式碼的連接機制。 <!-- anchor:ScenarioBinding -->
 
 
@@ -377,7 +379,7 @@ fn main() {
 正確的作法是把規則降到確定性邊界 <!-- term:DeterministicTrustBoundary -->上——用**型別狀態**（Typestate） <!-- term:Typestate -->、資料庫約束、流水線閘門把「未附拒絕算子 <!-- term:Rejector -->的產物無法進入下一狀態」變成一個不可繞過的結構事實。判準很直接：如果違反這條規則的路徑仍然編譯得過、部署得了，那它就不是治理，是提醒。
 
 > [!IMPORTANT]
-> **型別狀態** <!-- term:Typestate --> (Typestate): 將物件的運行時狀態與生命週期約束編碼至靜態型別系統中，使非法狀態轉移在編譯期即被攔截的技術。 <!-- anchor:Typestate -->
+> **型別狀態** <!-- term:Typestate --> (Typestate): 將物件的執行期狀態與生命週期約束編碼至靜態型別系統中，使非法狀態轉移在編譯期即被攔截的技術。 <!-- anchor:Typestate -->
 
 
 ---

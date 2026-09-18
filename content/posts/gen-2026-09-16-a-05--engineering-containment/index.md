@@ -107,11 +107,9 @@ $$
 
 單一 `risk=high` 很容易成為裝飾。控制策略至少要看四個維度：最大影響 $I$、暴露範圍 $B$、偵測延遲 $D$ 與可逆性 $R_v$。這些量不必硬湊成一個精確機率，但必須改變政策。例如：
 
-$$
-I\uparrow\lor B\uparrow\lor D\uparrow\lor R_v\downarrow
-\quad\Rightarrow\quad
-\text{更小 capability、更短 TTL、更強證據或禁止自動升格}.
-$$
+> **防禦性控制律（Defensive Containment Rule）**：
+> 當系統觀測到衝擊增加（$I\uparrow$）、暴露面擴大（$B\uparrow$）、偵測延遲拉長（$D\uparrow$）或可逆性下降（$R_v\downarrow$）時，安全邊界必須強制觸發收縮：
+> `更小 capability、更短 TTL、更強證據或禁止自動升格`。
 
 NIST AI RMF 將風險治理視為跨生命週期活動，要求持續監測、事件回應、復原、override 與 decommissioning；Manage 2.4 特別要求能取代、脫離或停用與預期用途不符的 AI 系統（[NIST，2023／AI RMF Core](https://airc.nist.gov/airmf-resources/airmf/5-sec-core/)）。因此「可撤銷」不是部署工具的附加功能，而是 AI 風險控制的一部分。
 

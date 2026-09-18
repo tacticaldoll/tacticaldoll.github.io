@@ -13,6 +13,7 @@ tags = [
     "事前登記", # term:PreRegistration
     "部分識別", # term:PartialIdentification
     "排除觀察集", # term:ExcludedObservationSet
+    "驗證覆蓋", # term:VerificationCoverage
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]
@@ -62,7 +63,7 @@ $$\mathrm{Excl}(H) = \{\, o \in \Omega \;:\; o \Rightarrow \lnot H \,\}$$
 
 也就是「哪些觀察結果一旦出現，就推翻這個主張」。於是可證偽性 <!-- term:Falsifiability -->有了操作型定義：
 
-$$H \text{ 可證偽} \iff \mathrm{Excl}(H) \neq \varnothing$$
+$$\mathrm{IsFalsifiable}(H) \iff \mathrm{Excl}(H) \neq \varnothing$$
 
 那句錯誤斷言的問題現在可以精確表述：$\mathrm{Excl}(H) = \varnothing$。「短期內不會有」沒有給出任何一個能推翻它的觀察——任何一項被舉出的研究都可以被回應為「那項不夠嚴謹」「樣本不足」「介入已經改變」。
 

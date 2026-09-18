@@ -36,7 +36,7 @@ series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 本文把 change completion 重建成**主張升格**（Claim Promotion） <!-- term:ClaimPromotion -->狀態機。升格不是把文件宣布為 truth，而是在指定 scope、證據與期限下，允許某個決定暫時驅動現實；若觀察不符，系統必須能撤銷或修訂。
 
 > [!IMPORTANT]
-> **主張升格** <!-- term:ClaimPromotion --> (Claim Promotion): 在指定的適用範圍、證據強度與有效期限下，允許某個陳述或技術決定暫時驅動系統行為的狀態轉移機制；若運行觀測與預期不符，系統必須具備明確的撤銷或修訂路徑。 <!-- anchor:ClaimPromotion -->
+> **主張升格** <!-- term:ClaimPromotion --> (Claim Promotion): 在指定的適用範圍、證據強度與有效期限下，允許某個陳述或技術決定暫時驅動系統行為的狀態轉移機制；若執行觀測與預期不符，系統必須具備明確的撤銷或修訂路徑。 <!-- anchor:ClaimPromotion -->
 
 
 ## 分析

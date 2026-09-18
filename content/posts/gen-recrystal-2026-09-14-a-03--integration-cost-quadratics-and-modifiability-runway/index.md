@@ -13,6 +13,7 @@ tags = [
     "長期更新率", # term:LongTermUpdateRate
     "不變式", # term:Invariant
     "回饋迴路", # term:FeedbackLoop
+    "變更帳本", # term:ChangeLedger
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]

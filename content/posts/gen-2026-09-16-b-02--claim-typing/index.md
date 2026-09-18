@@ -227,7 +227,7 @@ Typed claims 的價值不在語言更正式，而在錯誤無法再靠模糊詞�
 Artifact 是協作容器，不是認識論單位。同一份 proposal、spec 或 design 可以同時承載觀察、目的、假說、規範與決策；這些主張需要不同來源、**反駁條件**（Defeater） <!-- term:Defeater -->與 owner。
 
 > [!IMPORTANT]
-> **反駁條件** <!-- term:Defeater --> (Defeater): 在主張契約中明確定義的證偽觀測或環境條件，一旦在系統運行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。 <!-- anchor:Defeater -->
+> **反駁條件** <!-- term:Defeater --> (Defeater): 在主張契約中明確定義的證偽觀測或環境條件，一旦在系統執行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。 <!-- anchor:Defeater -->
 
 
 當系統只看見檔案，verify 只能檢查檔案與 code 的關係。當系統也看見 typed claims，它才能問對問題：這是什麼型別的命題、哪種 evidence 與它相關、誰在什麼 scope 內有權升格，以及什麼事件應使它失效。**可靠治理不是讓每句話變重，而是讓會驅動現實的句子不能在未定型時取得權威。**

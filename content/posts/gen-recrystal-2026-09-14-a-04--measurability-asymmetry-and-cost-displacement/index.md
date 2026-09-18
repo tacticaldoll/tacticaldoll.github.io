@@ -13,6 +13,7 @@ tags = [
     "最適解偏移", # term:OptimalSolutionShift
     "折現偏誤", # term:DiscountingBias
     "導入成本", # term:IntegrationCost
+    "生產成本", # term:ProductionCost
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]
@@ -401,10 +402,11 @@ func main() {
 
 執行結果把四個機制一次攤開。並發記帳一千筆後，儀表板讀數是 $+820.0$——看起來是賺的；而真實效用是 $-280.0$。兩者的差恰好是那一千筆各自製造的 $1.10$ 單位未來成本，它們全部真實存在，全部不進入報表。
 
-**最適解偏移**（Optimal Solution Shift） <!-- term:OptimalSolutionShift -->的驗證更直接：三個選項中，「大量新增、不附檢查」在儀表板上以 $+88.0$ 拔得頭籌，而它的真實效用是 $-52.0$（三者最差）；真實效用最高的是「適量新增、附帶檢查」（$+34.0$），它在儀表板上只排第二。**依指標最佳化，必然選中真實效用最差的那個選項**——這不是假想，是在同一組數字上由兩個目標函數算出的兩個不同 argmax。
+**最適解偏移**（Optimal Solution Shift） <!-- term:OptimalSolutionShift -->的驗證更直接：三個選項中，「大量新增、不附檢查」在儀表板上以 $+88.0$ 拔得頭籌，而它的真實效用是 $-52.0$（三者最差）；真實效用最高的是「適量新增、附帶檢查」（$+34.0$），它在儀表板上只排第二。**依指標最佳化，必然選中真實效用最差的那個選項**——這不是假想，是在同一組數字上由兩個**目標函數**（Objective Function） <!-- term:ObjectiveFunction -->算出的兩個不同 argmax。
 
 > [!IMPORTANT]
 > **最適解偏移** <!-- term:OptimalSolutionShift --> (Optimal Solution Shift): 因度量指標遺漏隱性成本，導致依照指標最佳化所選出之方案與真實效用最佳方案發生系統性背離的現象。 <!-- anchor:OptimalSolutionShift -->
+> **目標函數** <!-- term:ObjectiveFunction --> (Objective Function): 最佳化演算法或管理決策所試圖最大化或最小化的定量目標；未進入讀數的維度在目標函數中梯度分量恆為零。 <!-- anchor:ObjectiveFunction -->
 
 
 轉嫁的放大係數同樣可測：無附帶物時移走 1 單位抵達 2.40 單位；附帶一個會失敗的檢查後抵達 1.05 單位。注意力盈虧點 $k^* = 3.16$ 位讀者——讀者數為 2 時不裝較省（2.00 vs 3.10），讀者數為 5 時裝了較省（5.00 vs 3.25）。同一個決策在盈虧點兩側的正確答案相反，而多數團隊從不估計自己的 $k$。

@@ -49,13 +49,13 @@ series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性
 
 Knight 與 Leveson 的實驗結果需要一個機制解釋，而該解釋在同一時期被形式化。[Eckhardt 與 Lee，1985 / 《A Theoretical Basis for the Analysis of Multiversion Software Subject to Coincident Errors》](https://doi.org/10.1109/TSE.1985.231895) 提出的模型只需要一個假設：**輸入空間上存在「難度」的差異。**
 
-設輸入 $x$ 從某個分佈中抽取，定義難度變數
+設輸入 $x$ 從某個分佈中抽取，定義輸入 $x$ 上的條件漏檢機率為
 
-$$\theta(x) = P(\text{單一驗證器在 } x \text{ 上漏檢})$$
+$$\theta(x) = P(\mathrm{Miss} \mid x)$$
 
-若 $\theta$ 對所有輸入都相同（也就是難度均勻），則 $n$ 個獨立開發的驗證器同時漏檢的機率確實是 $\theta^n$。但真實的輸入空間不是這樣：有些情形所有人都能處理，有些情形所有人都容易搞錯。此時 $\theta$ 是一個隨機變數，而共同漏檢率是
+若 $\theta$ 對所有輸入都相同（也就是難度均勻），則 $n$ 個獨立開發的驗證器同時漏檢的機率確實是 $\theta^n$。但真實的輸入空間不是這樣：有些情形所有人都能處理，有些情形所有人都容易搞錯。此時 $\theta(x)$ 是一個隨機變數，而在輸入分佈下的總體共同漏檢率為
 
-$$P(\text{全部 } n \text{ 個漏檢}) = \mathbb{E}[\theta^n]$$
+$$P(\mathrm{CoincidentMiss}_n) = \mathbb{E}[\theta^n]$$
 
 而工程上通常拿來估計的是「先取平均漏檢率、再取 $n$ 次方」：$(\mathbb{E}[\theta])^n$。兩者的大小關係由 Jensen 不等式決定——$t \mapsto t^n$ 在 $[0,1]$ 上對 $n \ge 2$ 是凸函數，故
 

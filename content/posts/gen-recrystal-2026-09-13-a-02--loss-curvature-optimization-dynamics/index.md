@@ -48,13 +48,13 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 
 ### 最佳化動力學的三道串聯關卡
 
-在**經驗風險**（Empirical Risk） <!-- term:EmpiricalRisk -->最小化框架下，觀察到訓練損失數值下降，實質上僅證明了「當前參數更新方向與局部純量梯度的內積為負」，絕不必然意味著演算法正朝著全域泛化 <!-- term:Generalization -->解健康行進。一個具備工程嚴謹度的最佳化驗證管線，必須將該過程拆解為三道具備獨立失效模式的關卡：
+在**經驗風險最小化**（Empirical Risk Minimization） <!-- term:EmpiricalRiskMinimization -->框架下，觀察到訓練損失數值下降，實質上僅證明了「當前參數更新方向與局部純量梯度的內積為負」，絕不必然意味著演算法正朝著全域泛化 <!-- term:Generalization -->解健康行進。一個具備工程嚴謹度的最佳化驗證管線，必須將該過程拆解為三道具備獨立失效模式的關卡：
 
 > [!IMPORTANT]
-> **經驗風險** <!-- term:EmpiricalRisk --> (Empirical Risk): 模型在有限訓練樣本上的平均損失，是目標分佈期望風險的間接替代量。 <!-- anchor:EmpiricalRisk -->
+> **經驗風險最小化** <!-- term:EmpiricalRiskMinimization --> (Empirical Risk Minimization): 以訓練樣本上的平均損失最小化代替真實風險最小化的學習原則，只保證擬合關聯，不保證因果結構恆常。 <!-- anchor:EmpiricalRiskMinimization -->
 
 
-1. **第一道門：求導正確性（Derivative Correctness）**：**反向傳播**（Backpropagation） <!-- term:Backpropagation -->**計算圖（Computational Graph） <!-- term:ComputationalGraph -->**中所求得的向量 $g = \nabla_\theta \mathcal{L}(\theta)$，是否在數值精度意義下嚴格吻合**損失函數**（Loss Function） <!-- term:LossFunction -->對參數張量的真實全微分？
+1. **第一道門：求導正確性（Derivative Correctness）**：**反向傳播**（Backpropagation） <!-- term:Backpropagation -->**計算圖**（Computational Graph） <!-- term:ComputationalGraph -->中所求得的向量 $g = \nabla_\theta \mathcal{L}(\theta)$，是否在數值精度意義下嚴格吻合**損失函數**（Loss Function） <!-- term:LossFunction -->對參數張量的真實全微分？
 2. **第二道門：更新收斂性（Update Convergence）**：給定局部損失曲面的幾何曲率（Curvature）與最佳化器步幅策略，離散參數序列 $\{\theta_t\}_{t=1}^T$ 是否在流形上穩定收縮而非高頻振盪或發散？
 3. **第三道門：泛化 <!-- term:Generalization -->是否成立（Generalization Viability）**：參數收斂點所獲得的經驗特徵，是否在未見的資料分佈上維持預期的結構規律，而非單純記住了經驗樣本的局部幾何特異點？
 

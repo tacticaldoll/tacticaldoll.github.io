@@ -128,20 +128,20 @@ flowchart TD
 > **折扣率** <!-- term:DiscountFactor --> (Discount Factor): 理性讀者在面對可能失效或缺乏強制的文字條款時，在事前評估與執行投入上所打折的心理折現比例。 <!-- anchor:DiscountFactor -->
 
 
-形式化很直接。設條款的效力為隱藏變數 $E\in\{\text{會咬人},\text{惰性}\}$，先驗機率 $\pi=P(E=\text{會咬人})$；讀者觀測到的是條款的外觀 $X$——編號格式、助動詞強度、所在章節。**似然比**（Likelihood Ratio） <!-- term:LikelihoodRatio -->為
+形式化很直接。設條款的真實效力為隱藏變數 $E \in \{E_{\text{active}}, E_{\text{inert}}\}$（分別對應會咬人的實質條款與裝飾性惰性條款），先驗機率 $\pi = P(E = E_{\text{active}})$；讀者觀測到的是條款的外觀 $X$——編號格式、助動詞強度、所在章節。**似然比**（Likelihood Ratio） <!-- term:LikelihoodRatio -->為
 
 > [!IMPORTANT]
 > **似然比** <!-- term:LikelihoodRatio --> (Likelihood Ratio): 在特定假設成立與不成立下觀測到同一徵候的條件機率之比，決定貝氏後驗更新的幅度。 <!-- anchor:LikelihoodRatio -->
 
 
 $$
-\Lambda(x) \;=\; \frac{P(X=x \mid E=\text{會咬人})}{P(X=x \mid E=\text{惰性})}
+\Lambda(x) \;=\; \frac{P(X=x \mid E=E_{\text{active}})}{P(X=x \mid E=E_{\text{inert}})}
 $$
 
-當兩類條款的外觀分佈相同時 $\Lambda\equiv 1$，於是貝氏後驗
+當兩類條款的外觀分佈相同時 $\Lambda(x) \equiv 1$，於是貝氏後驗
 
 $$
-P(E=\text{會咬人}\mid X=x) \;=\; \frac{\pi\Lambda(x)}{\pi\Lambda(x) + (1-\pi)} \;=\; \pi
+P(E=E_{\text{active}}\mid X=x) \;=\; \frac{\pi\Lambda(x)}{\pi\Lambda(x) + (1-\pi)} \;=\; \pi
 $$
 
 **後驗等於先驗，觀測沒有提供任何資訊。** 等價地說，外觀與效力之間的**互資訊**（Mutual Information） <!-- term:MutualInformation --> $I(X;E)=0$。這是一個訊號完全失效的均衡，其原型是品質不可分辨的市場中好貨與壞貨按同一價格成交的情況，見 [Akerlof，1970 / 《The Market for "Lemons": Quality Uncertainty and the Market Mechanism》](https://doi.org/10.2307/1879431)；而使訊號重新攜帶資訊的條件——發送者必須付出與其類型相關的差別成本——見 [Spence，1973 / 《Job Market Signaling》](https://doi.org/10.2307/1882010)。互資訊 <!-- term:MutualInformation -->的定義與其為零的條件則出自 [Shannon，1948 / 《A Mathematical Theory of Communication》](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x)。

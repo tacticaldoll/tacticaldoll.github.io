@@ -110,9 +110,7 @@ $$
 增加同源 artifacts 的數量，不會像增加獨立量測一樣降低錯誤率。若它們只是確定性地承接 $H$，則：
 
 $$
-H\Rightarrow A_i\quad \forall i
-\qquad\text{且}\qquad
-\mathrm{Agreement}(A_1,\dots,A_n)\not\Rightarrow H
+\forall i \; (H \Rightarrow A_i) \quad\land\quad \mathrm{Agreement}(A_1,\dots,A_n) \not\Rightarrow H
 $$
 
 這就是坍縮的核心**不變式**（Invariant） <!-- term:Invariant -->：衍生物彼此同意，只證明轉換一致，不能反向證明共同前提正確。

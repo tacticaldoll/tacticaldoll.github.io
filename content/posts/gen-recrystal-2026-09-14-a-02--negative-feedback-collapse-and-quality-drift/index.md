@@ -13,6 +13,7 @@ tags = [
     "反事實", # term:Counterfactual
     "摩擦判別", # term:FrictionDiscriminator
     "檢查強度階梯", # term:InspectionIntensityLadder
+    "場景綁定", # term:ScenarioBinding
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]
@@ -64,7 +65,7 @@ $$U_{\text{true}} = -c \cdot n + \beta \cdot n \cdot D$$
 
 由此得到一條可操作的判別式。摩擦 $\phi$ 分成兩類：
 
-$$\phi \text{ 是失效點} \iff \mathrm{Rej}(\phi) \neq \varnothing$$
+$$\mathrm{IsGate}(\phi) \iff \mathrm{Rej}(\phi) \neq \varnothing$$
 
 其中 $\mathrm{Rej}(\phi)$ 是「因為這道摩擦而被拒絕的產物集合」。等待編譯、環境設定、工具鏈安裝也是摩擦，但它們的拒絕集為空——它們不因產物違規而拒絕任何東西，它們只是慢。判別的問法很直接：**這道摩擦擋掉的是什麼？** 若答案是「沒有東西，它只是慢」，那它是純成本，該最佳化；若答案指向某類會被攔下的錯誤，那麼在移除之前必須先安排替代的拒絕機制。
 
