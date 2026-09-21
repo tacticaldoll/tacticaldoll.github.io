@@ -53,6 +53,33 @@
     "forbidden": [],
     "level": 1
   },
+  "SystemsGovernanceOperations": {
+    "zh": "系統工程與研發治理",
+    "en": [
+      "Systems Governance & Operations"
+    ],
+    "description": "涵蓋排隊理論、流量守恆、組織度量、控制迴路與研發決策責任等系統工程與研發營運治理範疇。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Hyperscalers": {
+    "zh": "雲端超大規模服務商",
+    "en": [
+      "Hyperscalers"
+    ],
+    "description": "提供大規模雲端算力與機架、並驅動上游晶片採購的雲端巨頭。",
+    "forbidden": [],
+    "level": 2
+  },
+  "TemporalClawbackSymmetry": {
+    "zh": "跨期追回時限對稱性",
+    "en": [
+      "Temporal Clawback Symmetry"
+    ],
+    "description": "激勵追回期限必須覆蓋物理崩潰潛伏期，以消除任內套現、期滿離席。",
+    "forbidden": [],
+    "level": 2
+  },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
     "en": [
@@ -329,6 +356,51 @@
       "Lifecycle Completeness"
     ],
     "description": "指例外裁決與升級處理必須保留結構化理由，並具備回寫為未來新政策的閉環流程。",
+    "forbidden": [],
+    "level": 2
+  },
+  "SoftwareEngineeringSpecifications": {
+    "zh": "軟體工程與規格",
+    "en": [
+      "Software Engineering & Specifications"
+    ],
+    "description": "涵蓋形式規格、架構契約、型別系統、變更帳本與可撤銷升格等軟體工程理論與治理實踐之核心技術範疇。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpuriousOntologicalPrivilege": {
+    "zh": "假性本體論特權",
+    "en": [
+      "Spurious Ontological Privilege"
+    ],
+    "description": "把機器輸出預設為客觀物理事實，從而免除制度自行查驗義務的認識論特權。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RepresentativeVoiceChannels": {
+    "zh": "代表性發聲通道",
+    "en": [
+      "Representative Voice Channels"
+    ],
+    "description": "工會或自治代表作為獨立於直屬主管的反證與資訊通道。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ArchitectureReviewBoard": {
+    "zh": "架構審查委員會",
+    "en": [
+      "Architecture Review Board"
+    ],
+    "description": "對重大技術變更行使物理限制與合規質疑的內部審查節點。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ChiefInformationSecurityOfficer": {
+    "zh": "首席資訊安全官",
+    "en": [
+      "Chief Information Security Officer"
+    ],
+    "description": "對資安、主權與攻擊面承擔否決職能的治理角色。",
     "forbidden": [],
     "level": 2
   },
@@ -1105,6 +1177,51 @@
     "description": "控制理論中由狀態矩陣與觀測矩陣構造的矩陣，當其秩虧時代表存在無法透過外部讀數重建的內部狀態維度。",
     "forbidden": [],
     "level": 1
+  },
+  "BusinessJudgmentRule": {
+    "zh": "商業判斷法則",
+    "en": [
+      "Business Judgment Rule"
+    ],
+    "description": "推定經理人在知情且善意時免於個人賠償；形式合規常被用來對抗實質的安全與審計審查。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CircularCapitalTribute": {
+    "zh": "閉環資本朝貢",
+    "en": [
+      "Circular Capital Tribute"
+    ],
+    "description": "晶片商、新創與雲端巨頭以交叉承諾互相灌注名義營收，並向外圍企業抽取實質現金的封閉流動。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MeaningfulHumanInTheLoop": {
+    "zh": "人類實質在環",
+    "en": [
+      "Meaningful Human-In-The-Loop"
+    ],
+    "description": "人類對自動化決策保有足以中斷資金劃轉的實質否決權。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DirectedCycle": {
+    "zh": "有向閉合環路",
+    "en": [
+      "Directed Cycle"
+    ],
+    "description": "資金與承諾在少數節點間自我循環、推升名義營收的有向閉環。",
+    "forbidden": [],
+    "level": 2
+  },
+  "OptimalLootingStrategy": {
+    "zh": "最優洗劫策略",
+    "en": [
+      "Optimal Looting Strategy"
+    ],
+    "description": "在有限責任與短歸屬週期下，掏空實體抗震能力以最大化個人效用的策略。",
+    "forbidden": [],
+    "level": 2
   },
   "Spec": {
     "zh": "約束性規格",
@@ -2347,6 +2464,96 @@
     "description": "評估系統承諾與規格是否真正解決實際問題並符合真實環境、政策與使用者限制的驗證維度，無法單純由內部程式碼與文件的自洽性推導成立。",
     "forbidden": [],
     "level": 1
+  },
+  "FiduciaryDuty": {
+    "zh": "受託人義務",
+    "en": [
+      "Fiduciary Duty"
+    ],
+    "description": "經理人對公司與利害關係人負有的注意與忠實義務，是古典公司治理中代理人正當性的法理基礎。",
+    "forbidden": [],
+    "level": 1
+  },
+  "FearOfMissingOut": {
+    "zh": "錯失恐懼症",
+    "en": [
+      "Fear Of Missing Out"
+    ],
+    "description": "被管理層武器化的生存焦慮，用以宣告內部例外狀態並廢止常規技術審計。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Conductance": {
+    "zh": "瓶頸傳導率",
+    "en": [
+      "Conductance"
+    ],
+    "description": "圖論中衡量子圖之間資訊流通能力的量；趨零表示反證被物理阻斷。",
+    "forbidden": [],
+    "level": 2
+  },
+  "UnsubstantiatedClaim": {
+    "zh": "待證之主張",
+    "en": [
+      "Unsubstantiated Claim"
+    ],
+    "description": "演算法輸出在法理上只能作為尚待證明的主張，不得自證為事實。",
+    "forbidden": [],
+    "level": 2
+  },
+  "MirrorAccessRight": {
+    "zh": "鏡像取證權",
+    "en": [
+      "Mirror Access Right"
+    ],
+    "description": "相對人與控方對等取得原始碼、日誌與遠端修補紀錄的證據權。",
+    "forbidden": [],
+    "level": 2
+  },
+  "UndampedShortCircuiting": {
+    "zh": "無阻尼短路",
+    "en": [
+      "Undamped Short-Circuiting"
+    ],
+    "description": "把資產負債表直接接到黑箱預測、切除人類審查阻力的控制論操作。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Ergodicity": {
+    "zh": "各態歷經性",
+    "en": [
+      "Ergodicity"
+    ],
+    "description": "時間平均與系綜平均可互換的統計假設。",
+    "forbidden": [],
+    "level": 2
+  },
+  "BiconnectedGraph": {
+    "zh": "雙向連通圖",
+    "en": [
+      "Biconnected Graph"
+    ],
+    "description": "現場、工程與管理層之間存在封閉反饋環的健康組織拓樸。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PlausibleDeniability": {
+    "zh": "不知情特權",
+    "en": [
+      "Plausible Deniability"
+    ],
+    "description": "透過割點過濾資訊，使高層得以主張對缺陷不知情。",
+    "forbidden": [],
+    "level": 2
+  },
+  "AuthorityKnowledgeAccountabilityCoLocation": {
+    "zh": "權責收斂律",
+    "en": [
+      "Authority-Knowledge-Accountability Co-Location"
+    ],
+    "description": "權力、現場知識、評量權與個人責任必須收斂於同一決策實體的治理不變量。",
+    "forbidden": [],
+    "level": 2
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -4509,13 +4716,13 @@
     "level": 2
   },
   "HumanInTheLoop": {
-    "zh": "人工覆核",
+    "zh": "人在迴路",
     "en": [
       "Human-In-The-Loop"
     ],
-    "description": "在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。",
+    "description": "人類節點對自動化決策保留實質否決與阻尼的控制條件，而非形式性的一鍵通過。",
     "forbidden": [],
-    "level": 2
+    "level": 1
   },
   "Interlock": {
     "zh": "物理聯鎖",
@@ -4554,11 +4761,11 @@
     "level": 2
   },
   "CapitalExpenditure": {
-    "zh": "資本開支",
+    "zh": "資本支出",
     "en": [
       "Capital Expenditure"
     ],
-    "description": "為取得或延長長期資產效益而支出的資金，其回收必須在折舊年限內完成。",
+    "description": "用於基礎設施與長期資產的資本性投入。",
     "forbidden": [],
     "level": 2
   },
@@ -5155,6 +5362,204 @@
     "description": "在主張契約中明確定義的證偽觀測或環境條件，一旦在系統執行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。",
     "forbidden": [],
     "level": 1
+  },
+  "AgencyTheory": {
+    "zh": "代理理論",
+    "en": [
+      "Agency Theory"
+    ],
+    "description": "以委託人與代理人間的利益衝突為核心，解釋經理人誘因如何偏離組織長期存續。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StockOptions": {
+    "zh": "股票期權",
+    "en": [
+      "Stock Options"
+    ],
+    "description": "將經理人薪酬與股價綁定的激勵工具；當歸屬週期短於系統崩潰潛伏期時，會打開跨期套現空間。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Contestability": {
+    "zh": "可抗辯性",
+    "en": [
+      "Contestability"
+    ],
+    "description": "一項指控或評級取得拘束力前，受影響相對人必須能夠提出反證的制度條件。",
+    "forbidden": [],
+    "level": 1
+  },
+  "OrganizationalSilence": {
+    "zh": "組織沉默",
+    "en": [
+      "Organizational Silence"
+    ],
+    "description": "第一線知情無法轉化為系統修正時，由制度性恐懼所維繫的發聲停滯。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StateOfException": {
+    "zh": "例外狀態",
+    "en": [
+      "State Of Exception"
+    ],
+    "description": "主權者中止常態規範的決斷時刻；在組織內用來架空架構審查與合規煞車。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DunningKrugerEffect": {
+    "zh": "達克效應",
+    "en": [
+      "Dunning-Kruger Effect"
+    ],
+    "description": "對複雜現實不知其不知、同時對粗糙模型過度自信的雙重認知盲區。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AdverseSelection": {
+    "zh": "逆向選擇",
+    "en": [
+      "Adverse Selection"
+    ],
+    "description": "資訊優勢方把瑕疵標的賣給定價失靈的買方，使資產組合系統性惡化。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AdversarialPrinciple": {
+    "zh": "對席辯論",
+    "en": [
+      "Adversarial Principle"
+    ],
+    "description": "訴訟或組織程序中雙方得對等提出證據與質疑的辯論結構。",
+    "forbidden": [],
+    "level": 2
+  },
+  "WorkerVoice": {
+    "zh": "獨立發聲",
+    "en": [
+      "Worker Voice"
+    ],
+    "description": "第一線人員經由免於報復的獨立通道向上傳遞負面真實的發聲機制。",
+    "forbidden": [],
+    "level": 2
+  },
+  "BayesianInference": {
+    "zh": "貝氏推論",
+    "en": [
+      "Bayesian Inference"
+    ],
+    "description": "以條件機率更新信念的推論框架；此處用來說明舉證似然比如何被制度扭曲。",
+    "forbidden": [],
+    "level": 2
+  },
+  "TestimonialInjustice": {
+    "zh": "證言不公",
+    "en": [
+      "Testimonial Injustice"
+    ],
+    "description": "說話者因制度偏見而被系統性降低信用權重的認識論傷害。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Cybernetics": {
+    "zh": "控制理論",
+    "en": [
+      "Cybernetics"
+    ],
+    "description": "以反饋、阻抗與穩定性描述控制系統行為的理論。",
+    "forbidden": [],
+    "level": 2
+  },
+  "FeedbackImpedance": {
+    "zh": "反饋阻抗",
+    "en": [
+      "Feedback Impedance"
+    ],
+    "description": "吸收噪聲、約束極端輸出的審查阻力；被切除後系統易進入共振。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GrossNegligence": {
+    "zh": "重大過失",
+    "en": [
+      "Gross Negligence"
+    ],
+    "description": "盲目切除防護機制、將資本無阻尼交付未驗證黑箱，不受商業判斷法則庇護的過失。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PonziFinancing": {
+    "zh": "龐氏融資",
+    "en": [
+      "Ponzi Financing"
+    ],
+    "description": "營運現金流不足以支付利息，存續完全依賴資產價格上漲或外部信貸。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RoundTripping": {
+    "zh": "迴圈交易",
+    "en": [
+      "Round-Tripping"
+    ],
+    "description": "同一筆資本在關聯實體間來回認列、製造虛增營收的交易結構。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProofOfConcept": {
+    "zh": "概念驗證",
+    "en": [
+      "Proof Of Concept"
+    ],
+    "description": "在規模化採購前驗證技術可行性與邊界條件的試驗。",
+    "forbidden": [],
+    "level": 2
+  },
+  "GhostSeats": {
+    "zh": "幽靈座位",
+    "en": [
+      "Ghost Seats"
+    ],
+    "description": "已付費但基層停用、只存在於授權看板的帳號。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DutyOfCare": {
+    "zh": "注意義務",
+    "en": [
+      "Duty Of Care"
+    ],
+    "description": "受託人須以合理謹慎作成知情決策的義務。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DutyOfLoyalty": {
+    "zh": "忠實義務",
+    "en": [
+      "Duty Of Loyalty"
+    ],
+    "description": "受託人不得將個人利益置於公司利益之上的義務。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Slack": {
+    "zh": "糾錯緩衝",
+    "en": [
+      "Slack"
+    ],
+    "description": "用以吸收極端風險的安全冗餘與隱性工藝存量。",
+    "forbidden": [],
+    "level": 2
+  },
+  "LimitedLiability": {
+    "zh": "有限責任",
+    "en": [
+      "Limited Liability"
+    ],
+    "description": "將個人賠償上限隔離於企業破產損失之外的法人制度。",
+    "forbidden": [],
+    "level": 2
   },
   "Requirements": {
     "zh": "需求層",
@@ -5781,6 +6186,33 @@
     "forbidden": [],
     "level": 1
   },
+  "AbsorbingBarrier": {
+    "zh": "吸收壁",
+    "en": [
+      "Absorbing Barrier"
+    ],
+    "description": "一旦觸及即無法返回的破產或流動性終態。",
+    "forbidden": [],
+    "level": 2
+  },
+  "StructuralHoles": {
+    "zh": "結構洞",
+    "en": [
+      "Structural Holes"
+    ],
+    "description": "兩個孤立群落之間的資訊斷層，佔位者可抽取話語權租金。",
+    "forbidden": [],
+    "level": 2
+  },
+  "RightToContest": {
+    "zh": "反證權",
+    "en": [
+      "Right To Contest"
+    ],
+    "description": "第一線以獨立路徑阻斷非理性冒進、否定錯誤系統輸出的權利。",
+    "forbidden": [],
+    "level": 2
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -6163,21 +6595,12 @@
     "forbidden": [],
     "level": 1
   },
-  "SoftwareEngineeringSpecifications": {
-    "zh": "軟體工程與規格",
+  "CutVertex": {
+    "zh": "割點",
     "en": [
-      "Software Engineering & Specifications"
+      "Cut Vertex"
     ],
-    "description": "涵蓋形式規格、架構契約、型別系統、變更帳本與可撤銷升格等軟體工程理論與治理實踐之核心技術範疇。",
-    "forbidden": [],
-    "level": 1
-  },
-  "SystemsGovernanceOperations": {
-    "zh": "系統工程與研發治理",
-    "en": [
-      "Systems Governance & Operations"
-    ],
-    "description": "涵蓋排隊理論、流量守恆、組織度量、控制迴路與研發決策責任等系統工程與研發營運治理範疇。",
+    "description": "資訊與責任傳遞網路中一旦被插入或破壞，即導致子圖孤立、反饋中斷的關鍵節點。",
     "forbidden": [],
     "level": 1
   }
