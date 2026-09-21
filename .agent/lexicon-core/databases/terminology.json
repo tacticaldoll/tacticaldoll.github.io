@@ -80,6 +80,15 @@
     "forbidden": [],
     "level": 2
   },
+  "MoralCrumpleZone": {
+    "zh": "責任去中心化洗滌槽",
+    "en": [
+      "Moral Crumple Zone"
+    ],
+    "description": "人在迴路被設計成吸收政治責難的緩衝區，而非具備實質否決權的控制節點。",
+    "forbidden": [],
+    "level": 1
+  },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
     "en": [
@@ -151,6 +160,15 @@
     "description": "以自動化程序在架構空間中搜尋最佳網路結構的方法，其候選規模直接放大評估讀數的極值偏差。",
     "forbidden": [],
     "level": 2
+  },
+  "DigitalOperationalResilienceAct": {
+    "zh": "數位營運韌性法案",
+    "en": [
+      "Digital Operational Resilience Act"
+    ],
+    "description": "要求關鍵實體評估集中度風險、接受第三方穿透監管並證明可切換能力的歐盟法。",
+    "forbidden": [],
+    "level": 1
   },
   "CodeAsDocumentation": {
     "zh": "以程式碼為文件",
@@ -287,15 +305,6 @@
     "forbidden": [],
     "level": 2
   },
-  "MoralCrumpleZone": {
-    "zh": "制度性責任海綿",
-    "en": [
-      "Moral Crumple Zone"
-    ],
-    "description": "把系統性失效的法律與道德責任吸收到最末端操作員身上的組織安排。",
-    "forbidden": [],
-    "level": 2
-  },
   "SequentialProbabilityRatioTest": {
     "zh": "序貫機率比檢驗",
     "en": [
@@ -403,6 +412,42 @@
     "description": "對資安、主權與攻擊面承擔否決職能的治理角色。",
     "forbidden": [],
     "level": 2
+  },
+  "SupersonicBullwhipEffect": {
+    "zh": "超音速牛鞭效應",
+    "en": [
+      "Supersonic Bullwhip Effect"
+    ],
+    "description": "全自動即時管道把供應鏈震盪壓縮到秒級，局部微小錯誤無阻尼放大為全域休克。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EpistemicInbreeding": {
+    "zh": "認識論近親繁殖",
+    "en": [
+      "Epistemic Inbreeding"
+    ],
+    "description": "封閉系統反覆吸收自身合成產物，無法引入真實負熵而走向資訊熵增。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Slopsquatting": {
+    "zh": "幻覺包搶註寄生",
+    "en": [
+      "Slopsquatting"
+    ],
+    "description": "攻擊者搶先註冊模型常幻覺出的套件名，藉安裝路徑植入惡意程式碼。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EpistemicSanctuaries": {
+    "zh": "工程知識保護區",
+    "en": [
+      "Epistemic Sanctuaries"
+    ],
+    "description": "禁止引入生成式黑箱、強制人類手動設計與除錯的核心模組保留區。",
+    "forbidden": [],
+    "level": 1
   },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
@@ -1222,6 +1267,96 @@
     "description": "在有限責任與短歸屬週期下，掏空實體抗震能力以最大化個人效用的策略。",
     "forbidden": [],
     "level": 2
+  },
+  "EpistemicDesertification": {
+    "zh": "認識論荒漠化",
+    "en": [
+      "Epistemic Desertification"
+    ],
+    "description": "自動化切斷人類與底層錯誤的摩擦後，默會知識與除錯直覺代際失傳、知識土壤趨於均質貧瘠的認識論退化。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SingleSourcing": {
+    "zh": "單一來源採購",
+    "en": [
+      "Single-Sourcing"
+    ],
+    "description": "把多重路徑修剪為單一最低價供應商，使關鍵流動懸繫於單點故障。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CodeRadioactivity": {
+    "zh": "程式碼放射性",
+    "en": [
+      "Code Radioactivity"
+    ],
+    "description": "未經因果審計的似真合成程式碼入庫後持續釋放隱性競態與洩漏，鑑識成本極高。",
+    "forbidden": [],
+    "level": 1
+  },
+  "NociceptiveFeedbackLoop": {
+    "zh": "痛感反饋環路",
+    "en": [
+      "Nociceptive Feedback Loop"
+    ],
+    "description": "崩潰、單步除錯與挫敗感在神經系統中烙印壞味道警覺的訓練迴路。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ManualFlightDrills": {
+    "zh": "手動飛行演習",
+    "en": [
+      "Manual Flight Drills"
+    ],
+    "description": "定期斷開自動化輔助、僅憑原始工具排查故障，以維持調試反射的對抗訓練。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EpistemicEchoChamber": {
+    "zh": "認識論回音室",
+    "en": [
+      "Epistemic Echo Chamber"
+    ],
+    "description": "標籤驅動審查、再把戰果當真實標註餵回模型，使偏見自我驗證的閉環。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CriticalCutVertices": {
+    "zh": "臨界割點集合",
+    "en": [
+      "Critical Cut Vertices"
+    ],
+    "description": "一旦移除即令網路分裂的頂點集合，其擴大意味單點故障面急劇膨脹。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MandatoryRedundancyStandards": {
+    "zh": "冗餘優先原則",
+    "en": [
+      "Mandatory Redundancy Standards"
+    ],
+    "description": "把異質備援與市場佔有上限提升為法定義務，而非可被財務裁切的閒置成本。",
+    "forbidden": [],
+    "level": 1
+  },
+  "HeterogeneousDualStack": {
+    "zh": "異質性雙架構",
+    "en": [
+      "Heterogeneous Dual-Stack"
+    ],
+    "description": "以不同供應商與技術棧維持熱備份，避免共模故障一次擊穿全域。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SoftwareBillOfMaterials": {
+    "zh": "軟體物料清單",
+    "en": [
+      "Software Bill Of Materials"
+    ],
+    "description": "標註端到端依賴與 Ring 0 單點風險、供穿透審計的軟體成分清單。",
+    "forbidden": [],
+    "level": 1
   },
   "Spec": {
     "zh": "約束性規格",
@@ -2554,6 +2689,114 @@
     "description": "權力、現場知識、評量權與個人責任必須收斂於同一決策實體的治理不變量。",
     "forbidden": [],
     "level": 2
+  },
+  "ApprenticeshipDebugging": {
+    "zh": "學徒制除錯",
+    "en": [
+      "Apprenticeship Debugging"
+    ],
+    "description": "透過低階缺陷排查累積微觀阻力，從而建立除錯資格與默會直覺的傳承機制。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SpuriousPrecision": {
+    "zh": "數值偽精準",
+    "en": [
+      "Spurious Precision"
+    ],
+    "description": "以高解析度純量分數偽裝客觀性，掩蓋降維投影造成的資訊損失與責任外包。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EpistemicViolence": {
+    "zh": "認識論暴力",
+    "en": [
+      "Epistemic Violence"
+    ],
+    "description": "以演算法評分剝奪主體證言可信度與物理抗辯權，使質性生活被定性為無效噪聲。",
+    "forbidden": [],
+    "level": 1
+  },
+  "GoodhartSLaw": {
+    "zh": "古哈特定律",
+    "en": [
+      "Goodhart's Law"
+    ],
+    "description": "當一項度量變成目標時，它便不再是好的度量；官僚演算法把代理變數當成犯罪傾向本身。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CampbellSLaw": {
+    "zh": "坎貝爾定律",
+    "en": [
+      "Campbell's Law"
+    ],
+    "description": "定量社會指標一旦用於決策，就越容易被腐化並扭曲其原本要監控的社會進程。",
+    "forbidden": [],
+    "level": 1
+  },
+  "InstitutionalMemory": {
+    "zh": "制度性記憶",
+    "en": [
+      "Institutional Memory"
+    ],
+    "description": "組織把除錯經驗、失敗模式與因果判斷沉澱為可傳承資產的能力。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EpistemicInjustice": {
+    "zh": "認識論不公",
+    "en": [
+      "Epistemic Injustice"
+    ],
+    "description": "因制度位置而使主體證言被系統性降級、喪失被聽見資格的認識論傷害。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CognitiveAutonomy": {
+    "zh": "認知自主權",
+    "en": [
+      "Cognitive Autonomy"
+    ],
+    "description": "人類保有對底層因果自行演繹、拒絕把理解權外包給黑箱的權利。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ContextDependency": {
+    "zh": "脈絡相依性",
+    "en": [
+      "Context-Dependency"
+    ],
+    "description": "社會事實的意義綁定於不可完全結構化的在地脈絡，無法被純量獨立承載。",
+    "forbidden": [],
+    "level": 1
+  },
+  "InventoryInTransit": {
+    "zh": "移動中庫存",
+    "en": [
+      "Inventory In Transit"
+    ],
+    "description": "以在途貨物取代實體安全庫存，使緩衝從可調度存量變成不可即用的運輸狀態。",
+    "forbidden": [],
+    "level": 1
+  },
+  "StarTreeTopology": {
+    "zh": "星狀樹狀圖",
+    "en": [
+      "Star/Tree Topology"
+    ],
+    "description": "網狀冗餘被修剪後，流動完全依賴少數樞紐與割點的退化網路結構。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ConcentrationRisk": {
+    "zh": "集中度風險",
+    "en": [
+      "Concentration Risk"
+    ],
+    "description": "關鍵業務過度集中於單一外部供應商，使局部故障具備系統性傳染力。",
+    "forbidden": [],
+    "level": 1
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -5561,6 +5804,177 @@
     "forbidden": [],
     "level": 2
   },
+  "DebuggingReflex": {
+    "zh": "調試反射",
+    "en": [
+      "Debugging Reflex"
+    ],
+    "description": "長期直面編譯失敗與物理異常所形成的身體化本能，能在噪聲中穿透抽象屏障並定位底層因果。",
+    "forbidden": [],
+    "level": 1
+  },
+  "TacitKnowledge": {
+    "zh": "默會知識",
+    "en": [
+      "Tacit Knowledge"
+    ],
+    "description": "無法完全言傳、只能在學徒制實踐與痛感反饋中內化的工程判斷。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CognitiveAtrophy": {
+    "zh": "認知萎縮",
+    "en": [
+      "Cognitive Atrophy"
+    ],
+    "description": "因代理黑箱隔離而失去高低層因果連通，心智對底層機制的掌握力全面衰退。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SynapticPruning": {
+    "zh": "突觸修剪",
+    "en": [
+      "Synaptic Pruning"
+    ],
+    "description": "長期缺乏電訊號刺激後，連通高低維度的因果邊被剪除，知識圖譜退化為孤立點。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ScalarMetrics": {
+    "zh": "純量指標",
+    "en": [
+      "Scalar Metrics"
+    ],
+    "description": "將無限維社會脈絡強制投影到一維可排序實數，以便科層機器消化的度量形式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CommonModeFailure": {
+    "zh": "共模故障",
+    "en": [
+      "Common-Mode Failure"
+    ],
+    "description": "看似隔離的節點共用同一控制平面或軟體堆疊，因而同時休克的故障模式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ThunderingHerd": {
+    "zh": "驚群效應",
+    "en": [
+      "Thundering Herd"
+    ],
+    "description": "自動擴展在局部抖動時同步搶資源，把暫態故障擴散為跨地域雪崩。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ModelCollapse": {
+    "zh": "模型坍塌",
+    "en": [
+      "Model Collapse"
+    ],
+    "description": "遞歸訓練合成數據導致長尾滅絕、方差發散，分佈不可逆退化為奇異點或噪聲。",
+    "forbidden": [],
+    "level": 1
+  },
+  "SyntheticData": {
+    "zh": "合成數據",
+    "en": [
+      "Synthetic Data"
+    ],
+    "description": "由模型推論產生、用以替代真實物理經驗的訓練或程式碼產物。",
+    "forbidden": [],
+    "level": 1
+  },
+  "OrganizationalAutophagy": {
+    "zh": "組織自噬",
+    "en": [
+      "Organizational Autophagy"
+    ],
+    "description": "企業以機器生成物自我投餵並裁撤人類專家，從而消耗自身認識論根基。",
+    "forbidden": [],
+    "level": 1
+  },
+  "HallucinatedDependencies": {
+    "zh": "幻覺依賴",
+    "en": [
+      "Hallucinated Dependencies"
+    ],
+    "description": "模型自信呼叫不存在的套件名稱，為幽靈包搶註與供應鏈投毒打開入口。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ScalingLaws": {
+    "zh": "擴展法則",
+    "en": [
+      "Scaling Laws"
+    ],
+    "description": "以資料、參數與算力同步放大來換取能力的經驗規律；並不能免除真實負熵耗盡。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PlausibleLookingText": {
+    "zh": "似真文本",
+    "en": [
+      "Plausible-Looking Text"
+    ],
+    "description": "條件機率生成、表面合法卻未經因果證偽的合成文字或程式碼。",
+    "forbidden": [],
+    "level": 1
+  },
+  "PhantomSafeguards": {
+    "zh": "假性防護",
+    "en": [
+      "Phantom Safeguards"
+    ],
+    "description": "看似嚴密、實則可被繞過或自身成為攻擊面的校驗與防護程式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CognitiveLadder": {
+    "zh": "認知階梯",
+    "en": [
+      "Cognitive Ladder"
+    ],
+    "description": "從低階除錯到高階架構決斷的學徒傳承結構，底層梯級被抽空即無法養成大師。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Monoculture": {
+    "zh": "單一栽培",
+    "en": [
+      "Monoculture"
+    ],
+    "description": "程式碼風格、依賴與軟體堆疊趨同後，抗病力與多樣性同時枯竭的生態狀態。",
+    "forbidden": [],
+    "level": 1
+  },
+  "AdversarialPairDebugging": {
+    "zh": "結對除錯",
+    "en": [
+      "Adversarial Pair Debugging"
+    ],
+    "description": "資深與學徒現場共查故障，把即時思維鏈當作默會知識傳承儀式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "DimensionalityReductionProjection": {
+    "zh": "降維映射",
+    "en": [
+      "Dimensionality Reduction Projection"
+    ],
+    "description": "把無限維生活流形投影到一維分數，造成不可逆資訊熵損失的官僚操作。",
+    "forbidden": [],
+    "level": 1
+  },
+  "BullwhipEffect": {
+    "zh": "牛鞭效應",
+    "en": [
+      "Bullwhip Effect"
+    ],
+    "description": "下游微小波動沿供應鏈逐級放大；在零時延自動化下相變為超音速共振。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -6212,6 +6626,24 @@
     "description": "第一線以獨立路徑阻斷非理性冒進、否定錯誤系統輸出的權利。",
     "forbidden": [],
     "level": 2
+  },
+  "HyperFragility": {
+    "zh": "超脆性",
+    "en": [
+      "Hyper-Fragility"
+    ],
+    "description": "消滅緩衝與冗餘後，系統對任何微小擾動的耐受力歸零的拓樸狀態。",
+    "forbidden": [],
+    "level": 1
+  },
+  "JustInTime": {
+    "zh": "及時制",
+    "en": [
+      "Just-In-Time"
+    ],
+    "description": "以零庫存與移動中庫存極大化資本回報，同時剝除吸收衝擊的物理阻尼。",
+    "forbidden": [],
+    "level": 1
   },
   "Data": {
     "zh": "數據",
