@@ -4896,13 +4896,13 @@
     "level": 2
   },
   "BlastRadius": {
-    "zh": "爆炸半徑",
+    "zh": "波及範圍",
     "en": [
       "Blast Radius"
     ],
-    "description": "單次或累積操作在失控時所能造成的最大損害範圍，是授權閘門必須先行界定的硬上限。",
+    "description": "一個節點變更或失效時實際波及下游的範圍。它由整棵相依樹決定，而非單層相依清單；資料流圖的箭頭數不包含這項資訊。",
     "forbidden": [],
-    "level": 2
+    "level": 1
   },
   "StoppingTime": {
     "zh": "停止時間",
@@ -5975,6 +5975,33 @@
     "forbidden": [],
     "level": 1
   },
+  "ModalCompletion": {
+    "zh": "眾數補全",
+    "en": [
+      "Modal Completion"
+    ],
+    "description": "補全引擎在未指定的規格空缺處，填入訓練語料條件分佈中頻率最高（眾數）形狀的行為模式；它與薄意圖在形式上互不相關，因此不對齊是結構性的。",
+    "forbidden": [],
+    "level": 1
+  },
+  "VariationTest": {
+    "zh": "變異測試",
+    "en": [
+      "Variation Test"
+    ],
+    "description": "判定行為擁有權歸屬的操作程序：列出兩個以上真實消費者，逐項詢問各消費者對該行為的取值，再檢查不同取值是否破壞核心的不變式。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ActionSet": {
+    "zh": "動作集合",
+    "en": [
+      "Action Set"
+    ],
+    "description": "一項行為可能採取之動作的集合。動作集合無上界的行為沒有正確的預設值，修法是從核心移除該行為本身，而非把它移給別人。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -6645,6 +6672,24 @@
     "forbidden": [],
     "level": 1
   },
+  "Reachable": {
+    "zh": "碰得到",
+    "en": [
+      "Reachable"
+    ],
+    "description": "與核心相鄰、沿著相鄰性可以一路列舉出來的能力。碰得到的清單會自己成長且每一項都能講出理由，是薄核界定裡最難執行的一刀。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ThinIntent": {
+    "zh": "薄意圖",
+    "en": [
+      "Thin Intent"
+    ],
+    "description": "由「沒說出口的那些不要」所定義的需求意圖。補全引擎讀不到沉默，只能讀到這種東西通常怎麼做，因此薄意圖在生成管線裡會被系統性補肥。",
+    "forbidden": [],
+    "level": 1
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -7033,6 +7078,33 @@
       "Cut Vertex"
     ],
     "description": "資訊與責任傳遞網路中一旦被插入或破壞，即導致子圖孤立、反饋中斷的關鍵節點。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ThinCore": {
+    "zh": "薄核",
+    "en": [
+      "Thin Core"
+    ],
+    "description": "對單一職責握有最終發言權、且克制擁有權的核心元件。薄不是規模小，而是擁有權的克制：核心只承載承重且歸屬於它的少數幾項行為。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Attachment": {
+    "zh": "附掛",
+    "en": [
+      "Attachment"
+    ],
+    "description": "受治理的附掛：差集能力不由核心供應，而由呼叫者以受治理的形式自行決定並掛在核心之外的機制；核心不供應，也不阻擋。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LoadBearing": {
+    "zh": "承重",
+    "en": [
+      "Load-Bearing"
+    ],
+    "description": "缺了它核心承諾就當場不成立的能力。與「碰得到」相對：後者與核心相鄰、可被想到且每項都有用，但缺席並不致命。",
     "forbidden": [],
     "level": 1
   }
