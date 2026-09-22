@@ -157,6 +157,18 @@ class ProductionPipeline:
                     f"Undeclared refinement {'/'.join(missing)} (Post: {p['slug']}) — rerun "
                     f"refine_handoff.py with --model and --agent")
 
+            # A hand-drawn fence is a judgement call, so the gate enforces that the
+            # judgement was made, not which way it went. prepare_handoff surfaces the
+            # candidate; init-handoff records why it stays or what it became. An empty
+            # disposition means nobody looked, and that is how eight ASCII diagrams and
+            # one unclosed fence reached production in the 2026-09-18 series.
+            for flag in p.get("review_flags", []) or []:
+                if not isinstance(flag, dict) or not str(flag.get("disposition", "")).strip():
+                    invalid_elements.append(
+                        f"Unadjudicated figure flag (Post: {p['slug']}): "
+                        f"{(flag or {}).get('finding', flag)} — record a disposition in "
+                        f"handoff.posts.json before publishing")
+
             # Check domain_tag validity against taxonomy closed set
             d_tag = p.get("domain_tag", "")
             if d_tag:

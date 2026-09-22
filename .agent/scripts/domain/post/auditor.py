@@ -86,12 +86,14 @@ class PostAuditor:
             src_stats = MarkdownAnalyzer.analyze(source_raw, is_source=True)
             report.metrics["source"] = src_stats
             self._audit_structure(src_stats, tgt_stats, report)
+            self._audit_fences(source_raw, "source draft", report)
 
         # 2. Terminology Compliance
         if self.engine:
             self._audit_terminology(tgt_stats['text'], post.metadata, report)
 
         # 3. Content Purity & Formatting
+        self._audit_fences(post.save_to_string(), "post", report)
         self._audit_content(post.save_to_string(), report)
 
         # 4. Security Check
@@ -103,6 +105,24 @@ class PostAuditor:
             self._audit_series(post.metadata, source_path, report)
 
         return report
+
+    def _audit_fences(self, text, label, report):
+        """An unclosed code fence is arithmetic, not a judgement call.
+
+        gen-2026-09-18-a-04 shipped with the closing ``` of its last diagram missing.
+        Two things followed from that one odd number: Hugo rendered the remaining 5202
+        characters — the rest of the article and its references — as a single code block,
+        and the injector's own `^```[\\s\\S]*?^```` guard could not pair the fence either,
+        so it anchored that tail as prose and 19 markers surfaced as literal text. No
+        legitimate draft carries an odd count, which is why this is a gate and not
+        something left to review. The corpus uses only three-backtick fences at column
+        zero (checked), so counting them is exact.
+        """
+        n = len(re.findall(r'^```', text, re.MULTILINE))
+        if n % 2:
+            report.add_issue(
+                f"Unclosed code fence in {label}: {n} fence markers, expected an even count.",
+                "FAILURE")
 
     def _audit_structure(self, src, tgt, report):
         src_h, tgt_h = int(src['headers']), int(tgt['headers'])

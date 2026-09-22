@@ -345,6 +345,36 @@ class HandoffPreparer:
             log_info(f"  [METADATA HARVEST] {len(harvested)} curated term(s) from "
                      f"series-map/guide: {', '.join(harvested)}")
 
+    _BOX_DRAWING = re.compile(r'[\u2500-\u257f\u2190-\u21ff\u25b2\u25bc\u25c0\u25b6]')
+
+    def _scan_figure_candidates(self, content):
+        """Surface plain code fences that look hand-drawn, for NLP adjudication.
+
+        This is deliberately a candidate scan and not a gate. Box-drawing characters
+        inside a fence are sometimes a topology diagram that readability.md already
+        asks to be Mermaid (three or more entities, branching flow), and sometimes a
+        directory tree or verbatim CLI output that Mermaid would only make worse —
+        .agent-scratch/README.md carries exactly such a tree inside a fence. The two
+        cannot be told apart by counting characters, so the script hands the decision
+        to the NLP layer the way §0-C already does for terminology: scan is the source,
+        judgement is the gatekeeper. A ```mermaid fence is skipped; it is already the
+        answer. Dispositions are enforced at publish time, the choice itself is not.
+        """
+        found = []
+        for m in re.finditer(r'^```([^\n]*)\n(.*?)^```', content, re.S | re.M):
+            lang, block = m.group(1).strip().lower(), m.group(2)
+            if lang == "mermaid" or not self._BOX_DRAWING.search(block):
+                continue
+            start = content[:m.start()].count("\n") + 1
+            body = [l for l in block.splitlines() if l.strip()]
+            head = next((l.strip() for l in body if self._BOX_DRAWING.search(l)), "")
+            found.append({
+                "finding": (f"L{start} 起的圍欄（{len(body)} 行，lang='{lang or 'none'}'）含框線字元，"
+                            f"疑似文字繪圖：{head[:48]}"),
+                "disposition": ""
+            })
+        return found
+
     def _detect_domain(self, content, report_name=None):
         """Delegates domain detection to the centralized TaxonomyEngine, which strips
         the report's provenance header before classifying. The caller still reads the
@@ -607,6 +637,11 @@ class HandoffPreparer:
                         "sublimations": {}
                     }
                 }
+                figures = self._scan_figure_candidates(report_content)
+                if figures:
+                    post_data["review_flags"] = figures
+                    log_info(f"  [FIGURE SCAN] {slug}: {len(figures)} hand-drawn fence(s) need adjudication.")
+
                 if selected_report in self.report_ai_info:
                     post_data["ai_info"] = self.report_ai_info[selected_report]
                     
@@ -637,6 +672,18 @@ class HandoffPreparer:
                         target_post["domain_tag"] = domain_tag if domain_tag else ""
                     if "rules" not in target_post or not isinstance(target_post["rules"], dict):
                         target_post["rules"] = {}
+                    # Refresh the findings but keep any disposition already written:
+                    # re-running the scan must not silently discard a human's judgement.
+                    prior = {f.get("finding"): f.get("disposition", "")
+                             for f in target_post.get("review_flags", []) if isinstance(f, dict)}
+                    figures = self._scan_figure_candidates(report_content)
+                    for f in figures:
+                        f["disposition"] = prior.get(f["finding"], "")
+                    if figures:
+                        target_post["review_flags"] = figures
+                    else:
+                        target_post.pop("review_flags", None)
+
                     target_post["rules"]["headers"] = copy.deepcopy(self.taxonomy_headers)
                     target_post["rules"].setdefault("redactions", {})
                     target_post["rules"].setdefault("sublimations", {})

@@ -40,6 +40,21 @@ spec: "../reference/agent-operating-guideline.md"
 > [!WARNING]
 > **非對稱標籤與防禦性設計**：`metadata.posts[].domain_tag` (AI Tag) **嚴禁 AI 手動填寫**。為防止上下文滲透 (Context Bleed)，該欄位全權交由後續腳本掃描產生。
 
+### 0-D. 圖表記法判讀 (Figure Notation Adjudication)
+
+`prepare_handoff.py` 會掃出「非 mermaid 圍欄內含框線字元」的區塊，寫入該篇的 `review_flags`。**掃描只負責發現，判斷是你的職責**——與 0-C 的術語同理。
+
+逐條處理，兩種出路擇一，並把結論寫進該條的 `disposition`：
+
+1. **改為 mermaid**：若該圖呈現三個以上實體的關係、分支流程、決策樹或狀態流轉，它屬於 `readability.md` §Diagrams 指定要用 Mermaid 的形狀。**直接修正 `.agent-scratch/` 的草稿原始檔**，再填 `disposition`（例：`已改為 flowchart TD`）。
+2. **保留原樣**：目錄樹、`tree` 或 CLI 的逐字輸出改成 Mermaid 只會更糟。填寫保留理由（例：`目錄樹逐字輸出，保留`）。
+
+> [!WARNING]
+> `disposition` 留空會被 `/publish-article` 擋下。閘門擋的是「沒人判讀」，不是某一種結論——它不會替你決定該轉還是該留。
+
+> [!IMPORTANT]
+> 出路 1 修改草稿是本工作流的例外授權，且僅限圖表記法轉換。**嚴禁**藉此改寫任何散文——「散文只寫一次」仍然有效，見 GUIDE.md §發布分工。
+
 ## 1. 第一階段：封裝交接 (Halt & Handoff)
 
 當你完成 `handoff.posts.json` 的建立，並確保 `handoff.terms.json` 中的 `PENDING_REFINEMENT` 都已解決後，**工作流即刻終止**。

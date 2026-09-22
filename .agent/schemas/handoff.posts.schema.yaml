@@ -54,6 +54,16 @@ metadata:
       # 選項: AI 經濟與社會 (AI Economics) | AI 代理人 (AI Agent) | 機器學習 (Machine Learning) | 大型語言模型 (LLM) | 軟體工程與規格 (Software Engineering & Specifications) | 系統工程與研發治理 (Systems Governance & Operations) | AI | "" (留空)
       domain_tag: ""
       
+      # [script-owned 候選 + NLP 判讀] 手繪圖表候選。
+      # prepare_handoff.py 掃出「非 mermaid 圍欄內含框線字元」的區塊並填入 finding；
+      # 掃描只負責發現，不負責判斷——目錄樹與 CLI 輸出同樣會命中，而那兩者改成 Mermaid
+      # 只會更糟。/init-handoff 必須逐條填寫 disposition，說明改成了什麼或為何保留。
+      # disposition 留空會被 pipeline.py 擋下；擋的是「沒人看過」，不是某一種結論。
+      # 無候選時本欄位不存在。
+      # 範例: [{"finding": "L144 起的圍欄（18 行，lang='none'）含框線字元…",
+      #         "disposition": "已改為 flowchart TD" }]
+      review_flags: []
+
       ai_info:
         # 原始輸入源：記錄最初「發明」原始報告的環境
         generation:
