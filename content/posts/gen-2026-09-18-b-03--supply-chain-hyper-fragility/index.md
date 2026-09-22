@@ -260,7 +260,7 @@ flowchart TD
 16. Wiener, N. (1948). ***控制理論**（Cybernetics） <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
 17. Simon, H. A. (1962). *The Architecture of Complexity*. Proceedings of the American Philosophical Society, 106(6), 467-482. [JSTOR 985254](https://www.jstor.org/stable/985254)
 18. Hollnagel, E., Woods, D. D., & Leveson, N. (2006). *Resilience Engineering: Concepts and Precepts*. Ashgate Publishing. ISBN 978-0-7546-4641-9
-19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Policy and Society, 26(4), 17-30. [doi:10.1111/j.1468-5973.2007.00504.x](https://doi.org/10.1111/j.1468-5973.2007.00504.x)
+19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Journal of Contingencies and Crisis Management, 15(1), 50-59. [doi:10.1111/j.1468-5973.2007.00504.x](https://doi.org/10.1111/j.1468-5973.2007.00504.x)
 20. May, R. M. (1972). *Will a large complex system be stable?*. Nature, 238(5364), 413-414. [doi:10.1038/238413a0](https://doi.org/10.1038/238413a0)
 21. Bak, P., Tang, C., & Wiesenfeld, K. (1987). *Self-organized criticality: An explanation of the 1/f noise*. Physical Review Letters, 59(4), 381-384. [doi:10.1103/PhysRevLett.59.381](https://doi.org/10.1103/PhysRevLett.59.381)
 22. Watts, D. J., & Strogatz, S. H. (1998). *Collective dynamics of 'small-world' networks*. Nature, 393(6684), 440-442. [doi:10.1038/30918](https://doi.org/10.1038/30918)
