@@ -242,28 +242,28 @@ flowchart TD
 
 ## 參考文獻
 
-1. Taleb, N. N. (2012). *Antifragile: Things That Gain from Disorder*. Random House.
-2. Perrow, C. (1984). *Normal Accidents: Living with High-Risk Technologies*. Basic Books.
-3. Barabási, A. L., & Albert, R. (1999). *Emergence of scaling in random networks*. Science, 286(5439), 509-512.
-4. Forrester, J. W. (1961). *Industrial Dynamics*. MIT Press.
-5. CrowdStrike Holdings, Inc. (2024). *External Technical Root Cause Analysis: Channel File 291 Incident*. CrowdStrike Engineering & Security Architecture.
-6. Miller, J. (2022). *Chip War: The Fight for the World's Most Critical Technology*. Scribner.
-7. Sterman, J. D. (1989). *Modeling managerial behavior: Misperceptions of feedback in a dynamic decision making experiment*. Management Science, 35(3), 321-339.
-8. Microsoft Corporation. (2024). *Helping our customers through the CrowdStrike outage*. Microsoft Security Blog (July 20, 2024).
-9. Leveson, N. (2011). *Engineering a Safer World: Systems Thinking Applied to Safety*. MIT Press.
-10. Sheffi, Y. (2005). *The Resilient Enterprise: Overcoming Vulnerability for Competitive Advantage*. MIT Press.
-11. European Parliament and Council. (2022). *Regulation (EU) 2022/2554 on digital operational resilience for the financial sector (DORA)*. Official Journal of the European Union, L 333, 1-79.
-12. Lee, H. L., Padmanabhan, V., & Whang, S. (1997). *Information distortion in a supply chain: The bullwhip effect*. Management Science, 43(4), 546-558.
-13. Simchi-Levi, D., Schmidt, W., & Wei, Y. (2014). *From Superstorms to Factory Fires: Managing High-Impact, Low-Probability Supply-Chain Risks*. Harvard Business Review, 92(1-2), 96-101.
-14. Helbing, D. (2013). *Globally networked risks and how to respond*. Nature, 497(7447), 51-59.
-15. Lovins, A. B., & Lovins, L. H. (1982). *Brittle Power: Energy Strategy for National Security*. Brick House Publishing.
-16. Wiener, N. (1948). ***控制理論**（Cybernetics） <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press.
-17. Simon, H. A. (1962). *The Architecture of Complexity*. Proceedings of the American Philosophical Society, 106(6), 467-482.
-18. Hollnagel, E., Woods, D. D., & Leveson, N. (2006). *Resilience Engineering: Concepts and Precepts*. Ashgate Publishing.
-19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Policy and Society, 26(4), 17-30.
-20. May, R. M. (1972). *Will a large complex system be stable?*. Nature, 238(5364), 413-414.
-21. Bak, P., Tang, C., & Wiesenfeld, K. (1987). *Self-organized criticality: An explanation of the 1/f noise*. Physical Review Letters, 59(4), 381-384.
-22. Watts, D. J., & Strogatz, S. H. (1998). *Collective dynamics of 'small-world' networks*. Nature, 393(6684), 440-442.
+1. Taleb, N. N. (2012). *Antifragile: Things That Gain from Disorder*. Random House. ISBN 978-1-4000-6782-4
+2. Perrow, C. (1984). *Normal Accidents: Living with High-Risk Technologies*. Basic Books. ISBN 978-0-691-00412-9
+3. Barabási, A. L., & Albert, R. (1999). *Emergence of scaling in random networks*. Science, 286(5439), 509-512. [doi:10.1126/science.286.5439.509](https://doi.org/10.1126/science.286.5439.509)
+4. Forrester, J. W. (1961). *Industrial Dynamics*. MIT Press. ISBN 978-0-262-06003-7
+5. CrowdStrike Holdings, Inc. (2024). *External Technical Root Cause Analysis: Channel File 291 Incident*. CrowdStrike Engineering & Security Architecture. [CrowdStrike 官方](https://www.crowdstrike.com/falcon-content-update-remediation-and-guidance-hub/)
+6. Miller, J. (2022). *Chip War: The Fight for the World's Most Critical Technology*. Scribner. ISBN 978-1-982172-00-8
+7. Sterman, J. D. (1989). *Modeling managerial behavior: Misperceptions of feedback in a dynamic decision making experiment*. Management Science, 35(3), 321-339. [doi:10.1287/mnsc.35.3.321](https://doi.org/10.1287/mnsc.35.3.321)
+8. Microsoft Corporation. (2024). *Helping our customers through the CrowdStrike outage*. Microsoft Security Blog (July 20, 2024). [Microsoft 官方部落格](https://blogs.microsoft.com/blog/2024/07/20/helping-our-customers-through-the-crowdstrike-outage/)
+9. Leveson, N. (2011). *Engineering a Safer World: Systems Thinking Applied to Safety*. MIT Press. ISBN 978-0-262-01662-9
+10. Sheffi, Y. (2005). *The Resilient Enterprise: Overcoming Vulnerability for Competitive Advantage*. MIT Press. ISBN 978-0-262-69537-9
+11. European Parliament and Council. (2022). *Regulation (EU) 2022/2554 on digital operational resilience for the financial sector (DORA)*. Official Journal of the European Union, L 333, 1-79. [EUR-Lex 全文](https://eur-lex.europa.eu/eli/reg/2022/2554/oj)
+12. Lee, H. L., Padmanabhan, V., & Whang, S. (1997). *Information distortion in a supply chain: The bullwhip effect*. Management Science, 43(4), 546-558. [doi:10.1287/mnsc.43.4.546](https://doi.org/10.1287/mnsc.43.4.546)
+13. Simchi-Levi, D., Schmidt, W., & Wei, Y. (2014). *From Superstorms to Factory Fires: Managing High-Impact, Low-Probability Supply-Chain Risks*. Harvard Business Review, 92(1-2), 96-101. （無 DOI；[HBR 原文](https://hbr.org/2014/01/from-superstorms-to-factory-fires-managing-high-impact-low-probability-supply-chain-risks)）
+14. Helbing, D. (2013). *Globally networked risks and how to respond*. Nature, 497(7447), 51-59. [doi:10.1038/nature12047](https://doi.org/10.1038/nature12047)
+15. Lovins, A. B., & Lovins, L. H. (1982). *Brittle Power: Energy Strategy for National Security*. Brick House Publishing. ISBN 978-0-931790-28-7
+16. Wiener, N. (1948). ***控制理論**（Cybernetics） <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
+17. Simon, H. A. (1962). *The Architecture of Complexity*. Proceedings of the American Philosophical Society, 106(6), 467-482. [doi:10.2307/985254](https://doi.org/10.2307/985254)
+18. Hollnagel, E., Woods, D. D., & Leveson, N. (2006). *Resilience Engineering: Concepts and Precepts*. Ashgate Publishing. ISBN 978-0-7546-4641-9
+19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Policy and Society, 26(4), 17-30. [doi:10.1016/S1449-4035(07)70119-X](https://doi.org/10.1016/S1449-4035(07)70119-X)
+20. May, R. M. (1972). *Will a large complex system be stable?*. Nature, 238(5364), 413-414. [doi:10.1038/238413a0](https://doi.org/10.1038/238413a0)
+21. Bak, P., Tang, C., & Wiesenfeld, K. (1987). *Self-organized criticality: An explanation of the 1/f noise*. Physical Review Letters, 59(4), 381-384. [doi:10.1103/PhysRevLett.59.381](https://doi.org/10.1103/PhysRevLett.59.381)
+22. Watts, D. J., & Strogatz, S. H. (1998). *Collective dynamics of 'small-world' networks*. Nature, 393(6684), 440-442. [doi:10.1038/30918](https://doi.org/10.1038/30918)
 
 > [!IMPORTANT]
 > **控制理論** <!-- term:Cybernetics --> (Cybernetics): 以反饋、阻抗與穩定性描述控制系統行為的理論。 <!-- anchor:Cybernetics -->

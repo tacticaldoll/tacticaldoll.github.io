@@ -243,15 +243,15 @@ flowchart TD
 
 ## 參考文獻
 
-1. Fricker, M. (2007). *認識論不公 <!-- term:EpistemicInjustice -->: Power and the Ethics of Knowing*. Oxford University Press.
-2. Campbell, D. T. (1979). *Assessing the impact of planned social change*. Evaluation and Program Planning, 2(1), 67-90.
-3. Goodhart, C. A. E. (1984). *Problems of Monetary Management: The U.K. Experience*. In Monetary Theory and Practice (pp. 91-121). Palgrave Macmillan.
-4. Tweede Kamer der Staten-Generaal. (2020). *Ongekend onrecht: Verslag van de Parlementaire ondervragingscommissie Kinderopvangtoeslag*. POK, Kamerstuk 35 510, nr. 2.
-5. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown.
-6. Scott, J. C. (1998). *Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed*. Yale University Press.
-7. Eubanks, V. (2018). *Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor*. St. Martin's Press.
-8. Benjamin, R. (2019). *Race After Technology: Abolitionist Tools for the New Jim Code*. Polity.
-9. Citron, D. K. (2007). *Technological Due Process*. Washington University Law Review, 85(6), 1249-1313.
-10. Autoriteit Persoonsgegevens. (2020). *Verwerking van nationaliteit van aanvragers van kinderopvangtoeslag*. Onderzoeksrapport Belastingdienst/Toeslagen.
-11. Pasquale, F. (2015). *The Black Box Society: The Secret Algorithms That Control Money and Information*. Harvard University Press.
-12. Supiot, A. (2017). *Governance by Numbers: The Making of a Legal Model of Allegiance*. Hart Publishing.
+1. Fricker, M. (2007). *認識論不公 <!-- term:EpistemicInjustice -->: Power and the Ethics of Knowing*. Oxford University Press. ISBN 978-0-19-823790-7
+2. Campbell, D. T. (1979). *Assessing the impact of planned social change*. Evaluation and Program Planning, 2(1), 67-90. [doi:10.1016/0149-7189(79)90048-X](https://doi.org/10.1016/0149-7189(79)90048-X)
+3. Goodhart, C. A. E. (1984). *Problems of Monetary Management: The U.K. Experience*. In Monetary Theory and Practice (pp. 91-121). Palgrave Macmillan. （章節，收於 *Monetary Theory and Practice*, Palgrave Macmillan, 1984）
+4. Tweede Kamer der Staten-Generaal. (2020). *Ongekend onrecht: Verslag van de Parlementaire ondervragingscommissie Kinderopvangtoeslag*. POK, Kamerstuk 35 510, nr. 2. [荷蘭國會文件](https://www.tweedekamer.nl/kamerstukken/parlementaire-enquetes/kind(er)opvangtoeslag)
+5. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown. ISBN 978-0-553-41881-1
+6. Scott, J. C. (1998). *Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed*. Yale University Press. ISBN 978-0-300-07815-2
+7. Eubanks, V. (2018). *Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor*. St. Martin's Press. ISBN 978-1-250-07431-8
+8. Benjamin, R. (2019). *Race After Technology: Abolitionist Tools for the New Jim Code*. Polity. ISBN 978-1-5095-2640-6
+9. Citron, D. K. (2007). *Technological Due Process*. Washington University Law Review, 85(6), 1249-1313. [doi:10.7936/K78G8HZJ](https://doi.org/10.7936/K78G8HZJ)
+10. Autoriteit Persoonsgegevens. (2020). *Verwerking van nationaliteit van aanvragers van kinderopvangtoeslag*. Onderzoeksrapport Belastingdienst/Toeslagen. [AP 官方報告](https://autoriteitpersoonsgegevens.nl/nl/onderwerpen/bijzondere-persoonsgegevens/nationaliteit)
+11. Pasquale, F. (2015). *The Black Box Society: The Secret Algorithms That Control Money and Information*. Harvard University Press. ISBN 978-0-674-36827-9
+12. Supiot, A. (2017). *Governance by Numbers: The Making of a Legal Model of Allegiance*. Hart Publishing. ISBN 978-1-5099-0707-2

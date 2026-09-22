@@ -263,15 +263,15 @@ Zillow 的慘劇徹底粉碎了「演算法全自動化治理」的烏托邦神�
 
 ## 參考文獻
 
-1. Kruger, J., & Dunning, D. (1999). *Unskilled and unaware of it: How difficulties in recognizing one's own incompetence lead to inflated self-assessments*. Journal of Personality and Social Psychology, 77(6), 1121-1134.
-2. Akerlof, G. A. (1970). *The Market for "Lemons": Quality Uncertainty and the Market Mechanism*. The Quarterly Journal of Economics, 84(3), 488-500.
-3. Wiener, N. (1948). *控制理論 <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press.
-4. Taleb, N. N. (2018). *Skin in the Game: Hidden Asymmetries in Daily Life*. Random House.
-5. Peters, O. (2019). *The ergodicity problem in economics*. Nature Physics, 15(12), 1216-1221.
-6. Zillow Group, Inc. (2021). *Form 8-K: Current Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 (November 2, 2021)*. U.S. Securities and Exchange Commission.
-7. Polanyi, M. (1966). *The Tacit Dimension*. Doubleday & Company.
-8. Kahneman, D. (2011). *Thinking, Fast and Slow*. Farrar, Straus and Giroux.
-9. Ashby, W. R. (1956). *An Introduction to Cybernetics*. Chapman & Hall.
-10. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown.
-11. Sterman, J. D. (2000). *Business Dynamics: Systems Thinking and Modeling for a Complex World*. Irwin/McGraw-Hill.
-12. Taleb, N. N. (2007). *The Black Swan: The Impact of the Highly Improbable*. Random House.
+1. Kruger, J., & Dunning, D. (1999). *Unskilled and unaware of it: How difficulties in recognizing one's own incompetence lead to inflated self-assessments*. Journal of Personality and Social Psychology, 77(6), 1121-1134. [doi:10.1037/0022-3514.77.6.1121](https://doi.org/10.1037/0022-3514.77.6.1121)
+2. Akerlof, G. A. (1970). *The Market for "Lemons": Quality Uncertainty and the Market Mechanism*. The Quarterly Journal of Economics, 84(3), 488-500. [doi:10.2307/1879431](https://doi.org/10.2307/1879431)
+3. Wiener, N. (1948). *Cybernetics: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
+4. Taleb, N. N. (2018). *Skin in the Game: Hidden Asymmetries in Daily Life*. Random House. ISBN 978-0-425-28462-9
+5. Peters, O. (2019). *The ergodicity problem in economics*. Nature Physics, 15(12), 1216-1221. [doi:10.1038/s41567-019-0732-0](https://doi.org/10.1038/s41567-019-0732-0)
+6. Zillow Group, Inc. (2021). *Form 8-K: Current Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 (November 2, 2021)*. U.S. Securities and Exchange Commission. [SEC EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001617640&type=8-K)
+7. Polanyi, M. (1966). *The Tacit Dimension*. Doubleday & Company. ISBN 978-0-226-67298-4
+8. Kahneman, D. (2011). *Thinking, Fast and Slow*. Farrar, Straus and Giroux. ISBN 978-0-374-27563-1
+9. Ashby, W. R. (1956). *An Introduction to Cybernetics*. Chapman & Hall. ISBN 978-1-61427-765-1
+10. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown. ISBN 978-0-553-41881-1
+11. Sterman, J. D. (2000). *Business Dynamics: Systems Thinking and Modeling for a Complex World*. Irwin/McGraw-Hill. ISBN 978-0-07-231135-8
+12. Taleb, N. N. (2007). *The Black Swan: The Impact of the Highly Improbable*. Random House. ISBN 978-1-4000-6351-2

@@ -274,18 +274,18 @@ FOMO 絕非個人心理學維度上的非理性情緒，而是現代金融化資
 
 ## 參考文獻
 
-1. Burt, R. S. (2004). *Structural Holes and Good Ideas*. American Journal of Sociology, 110(2), 349-399.
-2. Minsky, H. P. (1986). *Stabilizing an Unstable Economy*. Yale University Press.
-3. Schmitt, C. (1922). *Politische Theologie: Vier Kapitel zur Lehre von der Souveränität*. Duncker & Humblot.
-4. Lazonick, W. (2014). *Profits Without Prosperity*. Harvard Business Review, 92(9), 46-55.
-5. Brenner, R. (2002). *The Boom and the Bubble: The US in the World Economy*. Verso.
-6. U.S. Securities and Exchange Commission. (2004). *Litigation Release No. 18914: In the Matter of Global Crossing Ltd. and Qwest Communications International Inc.*. SEC Docket.
-7. U.S. Senate Permanent Subcommittee on Investigations. (2002). *The Role of the Financial Institutions in the Collapse of Enron*. S. Hrg. 107-618.
-8. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown.
-9. Zuboff, S. (2019). *The Age of Surveillance Capitalism*. PublicAffairs.
-10. In re Caremark International Inc. Derivative Litigation, 698 A.2d 959 (Del. Ch. 1996).
-11. Marchand v. Barnhill, 212 A.3d 805 (Del. 2019).
-12. Coffee, J. C. (2006). *Gatekeepers: The Professions and Corporate Governance*. Oxford University Press.
-13. Bebchuk, L. A., & Fried, J. M. (2004). *Pay without Performance: The Unfulfilled Promise of Executive Compensation*. Harvard University Press.
-14. Galbraith, J. K. (1993). *A Short History of Financial Euphoria*. Penguin Books.
-15. Perez, C. (2002). *Technological Revolutions and Financial Capital: The Dynamics of Bubbles and Golden Ages*. Edward Elgar Publishing.
+1. Burt, R. S. (2004). *Structural Holes and Good Ideas*. American Journal of Sociology, 110(2), 349-399. [doi:10.1086/421787](https://doi.org/10.1086/421787)
+2. Minsky, H. P. (1986). *Stabilizing an Unstable Economy*. Yale University Press. ISBN 978-0-07-159299-4
+3. Schmitt, C. (1922). *Politische Theologie: Vier Kapitel zur Lehre von der Souveränität*. Duncker & Humblot. （1922 年初版，Duncker & Humblot）
+4. Lazonick, W. (2014). *Profits Without Prosperity*. Harvard Business Review, 92(9), 46-55. （無 DOI；[HBR 原文](https://hbr.org/2014/09/profits-without-prosperity)）
+5. Brenner, R. (2002). *The Boom and the Bubble: The US in the World Economy*. Verso. ISBN 978-1-85984-483-4
+6. U.S. Securities and Exchange Commission. (2004). *Litigation Release No. 18914: In the Matter of Global Crossing Ltd. and Qwest Communications International Inc.*. SEC Docket. [SEC 原文](https://www.sec.gov/enforcement-litigation/litigation-releases/lr-18914)
+7. U.S. Senate Permanent Subcommittee on Investigations. (2002). *The Role of the Financial Institutions in the Collapse of Enron*. S. Hrg. 107-618. [GovInfo 聽證紀錄](https://www.govinfo.gov/app/details/CHRG-107shrg81330)
+8. O'Neil, C. (2016). *Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy*. Crown. ISBN 978-0-553-41881-1
+9. Zuboff, S. (2019). *The Age of Surveillance Capitalism*. PublicAffairs. ISBN 978-1-61039-569-4
+10. In re Caremark International Inc. Derivative Litigation, 698 A.2d 959 (Del. Ch. 1996). [CourtListener](https://www.courtlistener.com/?q=%22In+re+Caremark%22+698+A.2d+959)
+11. Marchand v. Barnhill, 212 A.3d 805 (Del. 2019). [CourtListener](https://www.courtlistener.com/?q=%22Marchand+v.+Barnhill%22+212+A.3d+805)
+12. Coffee, J. C. (2006). *Gatekeepers: The Professions and Corporate Governance*. Oxford University Press. ISBN 978-0-19-928809-0
+13. Bebchuk, L. A., & Fried, J. M. (2004). *Pay without Performance: The Unfulfilled Promise of Executive Compensation*. Harvard University Press. ISBN 978-0-674-01665-1
+14. Galbraith, J. K. (1993). *A Short History of Financial Euphoria*. Penguin Books. ISBN 978-0-14-023856-3
+15. Perez, C. (2002). *Technological Revolutions and Financial Capital: The Dynamics of Bubbles and Golden Ages*. Edward Elgar Publishing. ISBN 978-1-84376-922-2

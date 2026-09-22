@@ -255,20 +255,20 @@ flowchart TD
 
 ## 參考文獻
 
-1. Shumailov, I., Shumaylov, Z., Zhao, Y., Gal, Y., Papernot, N., & Anderson, R. (2024). *AI models collapse when trained on recursively generated data*. Nature, 631(8022), 755-759.
-2. Shannon, C. E. (1948). *A Mathematical Theory of Communication*. Bell System Technical Journal, 27(3), 379-423.
-3. Kolmogorov, A. N. (1965). *Three approaches to the quantitative definition of information*. Problems of Information Transmission, 1(1), 1-7.
-4. Laranjeiro, N., Soydemir, S., & Bernardino, J. (2024). *Lost in Hallucination: Investigating the Security Risks of Generative AI Code Assistants in Open-Source Ecosystems*. IEEE Transactions on Software Engineering.
-5. Cover, T. M., & Thomas, J. A. (2006). *Elements of Information Theory*. John Wiley & Sons.
-6. Brooks, F. P. (1987). *No Silver Bullet—Essence and Accidents of Software Engineering*. IEEE Computer, 20(4), 10-19.
-7. Amodei, D., Olah, C., Steinhardt, J., Christiano, P., Schulman, J., & Mané, D. (2016). *Concrete Problems in AI Safety*. arXiv preprint arXiv:1606.06565.
-8. Bubeck, S., Chandrasekaran, V., Eldan, R., Gehrke, J., Horvitz, E., Kamar, E., ... & Zhang, Y. (2023). *Sparks of Artificial General Intelligence: Early experiments with GPT-4*. arXiv preprint arXiv:2303.12712.
-9. Wiener, N. (1954). *The Human Use of Human Beings: Cybernetics and Society*. Houghton Mifflin.
-10. Taleb, N. N. (2007). *The Black Swan: The Impact of the Highly Improbable*. Random House.
-11. Ostrom, E. (1990). *Governing the Commons: The Evolution of Institutions for Collective Action*. Cambridge University Press.
-12. Raymond, E. S. (1999). *The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary*. O'Reilly Media.
-13. Hardin, G. (1968). *The Tragedy of the Commons*. Science, 162(3859), 1243-1248.
-14. Georgescu-Roegen, N. (1971). *The Entropy Law and the Economic Process*. Harvard University Press.
-15. Postman, N. (1992). *Technopoly: The Surrender of Culture to Technology*. Vintage Books.
-16. Mumford, L. (1967). *The Myth of the Machine: Technics and Human Development*. Harcourt Brace Jovanovich.
-17. Winner, L. (1980). *Do Artifacts Have Politics?*. Daedalus, 109(1), 121-136.
+1. Shumailov, I., Shumaylov, Z., Zhao, Y., Gal, Y., Papernot, N., & Anderson, R. (2024). *AI models collapse when trained on recursively generated data*. Nature, 631(8022), 755-759. [doi:10.1038/s41586-024-07566-y](https://doi.org/10.1038/s41586-024-07566-y)
+2. Shannon, C. E. (1948). *A Mathematical Theory of Communication*. Bell System Technical Journal, 27(3), 379-423. [doi:10.1002/j.1538-7305.1948.tb01338.x](https://doi.org/10.1002/j.1538-7305.1948.tb01338.x)
+3. Kolmogorov, A. N. (1965). *Three approaches to the quantitative definition of information*. Problems of Information Transmission, 1(1), 1-7. [doi:10.1007/BF01195534](https://doi.org/10.1007/BF01195534)
+4. Laranjeiro, N., Soydemir, S., & Bernardino, J. (2024). *Lost in Hallucination: Investigating the Security Risks of Generative AI Code Assistants in Open-Source Ecosystems*. IEEE Transactions on Software Engineering. （卷期待補；IEEE TSE）
+5. Cover, T. M., & Thomas, J. A. (2006). *Elements of Information Theory*. John Wiley & Sons. ISBN 978-0-471-24195-9
+6. Brooks, F. P. (1987). *No Silver Bullet—Essence and Accidents of Software Engineering*. IEEE Computer, 20(4), 10-19. [doi:10.1109/MC.1987.1663532](https://doi.org/10.1109/MC.1987.1663532)
+7. Amodei, D., Olah, C., Steinhardt, J., Christiano, P., Schulman, J., & Mané, D. (2016). *Concrete Problems in AI Safety*. arXiv preprint arXiv:1606.06565. [arXiv:1606.06565](https://arxiv.org/abs/1606.06565)
+8. Bubeck, S., Chandrasekaran, V., Eldan, R., Gehrke, J., Horvitz, E., Kamar, E., ... & Zhang, Y. (2023). *Sparks of Artificial General Intelligence: Early experiments with GPT-4*. arXiv preprint arXiv:2303.12712. [arXiv:2303.12712](https://arxiv.org/abs/2303.12712)
+9. Wiener, N. (1954). *The Human Use of Human Beings: Cybernetics and Society*. Houghton Mifflin. （1954 年初版，Houghton Mifflin）
+10. Taleb, N. N. (2007). *The Black Swan: The Impact of the Highly Improbable*. Random House. ISBN 978-1-4000-6351-2
+11. Ostrom, E. (1990). *Governing the Commons: The Evolution of Institutions for Collective Action*. Cambridge University Press. ISBN 978-0-521-40599-7
+12. Raymond, E. S. (1999). *The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary*. O'Reilly Media. ISBN 978-1-56592-724-7
+13. Hardin, G. (1968). *The Tragedy of the Commons*. Science, 162(3859), 1243-1248. [doi:10.1126/science.162.3859.1243](https://doi.org/10.1126/science.162.3859.1243)
+14. Georgescu-Roegen, N. (1971). *The Entropy Law and the Economic Process*. Harvard University Press. ISBN 978-0-674-25780-1
+15. Postman, N. (1992). *Technopoly: The Surrender of Culture to Technology*. Vintage Books. ISBN 978-0-679-74540-2
+16. Mumford, L. (1967). *The Myth of the Machine: Technics and Human Development*. Harcourt Brace Jovanovich. ISBN 978-0-15-662341-4
+17. Winner, L. (1980). *Do Artifacts Have Politics?*. Daedalus, 109(1), 121-136. [doi:10.2307/20024652](https://doi.org/10.2307/20024652)
