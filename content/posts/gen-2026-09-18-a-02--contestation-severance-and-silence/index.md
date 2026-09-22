@@ -162,7 +162,7 @@ flowchart TD
 
 然而，在 1997 年英國法律委員會（Law Commission）的第 245 號報告建議下，英國國會於 1999 年廢除了該條款，恢復普通法下的普通推定：**在沒有相反證據的情況下，法院推定電腦在所有關鍵時刻均正常運作（Presumption that computers are reliable）**。
 
-法學教授 Richard Moorhead 與數位證據專家 Stephen Mason 在其系列研究中指出，正是這項看似技術性的程序法修改，為日後長達二十年的冤案鋪平了制度鐵軌：
+《數位證據與電子簽名法律評論》（DEESLR）第 17 卷（2020）的系列研究——包括 Ladkin、Littlewood、Thimbleby 與 Thomas 對法律委員會推定的檢驗，以及 Christie 對 Horizon 冤案的事後剖析——指出，正是這項看似技術性的程序法修改，為日後長達二十年的冤案鋪平了制度鐵軌：
 - 英國郵政不需要證明 Horizon 軟體是無 bug 的；
 - 面對全國數百名資深、誠實、在地方社群享有崇高聲望的郵政分局長（Sub-postmasters），郵政管理層只需印出終端機的帳面赤字清單，就能在法庭上形成壓倒性的有罪推定。
 
