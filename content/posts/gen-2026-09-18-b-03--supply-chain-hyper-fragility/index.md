@@ -254,13 +254,13 @@ flowchart TD
 10. Sheffi, Y. (2005). *The Resilient Enterprise: Overcoming Vulnerability for Competitive Advantage*. MIT Press. ISBN 978-0-262-69537-9
 11. European Parliament and Council. (2022). *Regulation (EU) 2022/2554 on digital operational resilience for the financial sector (DORA)*. Official Journal of the European Union, L 333, 1-79. [EUR-Lex 全文](https://eur-lex.europa.eu/eli/reg/2022/2554/oj)
 12. Lee, H. L., Padmanabhan, V., & Whang, S. (1997). *Information distortion in a supply chain: The bullwhip effect*. Management Science, 43(4), 546-558. [doi:10.1287/mnsc.43.4.546](https://doi.org/10.1287/mnsc.43.4.546)
-13. Simchi-Levi, D., Schmidt, W., & Wei, Y. (2014). *From Superstorms to Factory Fires: Managing High-Impact, Low-Probability Supply-Chain Risks*. Harvard Business Review, 92(1-2), 96-101. （無 DOI；[HBR 原文](https://hbr.org/2014/01/from-superstorms-to-factory-fires-managing-high-impact-low-probability-supply-chain-risks)）
+13. Simchi-Levi, D., Schmidt, W., & Wei, Y. (2014). *From Superstorms to Factory Fires: Managing High-Impact, Low-Probability Supply-Chain Risks*. Harvard Business Review, 92(1-2), 96-101. （無 DOI；[HBR 原文](https://hbr.org/2014/01/from-superstorms-to-factory-fires-managing-unpredictable-supply-chain-disruptions)）
 14. Helbing, D. (2013). *Globally networked risks and how to respond*. Nature, 497(7447), 51-59. [doi:10.1038/nature12047](https://doi.org/10.1038/nature12047)
 15. Lovins, A. B., & Lovins, L. H. (1982). *Brittle Power: Energy Strategy for National Security*. Brick House Publishing. ISBN 978-0-931790-28-7
 16. Wiener, N. (1948). ***控制理論**（Cybernetics） <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
-17. Simon, H. A. (1962). *The Architecture of Complexity*. Proceedings of the American Philosophical Society, 106(6), 467-482. [doi:10.2307/985254](https://doi.org/10.2307/985254)
+17. Simon, H. A. (1962). *The Architecture of Complexity*. Proceedings of the American Philosophical Society, 106(6), 467-482. [JSTOR 985254](https://www.jstor.org/stable/985254)
 18. Hollnagel, E., Woods, D. D., & Leveson, N. (2006). *Resilience Engineering: Concepts and Precepts*. Ashgate Publishing. ISBN 978-0-7546-4641-9
-19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Policy and Society, 26(4), 17-30. [doi:10.1016/S1449-4035(07)70119-X](https://doi.org/10.1016/S1449-4035(07)70119-X)
+19. Boin, A., & McConnell, A. (2007). *Preparing for Critical Infrastructure Breakdowns: The Limits of Crisis Management and the Need for Resilience*. Policy and Society, 26(4), 17-30. [doi:10.1111/j.1468-5973.2007.00504.x](https://doi.org/10.1111/j.1468-5973.2007.00504.x)
 20. May, R. M. (1972). *Will a large complex system be stable?*. Nature, 238(5364), 413-414. [doi:10.1038/238413a0](https://doi.org/10.1038/238413a0)
 21. Bak, P., Tang, C., & Wiesenfeld, K. (1987). *Self-organized criticality: An explanation of the 1/f noise*. Physical Review Letters, 59(4), 381-384. [doi:10.1103/PhysRevLett.59.381](https://doi.org/10.1103/PhysRevLett.59.381)
 22. Watts, D. J., & Strogatz, S. H. (1998). *Collective dynamics of 'small-world' networks*. Nature, 393(6684), 440-442. [doi:10.1038/30918](https://doi.org/10.1038/30918)

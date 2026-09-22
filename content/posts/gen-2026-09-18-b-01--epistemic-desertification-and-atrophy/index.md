@@ -263,7 +263,7 @@ flowchart TD
 ## 參考文獻
 
 1. Polanyi, M. (1966). *The Tacit Dimension*. Doubleday & Company. ISBN 978-0-226-67298-4
-2. Bureau d'Enquêtes et d'Analyses pour la Sécurité de l'Aviation Civile (BEA). (2012). *Final Report: On the accident on 1st June 2009 to the Airbus A330-203 registered F-GZCP operated by Air France flight AF 447 Rio de Janeiro - Paris*. Ministère de l'Écologie, du Développement durable et de l'Énergie. [BEA 最終報告](https://bea.aero/en/investigation-reports/notified-events/detail/event/accident-to-the-airbus-a330-203-registered-f-gzcp-and-operated-by-air-france-on-01062009-en-route/)
+2. Bureau d'Enquêtes et d'Analyses pour la Sécurité de l'Aviation Civile (BEA). (2012). *Final Report: On the accident on 1st June 2009 to the Airbus A330-203 registered F-GZCP operated by Air France flight AF 447 Rio de Janeiro - Paris*. Ministère de l'Écologie, du Développement durable et de l'Énergie. [BEA 最終報告](https://bea.aero/en/investigation-reports/notified-events/detail/accident-to-the-airbus-a330-203-registered-f-gzcp-and-operated-by-air-france-occured-on-06-01-2009-in-the-atlantic-ocean)
 3. Carr, N. (2014). *The Glass Cage: Automation and Us*. W. W. Norton & Company. ISBN 978-0-393-24076-4
 4. Dreyfus, H. L., & Dreyfus, S. E. (1986). *Mind over Machine: The Power of Human Intuition and Expertise in the Era of the Computer*. Free Press. ISBN 978-0-02-908060-3
 5. Bainbridge, L. (1983). *Ironies of Automation*. Automatica, 19(6), 775-779. [doi:10.1016/0005-1098(83)90046-8](https://doi.org/10.1016/0005-1098(83)90046-8)
@@ -271,7 +271,7 @@ flowchart TD
 7. Sennett, R. (2008). *The Craftsman*. Yale University Press. ISBN 978-0-300-11909-1
 8. Norman, D. A. (1990). *The 'problem' with automation: inappropriate feedback and interaction, not 'over-automation'*. Philosophical Transactions of the Royal Society of London. B, Biological Sciences, 327(1241), 585-593. [doi:10.1098/rstb.1990.0101](https://doi.org/10.1098/rstb.1990.0101)
 9. Lave, J., & Wenger, E. (1991). *Situated Learning: Legitimate Peripheral Participation*. Cambridge University Press. ISBN 978-0-521-42374-8
-10. Woods, D. D., & Dekker, S. (2000). *Anticipating the Effects of Technological Change: A New Era of Dynamics for Human Factors*. Theoretical Issues in Ergonomics Science, 1(3), 273-282. [doi:10.1080/146392200308921](https://doi.org/10.1080/146392200308921)
+10. Woods, D. D., & Dekker, S. (2000). *Anticipating the Effects of Technological Change: A New Era of Dynamics for Human Factors*. Theoretical Issues in Ergonomics Science, 1(3), 273-282. [doi:10.1080/14639220110037452](https://doi.org/10.1080/14639220110037452)
 11. Weizenbaum, J. (1976). *Computer Power and Human Reason: From Judgment to Calculation*. W. H. Freeman and Company. ISBN 978-0-7167-0464-5
 12. Dijkstra, E. W. (1972). *The Humble Programmer*. Communications of the ACM, 15(10), 859-866. [doi:10.1145/355604.361591](https://doi.org/10.1145/355604.361591)
 13. Brooks, F. P. (1975). *The Mythical Man-Month: Essays on Software Engineering*. Addison-Wesley. ISBN 978-0-201-83595-3

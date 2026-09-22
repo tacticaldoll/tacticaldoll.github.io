@@ -268,7 +268,7 @@ flowchart TD
 2. Lazonick, W. (2014). *Profits Without Prosperity*. Harvard Business Review, 92(9), 46-55. （無 DOI；[HBR 原文](https://hbr.org/2014/09/profits-without-prosperity)）
 3. Jensen, M. C., & Meckling, W. H. (1976). *Theory of the Firm: Managerial Behavior, Agency Costs and Ownership Structure*. Journal of Financial Economics, 3(4), 305-360. [doi:10.1016/0304-405X(76)90026-X](https://doi.org/10.1016/0304-405X(76)90026-X)
 4. Burt, R. S. (2004). *Structural Holes and Good Ideas*. American Journal of Sociology, 110(2), 349-399. [doi:10.1086/421787](https://doi.org/10.1086/421787)
-5. U.S. House Committee on Transportation and Infrastructure. (2020). *The Design, Development, and Certification of the Boeing 737 MAX*. Final Committee Report. [美國眾議院運輸委員會](https://transportation.house.gov/committee-activity/boeing-737-max-investigation)
+5. U.S. House Committee on Transportation and Infrastructure. (2020). *The Design, Development, and Certification of the Boeing 737 MAX*. Final Committee Report. [美國眾議院運輸委員會](https://democrats-transportation.house.gov/committee-activity/boeing-737-max-investigation)
 6. Bebchuk, L. A., & Fried, J. M. (2004). *Pay without Performance: The Unfulfilled Promise of Executive Compensation*. Harvard University Press. ISBN 978-0-674-01665-1
 7. In re Caremark International Inc. Derivative Litigation, 698 A.2d 959 (Del. Ch. 1996). [CourtListener](https://www.courtlistener.com/?q=%22In+re+Caremark%22+698+A.2d+959)
 8. Marchand v. Barnhill, 212 A.3d 805 (Del. 2019). [CourtListener](https://www.courtlistener.com/?q=%22Marchand+v.+Barnhill%22+212+A.3d+805)

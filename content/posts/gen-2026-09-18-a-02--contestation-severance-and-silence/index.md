@@ -259,11 +259,11 @@ flowchart TD
 ## 參考文獻
 
 1. Fraser, P. (2019). *Bates v Post Office Ltd (No 6: Horizon Issues)* [2019] EWHC 3408 (QB). High Court of Justice of England and Wales. [Bailii 判決全文](https://www.bailii.org/ew/cases/EWHC/QB/2019/3406.html)
-2. Law Commission of England and Wales. (1997). *Evidence in Criminal Proceedings: Hearsay and Related Topics*. Law Com No. 245. [Law Commission 官方頁](https://www.lawcom.gov.uk/project/evidence-in-criminal-proceedings-hearsay-and-related-topics/)
-3. Mason, S., & Christie, S. (2020). *The presumption of the proper operation of a device: A critique of English law*. Digital Evidence and Electronic Signature Law Review, 17, 47-58. [doi:10.14296/deeslr.v17i0.5134](https://doi.org/10.14296/deeslr.v17i0.5134)
+2. Law Commission of England and Wales. (1997). *Evidence in Criminal Proceedings: Hearsay and Related Topics*. Law Com No. 245. （無官方線上來源；HMSO 出版）
+3. Mason, S., & Christie, S. (2020). *The presumption of the proper operation of a device: A critique of English law*. Digital Evidence and Electronic Signature Law Review, 17, 47-58. （DOI 待查證；[DEESLR 第 17 卷目次](https://journals.sas.ac.uk/deeslr/issue/view/578)）
 4. Williams, W. (2024). *Post Office Horizon IT Inquiry: Transcripts, Evidence and Clarke Advice Records*. Official Inquiry Secretariat. [官方調查網站](https://www.postofficehorizoninquiry.org.uk/)
 5. Mill, J. S. (1859). *On Liberty*. John W. Parker and Son. （1859 年初版，John W. Parker and Son）
 6. Habermas, J. (1981). *Theorie des kommunikativen Handelns*. Suhrkamp Verlag. ISBN 978-3-518-28775-7
 7. Fricker, M. (2007). *Epistemic Injustice: Power and the Ethics of Knowing*. Oxford University Press. ISBN 978-0-19-823790-7
 8. Morrison, E. W., & Milliken, F. J. (2000). *Organizational silence: A barrier to change and development in a pluralistic world*. Academy of Management Review, 25(4), 706-725. [doi:10.5465/amr.2000.3707697](https://doi.org/10.5465/amr.2000.3707697)
-9. Citron, D. K. (2007). *Technological Due Process*. Washington University Law Review, 85(6), 1249-1313. [doi:10.7936/K78G8HZJ](https://doi.org/10.7936/K78G8HZJ)
+9. Citron, D. K. (2007). *Technological Due Process*. Washington University Law Review, 85(6), 1249-1313. [WU Open Scholarship](https://openscholarship.wustl.edu/law_lawreview/vol85/iss6/2/)

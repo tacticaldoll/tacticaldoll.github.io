@@ -271,4 +271,4 @@ flowchart TD
 14. Georgescu-Roegen, N. (1971). *The Entropy Law and the Economic Process*. Harvard University Press. ISBN 978-0-674-25780-1
 15. Postman, N. (1992). *Technopoly: The Surrender of Culture to Technology*. Vintage Books. ISBN 978-0-679-74540-2
 16. Mumford, L. (1967). *The Myth of the Machine: Technics and Human Development*. Harcourt Brace Jovanovich. ISBN 978-0-15-662341-4
-17. Winner, L. (1980). *Do Artifacts Have Politics?*. Daedalus, 109(1), 121-136. [doi:10.2307/20024652](https://doi.org/10.2307/20024652)
+17. Winner, L. (1980). *Do Artifacts Have Politics?*. Daedalus, 109(1), 121-136. [JSTOR 20024652](https://www.jstor.org/stable/20024652)
