@@ -257,6 +257,29 @@ def test_gap8_math_is_not_anchored():
     )
 
 
+# --- Gap 9: inline code spans must not be anchored ----------------------------
+# A zh key is matched by plain substring, so a term quoted inside `…` used to be
+# rewritten in place: the rustc diagnostic `…found for struct 'Spec<Ungated>'` came
+# back as '**約束性規格**（Spec） <!-- term:Spec -->', which both falsifies the quoted
+# tool output and leaks the marker as literal text, since Hugo does not process
+# comments inside a code span. Fences were already guarded; inline spans were not.
+def test_gap9_inline_code_is_not_anchored():
+    term = _pick_anchorable_term()
+    span = f"`錯誤訊息：{term}違反，請改用既有單元`"
+    body = (
+        f"正文首次提到{term}，建立首錨。\n\n"
+        f"執行後中止訊息為 {span}，必須逐字保留。\n\n"
+        f"結尾再次提到{term}。\n"
+    )
+    out = _reanchor(body)
+    assert span in out, (
+        "Gap 9: an inline code span was rewritten (an anchor was injected inside `…`)."
+    )
+    assert "<!-- term:" in out, (
+        "Gap 9: guard over-reached — prose outside the code span lost its anchor."
+    )
+
+
 TESTS = [
     ("Gap 1  author [!IMPORTANT] survives", test_gap1_author_important_block_survives),
     ("Gap 2  orphan anchor cleaned",        test_gap2_orphan_anchor_of_removed_term_is_cleaned),
@@ -266,6 +289,7 @@ TESTS = [
     ("Gap 6  line order preserved",         test_gap6_line_order_is_preserved),
     ("Gap 7  idempotent w/ author block",   test_gap7_idempotent_with_author_definition_block),
     ("Gap 8  math not anchored",            test_gap8_math_is_not_anchored),
+    ("Gap 9  inline code not anchored",     test_gap9_inline_code_is_not_anchored),
     ("control idempotency",                 test_control_idempotent_on_clean_body),
 ]
 

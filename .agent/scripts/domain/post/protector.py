@@ -16,6 +16,12 @@ class BlockProtector:
         # 1. Code blocks
         content = re.sub(r'^```[\s\S]*?^```', replacer, body, flags=re.MULTILINE)
 
+        # 1b. Inline code. Same reason as the fences above: a `...` span quoting verbatim tool
+        # output is not prose, and a zh key matched by substring rewrites it in place —
+        # `...found for struct 'Spec<Ungated>'` became '**約束性規格**（Spec） <!-- term:Spec -->'.
+        # Runs straight after the fence sweep so a nested link or formula is captured whole.
+        content = re.sub(r'`[^`\n]+`', replacer, content)
+
         # 2. Math. LaTeX is not prose: an EN alias in lexicon.terms_regex is
         # word-boundaried, and \b holds between the backslash and the letter, so
         # `\Delta` matched the term "Delta" and was rewritten to `\差異` —

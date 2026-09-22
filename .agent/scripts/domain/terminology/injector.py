@@ -79,6 +79,17 @@ class TerminologyInjector:
         
         protected_body = re.sub(r'^```[\s\S]*?^```', code_replacer, body, flags=re.MULTILINE)
 
+        # Inline code is not prose either. A zh key is matched by plain substring and an EN
+        # alias is only word-boundaried, so both fire inside a `...` span that quotes verbatim
+        # tool output. The rustc diagnostic `no method named 'deploy' found for struct
+        # 'Spec<Ungated>'` came back out as 'Spec' rewritten to '**約束性規格**（Spec）
+        # <!-- term:Spec -->' — the quoted error text is then falsified, and because Hugo does
+        # not process comments inside a code span the marker also renders as literal text.
+        # This runs directly after the fence sweep, so any backtick pair left here is genuinely
+        # inline, and a link or formula nested inside a span is protected as one unit rather
+        # than as a placeholder inside a placeholder, which the flat restore loop cannot undo.
+        protected_body = re.sub(r'`[^`\n]+`', code_replacer, protected_body)
+
         # Math is not prose. The zh keys below are matched by plain substring, so a term
         # appearing inside \text{…} gets an anchor comment injected into the formula:
         #   \text{條件機率序列生成器 <!-- term:Foo -->} = x
