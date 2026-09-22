@@ -270,5 +270,5 @@ flowchart TD
 4. Burt, R. S. (2004). *Structural Holes and Good Ideas*. American Journal of Sociology, 110(2), 349-399. [doi:10.1086/421787](https://doi.org/10.1086/421787)
 5. U.S. House Committee on Transportation and Infrastructure. (2020). *The Design, Development, and Certification of the Boeing 737 MAX*. Final Committee Report. [美國眾議院運輸委員會](https://democrats-transportation.house.gov/committee-activity/boeing-737-max-investigation)
 6. Bebchuk, L. A., & Fried, J. M. (2004). *Pay without Performance: The Unfulfilled Promise of Executive Compensation*. Harvard University Press. ISBN 978-0-674-01665-1
-7. In re Caremark International Inc. Derivative Litigation, 698 A.2d 959 (Del. Ch. 1996). [CourtListener](https://www.courtlistener.com/?q=%22In+re+Caremark%22+698+A.2d+959)
-8. Marchand v. Barnhill, 212 A.3d 805 (Del. 2019). [CourtListener](https://www.courtlistener.com/?q=%22Marchand+v.+Barnhill%22+212+A.3d+805)
+7. In re Caremark International Inc. Derivative Litigation, 698 A.2d 959 (Del. Ch. 1996). [CourtListener 判決](https://www.courtlistener.com/opinion/1968607/in-re-caremark-international-inc-derivative-litigation/)
+8. Marchand v. Barnhill, 212 A.3d 805 (Del. 2019). [CourtListener 判決](https://www.courtlistener.com/opinion/4630577/marchand-ii-v-barnhill/)

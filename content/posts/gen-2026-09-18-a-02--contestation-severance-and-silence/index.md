@@ -258,7 +258,7 @@ flowchart TD
 
 ## 參考文獻
 
-1. Fraser, P. (2019). *Bates v Post Office Ltd (No 6: Horizon Issues)* [2019] EWHC 3408 (QB). High Court of Justice of England and Wales. [Bailii 判決全文](https://www.bailii.org/ew/cases/EWHC/QB/2019/3406.html)
+1. Fraser, P. (2019). *Bates v Post Office Ltd (No 6: Horizon Issues)* [2019] EWHC 3408 (QB). High Court of Justice of England and Wales. [英國司法機構判決全文](https://www.judiciary.uk/judgments/bates-others-v-post-office/)
 2. Law Commission of England and Wales. (1997). *Evidence in Criminal Proceedings: Hearsay and Related Topics*. Law Com No. 245. （無官方線上來源；HMSO 出版）
 3. Christie, J. (2020). *The Post Office Horizon IT scandal and the presumption of the dependability of computer evidence*. Digital Evidence and Electronic Signature Law Review, 17, 49-70. [doi:10.14296/deeslr.v17i0.5226](https://doi.org/10.14296/deeslr.v17i0.5226)
 
