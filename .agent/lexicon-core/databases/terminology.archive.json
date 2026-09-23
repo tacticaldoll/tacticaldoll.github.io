@@ -48,5 +48,25 @@
     "forbidden": [],
     "level": 3,
     "archived_reason": "removed via LexiconManager.remove"
+  },
+  "SystemValidity": {
+    "zh": "系統有效性",
+    "en": [
+      "System Validity"
+    ],
+    "description": "決策組合在整體層級上可接受的性質；它不能由各局部有效性自動推出，因為局部交會所生的項不在局部評價中。",
+    "forbidden": [],
+    "level": 1,
+    "archived_reason": "removed via LexiconManager.remove"
+  },
+  "LocalValidity": {
+    "zh": "局部有效性",
+    "en": [
+      "Local Validity"
+    ],
+    "description": "一個決策不僅在自身假設內可推出，且其假設、目標與邊界對整體問題仍然合適的性質；它比一致性多一個條件。",
+    "forbidden": [],
+    "level": 1,
+    "archived_reason": "removed via LexiconManager.remove"
   }
 }

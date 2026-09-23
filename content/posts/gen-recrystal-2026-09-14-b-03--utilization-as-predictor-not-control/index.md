@@ -37,10 +37,9 @@ series = ["進不了控制迴路的量：研發治理中的可重複性前提、
 
 利用率與等待時間之間有一條真實且強烈的關係。問題在於這條關係被當成了一條控制律：既然利用率高會讓等待變長，那麼把利用率管好就能把等待管好。這個推論在形式上是把一個預測關係反轉成一個控制關係，而反轉的合法性需要額外條件——條件不成立時，反轉得到的是一條會自我強化的迴路。
 
-本文要做的是把那條關係的定量形狀寫出來，指出它在哪個區間失去可控性，並給出替代的控制對象。核心的**量化**（Quantization） <!-- term:Quantization -->結果只有一個：**在接近滿載時，等待對利用率的敏感度以 $(1-\rho)^{-2}$ 發散，因此利用率的估計誤差被放大到使它無法作為**控制訊號**（Control Signal） <!-- term:ControlSignal -->。**
+本文要做的是把那條關係的定量形狀寫出來，指出它在哪個區間失去可控性，並給出替代的控制對象。核心的量化結果只有一個：**在接近滿載時，等待對利用率的敏感度以 $(1-\rho)^{-2}$ 發散，因此利用率的估計誤差被放大到使它無法作為**控制訊號**（Control Signal） <!-- term:ControlSignal -->。**
 
 > [!IMPORTANT]
-> **量化** <!-- term:Quantization --> (Quantization): 以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。 <!-- anchor:Quantization -->
 > **控制訊號** <!-- term:ControlSignal --> (Control Signal): 控制系統中用以調整執行機構狀態的即時回饋輸入；必須具備可及時反應偏差且敏感度不致發散之特性。 <!-- anchor:ControlSignal -->
 
 
@@ -64,7 +63,7 @@ $$
 
 三項相乘這個形式本身就回答了一個常見的困惑。當一個系統的變異接近零時，$V\to \tfrac{0+0}{2}=0$，整個等待時間歸零，此時把 $\rho$ 推到 0.99 也不會有隊伍。裝配線之所以能把利用率拉滿而不出事，原因在這裡——不是因為裝配線的管理者更厲害，是因為他們的 $V$ 接近零。
 
-而**佇列長度**（Queue Length） <!-- term:QueueLength -->與等待時間之間有一條不依賴任何分佈假設的恆等關係，出自 [Little，1961 / 《A Proof for the Queuing Formula: $L=\lambda W$》](https://doi.org/10.1287/opre.9.3.383)：
+而**佇列長度**（Queue Length） <!-- term:QueueLength -->與等待時間之間有一條不依賴任何分佈假設的恆等關係，出自 [Little，1961 / 《A Proof for the Queuing Formula: __CODE_BLOCK_18__》](https://doi.org/10.1287/opre.9.3.383)：
 
 > [!IMPORTANT]
 > **佇列長度** <!-- term:QueueLength --> (Queue Length): 在處理工站前等待服務的工作項目數量。 <!-- anchor:QueueLength -->

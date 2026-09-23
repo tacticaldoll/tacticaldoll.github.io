@@ -1,10 +1,10 @@
 +++
-title = "代碼放射性與模型坍塌：論合成數據狂熱下的組織自噬"
+title = "程式碼放射性與模型坍塌：論合成數據狂熱下的組織自噬"
 date = "2026-09-18T06:36:04+08:00"
 author = "梅乾"
 draft = false
 isCJKLanguage = true
-description = "遞歸吞食合成數據會讓模型丟失長尾、代碼庫積累放射性毒素。本文說明模型坍塌與代碼放射性如何把組織推進自噬螺旋。"
+description = "遞歸吞食合成數據會讓模型丟失長尾、程式碼庫積累放射性毒素。本文說明模型坍塌與程式碼放射性如何把組織推進自噬螺旋。"
 tags = [
     "分析論述", # term:AnalyticalEssay
     "大型語言模型", # term:LargeLanguageModel
@@ -169,9 +169,9 @@ flowchart TD
     REQ["工程師提出需求"]
     LLM["大語言模型 (LLM)"]
     HALL["程式碼生成: import cloud-vault-auth<br>(此包原本不存在)"]
-    ATK["黑客在 PyPI 搶註該包<br>植入木馬後門與資訊竊取代碼"]
+    ATK["黑客在 PyPI 搶註該包<br>植入木馬後門與資訊竊取程式碼"]
     INSTALL["工程師執行 pip install"]
-    MIX["惡意代碼靜默混入企業核心軟體"]
+    MIX["惡意程式碼靜默混入企業核心軟體"]
     PWN["密鑰被盜 / 生產伺服器被黑"]
 
     REQ --> LLM

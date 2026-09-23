@@ -113,7 +113,7 @@ $$\forall u \in V_{\text{high}}, \exists \text{ path } P(u \to v), v \in V_{\tex
 在農業生態學中，「**單一栽培**（Monoculture） <!-- term:Monoculture -->」會迅速耗盡土壤中的微量元素，使整片農田失去抗病能力，最終退化為貧瘠的荒漠。當代軟體與資訊生態系統正在經歷完全同構的生態浩劫：
 
 > [!IMPORTANT]
-> **單一栽培** <!-- term:Monoculture --> (Monoculture): 代碼風格、依賴與軟體堆疊趨同後，抗病力與多樣性同時枯竭的生態狀態。 <!-- anchor:Monoculture -->
+> **單一栽培** <!-- term:Monoculture --> (Monoculture): 程式碼風格、依賴與軟體堆疊趨同後，抗病力與多樣性同時枯竭的生態狀態。 <!-- anchor:Monoculture -->
 
 
 1. **程式碼庫的合成均質化**：由於主流大語言模型均是在相似的公開開源程式碼庫上進行預訓練，其輸出的程式碼模式、依賴庫選擇與演算法風格展現出高度的趨同性。原本充滿多樣性、針對特定邊界極致最佳化的工程實踐，被千篇一律的「模型平均值程式碼」所淹沒；

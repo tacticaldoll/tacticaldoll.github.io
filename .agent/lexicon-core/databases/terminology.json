@@ -337,7 +337,7 @@
     "en": [
       "Return On Invested Capital"
     ],
-    "description": "稅後營業利益相對投入資本的比率，用以檢驗資本開支是否真正創造價值。",
+    "description": "稅後營業利益相對投入資本的比率，用以檢驗資本支出是否真正創造價值。",
     "forbidden": [],
     "level": 2
   },
@@ -448,6 +448,24 @@
     "description": "禁止引入生成式黑箱、強制人類手動設計與除錯的核心模組保留區。",
     "forbidden": [],
     "level": 1
+  },
+  "MinimalClosableUnit": {
+    "zh": "最小可閉合單元",
+    "en": [
+      "Minimal Closable Unit"
+    ],
+    "description": "大部分因果、語義與責任能在內部閉合，跨出去的部分少到可被契約明確描述的最小局部範圍；它不等於最小單元。",
+    "forbidden": [],
+    "level": 1
+  },
+  "MarsClimateOrbiter": {
+    "zh": "火星氣候軌道器",
+    "en": [
+      "Mars Climate Orbiter"
+    ],
+    "description": "NASA 於 1998 年發射的火星探測器，1999 年因地面軟體以英制單位交出衝量資料、與介面規格要求的公制不符，於入軌時失聯。",
+    "forbidden": [],
+    "level": 2
   },
   "RecurrentNeuralNetwork": {
     "zh": "遞迴神經網路",
@@ -1357,6 +1375,15 @@
     "description": "標註端到端依賴與 Ring 0 單點風險、供穿透審計的軟體成分清單。",
     "forbidden": [],
     "level": 1
+  },
+  "InertialReferenceSystem": {
+    "zh": "慣性參考系統",
+    "en": [
+      "Inertial Reference System"
+    ],
+    "description": "以陀螺儀與加速度計量測載具姿態與運動，向飛控系統提供導引與姿態資訊的機載設備。",
+    "forbidden": [],
+    "level": 2
   },
   "Spec": {
     "zh": "約束性規格",
@@ -2797,6 +2824,24 @@
     "description": "關鍵業務過度集中於單一外部供應商，使局部故障具備系統性傳染力。",
     "forbidden": [],
     "level": 1
+  },
+  "ExplicitAutomation": {
+    "zh": "明文自動化",
+    "en": [
+      "Explicit Automation"
+    ],
+    "description": "由機器做出決定並如實標示為機器決定的自動化形式，不以人類確認節點替決定披上有人判斷過的外觀。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Ariane5": {
+    "zh": "亞利安五號",
+    "en": [
+      "Ariane 5"
+    ],
+    "description": "歐洲太空總署的重型運載火箭，1996 年首次飛行因慣性參考系統軟體的規格與設計錯誤失敗。",
+    "forbidden": [],
+    "level": 2
   },
   "SemanticBoundary": {
     "zh": "語意邊界",
@@ -5009,7 +5054,9 @@
       "Capital Expenditure"
     ],
     "description": "用於基礎設施與長期資產的資本性投入。",
-    "forbidden": [],
+    "forbidden": [
+      "資本開支"
+    ],
     "level": 2
   },
   "MarketForLemons": {
@@ -6002,6 +6049,87 @@
     "forbidden": [],
     "level": 1
   },
+  "LocalCoherence": {
+    "zh": "局部自洽",
+    "en": [
+      "Local Coherence"
+    ],
+    "description": "在一組假設、一個目標與一條邊界之內，一個決定可以被推出的性質；它是條件性的，不等於局部正確，更不等於整體有效。",
+    "forbidden": [],
+    "level": 1
+  },
+  "ConvenienceGradient": {
+    "zh": "方便梯度",
+    "en": [
+      "Convenience Gradient"
+    ],
+    "description": "一連串各自局部合理的省事步驟累積成的方向，每一步都省掉機器不好處理的活動，最終使人的活動被收進工具的輸入輸出邊界。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CognitiveThickness": {
+    "zh": "認知厚度",
+    "en": [
+      "Cognitive Thickness"
+    ],
+    "description": "形成不全由當前提案生成之獨立判斷所需的認知儲備，包括問題定義、語義整合與反例搜尋的可用程度。",
+    "forbidden": [],
+    "level": 1
+  },
+  "LivenessSignal": {
+    "zh": "活性訊號",
+    "en": [
+      "Liveness Signal"
+    ],
+    "description": "只證明某個參與者仍在回應的訊號；為真時只表示等待被滿足，不表示等待期間發生過判斷。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ConsequenceTest": {
+    "zh": "後果測試",
+    "en": [
+      "Consequence Test"
+    ],
+    "description": "檢查一個局部所做的合理決策，其主要後果是否也由該局部承受的判準；未通過時，局部評價為正只證明成本已移出其評價函數。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CoChangeCriterion": {
+    "zh": "共變判準",
+    "en": [
+      "Co-Change Criterion"
+    ],
+    "description": "依概念是否因同一類變化而一起修改來劃定邊界的判準，用來決定哪些概念應留在同一個局部。",
+    "forbidden": [],
+    "level": 1
+  },
+  "EvaluationFunction": {
+    "zh": "評價函數",
+    "en": [
+      "Evaluation Function"
+    ],
+    "description": "局部或整體用來判定一個決策是否可接受的函數；其定義域決定哪些後果會被計入，哪些會被排除在外。",
+    "forbidden": [],
+    "level": 1
+  },
+  "GlobalReview": {
+    "zh": "全局審視",
+    "en": [
+      "Global Review"
+    ],
+    "description": "針對整體而非單一局部所做的評價；若其材料仍只是各局部通過紀錄的彙總，它與局部通過是同一種通過。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Quantization": {
+    "zh": "模型量化",
+    "en": [
+      "Quantization"
+    ],
+    "description": "以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。",
+    "forbidden": [],
+    "level": 2
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -6690,6 +6818,33 @@
     "forbidden": [],
     "level": 1
   },
+  "ConfirmationLayer": {
+    "zh": "確認層",
+    "en": [
+      "Confirmation Layer"
+    ],
+    "description": "自動化流程中等待人類簽核才放行的節點；它能觀測確認者是否在場，卻不能單憑通過證明確認者理解了提案。",
+    "forbidden": [],
+    "level": 1
+  },
+  "Misclassification": {
+    "zh": "誤分類",
+    "en": [
+      "Misclassification"
+    ],
+    "description": "把一類事物歸入錯誤範疇的判斷，例如把不易被機器處理的認知形式記成應該消除的摩擦。",
+    "forbidden": [],
+    "level": 1
+  },
+  "CrossTerm": {
+    "zh": "交叉項",
+    "en": [
+      "Cross Term"
+    ],
+    "description": "整體評價中只在兩個以上決策交會時才出現的項；各局部評價只計算自身項，因此交叉項不會出現在任何單一局部的函數裡。",
+    "forbidden": [],
+    "level": 1
+  },
   "Data": {
     "zh": "數據",
     "en": [
@@ -6984,15 +7139,6 @@
       "Generalization"
     ],
     "description": "模型在訓練樣本以外的資料上維持表現的能力。",
-    "forbidden": [],
-    "level": 2
-  },
-  "Quantization": {
-    "zh": "量化",
-    "en": [
-      "Quantization"
-    ],
-    "description": "以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。",
     "forbidden": [],
     "level": 2
   },

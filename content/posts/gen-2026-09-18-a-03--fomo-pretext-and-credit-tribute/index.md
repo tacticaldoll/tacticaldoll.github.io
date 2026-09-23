@@ -58,11 +58,7 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 ### 一、總體信用擴張與明斯基龐氏拓樸
 
-要理解 FOMO 的體制性成因，必須先從宏觀金融結構出發，解構投機技術生態系統的流動性來源。長達十餘年的零利率政策（ZIRP）與**量化**（Quantization） <!-- term:Quantization -->寬鬆（QE），在實體經濟中催生了前所未有的「流動性堰塞湖」。當宏觀貨幣環境在通膨壓力下轉向緊縮時，追求高回報的全球資本並未流向實體製造業，而是發生了嚴重的「抱團避險（Flight to Monopoly Balance Sheets）」，集中湧向少數擁有定價權與龐大現金儲備的科技壟斷巨頭。
-
-> [!IMPORTANT]
-> **量化** <!-- term:Quantization --> (Quantization): 以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。 <!-- anchor:Quantization -->
-
+要理解 FOMO 的體制性成因，必須先從宏觀金融結構出發，解構投機技術生態系統的流動性來源。長達十餘年的零利率政策（ZIRP）與量化寬鬆（QE），在實體經濟中催生了前所未有的「流動性堰塞湖」。當宏觀貨幣環境在通膨壓力下轉向緊縮時，追求高回報的全球資本並未流向實體製造業，而是發生了嚴重的「抱團避險（Flight to Monopoly Balance Sheets）」，集中湧向少數擁有定價權與龐大現金儲備的科技壟斷巨頭。
 
 海曼·明斯基（Hyman Minsky）在其「金融不穩定假說（Financial Instability Hypothesis）」中，將經濟單位的融資結構嚴格劃分為三種形態：
 1. **避險融資（Hedge Financing）**：預期現金流足以覆蓋本金與利息支出；
@@ -149,20 +145,17 @@ $$\mathbf{M}_{\text{closed}} = \begin{bmatrix} 0 & 0 & \alpha_{31} \\ \alpha_{12
 
 在常態組織治理拓樸中，任何重大資本支出 <!-- term:CapitalExpenditure -->與技術變革都必須穿透由多重專業防護節點構成的「阻尼過濾網」：
 
-> **常態審查管線**：商業構想 $\longrightarrow$ 概念驗證（PoC） <!-- term:ProofOfConcept --> $\longrightarrow$ **架構審查委員會**（ARB） <!-- term:ArchitectureReviewBoard --> $\longrightarrow$ 資安與法規合規 $\longrightarrow$ 內部審計與財務 $\longrightarrow$ 正式生產部署
-
-> [!IMPORTANT]
-> **架構審查委員會** <!-- term:ArchitectureReviewBoard --> (Architecture Review Board): 對重大技術變更行使物理限制與合規質疑的內部審查節點。 <!-- anchor:ArchitectureReviewBoard -->
+> **常態審查管線**：商業構想 $\longrightarrow$ 概念驗證（PoC） $\longrightarrow$ **架構審查委員會**（ARB） $\longrightarrow$ 資安與法規合規 $\longrightarrow$ 內部審計與財務 $\longrightarrow$ 正式生產部署
 
 
-
-「架構審查委員會（Architecture Review Board, ARB） <!-- term:ArchitectureReviewBoard -->」、**首席資訊安全官**（CISO） <!-- term:ChiefInformationSecurityOfficer -->與內部審計部門，在圖論上構成了組織的**「理性**割點**（Rational Cut Vertices） <!-- term:CutVertex -->」**。他們的法定天職是代表企業的長期生存利益，向狂熱的業務部門提出尖銳的物理限制與合規質疑：
+「**架構審查委員會**（Architecture Review Board, ARB） <!-- term:ArchitectureReviewBoard -->」、**首席資訊安全官**（CISO） <!-- term:ChiefInformationSecurityOfficer -->與內部審計部門，在圖論上構成了組織的**「理性**割點**（Rational Cut Vertices） <!-- term:CutVertex -->」**。他們的法定天職是代表企業的長期生存利益，向狂熱的業務部門提出尖銳的物理限制與合規質疑：
 1. **邊界條件測試**：該外部黑箱模型在非平穩資料分佈下的故障率是多少？推論漂移（Inference Drift）如何即時監控與回滾？
 2. **資訊安全與主權**：將核心交易數據上傳至第三方專有雲端 API，是否違反 GDPR、HIPAA、PCI-DSS 或本國金融監管法規？
 3. **成本收益真實性**：每一次 API 呼叫與算力租賃的邊際成本，是否真能由所節省的人力或所產生的邊際收入覆蓋？模型重新微調（Fine-tuning）的長期維護開銷由誰負擔？
 4. **供應商鎖定（Vendor Lock-In） <!-- term:VendorLockIn -->風險（Vendor Lock-in）**：若底層專有模型隨意更改權重、終止端點或調整 API 計費標準，企業系統是否有平替備案與退場策略？
 
 > [!IMPORTANT]
+> **架構審查委員會** <!-- term:ArchitectureReviewBoard --> (Architecture Review Board): 對重大技術變更行使物理限制與合規質疑的內部審查節點。 <!-- anchor:ArchitectureReviewBoard -->
 > **首席資訊安全官** <!-- term:ChiefInformationSecurityOfficer --> (Chief Information Security Officer): 對資安、主權與攻擊面承擔否決職能的治理角色。 <!-- anchor:ChiefInformationSecurityOfficer -->
 > **割點** <!-- term:CutVertex --> (Cut Vertex): 資訊與責任傳遞網路中一旦被插入或破壞，即導致子圖孤立、反饋中斷的關鍵節點。 <!-- anchor:CutVertex -->
 > **供應商鎖定** <!-- term:VendorLockIn --> (Vendor Lock-In): 指軟體專案過度依賴特定廠商的工具、平台或專有 API，導致切換至其他解決方案時面臨極高遷移成本的現象。 <!-- anchor:VendorLockIn -->

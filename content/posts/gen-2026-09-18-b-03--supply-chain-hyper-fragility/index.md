@@ -77,13 +77,13 @@ $$\max_{\mathbf{G}} \text{ROIC} = \frac{\text{NOPAT}}{\text{Invested Capital}}$$
 在拓樸演化上，網路結構從具備豐富局部環路與網狀交織的「網狀圖（Mesh Graph）」，被強行修剪為一個高度中心化、極度依賴少數超級樞紐的**「**星狀樹狀圖**（Star/Tree Topology） <!-- term:StarTreeTopology -->」**。
 
 > [!IMPORTANT]
-> **星狀樹狀圖** <!-- term:StarTreeTopology --> (Star/Tree Topology): 網狀冗餘被修剪後，流動完全依賴少數樞紐與割點的退化網絡結構。 <!-- anchor:StarTreeTopology -->
+> **星狀樹狀圖** <!-- term:StarTreeTopology --> (Star/Tree Topology): 網狀冗餘被修剪後，流動完全依賴少數樞紐與割點的退化網路結構。 <!-- anchor:StarTreeTopology -->
 
 
 在這種退化的拓樸中，樞紐節點（Hubs）的度數（Degree）極高，而介數中心性（Betweenness Centrality）呈現極端的極化分佈。系統的平均路徑長度雖然縮短了（體現為表面營運成本的降低），但網路的「**臨界割點集合**（Critical Cut Vertices） <!-- term:CriticalCutVertices -->」急劇擴大。整個全球數位文明的存續，實質上懸繫於少數幾個不可替代的單點故障（Single Points of Failure, SPOF）之上。
 
 > [!IMPORTANT]
-> **臨界割點集合** <!-- term:CriticalCutVertices --> (Critical Cut Vertices): 一旦移除即令網絡分裂的頂點集合，其擴大意味單點故障面急劇膨脹。 <!-- anchor:CriticalCutVertices -->
+> **臨界割點集合** <!-- term:CriticalCutVertices --> (Critical Cut Vertices): 一旦移除即令網路分裂的頂點集合，其擴大意味單點故障面急劇膨脹。 <!-- anchor:CriticalCutVertices -->
 
 
 ### 二、超音速牛鞭效應：演算法同步引爆的共振風暴
@@ -125,7 +125,7 @@ $$\lim_{\tau \to 0, K \to \infty} |H(j\omega_r)| = \infty$$
 
 > [!IMPORTANT]
 > **共模故障** <!-- term:CommonModeFailure --> (Common-Mode Failure): 看似隔離的節點共用同一控制平面或軟體堆疊，因而同時休克的故障模式。 <!-- anchor:CommonModeFailure -->
-> **單一栽培** <!-- term:Monoculture --> (Monoculture): 代碼風格、依賴與軟體堆疊趨同後，抗病力與多樣性同時枯竭的生態狀態。 <!-- anchor:Monoculture -->
+> **單一栽培** <!-- term:Monoculture --> (Monoculture): 程式碼風格、依賴與軟體堆疊趨同後，抗病力與多樣性同時枯竭的生態狀態。 <!-- anchor:Monoculture -->
 > **驚群效應** <!-- term:ThunderingHerd --> (Thundering Herd): 自動擴展在局部抖動時同步搶資源，把暫態故障擴散為跨地域雪崩。 <!-- anchor:ThunderingHerd -->
 
 

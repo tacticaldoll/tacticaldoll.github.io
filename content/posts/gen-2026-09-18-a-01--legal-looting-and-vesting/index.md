@@ -154,20 +154,23 @@ flowchart TD
 ```
 
 此拓樸變更包含三個致命機制：
-1. **插入**割點**（Cut Vertex） <!-- term:CutVertex -->**：引進標準化數位看板或合規審查人。所有來自現場的技術異議，必須被翻譯成「不影響交付節奏的格式化數據」；無法**量化**（Quantization） <!-- term:Quantization -->的隱性警訊直接被割點 <!-- term:CutVertex -->節點判定為非標準輸入而予以丟棄。
+1. **插入**割點**（Cut Vertex） <!-- term:CutVertex -->**：引進標準化數位看板或合規審查人。所有來自現場的技術異議，必須被翻譯成「不影響交付節奏的格式化數據」；無法量化的隱性警訊直接被割點 <!-- term:CutVertex -->節點判定為非標準輸入而予以丟棄。
 2. **製造**結構洞**（Structural Hole） <!-- term:StructuralHoles -->**：依據社會學家 Ronald Burt 的網路結構理論，居於結構洞 <!-- term:StructuralHoles -->中介位置的節點能攫取最大的資訊優勢與控制租金。高管刻意在決策層與第一線物理現實之間製造一道認知的結構洞 <!-- term:StructuralHoles -->，不聽取具體技術細節，以在法律審計中維持自身的「**不知情特權**（Plausible Deniability） <!-- term:PlausibleDeniability -->」。
-3. **拓樸解耦（Decoupling of Subgraphs）**：權力留在頂層，知識被困在底層，評量交給虛假量化 <!-- term:Quantization -->，責任則在法律結構上被精準導向底層簽字的工程師與最終乘客。
+3. **拓樸解耦（Decoupling of Subgraphs）**：權力留在頂層，知識被困在底層，評量交給虛假量化，責任則在法律結構上被精準導向底層簽字的工程師與最終乘客。
 
 > [!IMPORTANT]
 > **割點** <!-- term:CutVertex --> (Cut Vertex): 資訊與責任傳遞網路中一旦被插入或破壞，即導致子圖孤立、反饋中斷的關鍵節點。 <!-- anchor:CutVertex -->
-> **量化** <!-- term:Quantization --> (Quantization): 以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。 <!-- anchor:Quantization -->
 > **結構洞** <!-- term:StructuralHoles --> (Structural Holes): 兩個孤立群落之間的資訊斷層，佔位者可抽取話語權租金。 <!-- anchor:StructuralHoles -->
 > **不知情特權** <!-- term:PlausibleDeniability --> (Plausible Deniability): 透過割點過濾資訊，使高層得以主張對缺陷不知情。 <!-- anchor:PlausibleDeniability -->
 
 
 #### 3. 三部圖結構性解離（Tripartite Structural Decoupling）
 
-在圖論與組織網路分析中，一個具備自癒能力的健全系統，其「決策權頂點集合 $V_{\text{Authority}}$」、「現場默會知識頂點集合 $V_{\text{Knowledge}}$」與「法定個人責任頂點集合 $V_{\text{Accountability}}$」在結構上必須具備實質重合（Vertex Identity）或高電導雙向路徑。
+在圖論與組織網路分析中，一個具備自癒能力的健全系統，其「決策權頂點集合 $V_{\text{Authority}}$」、「現場**默會知識**（Tacit Knowledge） <!-- term:TacitKnowledge -->頂點集合 $V_{\text{Knowledge}}$」與「法定個人責任頂點集合 $V_{\text{Accountability}}$」在結構上必須具備實質重合（Vertex Identity）或高電導雙向路徑。
+
+> [!IMPORTANT]
+> **默會知識** <!-- term:TacitKnowledge --> (Tacit Knowledge): 無法完全言傳、只能在學徒制實踐與痛感反饋中內化的工程判斷。 <!-- anchor:TacitKnowledge -->
+
 
 然而在洗劫型組織架構中，管理層實施了系統性的「三部圖分離」：
 - **頂點集人為割裂**：$V_{\text{Authority}} \cap V_{\text{Knowledge}} = \varnothing$，決策節點掌握資源配置卻被刻意隔絕於物理現場直覺之外；
@@ -240,7 +243,7 @@ flowchart TD
 
 ### 治理不變量 I：權責收斂律（Invariant of Authority-Knowledge-Accountability Co-location）
 
-> **結構約束**（Structural Constraint） <!-- term:StructuralConstraint -->：權力（Authority）、現場默會知識（Knowledge）、評量指標制定權（Evaluation）與法定個人連帶責任（Accountability），在組織圖譜中必須且只能收斂於同一決策實體，嚴禁發生跨子圖的實質剝離。
+> **結構約束**（Structural Constraint） <!-- term:StructuralConstraint -->：權力（Authority）、現場默會知識（Knowledge） <!-- term:TacitKnowledge -->、評量指標制定權（Evaluation）與法定個人連帶責任（Accountability），在組織圖譜中必須且只能收斂於同一決策實體，嚴禁發生跨子圖的實質剝離。
 
 > [!IMPORTANT]
 > **結構約束** <!-- term:StructuralConstraint --> (Structural Constraint): 限制開發自由度與變體形狀的程式碼結構設計，用以消除非法操作空間、收窄錯誤表面。 <!-- anchor:StructuralConstraint -->
