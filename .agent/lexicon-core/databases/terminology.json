@@ -85,9 +85,12 @@
     "en": [
       "Moral Crumple Zone"
     ],
-    "description": "人在迴路被設計成吸收政治責難的緩衝區，而非具備實質否決權的控制節點。",
+    "description": "把系統性失效的法律與道德責任吸收到最末端操作員身上的組織安排。",
     "forbidden": [],
-    "level": 1
+    "level": 1,
+    "aliases": [
+      "制度性責任海綿"
+    ]
   },
   "PollutedHistorySnapshots": {
     "zh": "受污染的歷史片段",
@@ -4941,11 +4944,11 @@
     "level": 2
   },
   "BlastRadius": {
-    "zh": "波及範圍",
+    "zh": "爆炸半徑",
     "en": [
       "Blast Radius"
     ],
-    "description": "一個節點變更或失效時實際波及下游的範圍。它由整棵相依樹決定，而非單層相依清單；資料流圖的箭頭數不包含這項資訊。",
+    "description": "單次或累積操作在失控時所能造成的最大損害範圍，是授權閘門必須先行界定的硬上限。",
     "forbidden": [],
     "level": 1
   },
@@ -6130,6 +6133,24 @@
     "forbidden": [],
     "level": 2
   },
+  "ImpactScope": {
+    "zh": "波及範圍",
+    "en": [
+      "Impact Scope"
+    ],
+    "description": "一個節點變更或失效時實際波及下游的範圍。它由整棵相依樹決定，而非單層相依清單；資料流圖的箭頭數不包含這項資訊。",
+    "forbidden": [],
+    "level": 1
+  },
+  "HumanReview": {
+    "zh": "人工覆核",
+    "en": [
+      "Human Review"
+    ],
+    "description": "在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -7216,7 +7237,17 @@
     ],
     "description": "在訊號機制失效時，由驗證方主動設計具分離特性的測試或契約以檢驗產物真實能力的機制。",
     "forbidden": [],
-    "level": 1
+    "level": 1,
+    "not_within": [
+      "政策篩選",
+      "特徵篩選",
+      "篩選閾值",
+      "篩選規則",
+      "演化篩選",
+      "多指標篩選",
+      "篩選準則",
+      "篩選階段"
+    ]
   },
   "CutVertex": {
     "zh": "割點",

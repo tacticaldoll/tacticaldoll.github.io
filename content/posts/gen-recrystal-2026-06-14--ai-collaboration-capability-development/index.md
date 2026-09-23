@@ -124,10 +124,11 @@ flowchart TD
 
 若組織強制所有任務都經過 AI，會把可選開銷變成強制開銷。兩分鐘能修好的錯字，可能被迫經歷 prompt、context、生成、額外 diff 驗證與 token 成本。更嚴重的是，context 本身會漂移：規則過時、spec 和實作不同步、歷史文件互相矛盾。工程師花時間修 context，從報表上看卻像是在慢慢修 bug。採用率上升，淨效益未必上升。
 
-這也是專案管理要重新守住的地方。AI 擴充的是生成產能，不是驗證產能。若**產能規劃**（Capacity Planning） <!-- term:CapacityPlanning -->把 AI 增益當成穩定平均值，卻沒有配置相應的人類審查、風險評估與返工緩衝，就會在瓶頸前累積越來越多看似完成的在製品。最危險的不是 AI 產出明顯錯誤，而是產出自洽、整潔、可通過表層檢查，卻在真實邊界下偏離系統意圖。
+這也是專案管理要重新守住的地方。AI 擴充的是生成產能，不是驗證產能。若**產能規劃**（Capacity Planning） <!-- term:CapacityPlanning -->把 AI 增益當成穩定平均值，卻沒有配置相應的人類審查、風險評估與返工緩衝，就會在瓶頸前累積越來越多看似完成的**在製品**（Work In Progress） <!-- term:WorkInProgress -->。最危險的不是 AI 產出明顯錯誤，而是產出自洽、整潔、可通過表層檢查，卻在真實邊界下偏離系統意圖。
 
 > [!IMPORTANT]
 > **產能規劃** <!-- term:CapacityPlanning --> (Capacity Planning): 組織評估與配置生產資源（如人力、工期與技術工具產出）的決策過程，在 AI 導入中常因過於樂觀的平均值而錯估實際產能增益。 <!-- anchor:CapacityPlanning -->
+> **在製品** <!-- term:WorkInProgress --> (Work In Progress): 已進入生產流程但尚未交付完成的所有工作項目總和（簡稱 WIP）；在研發流程中多以未合併程式碼或未驗證構思等無形資訊形式存在。 <!-- anchor:WorkInProgress -->
 
 
 這條因果鏈最後落到人才培育。傳統工程能力很大一部分來自底層實作經驗：處理 race condition、追 database lock、修 retry storm、理解 worker crash 後狀態怎麼恢復。這些經驗看似低階，卻是高階判斷的養分。AI 若太早拿走這些工作，初階工程師可能直接被推上「描述架構、審查產物、整合系統」的位置，卻還沒有形成足夠的系統物理感。

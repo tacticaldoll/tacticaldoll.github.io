@@ -50,7 +50,7 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 > **不確定性** <!-- term:Uncertainty --> (Uncertainty): 估計值因抽樣與執行變異而帶有的波動範圍，是判定分數差異是否顯著的前提。 <!-- anchor:Uncertainty -->
 
 
-這三組橫跨軟體應用層、資本市場定價與底層算力設施的真實資料，共同暴露了 AI 經濟學的雙重結構性陷阱：在微觀層面，**「固定席次訂閱收入與自回歸 <!-- term:Autoregressive --> Token 邊際推論成本之間存在不可調和的口徑脫節，並在**傑文斯悖論**（Jevons Paradox） <!-- term:JevonsParadox -->的刺激下引發邊際**貢獻利益**（Contribution Margin） <!-- term:ContributionMargin -->逆轉」**；在宏觀層面，**「由敘事主導的資本支出 <!-- term:CapitalExpenditure -->反身性 <!-- term:Reflexivity -->迴圈，將整個產業鏈的估值建立在無法自洽閉合的四段轉換鏈之上」**。
+這三組橫跨軟體應用層、資本市場定價與底層算力設施的真實資料，共同暴露了 AI 經濟學的雙重結構性陷阱：在微觀層面，**「固定席次訂閱收入與自回歸 <!-- term:Autoregressive --> Token 邊際推論成本之間存在不可調和的口徑脫節，並在傑文斯悖論（Jevons Paradox） <!-- term:JevonsParadox -->的刺激下引發邊際貢獻利益（Contribution Margin） <!-- term:ContributionMargin -->逆轉」**；在宏觀層面，**「由敘事主導的資本支出 <!-- term:CapitalExpenditure -->反身性 <!-- term:Reflexivity -->迴圈，將整個產業鏈的估值建立在無法自洽閉合的四段轉換鏈之上」**。
 
 > [!IMPORTANT]
 > **傑文斯悖論** <!-- term:JevonsParadox --> (Jevons Paradox): 單位使用成本下降反而刺激總用量上升，使總支出不降反增。 <!-- anchor:JevonsParadox -->
@@ -151,7 +151,7 @@ George Soros 的反身性 <!-- term:Reflexivity -->理論表明，市場估值�
 
 此處必須深入探討一個反身性 <!-- term:Reflexivity -->極限邊界：**「何時巨額 CapEx 下注能夠成功突破反身性 <!-- term:Reflexivity -->斷裂？」**
 
-只有當且僅當該投資能夠建立起**「難以逾越的專有**資料回流**（Data Feedback Loop） <!-- term:DataFeedbackLoop -->飛輪（Data Flywheel）或主權生態標準」**，使得後來者即使擁有同等硬體也無法複製其效用時，巨額資本支出 <!-- term:CapitalExpenditure -->才能轉化為經濟租（Economic Rent）。然而，若開源模型生態（如 LLaMA、DeepSeek 等開源權重）以千分之一的資本成本持續追平閉源前沿模型的能力，龐大的私有資料中心基礎設施將從「競爭護城河」迅速退化為「**沉沒成本**（Sunk Cost） <!-- term:SunkCost -->資產負債包袱」。
+只有當且僅當該投資能夠建立起**「難以逾越的專有資料回流（Data Feedback Loop） <!-- term:DataFeedbackLoop -->飛輪（Data Flywheel）或主權生態標準」**，使得後來者即使擁有同等硬體也無法複製其效用時，巨額資本支出 <!-- term:CapitalExpenditure -->才能轉化為經濟租（Economic Rent）。然而，若開源模型生態（如 LLaMA、DeepSeek 等開源權重）以千分之一的資本成本持續追平閉源前沿模型的能力，龐大的私有資料中心基礎設施將從「競爭護城河」迅速退化為「**沉沒成本**（Sunk Cost） <!-- term:SunkCost -->資產負債包袱」。
 
 > [!IMPORTANT]
 > **資料回流** <!-- term:DataFeedbackLoop --> (Data Feedback Loop): 使用者接受、修改或拒絕的紀錄回到產品與流程更新，進而改變後續系統行為的循環。 <!-- anchor:DataFeedbackLoop -->

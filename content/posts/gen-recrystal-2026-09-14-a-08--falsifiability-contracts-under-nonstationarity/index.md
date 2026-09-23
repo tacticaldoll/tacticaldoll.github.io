@@ -123,13 +123,13 @@ $$n \;=\; \frac{\left( z_{\alpha/2}\sqrt{p_0(1-p_0)} + z_{\beta}\sqrt{p_1(1-p_1)
 > **脫鉤** <!-- term:Desynchronization --> (Desynchronization): 中介索引檔與真實檔案系統狀態不再一致的現象，是雙重狀態同步最典型的故障表現。 <!-- anchor:Desynchronization -->
 
 
-**第二，**事前登記**（Pre-Registration） <!-- term:PreRegistration -->。** [Nosek 等人，2018 / 《The Preregistration Revolution》](https://doi.org/10.1073/pnas.1708274114) 的核心論證是：把假設、量測與分析計畫在看到資料之前固定下來，可以把「事後找一個站得住的解釋」這條退路關掉。在非定常 <!-- term:Nonstationarity -->的環境裡它還有第二個作用——事前登記 <!-- term:PreRegistration -->的窗口定義使「漂移是否發生在窗口內」成為一個可查核的事實，而不是一個事後的辯詞。
+**第二，事前登記（Pre-Registration） <!-- term:PreRegistration -->。** [Nosek 等人，2018 / 《The Preregistration Revolution》](https://doi.org/10.1073/pnas.1708274114) 的核心論證是：把假設、量測與分析計畫在看到資料之前固定下來，可以把「事後找一個站得住的解釋」這條退路關掉。在非定常 <!-- term:Nonstationarity -->的環境裡它還有第二個作用——事前登記 <!-- term:PreRegistration -->的窗口定義使「漂移是否發生在窗口內」成為一個可查核的事實，而不是一個事後的辯詞。
 
 > [!IMPORTANT]
 > **事前登記** <!-- term:PreRegistration --> (Pre-Registration): 在觀測或實驗執行前預先凍結假設、度量指標與反駁門檻，防止事後調整假說以符合資料的科學契約。 <!-- anchor:PreRegistration -->
 
 
-**第三，**部分識別**（Partial Identification） <!-- term:PartialIdentification -->。** [Manski，1990 / 《Nonparametric Bounds on Treatment Effects》](https://www.jstor.org/stable/2006627) 指出，當資料不足以點識別一個參數時，正確的反應不是放棄評估，而是給出**界限**：在不追加任何無法驗證的假設下，參數必然落在某個區間內。這條路徑直接反駁了「介入在變所以無法評估」——無法點識別不蘊涵無法設界，而一個界限同樣可以排除觀察，因此同樣可證偽。
+**第三，部分識別（Partial Identification） <!-- term:PartialIdentification -->。** [Manski，1990 / 《Nonparametric Bounds on Treatment Effects》](https://www.jstor.org/stable/2006627) 指出，當資料不足以點識別一個參數時，正確的反應不是放棄評估，而是給出**界限**：在不追加任何無法驗證的假設下，參數必然落在某個區間內。這條路徑直接反駁了「介入在變所以無法評估」——無法點識別不蘊涵無法設界，而一個界限同樣可以排除觀察，因此同樣可證偽。
 
 > [!IMPORTANT]
 > **部分識別** <!-- term:PartialIdentification --> (Partial Identification): 在資料不足以唯一確定目標量時，改為推導其所有可能取值的界限，而非給出單點估計。 <!-- anchor:PartialIdentification -->

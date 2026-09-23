@@ -154,8 +154,8 @@ flowchart TD
 ```
 
 此拓樸變更包含三個致命機制：
-1. **插入**割點**（Cut Vertex） <!-- term:CutVertex -->**：引進標準化數位看板或合規審查人。所有來自現場的技術異議，必須被翻譯成「不影響交付節奏的格式化數據」；無法量化的隱性警訊直接被割點 <!-- term:CutVertex -->節點判定為非標準輸入而予以丟棄。
-2. **製造**結構洞**（Structural Hole） <!-- term:StructuralHoles -->**：依據社會學家 Ronald Burt 的網路結構理論，居於結構洞 <!-- term:StructuralHoles -->中介位置的節點能攫取最大的資訊優勢與控制租金。高管刻意在決策層與第一線物理現實之間製造一道認知的結構洞 <!-- term:StructuralHoles -->，不聽取具體技術細節，以在法律審計中維持自身的「**不知情特權**（Plausible Deniability） <!-- term:PlausibleDeniability -->」。
+1. **插入割點（Cut Vertex） <!-- term:CutVertex -->**：引進標準化數位看板或合規審查人。所有來自現場的技術異議，必須被翻譯成「不影響交付節奏的格式化數據」；無法量化的隱性警訊直接被割點 <!-- term:CutVertex -->節點判定為非標準輸入而予以丟棄。
+2. **製造結構洞（Structural Hole） <!-- term:StructuralHoles -->**：依據社會學家 Ronald Burt 的網路結構理論，居於結構洞 <!-- term:StructuralHoles -->中介位置的節點能攫取最大的資訊優勢與控制租金。高管刻意在決策層與第一線物理現實之間製造一道認知的結構洞 <!-- term:StructuralHoles -->，不聽取具體技術細節，以在法律審計中維持自身的「**不知情特權**（Plausible Deniability） <!-- term:PlausibleDeniability -->」。
 3. **拓樸解耦（Decoupling of Subgraphs）**：權力留在頂層，知識被困在底層，評量交給虛假量化，責任則在法律結構上被精準導向底層簽字的工程師與最終乘客。
 
 > [!IMPORTANT]

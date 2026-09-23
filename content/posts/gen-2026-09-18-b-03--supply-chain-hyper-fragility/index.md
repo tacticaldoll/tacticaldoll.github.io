@@ -36,7 +36,7 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 > **摩擦力** <!-- term:Friction --> (Friction): 流程中的阻力或成本；在約束系統中也可能是失敗點正在生效的可感知表現。 <!-- anchor:Friction -->
 
 
-然而，當這套消滅一切緩衝區的精益教條，與現代高度集中、深度互聯的數位軟體與半導體供應鏈深度嵌合時，一個毀滅性的拓樸特徵浮現出來：**系統對任何微小擾動的耐受力被徹底歸零，演化為極端的「**超脆性**（Hyper-Fragility） <!-- term:HyperFragility -->」**。
+然而，當這套消滅一切緩衝區的精益教條，與現代高度集中、深度互聯的數位軟體與半導體供應鏈深度嵌合時，一個毀滅性的拓樸特徵浮現出來：**系統對任何微小擾動的耐受力被徹底歸零，演化為極端的「超脆性（Hyper-Fragility） <!-- term:HyperFragility -->」**。
 
 > [!IMPORTANT]
 > **超脆性** <!-- term:HyperFragility --> (Hyper-Fragility): 消滅緩衝與冗餘後，系統對任何微小擾動的耐受力歸零的拓樸狀態。 <!-- anchor:HyperFragility -->
@@ -44,7 +44,7 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 
 納西姆·塔雷伯（Nassim Nicholas Taleb）在《反脆弱》中深刻指出：「追求極致的效率，必然以犧牲系統的生存能力為代價」。在複雜系統拓樸中，冗餘並非未被充分利用的閒置資本，而是系統抵禦黑天鵝衝擊、吸收未知衝擊波的「認識論阻尼與物理避震器」。
 
-更致命的是，當供應鏈的排程、庫存分配、威脅檢測與軟體更新被全面交付給自動化演算法時，傳統經濟學中的「**牛鞭效應**（Bullwhip Effect） <!-- term:BullwhipEffect -->」發生了相變。原本需要數週甚至數月才能沿著供應鏈傳遞的供需扭曲與震盪，在光纖網路、雲端同步與核心層（Ring 0）自動推送的推波助瀾下，被壓縮至微秒與秒級反應——演變為破壞力摧枯拉朽的**「**超音速牛鞭效應**（Supersonic Bullwhip Effect） <!-- term:SupersonicBullwhipEffect -->」**。
+更致命的是，當供應鏈的排程、庫存分配、威脅檢測與軟體更新被全面交付給自動化演算法時，傳統經濟學中的「**牛鞭效應**（Bullwhip Effect） <!-- term:BullwhipEffect -->」發生了相變。原本需要數週甚至數月才能沿著供應鏈傳遞的供需扭曲與震盪，在光纖網路、雲端同步與核心層（Ring 0）自動推送的推波助瀾下，被壓縮至微秒與秒級反應——演變為破壞力摧枯拉朽的**「超音速牛鞭效應（Supersonic Bullwhip Effect） <!-- term:SupersonicBullwhipEffect -->」**。
 
 > [!IMPORTANT]
 > **牛鞭效應** <!-- term:BullwhipEffect --> (Bullwhip Effect): 下游微小波動沿供應鏈逐級放大；在零時延自動化下相變為超音速共振。 <!-- anchor:BullwhipEffect -->
@@ -74,7 +74,7 @@ $$\max_{\mathbf{G}} \text{ROIC} = \frac{\text{NOPAT}}{\text{Invested Capital}}$$
 > **移動中庫存** <!-- term:InventoryInTransit --> (Inventory In Transit): 以在途貨物取代實體安全庫存，使緩衝從可調度存量變成不可即用的運輸狀態。 <!-- anchor:InventoryInTransit -->
 
 
-在拓樸演化上，網路結構從具備豐富局部環路與網狀交織的「網狀圖（Mesh Graph）」，被強行修剪為一個高度中心化、極度依賴少數超級樞紐的**「**星狀樹狀圖**（Star/Tree Topology） <!-- term:StarTreeTopology -->」**。
+在拓樸演化上，網路結構從具備豐富局部環路與網狀交織的「網狀圖（Mesh Graph）」，被強行修剪為一個高度中心化、極度依賴少數超級樞紐的**「星狀樹狀圖（Star/Tree Topology） <!-- term:StarTreeTopology -->」**。
 
 > [!IMPORTANT]
 > **星狀樹狀圖** <!-- term:StarTreeTopology --> (Star/Tree Topology): 網狀冗餘被修剪後，流動完全依賴少數樞紐與割點的退化網路結構。 <!-- anchor:StarTreeTopology -->
@@ -121,7 +121,7 @@ $$\lim_{\tau \to 0, K \to \infty} |H(j\omega_r)| = \infty$$
 然而，在分散式系統拓樸學中，這種「多可用區容災」往往只是一種危險的認識論假象：
 1. **控制平面的全域單點（Global Control Plane SPOF）**：儘管各個可用區在物理機房與供電上彼此隔離，但它們共用同一個全域身分 <!-- term:Identity -->認證系統（IAM）、同一個域名解析中樞（DNS）與同一套軟體定義網路（SDN）控制平面。一旦控制平面的程式碼或配置發生邏輯性損壞，所有看似獨立的可用區將在數微秒內同時休克；
 2. **共模故障（Common-Mode Failure） <!-- term:CommonModeFailure -->的盲目忽略**：當全球數十萬家企業同時將容器編排、日誌收集與安全監控外包給同一個雲端平台時，整個世界的數位基礎設施形成了一個前所未有的「超大規模**單一栽培**（Monoculture） <!-- term:Monoculture -->生態」。系統不再具有生物多樣性，任何針對單一架構的擾動，都將演變為跨越所有行業的全域性系統崩潰；
-3. **自癒演算法引發的「**驚群效應**（Thundering Herd Problem） <!-- term:ThunderingHerd -->」**：當某個區域發生網路抖動時，自動擴展演算法（Auto-scaler）會在瞬間向其他區域申請數以萬計的新虛擬機實例，瞬間抽乾雲端資源池，將局部的暫態故障迅速擴散為跨地域的連環雪崩。
+3. **自癒演算法引發的「驚群效應（Thundering Herd Problem） <!-- term:ThunderingHerd -->」**：當某個區域發生網路抖動時，自動擴展演算法（Auto-scaler）會在瞬間向其他區域申請數以萬計的新虛擬機實例，瞬間抽乾雲端資源池，將局部的暫態故障迅速擴散為跨地域的連環雪崩。
 
 > [!IMPORTANT]
 > **共模故障** <!-- term:CommonModeFailure --> (Common-Mode Failure): 看似隔離的節點共用同一控制平面或軟體堆疊，因而同時休克的故障模式。 <!-- anchor:CommonModeFailure -->
@@ -221,11 +221,11 @@ flowchart TD
 超音速牛鞭效應 <!-- term:SupersonicBullwhipEffect -->的本質，是**控制論反饋速度超越了人類理性的感知與干預極限**。當我們賦予演算法在秒級時間尺度內重塑全域狀態的能力，卻剝奪了各個節點自我隔離、拒絕更新與維持本地獨立運行的能力時，任何微小的人為筆誤或惡意攻擊，都足以觸發文明級別的系統休克。
 
 為了免於在下一場不可避免的全球共振風暴中徹底沉淪，現代系統工程與基礎設施治理必須發起一場「反精益的拓樸重建」：
-1. **法理確立「**冗餘優先原則**（Mandatory Redundancy Standards） <!-- term:MandatoryRedundancyStandards -->」**：在民航、醫療、電網、通信與金融等關鍵基礎設施中，立法禁止任何單一軟體或雲端供應商市場佔有率超過 40%，強制實施**異質性雙架構**（Heterogeneous Dual-Stack） <!-- term:HeterogeneousDualStack -->常態熱備份；
+1. **法理確立「冗餘優先原則（Mandatory Redundancy Standards） <!-- term:MandatoryRedundancyStandards -->」**：在民航、醫療、電網、通信與金融等關鍵基礎設施中，立法禁止任何單一軟體或雲端供應商市場佔有率超過 40%，強制實施**異質性雙架構**（Heterogeneous Dual-Stack） <!-- term:HeterogeneousDualStack -->常態熱備份；
 2. **切除超音速推送鏈條，強制引入「物理灰度阻尼」**：嚴禁任何供應商直接向核心層（Ring 0）推送全域即時更新，法定要求所有底層配置變更必須經過長達數週的漸進式 Canary 驗證，並強制保留本地管理員手動延遲與否決的權力；
 3. **推動去中心化與本地自治（Local Autonomy）**：終端系統必須具備在與母雲端完全斷網的極端情況下，至少維持 72 小時關鍵核心功能獨立運行的本地離線生存能力；
 4. **改革會計與治理激勵機制**：將「系統彈性與備援能力」正式列入 ESG 與企業審計評估指標，從稅收政策層面鼓勵企業維持必要的安全庫存與在地供應鏈節點，制止以消滅冗餘為手段的短期股東套利；
-5. **強制實施**軟體物料清單**（SBOM） <!-- term:SoftwareBillOfMaterials -->與依賴樹穿透審計**：關鍵軟體招標必須附帶經加密簽署的完整端到端動態依賴拓樸圖，嚴格標註所有開源基礎函式庫、第三方外部 API 與 Ring 0 核心驅動的單點依賴風險，未通過拓樸隔離認證者嚴禁接入生產環境；
+5. **強制實施軟體物料清單（SBOM） <!-- term:SoftwareBillOfMaterials -->與依賴樹穿透審計**：關鍵軟體招標必須附帶經加密簽署的完整端到端動態依賴拓樸圖，嚴格標註所有開源基礎函式庫、第三方外部 API 與 Ring 0 核心驅動的單點依賴風險，未通過拓樸隔離認證者嚴禁接入生產環境；
 6. **建設國家級帶外應急旁路網路（Out-of-Band Fallback Networks）**：公用事業與國防民生機構必須投資建設完全脫離商業公有雲控制平面與商業作業系統生態的獨立異質性應急調度網，確保在遭遇全球同質化軟體雪崩時，仍能維持最基礎的電網、供水、急救與空中管制通訊。
 
 > [!IMPORTANT]

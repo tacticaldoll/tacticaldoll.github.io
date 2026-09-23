@@ -31,7 +31,7 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 在當代金融化資本主義的拓樸結構中，技術浪潮的演進早已脫離了古典熊彼得式「企業家精神驅動實質創新」的線性範式。取而代之的，是由中央銀行超寬鬆流動性、主權財富基金、私募股權基金與科技巨頭資產負債表共同交織出的「信貸循環發動機」。在這套機制中，技術本身不再僅是生產力工具，而成為資本尋求殖利率（Yield-seeking）與維持估值倍數時不可或缺的「敘事質押品」。
 
-然而，當這套龐大的宏觀信貸向特定概念（如生成式人工智慧或前沿演算法）過度傾斜時，組織治理內部發生了一場劇烈的政治認識論質變：**「**錯失恐懼症**（Fear Of Missing Out, FOMO） <!-- term:FearOfMissingOut -->」被高層管理階層策略性地武器化為一種宣告內部「**例外狀態**（Ausnahmezustand） <!-- term:StateOfException -->」的政治工具**。
+然而，當這套龐大的宏觀信貸向特定概念（如生成式人工智慧或前沿演算法）過度傾斜時，組織治理內部發生了一場劇烈的政治認識論質變：**「錯失恐懼症（Fear Of Missing Out, FOMO） <!-- term:FearOfMissingOut -->」被高層管理階層策略性地武器化為一種宣告內部「例外狀態（Ausnahmezustand） <!-- term:StateOfException -->」的政治工具**。
 
 > [!IMPORTANT]
 > **錯失恐懼症** <!-- term:FearOfMissingOut --> (Fear Of Missing Out): 被管理層武器化的生存焦慮，用以宣告內部例外狀態並廢止常規技術審計。 <!-- anchor:FearOfMissingOut -->
@@ -79,7 +79,7 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 ### 二、資本閉環迴圈：虛擬週轉率與朝貢拓樸
 
-在龐氏融資 <!-- term:PonziFinancing -->的掩護下，前沿科技生態系統進化出一種高度精密的金融拓樸：**「**有向閉合環路**（Directed Cycle） <!-- term:DirectedCycle -->」**，形成了當代最顯著的「**迴圈交易**（Round-Tripping） <!-- term:RoundTripping -->」與「資本朝貢」結構。
+在龐氏融資 <!-- term:PonziFinancing -->的掩護下，前沿科技生態系統進化出一種高度精密的金融拓樸：**「有向閉合環路（Directed Cycle） <!-- term:DirectedCycle -->」**，形成了當代最顯著的「**迴圈交易**（Round-Tripping） <!-- term:RoundTripping -->」與「資本朝貢」結構。
 
 > [!IMPORTANT]
 > **有向閉合環路** <!-- term:DirectedCycle --> (Directed Cycle): 資金與承諾在少數節點間自我循環、推升名義營收的有向閉環。 <!-- anchor:DirectedCycle -->
@@ -148,7 +148,7 @@ $$\mathbf{M}_{\text{closed}} = \begin{bmatrix} 0 & 0 & \alpha_{31} \\ \alpha_{12
 > **常態審查管線**：商業構想 $\longrightarrow$ 概念驗證（PoC） $\longrightarrow$ **架構審查委員會**（ARB） $\longrightarrow$ 資安與法規合規 $\longrightarrow$ 內部審計與財務 $\longrightarrow$ 正式生產部署
 
 
-「**架構審查委員會**（Architecture Review Board, ARB） <!-- term:ArchitectureReviewBoard -->」、**首席資訊安全官**（CISO） <!-- term:ChiefInformationSecurityOfficer -->與內部審計部門，在圖論上構成了組織的**「理性**割點**（Rational Cut Vertices） <!-- term:CutVertex -->」**。他們的法定天職是代表企業的長期生存利益，向狂熱的業務部門提出尖銳的物理限制與合規質疑：
+「**架構審查委員會**（Architecture Review Board, ARB） <!-- term:ArchitectureReviewBoard -->」、**首席資訊安全官**（CISO） <!-- term:ChiefInformationSecurityOfficer -->與內部審計部門，在圖論上構成了組織的**「理性割點（Rational Cut Vertices） <!-- term:CutVertex -->」**。他們的法定天職是代表企業的長期生存利益，向狂熱的業務部門提出尖銳的物理限制與合規質疑：
 1. **邊界條件測試**：該外部黑箱模型在非平穩資料分佈下的故障率是多少？推論漂移（Inference Drift）如何即時監控與回滾？
 2. **資訊安全與主權**：將核心交易數據上傳至第三方專有雲端 API，是否違反 GDPR、HIPAA、PCI-DSS 或本國金融監管法規？
 3. **成本收益真實性**：每一次 API 呼叫與算力租賃的邊際成本，是否真能由所節省的人力或所產生的邊際收入覆蓋？模型重新微調（Fine-tuning）的長期維護開銷由誰負擔？
@@ -212,7 +212,7 @@ $$\mathbf{M}_{\text{closed}} = \begin{bmatrix} 0 & 0 & \alpha_{31} \\ \alpha_{12
 大型企業軟體供應商在華爾街投資人要求「AI 貨幣化（AI Monetization）」的強烈壓力下，紛紛將未成熟的生成式對話外掛，以強制綑綁（Tying / Bundling）的方式硬塞入既有的辦公軟體套件中，並藉此調漲 30% 至 50% 的企業級訂閱費。高階管理層在 FOMO 驅使下全額買單，但隨之而來的卻是組織內部的認識論脫節：
 1. **工作流排斥與幽靈授權**：第一線員工在日常業務中發現，模型生成的文本與程式碼充斥著難以察覺的細微錯誤（Subtle Hallucinations），核對這些**幻覺**（Hallucination） <!-- term:Hallucination -->所需的時間甚至遠超過親自撰寫。結果，大部分員工在嘗試數次後便徹底放棄，價值數百萬美元的帳號授權成為系統看板上的「**幽靈座位**（Ghost Seats） <!-- term:GhostSeats -->」；
 2. **影子 IT（Shadow IT）與資安外洩**：為了解決真實業務問題，基層員工不得不繞過受限的企業內部門戶，轉向未經審計的外部公開模型，甚至將包含敏感個資與未公開財務預測的專有數據直接複製至個人瀏覽器外掛中，引爆了嚴重的資安合規漏洞；
-3. **隱形**技術債**（Technical Debt） <!-- term:TechnicalDebt -->的指數累積**：業務部門未經 IT 架構團隊審查，自行利用無程式碼（No-Code）或低程式碼平台拼裝出高度脆弱的自動化管線。當底層 API 的返回格式（JSON Schema）或推論權重發生微小更動時，大量業務**自動化腳本**（Actuators） <!-- term:Actuators -->瞬間崩潰，造成無法追溯的靜態數據損壞。
+3. **隱形技術債（Technical Debt） <!-- term:TechnicalDebt -->的指數累積**：業務部門未經 IT 架構團隊審查，自行利用無程式碼（No-Code）或低程式碼平台拼裝出高度脆弱的自動化管線。當底層 API 的返回格式（JSON Schema）或推論權重發生微小更動時，大量業務**自動化腳本**（Actuators） <!-- term:Actuators -->瞬間崩潰，造成無法追溯的靜態數據損壞。
 
 > [!IMPORTANT]
 > **幻覺** <!-- term:Hallucination --> (Hallucination): 大型語言模型在面對不實或矛盾資訊時，生成不符合客觀現實或超出脈絡之回應的錯誤現象。 <!-- anchor:Hallucination -->

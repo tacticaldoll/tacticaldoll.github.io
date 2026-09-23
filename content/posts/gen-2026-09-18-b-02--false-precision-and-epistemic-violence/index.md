@@ -29,7 +29,7 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 
 ## 導言
 
-在現代科層官僚體系與數位治理的結合過程中，最普遍也最具破壞力的意識形態，莫過於對**「**純量指標**（Scalar Metrics） <!-- term:ScalarMetrics -->」與「**數值偽精準**（Spurious Precision） <!-- term:SpuriousPrecision -->」**的病態狂熱。
+在現代科層官僚體系與數位治理的結合過程中，最普遍也最具破壞力的意識形態，莫過於對**「純量指標（Scalar Metrics） <!-- term:ScalarMetrics -->」與「數值偽精準（Spurious Precision） <!-- term:SpuriousPrecision -->」**的病態狂熱。
 
 > [!IMPORTANT]
 > **純量指標** <!-- term:ScalarMetrics --> (Scalar Metrics): 將無限維社會脈絡強制投影到一維可排序實數，以便科層機器消化的度量形式。 <!-- anchor:ScalarMetrics -->
@@ -44,7 +44,7 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 
 為了解決這一矛盾，現代治理廣泛引入黑箱演算法，將原本需要深入質性調查的複雜現實，粗暴地投射（Project）為一個介於 0 與 1 之間的機率評分——例如「詐欺風險係數：0.892」。
 
-這種看似高度科學、客觀且具備極致精準度（小數點後三位）的數值輸出，實質上發動了一場深刻的**「**認識論暴力**（Epistemic Violence） <!-- term:EpistemicViolence -->」**。哲學家米蘭達·弗里克（Miranda Fricker）指出，**認識論不公**（Epistemic Injustice） <!-- term:EpistemicInjustice -->的核心在於「**證言不公**（Testimonial Injustice） <!-- term:TestimonialInjustice -->」——某個主體的發聲與陳述，僅僅因為其身處的制度劣勢地位，而被系統性地剝奪了可信度。
+這種看似高度科學、客觀且具備極致精準度（小數點後三位）的數值輸出，實質上發動了一場深刻的**「認識論暴力（Epistemic Violence） <!-- term:EpistemicViolence -->」**。哲學家米蘭達·弗里克（Miranda Fricker）指出，**認識論不公**（Epistemic Injustice） <!-- term:EpistemicInjustice -->的核心在於「**證言不公**（Testimonial Injustice） <!-- term:TestimonialInjustice -->」——某個主體的發聲與陳述，僅僅因為其身處的制度劣勢地位，而被系統性地剝奪了可信度。
 
 > [!IMPORTANT]
 > **認識論暴力** <!-- term:EpistemicViolence --> (Epistemic Violence): 以演算法評分剝奪主體證言可信度與物理抗辯權，使質性生活被定性為無效噪聲。 <!-- anchor:EpistemicViolence -->
@@ -89,7 +89,7 @@ flowchart TD
 ```
 
 1. **同倫拓樸的撕裂與資訊熵的毀滅性損失**：在流形 $\mathcal{M}_{\text{life}}$ 上原本相距極遠、具有本質區別的兩個狀態——例如「一位因重病而漏填收入申報附件的誠實母親」與「一個跨國洗錢團伙的專業騙保代辦」——在粗暴的投影函數 $\pi$ 下，極可能因為「填表延遲天數」與「雙重國籍」等代理變數（Proxies），被映射到一維數軸上的完全相同點（$s = 0.91$）；
-2. **偽精準的**幻覺**（Hallucination） <!-- term:Hallucination -->效應**：將複雜脈絡壓縮為連續實數後，系統給予該數值小數點後多位的表象（如 0.8923）。在人類心理學與官僚認知中，高解析度（High Resolution）常被盲目等同於高精確度（High Accuracy）。數字的微觀刻度，賦予了官僚一種虛妄的「控制感」與「科學神聖感」，從而徹底免除了官僚親自前往現場進行調查的倫理焦慮。
+2. **偽精準的幻覺（Hallucination） <!-- term:Hallucination -->效應**：將複雜脈絡壓縮為連續實數後，系統給予該數值小數點後多位的表象（如 0.8923）。在人類心理學與官僚認知中，高解析度（High Resolution）常被盲目等同於高精確度（High Accuracy）。數字的微觀刻度，賦予了官僚一種虛妄的「控制感」與「科學神聖感」，從而徹底免除了官僚親自前往現場進行調查的倫理焦慮。
 
 > [!IMPORTANT]
 > **幻覺** <!-- term:Hallucination --> (Hallucination): 大型語言模型在面對不實或矛盾資訊時，生成不符合客觀現實或超出脈絡之回應的錯誤現象。 <!-- anchor:Hallucination -->
@@ -131,10 +131,10 @@ flowchart TD
 > **人在迴路** <!-- term:HumanInTheLoop --> (Human-In-The-Loop): 人類節點對自動化決策保留實質否決與阻尼的控制條件，而非形式性的一鍵通過。 <!-- anchor:HumanInTheLoop -->
 
 
-然而，在組織拓樸學中，這種制度安排非但沒有提供實質的人性保護，反而構成了一種更加精密的**「**責任去中心化洗滌槽**（Moral Crumple Zone） <!-- term:MoralCrumpleZone -->」**。
+然而，在組織拓樸學中，這種制度安排非但沒有提供實質的人性保護，反而構成了一種更加精密的**「責任去中心化洗滌槽（Moral Crumple Zone） <!-- term:MoralCrumpleZone -->」**。
 
 > [!IMPORTANT]
-> **責任去中心化洗滌槽** <!-- term:MoralCrumpleZone --> (Moral Crumple Zone): 人在迴路被設計成吸收政治責難的緩衝區，而非具備實質否決權的控制節點。 <!-- anchor:MoralCrumpleZone -->
+> **責任去中心化洗滌槽** <!-- term:MoralCrumpleZone --> (Moral Crumple Zone): 把系統性失效的法律與道德責任吸收到最末端操作員身上的組織安排。 <!-- anchor:MoralCrumpleZone -->
 
 
 在實際的行政流水線中，人類審查員面臨著極端的非對稱約束：
@@ -230,7 +230,7 @@ flowchart TD
 
 要破除演算法對物理實體的降維霸權，未來的法律體系與公共治理必須建立不可妥協的「認識論憲章」：
 1. **確立法定的反降維抗辯權（Right to Contest Dimensionality Reduction）**：任何公民或員工在面對演算法的不利評估時，享有法定權利要求系統暫停執行，並強制要求人類調查官在場聆聽其質性脈絡與實體證言；
-2. **嚴禁將敏感**身分**（Identity） <!-- term:Identity -->變數作為風險代理**：在法律層面徹底禁止將國籍、族裔、居住地等結構性弱勢特徵納入任何公共資源分配或執法預測模型，斬斷偏見的自反性強化迴圈；
+2. **嚴禁將敏感身分（Identity） <!-- term:Identity -->變數作為風險代理**：在法律層面徹底禁止將國籍、族裔、居住地等結構性弱勢特徵納入任何公共資源分配或執法預測模型，斬斷偏見的自反性強化迴圈；
 3. **終結橡皮圖章免責體系**：明確定性「在缺乏實質調查時間與權限情況下對演算法輸出進行的機械式簽批」不具備合法行政處分效力，追究主管官員以「技術中立」為名推卸**注意義務**（Duty Of Care） <!-- term:DutyOfCare -->的法律責任；
 4. **重建公共演算法的完全可解釋性與開源審計**：任何用於公權力行使的演算法，其特徵權重、訓練數據源與決策邏輯必須對全體公眾完全透明，接受獨立人權機構與法學界的常態化對抗審計。
 

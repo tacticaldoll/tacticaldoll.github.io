@@ -41,7 +41,7 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 > **翻轉率** <!-- term:FlipRate --> (Flip Rate): 兩個模型版本之間逐樣本預測改變的比例，用來捕捉平均值所掩蓋的個案不穩定。 <!-- anchor:FlipRate -->
 
 
-這類事故的共通本質，在於軟體工程長期依賴的**「**標量聚合度量**（Scalar Aggregate Metric） <!-- term:ScalarAggregateMetric -->」**在面對高維經驗系統時存在根本性的**不可識別性**（Unidentifiability） <!-- term:Unidentifiability -->。當單一數字被賦予表徵複雜機制健康狀態的任務時，高維子流形的崩塌必然會被隱蔽於統計投影的核空間之內。
+這類事故的共通本質，在於軟體工程長期依賴的**「標量聚合度量（Scalar Aggregate Metric） <!-- term:ScalarAggregateMetric -->」**在面對高維經驗系統時存在根本性的**不可識別性**（Unidentifiability） <!-- term:Unidentifiability -->。當單一數字被賦予表徵複雜機制健康狀態的任務時，高維子流形的崩塌必然會被隱蔽於統計投影的核空間之內。
 
 > [!IMPORTANT]
 > **標量聚合度量** <!-- term:ScalarAggregateMetric --> (Scalar Aggregate Metric): 把高維行為壓縮成單一數字的評估量，其降維投影會把子群體差異與分佈權重變化一併吸收。 <!-- anchor:ScalarAggregateMetric -->
@@ -298,6 +298,10 @@ func main() {
 
 ## 結論
 
-將高維經驗模型簡化為標量讀數，是軟體工程在度量治理上的核心認知陷阱。標量聚合度量 <!-- term:ScalarAggregateMetric -->本質上是一個擁有非平凡核空間的降維投影算子，它既能在弱勢子流形崩塌時偽裝平穩，也能在分佈權重漂移時觸發虛假的退化告警。試圖透過疊加代理指標來解決問題，必然會受制於 Goodhart 定律而引發指標遞迴自欺。
+將高維經驗模型簡化為標量讀數，是軟體工程在**度量治理**（Metric Governance） <!-- term:MetricGovernance -->上的核心認知陷阱。標量聚合度量 <!-- term:ScalarAggregateMetric -->本質上是一個擁有非平凡核空間的降維投影算子，它既能在弱勢子流形崩塌時偽裝平穩，也能在分佈權重漂移時觸發虛假的退化告警。試圖透過疊加代理指標來解決問題，必然會受制於 Goodhart 定律而引發指標遞迴自欺。
+
+> [!IMPORTANT]
+> **度量治理** <!-- term:MetricGovernance --> (Metric Governance): 針對組織指標的採集口徑、失真風險、反轉效應與退化機制所建立的審計、對帳與防禦性規範體系。 <!-- anchor:MetricGovernance -->
+
 
 真正的工程防線必須建立在**「分佈結構與模型能力的解耦校驗」**以及**「多維子流形切片的單調性防衛」**之上。評估系統不應只給出一個冷冰冰的平均分數，而必須明確指明當前評估是在何種分佈假定下成立、在哪些子空間內具有統計檢定力 <!-- term:StatisticalPower -->，並在偵測到權重結構突變時主動拒絕做出不可識別的標量判定。

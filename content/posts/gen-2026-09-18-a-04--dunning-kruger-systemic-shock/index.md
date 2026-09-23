@@ -31,21 +31,22 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 在技術官僚與企業治理的病理學光譜中，存在著兩種截然不同卻互為表裡的破壞者：第一種是冷酷理性的「機會主義掠奪者（Type 2 Looters）」，他們洞悉系統的脆弱性，精準利用期權行權與任期時間差進行合法掏空；而第二種，則是更具悲劇色彩卻對組織更具毀滅性的**「狂熱信徒（Type 1 True Believers）」**。
 
-狂熱信徒絕非心懷惡意的詐欺犯，恰恰相反，他們對技術神話懷抱著近乎宗教般的赤誠。他們深信數學公式、神經網路權重與大數據預測具備超越人類經驗的「全知性（Omniscience）」。在心理學拓樸上，這群決策者深陷於**「**達克效應**（Dunning-Kruger Effect） <!-- term:DunningKrugerEffect -->」**的雙重維度：對複雜現實世界的非線性本質「不知其不知（Unknown Unknowns）」，同時對自身掌握的粗糙統計模型抱持著極度的「能力過度自信（Epistemic Hubris）」。
+狂熱信徒絕非心懷惡意的詐欺犯，恰恰相反，他們對技術神話懷抱著近乎宗教般的赤誠。他們深信數學公式、神經網路權重與大數據預測具備超越人類經驗的「全知性（Omniscience）」。在心理學拓樸上，這群決策者深陷於**「達克效應（Dunning-Kruger Effect） <!-- term:DunningKrugerEffect -->」**的雙重維度：對複雜現實世界的非線性本質「不知其不知（Unknown Unknowns）」，同時對自身掌握的粗糙統計模型抱持著極度的「能力過度自信（Epistemic Hubris）」。
 
 > [!IMPORTANT]
 > **達克效應** <!-- term:DunningKrugerEffect --> (Dunning-Kruger Effect): 對複雜現實不知其不知、同時對粗糙模型過度自信的雙重認知盲區。 <!-- anchor:DunningKrugerEffect -->
 
 
-當這種認知盲區僅停留在學術象牙塔或實驗室沙盒時，其代價不過是幾篇被駁回的論文或幾行廢棄的程式碼。然而，當組織權力結構允許狂熱信徒將企業的實體資產負債表（Balance Sheet），**「**無阻尼短路**（Undamped Short-Circuiting） <!-- term:UndampedShortCircuiting -->」**直接串接至黑箱演算法的自動化決策輸出端時，一場毀滅性的物理與金融災難便不可避免。
+當這種認知盲區僅停留在學術象牙塔或實驗室沙盒時，其代價不過是幾篇被駁回的論文或幾行廢棄的程式碼。然而，當組織權力結構允許狂熱信徒將企業的實體資產負債表（Balance Sheet），**「無阻尼短路（Undamped Short-Circuiting） <!-- term:UndampedShortCircuiting -->」**直接串接至黑箱演算法的自動化決策輸出端時，一場毀滅性的物理與金融災難便不可避免。
 
 > [!IMPORTANT]
 > **無阻尼短路** <!-- term:UndampedShortCircuiting --> (Undamped Short-Circuiting): 把資產負債表直接接到黑箱預測、切除人類審查阻力的控制論操作。 <!-- anchor:UndampedShortCircuiting -->
 
 
-在傳統商業模式中，資本的配置與資產的收購由多層具備在地默會知識（Tacit Knowledge）的人類專業節點層層把關。這些節點在組織中扮演著阻尼器（Dampers）與濾波器的角色，吸收市場噪聲並抵禦極端風險。狂熱信徒卻將這些不可或缺的審查阻力視為「效率低下的**摩擦力**（Friction） <!-- term:Friction -->」，並以「完全演算法化、端到端自動化」為名，將人類反饋迴圈徹底物理切除。
+在傳統商業模式中，資本的配置與資產的收購由多層具備在地**默會知識**（Tacit Knowledge） <!-- term:TacitKnowledge -->的人類專業節點層層把關。這些節點在組織中扮演著阻尼器（Dampers）與濾波器的角色，吸收市場噪聲並抵禦極端風險。狂熱信徒卻將這些不可或缺的審查阻力視為「效率低下的**摩擦力**（Friction） <!-- term:Friction -->」，並以「完全演算法化、端到端自動化」為名，將人類反饋迴圈徹底物理切除。
 
 > [!IMPORTANT]
+> **默會知識** <!-- term:TacitKnowledge --> (Tacit Knowledge): 無法完全言傳、只能在學徒制實踐與痛感反饋中內化的工程判斷。 <!-- anchor:TacitKnowledge -->
 > **摩擦力** <!-- term:Friction --> (Friction): 流程中的阻力或成本；在約束系統中也可能是失敗點正在生效的可感知表現。 <!-- anchor:Friction -->
 
 
@@ -180,7 +181,7 @@ Zillow 原本是全美最大的房地產資訊入口平台，其核心壁壘是�
 - 當 Zestimate 演算法因模型盲區**嚴重高估**某棟存在隱形瑕疵或地段衰退的房屋時，精明的屋主毫不猶豫地選擇「點擊確認，立刻全現金賣給 Zillow」；
 - 當 Zestimate 演算法**低估**或合理估價優質房屋時，屋主則直接轉向公開市場尋求人類買家的高價競標。
 
-這導致了金融學上最嚴重的**「阿克洛夫**檸檬市場**（Akerlof's Market for Lemons） <!-- term:MarketForLemons -->」逆向選擇 <!-- term:AdverseSelection -->陷阱**：Zillow 的演算法以驚人的速度，將全美各大都會區最難以轉手、維護成本最高、溢價最嚴重的「房地產垃圾」全額收入囊中。
+這導致了金融學上最嚴重的**「阿克洛夫檸檬市場（Akerlof's Market for Lemons） <!-- term:MarketForLemons -->」逆向選擇 <!-- term:AdverseSelection -->陷阱**：Zillow 的演算法以驚人的速度，將全美各大都會區最難以轉手、維護成本最高、溢價最嚴重的「房地產垃圾」全額收入囊中。
 
 > [!IMPORTANT]
 > **檸檬市場** <!-- term:MarketForLemons --> (Market For Lemons): 因買方無法辨識品質而按平均價值交易，進而排擠高品質供給的資訊不對稱市場。 <!-- anchor:MarketForLemons -->
@@ -237,7 +238,7 @@ Zillow 的慘劇徹底粉碎了「演算法全自動化治理」的烏托邦神�
 2. **責任歸屬的非對稱懲罰**：若人類審核員駁回演算法的提議，需要撰寫冗長的反駁報告並承擔「拖慢業務進度」的政治指責；而若順從演算法批准，即便事後證明虧損，亦可將責任推給系統缺陷。
 
 要使組織重新具備抵禦諧振崩潰的認識論阻尼，HITL 必須完成制度化的實質重構：
-- **獨立的默會知識加權**：在決策拓樸中，第一線人類專家的反對意見必須具備足夠的數學權重，能夠直接中斷自動化採購管線；
+- **獨立的默會知識 <!-- term:TacitKnowledge -->加權**：在決策拓樸中，第一線人類專家的反對意見必須具備足夠的數學權重，能夠直接中斷自動化採購管線；
 - **強制性的冷卻期（Mandatory Cooling-off Periods）**：當演算法在特定時間窗口內的交易頻率或資產集中度異常攀升時，系統應自動觸發熔斷機制，強制介入長達數小時至數天的冷靜覆核期；
 - **異質性檢驗通道**：對於高度非標準化、非同質的實體資產，嚴禁採取端到端黑箱定價，必須在最後一哩路強制嵌入獨立第三方的物理勘驗證明。
 
@@ -249,7 +250,7 @@ Zillow 的慘劇徹底粉碎了「演算法全自動化治理」的烏托邦神�
 
 為了防範狂熱信徒將組織拖入系統性深淵，未來的企業治理與系統工程必須確立不可妥協的拓樸邊界：
 1. **嚴禁資產負債表與演算法黑箱直接短路**：在任何涉及真實貨幣轉移、資產收購或實體人身安全的關鍵節點，必須在體制上強制維持「**人類實質在環**（Meaningful Human-In-The-Loop） <!-- term:MeaningfulHumanInTheLoop -->」的審批阻尼；
-2. **制度化保障第一線默會知識的否決權**：建立直接對審計委員會負責的在地專業勘驗通道，確保第一線專業人員對異常數據與物理瑕疵具備獨立的一票否決權；
+2. **制度化保障第一線默會知識 <!-- term:TacitKnowledge -->的否決權**：建立直接對審計委員會負責的在地專業勘驗通道，確保第一線專業人員對異常數據與物理瑕疵具備獨立的一票否決權；
 3. **建立反達克技術審計機制**：任何自動化決策系統在上線前，必須通過嚴格的二階混沌對抗測試與極端非平穩分佈壓力測試，徹底粉碎「樣本內擬合良好即代表未來平穩」的技術幻想；
 4. **將認知傲慢列入公司法重大過失（Gross Negligence） <!-- term:GrossNegligence -->**：在法律責任維度，明確認定高階主管「盲目切除組織既有防護機制、將資本無阻尼交付未經充分驗證黑箱模型」之行為，屬於不可受**商業判斷法則**（BJR） <!-- term:BusinessJudgmentRule -->庇護的重大過失 <!-- term:GrossNegligence -->。
 
@@ -265,7 +266,7 @@ Zillow 的慘劇徹底粉碎了「演算法全自動化治理」的烏托邦神�
 
 1. Kruger, J., & Dunning, D. (1999). *Unskilled and unaware of it: How difficulties in recognizing one's own incompetence lead to inflated self-assessments*. Journal of Personality and Social Psychology, 77(6), 1121-1134. [doi:10.1037/0022-3514.77.6.1121](https://doi.org/10.1037/0022-3514.77.6.1121)
 2. Akerlof, G. A. (1970). *The Market for "Lemons": Quality Uncertainty and the Market Mechanism*. The Quarterly Journal of Economics, 84(3), 488-500. [doi:10.2307/1879431](https://doi.org/10.2307/1879431)
-3. Wiener, N. (1948). *Cybernetics: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
+3. Wiener, N. (1948). *控制理論 <!-- term:Cybernetics -->: Or Control and Communication in the Animal and the Machine*. MIT Press. ISBN 978-0-262-73009-9
 4. Taleb, N. N. (2018). *Skin in the Game: Hidden Asymmetries in Daily Life*. Random House. ISBN 978-0-425-28462-9
 5. Peters, O. (2019). *The ergodicity problem in economics*. Nature Physics, 15(12), 1216-1221. [doi:10.1038/s41567-019-0732-0](https://doi.org/10.1038/s41567-019-0732-0)
 6. Zillow Group, Inc. (2021). *Form 8-K: Current Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 (November 2, 2021)*. U.S. Securities and Exchange Commission. [SEC EDGAR](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001617640&type=8-K)

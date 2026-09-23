@@ -31,7 +31,7 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 
 在高度自動化金融交易與關鍵決策系統的歷史上，缺乏獨立主權授權閘門所釀成的災難，以 2012 年 8 月 1 日 Knight Capital 的交易系統崩潰事件最為慘烈。根據美國證券交易委員會（SEC）的正式調查與處分報告（參見 [U.S. SEC, 2013 / Release No. 70694 (Knight Capital Administrative Proceeding)](https://www.sec.gov/litigation/admin/2013/34-70694.pdf)），在美股開盤短短 45 分鐘之內，該公司的自動化交易程式向市場瘋狂送出了約 400 萬筆錯誤執行指令，涵蓋 154 檔股票，淨買入高達數十億美元的有價證券，最終被迫在市場上折價平倉，造成了 4.6 億美元的毀滅性淨虧損，並直接導致這家老牌造市商陷入破產並遭收購。
 
-調查揭露了一條令人震驚的因果鏈：工程團隊在部署更新時，將新程式碼推送到八台伺服器中的七台，第八台伺服器上殘留了一段已退役長達九年的測試程式碼（Power Peg）；更嚴重的是，新舊程式碼共用了一個未經重構的設定旗標。當開盤指令湧入時，第八台伺服器將客戶訂單錯誤解讀為「無需等待市場成交回報、無限高速市價吃單」。而在這致命的 45 分鐘內，系統發出的 97 封自動警示郵件被無人值守的郵件群組忽視，且系統架構內部**完全不存在任何全域交易額度熔斷機制（Global Blast Radius Limiter）或**主權終止開關**（Sovereign Kill Switch） <!-- term:SovereignKillSwitch -->**。生成訊號的演算法與執行實體操作的外部環境之間，缺乏一層不可繞過的物理防護。
+調查揭露了一條令人震驚的因果鏈：工程團隊在部署更新時，將新程式碼推送到八台伺服器中的七台，第八台伺服器上殘留了一段已退役長達九年的測試程式碼（Power Peg）；更嚴重的是，新舊程式碼共用了一個未經重構的設定旗標。當開盤指令湧入時，第八台伺服器將客戶訂單錯誤解讀為「無需等待市場成交回報、無限高速市價吃單」。而在這致命的 45 分鐘內，系統發出的 97 封自動警示郵件被無人值守的郵件群組忽視，且系統架構內部**完全不存在任何全域交易額度熔斷機制（Global Blast Radius Limiter）或主權終止開關（Sovereign Kill Switch） <!-- term:SovereignKillSwitch -->**。生成訊號的演算法與執行實體操作的外部環境之間，缺乏一層不可繞過的物理防護。
 
 > [!IMPORTANT]
 > **主權終止開關** <!-- term:SovereignKillSwitch --> (Sovereign Kill Switch): 獨立於模型與應用程式之外、可無條件切斷一切後續執行的終止裝置。 <!-- anchor:SovereignKillSwitch -->
@@ -109,8 +109,8 @@ $$\tau = \inf \left\{ t \ge 0 \;\middle|\; \sum_{s=1}^t \ell(S_s, y_s) \ge L_{\m
 
 | 邊界案例輸入 | 系統初始狀態 | 關鍵判定條件 / 不變式 <!-- term:Invariant -->檢查 | 狀態機轉移路徑 | 最終處置結果與系統輸出 |
 | :--- | :--- | :--- | :--- | :--- |
-| **案例 A：常規安全指令** | `State::Active` | $\| \Delta S \| = \$5,000 \le B_{\text{single}}$ 且 $t < \tau$ | `Evaluating` $\to$ `Authorized` | 放行執行，記錄審計日誌 |
-| **案例 B：單筆突發巨額訂單** | `State::Active` | $\| \Delta S \| = \$2,000,000 > B_{\text{single}}$ | `Evaluating` $\to$ `Rejected` | 拒絕下單，向操作員發出二級告警 |
+| **案例 A：常規安全指令** | `State::Active` | $\| \Delta S \| = \$5,000 \le B_{\text{single}}$ 且 $t < \tau$ | __CODE_BLOCK_3__ $\to$ `Authorized` | 放行執行，記錄審計日誌 |
+| **案例 B：單筆突發巨額訂單** | `State::Active` | $\| \Delta S \| = \$2,000,000 > B_{\text{single}}$ | __CODE_BLOCK_6__ $\to$ `Rejected` | 拒絕下單，向操作員發出二級告警 |
 | **案例 C：高頻微小指令湧入** | `State::Active` | 單筆符合，但 $\sum_{W} \| \Delta S \| > B_{\text{window}}$ | `Active` $\to$ `RateLimited` | 暫停該租戶連線 60 秒，冷卻重試 |
 | **案例 D：連續異常報錯觸發** | `State::RateLimited` | 累積未處置錯誤 $\ge N_{\text{crit}}$ ($t \ge \tau$) | `RateLimited` $\to$ `Tripped` (熔斷) | 觸發硬體級停止時間 <!-- term:StoppingTime -->，切斷網路輸出 |
 | **案例 E：已熔斷下的外部請求** | `State::Tripped` | 狀態機不變式 <!-- term:Invariant -->：`Tripped` 狀態禁止狀態變遷 | 拒絕所有請求，維持 `Tripped` | 強制人工物理密鑰重設，杜絕自動重啟 |
@@ -129,19 +129,24 @@ $$\tau = \inf \left\{ t \ge 0 \;\middle|\; \sum_{s=1}^t \ell(S_s, y_s) \ge L_{\m
 
 此處必須釐清一個架構極限案例：**「何時嚴格的主權授權閘門會帶來系統性負效應？」**
 
-當系統面臨「需要亞毫秒級極致吞吐，且所有操作皆完全具備補償事務（Compensating Transactions）的可逆場景」時，例如分散式非關聯快取預讀或可丟棄的日誌索引，強型別授權狀態機的同步開銷可能成為效能瓶頸。然而，一旦操作涉及**資金轉帳、硬體機械移動、法律權利變更或病患處方下達**，所有狀態變遷皆具備強烈的不可逆性（Irreversibility）。在不可逆領域中，任何以「降低延遲」為由弱化授權閘門的做法，都是以整個組織的生存權進行高風險賭博。
+當系統面臨「需要亞毫秒級極致吞吐，且所有操作皆完全具備補償事務（Compensating Transactions）的可逆場景」時，例如分散式非關聯快取預讀或可丟棄的日誌索引，強型別授權狀態機的同步開銷可能成為效能瓶頸。然而，一旦操作涉及**資金轉帳、硬體機械移動、法律權利變更或病患處方下達**，所有狀態變遷皆具備強烈的**不可逆性**（Irreversibility） <!-- term:Irreversibility -->。在不可逆領域中，任何以「降低延遲」為由弱化授權閘門的做法，都是以整個組織的生存權進行高風險賭博。
+
+> [!IMPORTANT]
+> **不可逆性** <!-- term:Irreversibility --> (Irreversibility): 評估系統變更或主張升格風險的核心維度，指狀態改變或操作執行後無法透過反向操作完全復原的程度，決定了准入閘門所需的最小外部證據與授權層級。 <!-- anchor:Irreversibility -->
+
 
 下表對比傳統脆弱的交付架構與強型別主權授權防線的本質差異：
 
 | 邊界維度 | 表面讀數 / 舊代脆弱作法 | 底層物理 / 架構病灶 | 潛在破壞後果 | 新代嚴格工程防衛體系 (Rust 型別防線) |
 | :--- | :--- | :--- | :--- | :--- |
-| **邊界劃分** | 模型直接調用底層資料庫或外部金融 API | 混淆建議者（Proposer）與決策者（Arbiter） | 提示詞注入或**幻覺**（Hallucination） <!-- term:Hallucination -->直接誘發破壞性變更 | 編譯期型別狀態機，輸出僅作為未經授權建議 |
+| **邊界劃分** | 模型直接調用底層資料庫或外部金融 API | 混淆建議者（Proposer）與決策者（Arbiter） | 提示詞注入或**幻覺**（Hallucination） <!-- term:Hallucination -->直接誘發破壞性變更 | 編譯期**型別狀態**（Typestate） <!-- term:Typestate -->機，輸出僅作為未經授權建議 |
 | **額度限制** | 依賴單次 API 呼叫的參數大小做簡易驗證 | 忽視時間維度累積之爆炸半徑（滑動窗口耗竭） <!-- term:BlastRadius --> | 巨量微小交易在短時間內掏空系統儲備 | 全域原子計數器，鎖死單次與滑動窗口爆炸半徑 <!-- term:BlastRadius --> |
 | **異常處置** | 記錄非致命日誌或傳送未被排查的警告郵件 | 缺乏形式化停止時間 <!-- term:StoppingTime -->狀態轉移 | Knight Capital 式無人值守 45 分鐘崩潰 | 嚴格停止時間 <!-- term:StoppingTime --> $\tau$ 鞅論邊界，累積錯誤硬性跳脫熔斷 |
 | **復原機制** | 程式崩潰後由守護行程（Supervisor）無腦重啟 | 重新啟動後再次執行造成故障的毒丸指令 | **毒丸循環**（Crash Loop） <!-- term:CrashLoop -->加速資源耗竭 | 熔斷狀態需不可旁路之管理員實體憑據手動復位 |
 
 > [!IMPORTANT]
 > **幻覺** <!-- term:Hallucination --> (Hallucination): 大型語言模型在面對不實或矛盾資訊時，生成不符合客觀現實或超出脈絡之回應的錯誤現象。 <!-- anchor:Hallucination -->
+> **型別狀態** <!-- term:Typestate --> (Typestate): 將物件的執行期狀態與生命週期約束編碼至靜態型別系統中，使非法狀態轉移在編譯期即被攔截的技術。 <!-- anchor:Typestate -->
 > **毒丸循環** <!-- term:CrashLoop --> (Crash Loop): 崩潰後自動重啟又再次執行同一致命輸入，使故障在重試中被無限放大的循環。 <!-- anchor:CrashLoop -->
 
 

@@ -31,14 +31,14 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 
 在技術文明的演化歷程中，人類對工具的每一次升級，表面上皆被描繪為生產力邊界的線性擴張。從蒸汽機、內燃機到現代數位計算機，每一次自動化浪潮的核心承諾，皆是將人類智力從繁重、重複與低階的機械勞動中解放出來，使其得以攀登至更高階的抽象設計與策略創新領域。
 
-然而，當自動化技術跨越傳統的「機械執行」範疇，全面入侵「符號推理、程式碼生成、系統除錯與因果診斷」等核心認知領域時，一場隱蔽卻具備不可逆毀滅性的文明退化悄然降臨：**「**認識論荒漠化**（Epistemic Desertification） <!-- term:EpistemicDesertification -->」與「人類**調試反射**（Debugging Reflex） <!-- term:DebuggingReflex -->的代際滅絕」**。
+然而，當自動化技術跨越傳統的「機械執行」範疇，全面入侵「符號推理、程式碼生成、系統除錯與因果診斷」等核心認知領域時，一場隱蔽卻具備不可逆毀滅性的文明退化悄然降臨：**「認識論荒漠化（Epistemic Desertification） <!-- term:EpistemicDesertification -->」與「人類調試反射（Debugging Reflex） <!-- term:DebuggingReflex -->的代際滅絕」**。
 
 > [!IMPORTANT]
 > **認識論荒漠化** <!-- term:EpistemicDesertification --> (Epistemic Desertification): 自動化切斷人類與底層錯誤的摩擦後，默會知識與除錯直覺代際失傳、知識土壤趨於均質貧瘠的認識論退化。 <!-- anchor:EpistemicDesertification -->
 > **調試反射** <!-- term:DebuggingReflex --> (Debugging Reflex): 長期直面編譯失敗與物理異常所形成的身體化本能，能在噪聲中穿透抽象屏障並定位底層因果。 <!-- anchor:DebuggingReflex -->
 
 
-麥可·波蘭尼（Michael Polanyi）在其奠基性著作《默會維度（The Tacit Dimension）》中提出了一條著名的認識論定律：「我們所知遠多於我們所能言傳（We know more than we can tell）」。真正支撐高可靠性工程、航空航太與大型軟體架構的，從來不只是白紙黑字的規格手冊或程式碼語法，而是深植於工程師肌肉、神經網路與長期實踐中的**「**默會知識**（Tacit Knowledge） <!-- term:TacitKnowledge -->」**。這種知識只能在直面物理阻力、承受編譯失敗、經歷深夜線上故障診斷的殘酷「**學徒制除錯**（Apprenticeship Debugging） <!-- term:ApprenticeshipDebugging -->」中，透過痛苦的突觸重構代代相傳。
+麥可·波蘭尼（Michael Polanyi）在其奠基性著作《默會維度（The Tacit Dimension）》中提出了一條著名的認識論定律：「我們所知遠多於我們所能言傳（We know more than we can tell）」。真正支撐高可靠性工程、航空航太與大型軟體架構的，從來不只是白紙黑字的規格手冊或程式碼語法，而是深植於工程師肌肉、神經網路與長期實踐中的**「默會知識（Tacit Knowledge） <!-- term:TacitKnowledge -->」**。這種知識只能在直面物理阻力、承受編譯失敗、經歷深夜線上故障診斷的殘酷「**學徒制除錯**（Apprenticeship Debugging） <!-- term:ApprenticeshipDebugging -->」中，透過痛苦的突觸重構代代相傳。
 
 > [!IMPORTANT]
 > **默會知識** <!-- term:TacitKnowledge --> (Tacit Knowledge): 無法完全言傳、只能在學徒制實踐與痛感反饋中內化的工程判斷。 <!-- anchor:TacitKnowledge -->
@@ -205,7 +205,7 @@ flowchart TD
 
 在過去的純手工工程時代，面對一段長達五十層的調用堆疊（Call Stack）與十六進位核心轉儲（Hex Core Dump），工程師必須進行一場深度的認識論重構：
 1. **心智逆向工程**：逐層回溯堆疊框架中的區域變數、暫存器指標與系統調用狀態，在腦海中重播整個應用程式在崩潰前微秒級的時間切片；
-2. **假設的**可證偽性**（Falsifiability） <!-- term:Falsifiability -->驗證**：在程式碼中插入斷點（Breakpoints）、設計反例測試，透過對實體執行序的精確觀測，逐步排除偽因果；
+2. **假設的可證偽性（Falsifiability） <!-- term:Falsifiability -->驗證**：在程式碼中插入斷點（Breakpoints）、設計反例測試，透過對實體執行序的精確觀測，逐步排除偽因果；
 3. **理解問題的本質結構**：即使修復過程耗時數天，工程師最終獲得的不僅是幾行程式碼的修改，而是對底層函式庫邊界限制、並發鎖競爭與作業系統虛擬記憶體映射的深刻洞見。
 
 > [!IMPORTANT]
@@ -244,12 +244,12 @@ flowchart TD
 
 要遏止這一場代際技術失傳的文化浩劫，技術社群與治理機構必須發起深刻的「工程認識論文藝復興」：
 1. **保護微觀阻力與基層除錯權**：嚴禁在教育與初級工程師培訓中全面依賴黑箱程式碼生成，強制保留深入組合語言、作業系統核心與手動記憶體管理的「底層實戰沙盒」；
-2. **制度化實施「**手動飛行演習**（Manual Flight Drills） <!-- term:ManualFlightDrills -->」**：借鑑航空航太的高強度對抗訓練，大型軟體系統與基礎設施團隊應定期斷開所有 AI 輔助工具，強制工程師僅憑原始終端機、日誌分析器與內核調試工具，在限時環境下排查深層混沌故障；
+2. **制度化實施「手動飛行演習（Manual Flight Drills） <!-- term:ManualFlightDrills -->」**：借鑑航空航太的高強度對抗訓練，大型軟體系統與基礎設施團隊應定期斷開所有 AI 輔助工具，強制工程師僅憑原始終端機、日誌分析器與內核調試工具，在限時環境下排查深層混沌故障；
 3. **拒絕初級工程師隊伍空心化**：公司治理層必須清醒認識到，初級除錯職位的存在是組織繁衍未來的必備「認識論生態圈」，不能以純粹短期的產出量指標將其全額裁撤；
 4. **建立合成程式碼的隔離檢疫制度**：對任何由機器大規模生成的程式碼，實施嚴格的認識論可解釋性審查，確保團隊內部至少有兩名以上人類工程師能夠在白板上完整重繪其底層因果邏輯圖；
 5. **重構工程師績效評估指標**：徹底廢止以純粹程式碼產出行數（LOC）或拉取請求（PR）合併速度為核心的庸俗度量，將「深入排查並根除深層架構隱患、產出高價值可證偽性 <!-- term:Falsifiability -->測試用例、傳授學徒默會除錯直覺」作為高級技術職稱晉升的核心考核維度；
-6. **建立**工程知識保護區**（Epistemic Sanctuaries） <!-- term:EpistemicSanctuaries -->**：在大型企業與關鍵基礎設施內部，特意保留部分不允許引入任何黑箱生成式工具的核心底層模組與微服務，強制由人類工程師進行手動設計、調試與最佳化，作為鍛鍊新一代系統架構師的「認識論高地」與組織自癒的「技術火種保護區」；
-7. **落實雙人**結對除錯**（Adversarial Pair Debugging） <!-- term:AdversarialPairDebugging -->機制**：恢復並制度化資深專家與初級學徒的現場結對調試，將排查線上故障的即時思維鏈（Thinking Aloud）作為組織最寶貴的默會知識 <!-- term:TacitKnowledge -->傳承儀式；
+6. **建立工程知識保護區（Epistemic Sanctuaries） <!-- term:EpistemicSanctuaries -->**：在大型企業與關鍵基礎設施內部，特意保留部分不允許引入任何黑箱生成式工具的核心底層模組與微服務，強制由人類工程師進行手動設計、調試與最佳化，作為鍛鍊新一代系統架構師的「認識論高地」與組織自癒的「技術火種保護區」；
+7. **落實雙人結對除錯（Adversarial Pair Debugging） <!-- term:AdversarialPairDebugging -->機制**：恢復並制度化資深專家與初級學徒的現場結對調試，將排查線上故障的即時思維鏈（Thinking Aloud）作為組織最寶貴的默會知識 <!-- term:TacitKnowledge -->傳承儀式；
 8. **法理確立程式碼產出的認識論問責（Epistemic Liability）**：在重大軟體招標與系統交付契約中，明文規定開發商必須具備脫離生成式工具後對核心邏輯的獨立維護能力，嚴禁以「模型生成無法追溯根因」作為免責辯詞。
 
 > [!IMPORTANT]

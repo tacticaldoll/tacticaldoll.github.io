@@ -29,7 +29,7 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 
 ## 導言
 
-在一個大型推薦搜尋系統的發布流程中，核心工程團隊耗費了整整三週排查一個看似微不足道的技術差異：線下基準測試評分與線上影子叢集（Shadow Cluster）的實測評分存在 1.2 個百分點的系統性落差。為了達到組織規定的「絕對**可重現性**（Reproducibility） <!-- term:Reproducibility -->」，團隊建立了一套近乎偏執的封存合約：模型權重檔案、測試資料集二進位快照、推論前處理設定檔、評分腳本原始碼，以及隨機數生成器種子，五項要素全部進行嚴格鎖定並驗證二進位雜湊值（SHA-256）逐位元一致。然而，無論重跑多少次，該 1.2% 的偏差始終存在。最終的底層**微架構**（Microarchitecture） <!-- term:Microarchitecture -->追蹤揭示：線上環境採用了具備動態批次處理（Dynamic Batching）的推論服務引擎，且底層 GPU **矩陣乘法核心**（Gemm） <!-- term:Gemm -->在不同批次大小下調用了不同的非確定性浮點累加順序；浮點數加法的結合律破缺，伴隨 SIMD 向量指令集的非因果截斷，使得位元級的靜態契約在物理層面上化為泡影。**試圖為**機器學習**（Machine Learning） <!-- term:MachineLearning -->系統訂立「完備重現契約」，本質上是一個無法兌現的工程錯覺**。
+在一個大型推薦搜尋系統的發布流程中，核心工程團隊耗費了整整三週排查一個看似微不足道的技術差異：線下基準測試評分與線上影子叢集（Shadow Cluster）的實測評分存在 1.2 個百分點的系統性落差。為了達到組織規定的「絕對**可重現性**（Reproducibility） <!-- term:Reproducibility -->」，團隊建立了一套近乎偏執的封存合約：模型權重檔案、測試資料集二進位快照、推論前處理設定檔、評分腳本原始碼，以及隨機數生成器種子，五項要素全部進行嚴格鎖定並驗證二進位雜湊值（SHA-256）逐位元一致。然而，無論重跑多少次，該 1.2% 的偏差始終存在。最終的底層**微架構**（Microarchitecture） <!-- term:Microarchitecture -->追蹤揭示：線上環境採用了具備動態批次處理（Dynamic Batching）的推論服務引擎，且底層 GPU **矩陣乘法核心**（Gemm） <!-- term:Gemm -->在不同批次大小下調用了不同的非確定性浮點累加順序；浮點數加法的結合律破缺，伴隨 SIMD 向量指令集的非因果截斷，使得位元級的靜態契約在物理層面上化為泡影。**試圖為機器學習（Machine Learning） <!-- term:MachineLearning -->系統訂立「完備重現契約」，本質上是一個無法兌現的工程錯覺**。
 
 > [!IMPORTANT]
 > **可重現性** <!-- term:Reproducibility --> (Reproducibility): 相同輸入與設定下重跑系統得到相同輸出的程度，在含非確定性核心的硬體上只能以容差界定。 <!-- anchor:Reproducibility -->
@@ -38,7 +38,11 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 > **機器學習** <!-- term:MachineLearning --> (Machine Learning): 先界定可選函數的範圍，再以資料估計其中參數的建模方法。 <!-- anchor:MachineLearning -->
 
 
-更嚴重的治理災難發生在事故應變流程的機制設計上。某平台組織為了壓縮平均修復時間（MTTR），在監控系統中制定了一條硬性規定：每一個觸發 P1 等級的線上模型效能告警，必須在儀表板上強制附帶一個「最可能根因（Likely Root Cause）」標籤，以便值班 SRE 能夠在三十秒內直接將工單分派給對應的資料組、特徵組或訓練組。這項看似追求極致效率的政策迅速引發了災難性的反向激勵：值班人員為了在時限內消滅告警，機械式地將「特徵漂移」標記為根因，並發起對上游特徵管線的暴力回滾，從而抹除了無辜上游的正常業務變更；而在另一次真實的模型退化事故中，團隊依據告警標籤盲目認定是「底層基礎設施網路抖動」，導致真實的漸進式能力坍縮在無效排查中延誤了兩週。
+更嚴重的治理災難發生在事故應變流程的**機制設計**（Mechanism Design） <!-- term:MechanismDesign -->上。某平台組織為了壓縮平均修復時間（MTTR），在監控系統中制定了一條硬性規定：每一個觸發 P1 等級的線上模型效能告警，必須在儀表板上強制附帶一個「最可能根因（Likely Root Cause）」標籤，以便值班 SRE 能夠在三十秒內直接將工單分派給對應的資料組、特徵組或訓練組。這項看似追求極致效率的政策迅速引發了災難性的反向激勵：值班人員為了在時限內消滅告警，機械式地將「特徵漂移」標記為根因，並發起對上游特徵管線的暴力回滾，從而抹除了無辜上游的正常業務變更；而在另一次真實的模型退化事故中，團隊依據告警標籤盲目認定是「底層基礎設施網路抖動」，導致真實的漸進式能力坍縮在無效排查中延誤了兩週。
+
+> [!IMPORTANT]
+> **機制設計** <!-- term:MechanismDesign --> (Mechanism Design): 博弈論的一個分支，研究如何設定規則與誘因結構，使得理性個體在追求自利時能達成系統期望的集體結果。 <!-- anchor:MechanismDesign -->
+
 
 這兩起典型事故共同暴露了機器學習 <!-- term:MachineLearning -->系統在工程哲學上的雙重盲區：一方面，工程師試圖用傳統軟體「**完全規格化**（Complete Specification） <!-- term:CompleteSpecification -->」的思維去約束一個充滿隨機性與微架構 <!-- term:Microarchitecture -->擾動的連續經驗系統；另一方面，組織試圖將**「追求極低延遲的異常告警」**與**「追求極高信賴度的因果歸因」**強行壓縮進同一個工程函數中。當這兩種認知錯位交織時，監控系統便會退化為獵巫與無效操作的溫床。
 
@@ -85,13 +89,13 @@ flowchart TD
 
 ### 1. 卡爾·波普爾的可反駁性原則 (Popperian Refutability)
 
-根據 [Popper，1959 / 《The Logic of Scientific Discovery》](https://www.routledge.com/The-Logic-of-Scientific-Discovery/Popper/p/book/9780415278447) 的科學哲學奠基，任何宣稱「系統完全符合規格」的全稱命題在邏輯上皆是不可證實的（Unverifiable），因為有限次的觀測永遠無法排除下一次出現反例的可能。相反地，一個具有工程價值的契約，必須具備**「潛在**可證偽性**（Falsifiability） <!-- term:Falsifiability -->」**：
+根據 [Popper，1959 / 《The Logic of Scientific Discovery》](https://www.routledge.com/The-Logic-of-Scientific-Discovery/Popper/p/book/9780415278447) 的科學哲學奠基，任何宣稱「系統完全符合規格」的全稱命題在邏輯上皆是不可證實的（Unverifiable），因為有限次的觀測永遠無法排除下一次出現反例的可能。相反地，一個具有工程價值的契約，必須具備**「潛在可證偽性（Falsifiability） <!-- term:Falsifiability -->」**：
 
 > [!IMPORTANT]
 > **可證偽性** <!-- term:Falsifiability --> (Falsifiability): 宣稱必須事先指明何種觀測結果會推翻它；缺乏反駁條件的評估無法構成證據。 <!-- anchor:Falsifiability -->
 
 
-合約不應寫成：「模型在任何情況下皆保證 95% 準確率」；而必須寫成一組**可執行的**否定性斷言**（Executable Refutation Assertions） <!-- term:RefutationAssertion -->**：
+合約不應寫成：「模型在任何情況下皆保證 95% 準確率」；而必須寫成一組**可執行的否定性斷言（Executable Refutation Assertions） <!-- term:RefutationAssertion -->**：
 > 「假說 $H_0$：若輸入特徵的 Lipschitz 常數小於 $L$，且推論吞吐量大於 $R$，則輸出邊界的擾動方差不得超過 $\sigma_{\max}^2$。若觀測到該邊界被突破，則判定假說被證偽，系統自動觸發熔斷。」
 
 > [!IMPORTANT]
@@ -120,7 +124,11 @@ flowchart TD
 
 正確的工程架構必須將兩者嚴格解耦，並在告警層引入最優序貫檢驗。根據 [Wald，1945 / 《Sequential Tests of Statistical Hypotheses》](https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-16/issue-2/Sequential-Tests-of-Statistical-Hypotheses/10.1214/aoms/1177731118.full) 提出的序貫機率比檢定（SPRT），在給定第一型錯誤率 $\alpha$ 與第二型錯誤率 $\beta$ 的前提下，SPRT 能夠在數學上保證以**最小的期望樣本數 $\mathbb{E}[N]$** 做出最優決策。
 
-設累積對數似然比為：
+設累積對數**似然比**（Likelihood Ratio） <!-- term:LikelihoodRatio -->為：
+
+> [!IMPORTANT]
+> **似然比** <!-- term:LikelihoodRatio --> (Likelihood Ratio): 在特定假設成立與不成立下觀測到同一徵候的條件機率之比，決定貝氏後驗更新的幅度。 <!-- anchor:LikelihoodRatio -->
+
 
 $$S_n = \sum_{i=1}^n \log \frac{P(x_i \mid H_1)}{P(x_i \mid H_0)}$$
 
@@ -170,7 +178,7 @@ $$A = \log \frac{1 - \beta}{\alpha}, \quad B = \log \frac{\beta}{1 - \alpha}$$
 
 ## 實務對比
 
-為具體防禦完備性契約錯覺並落實雙軌分離 <!-- term:DualTrackSeparation -->，以下透過 POSIX 嚴格規範的 Bash 腳本實作 Wald SPRT **序貫檢定**（Sequential Test） <!-- term:SequentialTest -->器。錯誤做法僅依賴粗糙的固定窗口計數，極易受隨機噪聲擾動；而正確做法實作了嚴謹的對數似然比累積與邊界檢定，並以明確的**進程退出碼**（Exit Code） <!-- term:ExitCode -->驅動系統的降級隔離。
+為具體防禦完備性契約錯覺並落實雙軌分離 <!-- term:DualTrackSeparation -->，以下透過 POSIX 嚴格規範的 Bash 腳本實作 Wald SPRT **序貫檢定**（Sequential Test） <!-- term:SequentialTest -->器。錯誤做法僅依賴粗糙的固定窗口計數，極易受隨機噪聲擾動；而正確做法實作了嚴謹的對數似然比 <!-- term:LikelihoodRatio -->累積與邊界檢定，並以明確的**進程退出碼**（Exit Code） <!-- term:ExitCode -->驅動系統的降級隔離。
 
 > [!IMPORTANT]
 > **序貫檢定** <!-- term:SequentialTest --> (Sequential Test): 每到達一筆新觀測即更新決策的統計檢定，可在控制兩類錯誤率的前提下，以較少樣本作出判定。 <!-- anchor:SequentialTest -->

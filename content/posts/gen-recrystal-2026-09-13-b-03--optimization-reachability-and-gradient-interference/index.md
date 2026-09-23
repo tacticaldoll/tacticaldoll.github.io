@@ -141,7 +141,7 @@ $$g_i^* = g_i - \frac{\langle g_i, g_j \rangle}{\|g_j\|^2} g_j \quad (\text{if }
 | :--- | :--- | :--- | :--- | :--- |
 | **損失曲線鈍化** | 網路加深至十二層後，訓練損失停滯，驗證集表現倒退。 | Hessian 矩陣病態**條件數**（Condition Number） <!-- term:ConditionNumber -->與高維退化**鞍點**（Saddle Point） <!-- term:SaddlePoint -->阻斷了一階梯度的有效導航。 | 盲目進一步擴容網路，或調大學習率。 | **殘差跳躍與動態等距初始化**：強制限制 Jacobian 譜半徑接近 1.0，確保可達路徑。 |
 | **長程記憶消失** | 序列模型在間隔 100 步以上無法傳遞資訊，注意力權重發散。 | 時間展開乘積鏈中的雅可比譜半徑 $\rho(J) < 1$，梯度指數級消亡。 | 增加模型寬度或堆疊密集全連接層。 | **梯度流門控結構（Gated Flow）與跨時間跳躍連結**：維持跨時間步的高速無阻通道。 |
-| **多任務負遷移** | 微調新任務達標，但原有核心能力遭遇斷崖式崩潰。 | 共享參數空間上多任務梯度內積為負，更新方向直接抹除舊特徵。 | 人工手動微調損失加權係數 $\lambda$。 | **梯度手術（PCGrad） <!-- term:GradientSurgery -->與**模組化參數隔離**（LoRA/Adapters） <!-- term:ModularParameterIsolation -->**：切空間投影正交化，徹底隔離更新基底。 |
+| **多任務負遷移** | 微調新任務達標，但原有核心能力遭遇斷崖式崩潰。 | 共享參數空間上多任務梯度內積為負，更新方向直接抹除舊特徵。 | 人工手動微調損失加權係數 $\lambda$。 | **梯度手術（PCGrad） <!-- term:GradientSurgery -->與模組化參數隔離（LoRA/Adapters） <!-- term:ModularParameterIsolation -->**：切空間投影正交化，徹底隔離更新基底。 |
 
 > [!IMPORTANT]
 > **條件數** <!-- term:ConditionNumber --> (Condition Number): 損失曲面各方向曲率的比值，決定固定學習率下梯度下降的收斂速度。 <!-- anchor:ConditionNumber -->

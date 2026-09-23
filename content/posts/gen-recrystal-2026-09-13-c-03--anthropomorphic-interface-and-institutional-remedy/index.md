@@ -35,7 +35,7 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 
 在公共治理領域，缺乏可爭訟救濟鏈的演算法系統則曾引發嚴重的憲政危機。荷蘭稅務機關在 2010 年代採用「系統風險指示器（SyRI）」演算法篩檢育兒津貼的詐領嫌疑。該演算法在缺乏透明解釋與爭訟救濟通道的情況下，將數萬名低收入與雙重國籍家庭標記為詐領高風險，進而發起粗暴的溯及既往追討，摧毀了無數無辜家庭的生活。荷蘭個人資料保護機關在 2021 年對稅務局裁罰 275 萬歐元（參見 [Autoriteit Persoonsgegevens, 2021 / Tax Administration Fine Decision (SyRI / Childcare Benefits)](https://www.autoriteitpersoonsgegevens.nl/en/documents/fine-tax-administration-discriminatory-and-unlawful-data-processing)）；荷蘭國會調查委員會最終以「未曾見過的不公」為題發布報告，認定系統徹底違反法治國基本原則，導致內閣在 2021 年 1 月集體總辭。
 
-這兩起重大爭議揭示了一個核心的治理病灶：**「**擬人化界面**（Anthropomorphic Interface） <!-- term:AnthropomorphicInterface -->的語言外觀，將實體組織背後不可妥協的制度角色壓縮為單一的虛擬人格」**。當對話框以自然語言進行協商時，它偷渡了權限外觀；而當錯誤發生時，組織卻試圖以「這只是演算法的機率輸出」阻斷使用者的救濟路徑。
+這兩起重大爭議揭示了一個核心的治理病灶：**「擬人化界面（Anthropomorphic Interface） <!-- term:AnthropomorphicInterface -->的語言外觀，將實體組織背後不可妥協的制度角色壓縮為單一的虛擬人格」**。當對話框以自然語言進行協商時，它偷渡了權限外觀；而當錯誤發生時，組織卻試圖以「這只是演算法的機率輸出」阻斷使用者的救濟路徑。
 
 > [!IMPORTANT]
 > **擬人化界面** <!-- term:AnthropomorphicInterface --> (Anthropomorphic Interface): 以第一人稱與自然語言對話的系統外觀，會讓使用者把對話者誤認為有權限的組織代表。 <!-- anchor:AnthropomorphicInterface -->
@@ -95,9 +95,9 @@ $$\mathcal{G} \cap \mathcal{A} = \emptyset, \quad \mathcal{A} \cap \mathcal{E} =
 ### 密碼學審計鏈與合格告知標準
 
 一次合法的演算法介入告知，絕非僅在界面底部印上一行免責聲明「本對話由 AI 生成，僅供參考」。具備治理效力的「合格告知與可爭訟契約（Qualified Disclosure & Contestability）」，必須具備四大要素：
-1. **身份與**能力邊界**（Capability Boundary） <!-- term:CapabilityBoundary -->聲明**：明確揭示該節點為非授權之生成者 $\mathcal{G}$。
+1. **身份與能力邊界（Capability Boundary） <!-- term:CapabilityBoundary -->聲明**：明確揭示該節點為非授權之生成者 $\mathcal{G}$。
 2. **約束政策版本指紋**：每次輸出必須行內綁定所依據的正式政策文檔雜湊值 $\text{Hash}(\text{Policy}_{v})$。
-3. **不可篡改**審計雜湊鏈**（Cryptographic Audit Hash Chain） <!-- term:AuditHashChain -->**：使用者與系統的每一輪對話與狀態變遷，必須依序鏈結為密碼學雜湊：
+3. **不可篡改審計雜湊鏈（Cryptographic Audit Hash Chain） <!-- term:AuditHashChain -->**：使用者與系統的每一輪對話與狀態變遷，必須依序鏈結為密碼學雜湊：
    $$H_i = \text{SHA256}(H_{i-1} \parallel \text{Timestamp}_i \parallel \text{Role}_i \parallel \text{Payload}_i)$$
 4. **單鍵式人工爭訟與救濟接口**：當生成者承諾與正式規則衝突時，系統必須提供一個無摩擦的抗辯按鈕，直接將該審計鏈提交給救濟者 $\mathcal{R}$ 進行實質審查，並由企業預先提撥之爭議準備金進行補償。
 
@@ -126,7 +126,7 @@ $$\mathcal{G} \cap \mathcal{A} = \emptyset, \quad \mathcal{A} \cap \mathcal{E} =
 
 在當前大規模語言模型（LLM）的產品包裝中，「擬人化 <!-- term:Anthropomorphism -->」被廣泛視為提升使用者黏著度的最佳手段——透過賦予模型溫暖、同理心的語氣、幽默感，甚至給予虛擬姓名與頭像，產品經理得以創造極佳的初步體驗。
 
-然而，這種擬人化 <!-- term:Anthropomorphism -->設計本質上是一種**「**認知操縱**（Cognitive Manipulation） <!-- term:CognitiveManipulation -->」**。它利用人類演化中對社會性語言訊號的脆弱信任，誘使使用者降低對交易風險的防備。當對話系統說出「我很抱歉聽到您家人的不幸，請您放心，加航一定會全額照顧您」時，一般使用者不可能在心理層面將其解讀為「這只是 Next-Token 預測的幾何流形取樣」。
+然而，這種擬人化 <!-- term:Anthropomorphism -->設計本質上是一種**「認知操縱（Cognitive Manipulation） <!-- term:CognitiveManipulation -->」**。它利用人類演化中對社會性語言訊號的脆弱信任，誘使使用者降低對交易風險的防備。當對話系統說出「我很抱歉聽到您家人的不幸，請您放心，加航一定會全額照顧您」時，一般使用者不可能在心理層面將其解讀為「這只是 Next-Token 預測的幾何流形取樣」。
 
 > [!IMPORTANT]
 > **認知操縱** <!-- term:CognitiveManipulation --> (Cognitive Manipulation): 以界面語氣、人格化措辭或資訊落差影響使用者判斷，使其在未被充分告知的情況下做出決定。 <!-- anchor:CognitiveManipulation -->
@@ -143,10 +143,11 @@ $$\mathcal{G} \cap \mathcal{A} = \emptyset, \quad \mathcal{A} \cap \mathcal{E} =
 | **人格歸屬** | 賦予擬人化 <!-- term:Anthropomorphism -->名字（如「小加助理」）以第一人稱對話 | 隱匿背後複雜的多租戶與模型生成隨機性 | 誘導過度信賴；出事時以「獨立實體」荒謬甩鍋 | 強制宣告非授權生成者**身分**（Identity） <!-- term:Identity -->，禁止第一人稱法律承諾 |
 | **責任劃分** | 單一 Chatbot 物件通包生成、查詢、承諾與答覆 | 職能混淆，缺乏生成與授權的不可旁路隔離 | 虛假承諾直接穿透進入生產資料庫引發民事侵權 | 嚴格型別隔離：生成建議必須取得授權實體數位簽核 |
 | **審計留痕** | 僅將對話存入集中式文字日誌，事後可被清洗刪改 | 缺乏防篡改性與因果可追溯性 | 爭訟時各說各話，使用者因舉證困難遭制度性碾壓 | 密碼學 SHA-256 區塊鏈式審計日誌，每步簽名留痕 |
-| **爭議救濟** | 告知使用者若有問題請致電漫長無人接聽之申訴熱線 | 救濟通道摩擦力極大，實質剝奪使用者抗辯權利 | 荷蘭 SyRI 式行政暴力，弱勢群體無處申冤 | 界面自帶**可爭訟事務**（Contestable Transaction） <!-- term:ContestableTransaction -->快速通道 |
+| **爭議救濟** | 告知使用者若有問題請致電漫長無人接聽之申訴熱線 | 救濟通道**摩擦力**（Friction） <!-- term:Friction -->極大，實質剝奪使用者抗辯權利 | 荷蘭 SyRI 式行政暴力，弱勢群體無處申冤 | 界面自帶**可爭訟事務**（Contestable Transaction） <!-- term:ContestableTransaction -->快速通道 |
 
 > [!IMPORTANT]
 > **身分** <!-- term:Identity --> (Identity): 系統元件在架構中宣告的核心職責與自我定位。 <!-- anchor:Identity -->
+> **摩擦力** <!-- term:Friction --> (Friction): 流程中的阻力或成本；在約束系統中也可能是失敗點正在生效的可感知表現。 <!-- anchor:Friction -->
 > **可爭訟事務** <!-- term:ContestableTransaction --> (Contestable Transaction): 每筆自動化決定都附帶可查證依據與明確申訴路徑，使當事人具備實際推翻它的途徑。 <!-- anchor:ContestableTransaction -->
 
 

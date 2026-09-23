@@ -62,13 +62,12 @@ series = ["代理讀數與能力本體：六種指標失真機制與可驗證的
 在實證科學與機器學習 <!-- term:MachineLearning -->基準測試中，虛無假設（Null Hypothesis $H_0$）代表「模型改動實際上沒有帶來任何真實增益」。若設定顯著水準 $\alpha = 0.05$，單次獨立檢定的第一型錯誤（False Positive, 偽陽性）概率為 5%。
 
 然而，當研究流程賦予工程師「事後靈活決策」的空間時，全域偽陽性率將以多重檢定幾何級數迅速失控。考慮以下四種在機器學習 <!-- term:MachineLearning -->研發中極其普遍的研究者自由度 <!-- term:ResearcherDegreesOfFreedom -->：
-1. **多指標**篩選**（Multiple Metrics） <!-- term:Screening -->**：在 $m$ 個評估指標（如 Accuracy, F1, AUC, BLEU, Latency）中，只要有任一指標顯著即宣稱成功；
+1. **多指標篩選（Multiple Metrics）**：在 $m$ 個評估指標（如 Accuracy, F1, AUC, BLEU, Latency）中，只要有任一指標顯著即宣稱成功；
 2. **多重隨機種子（Multiple Seeds）**：嘗試 $s$ 個隨機種子，僅挑選曲線最好看的一組寫入發布文檔；
 3. **任意停止**（Optional Stopping） <!-- term:OptionalStopping -->：邊訓練邊觀察驗證損失，一旦數值達到歷史低點即刻手動中斷訓練；
 4. **子集窺探（Subgroup Mining）**：整體不顯著時，事後細分「長尾用戶」或「特定領域」子集，尋找局部高分。
 
 > [!IMPORTANT]
-> **篩選** <!-- term:Screening --> (Screening): 在訊號機制失效時，由驗證方主動設計具分離特性的測試或契約以檢驗產物真實能力的機制。 <!-- anchor:Screening -->
 > **任意停止** <!-- term:OptionalStopping --> (Optional Stopping): 邊觀察結果邊決定是否繼續收集資料或訓練，使名目顯著水準失效的取樣行為。 <!-- anchor:OptionalStopping -->
 
 
@@ -115,7 +114,7 @@ flowchart TD
 | **4. 指標位階 (Metrics)** | 明確指定唯一的主指標（Primary Metric），其餘指標標定為探索性副指標。 | 阻斷多指標中挑選最顯著項的多重檢定膨脹。 |
 | **5. 控制變因 (Controls)** | 嚴格鎖定非目標程式碼的超參數、最佳化器狀態、硬體架構與外部依賴版本。 | 阻斷同時更換學習率、架構與資料增強導致的歸因模糊。 |
 | **6. 觀察變量 (Observables)** | 定義具體差異量算式（例如 $\Delta = \text{Score}_{\text{new}} - \text{Score}_{\text{base}}$）與信賴區間計算式。 | 阻斷在事後將探索性發現包裝為事前假設（HARKing）。 |
-| **7. **反駁條件**(Falsification) <!-- term:Defeater -->** | **最關鍵欄位：明確寫出何種具體數值結果將迫使團隊放棄該假設**。 | 阻斷「改進了就宣稱有效，沒改進就宣稱需要進一步研究」的不可證偽套套邏輯。 |
+| **7. 反駁條件(Falsification) <!-- term:Defeater -->** | **最關鍵欄位：明確寫出何種具體數值結果將迫使團隊放棄該假設**。 | 阻斷「改進了就宣稱有效，沒改進就宣稱需要進一步研究」的不可證偽套套邏輯。 |
 | **8. 停止規則 (Stopping)** | 固定訓練 Epoch 數或定義嚴格的早停（Early Stopping）冷卻計數。 | 阻斷邊看結果邊追加測試樣本或延長訓練的鞅論失穩。 |
 
 > [!IMPORTANT]

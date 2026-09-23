@@ -37,7 +37,7 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 > **警報疲勞** <!-- term:AlertFatigue --> (Alert Fatigue): 過細切片或過低門檻造成大量假陽性告警，使團隊逐漸忽略真實訊號的失效狀態。 <!-- anchor:AlertFatigue -->
 
 
-這起事故揭示了一個長期被**機器學習**（Machine Learning） <!-- term:MachineLearning -->工業界集體忽視的根本性認識論謬誤：**「**代理量升格謬誤**（Proxy Metric Escalation Fallacy） <!-- term:ProxyMetricEscalationFallacy -->」**。工程師與決策層往往將模型在某個孤立、封閉之評測集上的標量得分（如 AUC、Accuracy、MMLU 或 BLEU），在形式上未經證成地直接等價於整條價值鏈的「**端到端效用**（End-To-End Utility） <!-- term:EndToEndUtility -->」。當有限維度的**代理讀數**（Proxy Readout） <!-- term:ProxyReadout -->被賦予全域能力的主張時，統計極值效應與**選擇偏差**（Selection Bias） <!-- term:SelectionBias -->必然會在靜默中瓦解系統的真實可靠性。
+這起事故揭示了一個長期被**機器學習**（Machine Learning） <!-- term:MachineLearning -->工業界集體忽視的根本性認識論謬誤：**「代理量升格謬誤（Proxy Metric Escalation Fallacy） <!-- term:ProxyMetricEscalationFallacy -->」**。工程師與決策層往往將模型在某個孤立、封閉之評測集上的標量得分（如 AUC、Accuracy、MMLU 或 BLEU），在形式上未經證成地直接等價於整條價值鏈的「**端到端效用**（End-To-End Utility） <!-- term:EndToEndUtility -->」。當有限維度的**代理讀數**（Proxy Readout） <!-- term:ProxyReadout -->被賦予全域能力的主張時，統計極值效應與**選擇偏差**（Selection Bias） <!-- term:SelectionBias -->必然會在靜默中瓦解系統的真實可靠性。
 
 > [!IMPORTANT]
 > **機器學習** <!-- term:MachineLearning --> (Machine Learning): 先界定可選函數的範圍，再以資料估計其中參數的建模方法。 <!-- anchor:MachineLearning -->
@@ -141,12 +141,13 @@ $$k^* = \max \left\{ k \;\middle|\; p_{(k)} \le \frac{k}{m} q^* \right\}$$
 
 | 評估維度 | 表面讀數 / 舊代脆弱作法 | 底層物理 / 架構病灶 | 系統性破壞後果 | 新代嚴格工程防衛體系 |
 | :--- | :--- | :--- | :--- | :--- |
-| **指標選取** | 挑選歷史最高分之單一純量指標（如宣稱 AUC 0.83） | 忽視順序統計量極值期望膨脹與抽樣方差 | 線上遭遇均值回歸 <!-- term:RegressionToTheMean -->，實測效能腰斬 | 宣告區間估計與分佈置信下限（Worst-case Bound） |
+| **指標選取** | 挑選歷史最高分之單一**純量指標**（如宣稱 AUC 0.83） <!-- term:ScalarMetrics --> | 忽視順序統計量極值期望膨脹與抽樣方差 | 線上遭遇均值回歸 <!-- term:RegressionToTheMean -->，實測效能腰斬 | 宣告區間估計與分佈置信下限（Worst-case Bound） |
 | **資料邊界** | 內部隨機切分（Random Cross-Validation） | 訓練集與測試集存在時間/空間流形滲漏 | 模型學習到局部站點捷徑特徵而非因果機制 | 強制外部跨機構前瞻盲測（Out-of-Distribution Split） |
 | **名次判定** | 多模型直接按單一 Benchmark 絕對分數高低排序 | 忽略測量雜訊導致的名次反轉率 | 挑選出雜訊敏感型模型，淘汰強健性模型 | 引入多目標 Pareto 前緣與非參數 Bootstrap 排序檢驗 |
 | **警報校準（Calibration） <!-- term:Calibration -->** | 在固定測試集上設定單一全域決策閾值 | 真實環境中陽性**盛行率**（Prevalence） <!-- term:Prevalence -->動態偏移 | 偽陽性爆發，引發嚴重的操作員警報疲勞 <!-- term:AlertFatigue --> | 動態盛行率 <!-- term:Prevalence -->貝氏校準 <!-- term:Calibration -->與動態代價敏感矩陣 |
 
 > [!IMPORTANT]
+> **純量指標** <!-- term:ScalarMetrics --> (Scalar Metrics): 將無限維社會脈絡強制投影到一維可排序實數，以便科層機器消化的度量形式。 <!-- anchor:ScalarMetrics -->
 > **校準** <!-- term:Calibration --> (Calibration): 模型輸出機率與實際正確率的一致程度。 <!-- anchor:Calibration -->
 > **盛行率** <!-- term:Prevalence --> (Prevalence): 母體中實際為陽性的比例，決定同一模型在不同場域的陽性預測值。 <!-- anchor:Prevalence -->
 
@@ -263,4 +264,7 @@ if __name__ == "__main__":
 
 將封閉測試集上的代理量讀數直接升格為端到端效用 <!-- term:EndToEndUtility -->結論，是高維經驗系統中最危險的認知短路。正如 Epic Sepsis Model 在全美醫院的教訓所示，單純追求基準測試上的極值指標，往往只是在擬合評測空間的特定人工痕跡；而在極值順序統計量與多重檢定偏誤的催化下，排名最亮眼的模型往往正是對雜訊最敏感的脆弱系統。
 
-工程與治理體系的健全化，要求我們徹底拋棄對單一標量代理量的盲目崇拜。在將任何演算法推向生產環境之前，必須建立嚴格的防禦協定：鎖定評測候選數量以控制極值期望膨脹、以 Benjamini-Hochberg 等多重檢定方法截斷偽發現假陽性，並強制要求進行脫離訓練站點分佈的外部盲測。唯有當效用宣稱不再建立在虛浮的代理讀數 <!-- term:ProxyReadout -->之上，而是由具備統計保守界限與可反駁條件的因果證據所支撐時，機器學習 <!-- term:MachineLearning -->系統才能真正跨越從「實驗室分數」通往「可追責現實」的險峻鴻溝。
+工程與治理體系的健全化，要求我們徹底拋棄對單一標量代理量的盲目崇拜。在將任何演算法推向生產環境之前，必須建立嚴格的防禦協定：鎖定評測候選數量以控制極值期望膨脹、以 Benjamini-Hochberg 等多重檢定方法截斷偽發現假陽性，並強制要求進行脫離訓練站點分佈的外部盲測。唯有當效用宣稱不再建立在虛浮的代理讀數 <!-- term:ProxyReadout -->之上，而是由具備統計保守界限與可**反駁條件**（Defeater） <!-- term:Defeater -->的因果證據所支撐時，機器學習 <!-- term:MachineLearning -->系統才能真正跨越從「實驗室分數」通往「可追責現實」的險峻鴻溝。
+
+> [!IMPORTANT]
+> **反駁條件** <!-- term:Defeater --> (Defeater): 在主張契約中明確定義的證偽觀測或環境條件，一旦在系統執行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。 <!-- anchor:Defeater -->

@@ -35,27 +35,27 @@ series = ["演算法社會：物質病理、認識論衰變與自噬拓樸"]
 > **資訊理論** <!-- term:InformationTheory --> (Information Theory): 研究訊號傳輸、資訊量化、熵與通道容量的應用數學分支，用以分析系統在不確定性下的觀測與編碼邊界。 <!-- anchor:InformationTheory -->
 
 
-然而，當前由生成式人工智慧所引發的技術崇拜，正在推動一場前所未有的**「**認識論近親繁殖**（Epistemic Inbreeding） <!-- term:EpistemicInbreeding -->」與「**組織自噬**（Organizational Autophagy） <!-- term:OrganizationalAutophagy -->」**。
+然而，當前由生成式人工智慧所引發的技術崇拜，正在推動一場前所未有的**「認識論近親繁殖（Epistemic Inbreeding） <!-- term:EpistemicInbreeding -->」與「組織自噬（Organizational Autophagy） <!-- term:OrganizationalAutophagy -->」**。
 
 > [!IMPORTANT]
 > **認識論近親繁殖** <!-- term:EpistemicInbreeding --> (Epistemic Inbreeding): 封閉系統反覆吸收自身合成產物，無法引入真實負熵而走向資訊熵增。 <!-- anchor:EpistemicInbreeding -->
 > **組織自噬** <!-- term:OrganizationalAutophagy --> (Organizational Autophagy): 企業以機器生成物自我投餵並裁撤人類專家，從而消耗自身認識論根基。 <!-- anchor:OrganizationalAutophagy -->
 
 
-在追求無限**擴展法則**（Scaling Laws） <!-- term:ScalingLaws -->的狂熱下，前沿 AI 實驗室面臨著嚴峻的「人類高質量文字耗盡危機（Data Wall）」。為了解決這一瓶頸，技術官僚與企業管理層共同擁抱了一個極具危險性的技術自欺：**「**合成數據**（Synthetic Data） <!-- term:SyntheticData -->」可以無限替代人類在實踐中產生的真實經驗**。與此同時，在軟體工程生產端，海量由統計模型自動生成的程式碼片段，未經深入的因果審計與物理驗證，正以每秒數百萬行的規模被瘋狂注入企業的核心程式碼庫中。
+在追求無限**擴展法則**（Scaling Laws） <!-- term:ScalingLaws -->的狂熱下，前沿 AI 實驗室面臨著嚴峻的「人類高質量文字耗盡危機（Data Wall）」。為了解決這一瓶頸，技術官僚與企業管理層共同擁抱了一個極具危險性的技術自欺：**「合成數據（Synthetic Data） <!-- term:SyntheticData -->」可以無限替代人類在實踐中產生的真實經驗**。與此同時，在軟體工程生產端，海量由統計模型自動生成的程式碼片段，未經深入的因果審計與物理驗證，正以每秒數百萬行的規模被瘋狂注入企業的核心程式碼庫中。
 
 > [!IMPORTANT]
 > **擴展法則** <!-- term:ScalingLaws --> (Scaling Laws): 以資料、參數與算力同步放大來換取能力的經驗規律；並不能免除真實負熵耗盡。 <!-- anchor:ScalingLaws -->
 > **合成數據** <!-- term:SyntheticData --> (Synthetic Data): 由模型推論產生、用以替代真實物理經驗的訓練或程式碼產物。 <!-- anchor:SyntheticData -->
 
 
-這種未經消化的合成產物，在系統工程中表現出嚴重的**「**程式碼放射性**（Code Radioactivity） <!-- term:CodeRadioactivity -->」**。如同核子物理中的長半衰期放射性同位素，合成程式碼一旦滲透進程式碼庫，便會在組織的數位動脈中持續釋放難以察覺的微量衰變毒素——隱形邏輯陷阱、幽靈依賴、未定義行為與安全後門。
+這種未經消化的合成產物，在系統工程中表現出嚴重的**「程式碼放射性（Code Radioactivity） <!-- term:CodeRadioactivity -->」**。如同核子物理中的長半衰期放射性同位素，合成程式碼一旦滲透進程式碼庫，便會在組織的數位動脈中持續釋放難以察覺的微量衰變毒素——隱形邏輯陷阱、幽靈依賴、未定義行為與安全後門。
 
 > [!IMPORTANT]
 > **程式碼放射性** <!-- term:CodeRadioactivity --> (Code Radioactivity): 未經因果審計的似真合成程式碼入庫後持續釋放隱性競態與洩漏，鑑識成本極高。 <!-- anchor:CodeRadioactivity -->
 
 
-更致命的是，當全球程式碼庫被放射性程式碼全面污染後，下一代模型又被迫以這些被污染的語料為食。牛津大學與劍橋大學學者在《Nature》（2024）上發表的研究已在數學上嚴格證明：**遞歸使用模型產生的數據進行訓練，必然引發統計分佈方差發散與長尾分佈滅絕，導致不可逆的「**模型坍塌**（Model Collapse） <!-- term:ModelCollapse -->」**。
+更致命的是，當全球程式碼庫被放射性程式碼全面污染後，下一代模型又被迫以這些被污染的語料為食。牛津大學與劍橋大學學者在《Nature》（2024）上發表的研究已在數學上嚴格證明：**遞歸使用模型產生的數據進行訓練，必然引發統計分佈方差發散與長尾分佈滅絕，導致不可逆的「模型坍塌（Model Collapse） <!-- term:ModelCollapse -->」**。
 
 > [!IMPORTANT]
 > **模型坍塌** <!-- term:ModelCollapse --> (Model Collapse): 遞歸訓練合成數據導致長尾滅絕、方差發散，分佈不可逆退化為奇異點或噪聲。 <!-- anchor:ModelCollapse -->
@@ -145,7 +145,7 @@ $$\text{Support}(p_{\theta_n}) \subset \text{Support}(p_{\theta_{n-1}}) \subset 
 
 ### 三、幽靈依賴與投毒攻擊：Slopsquatting 的供應鏈寄生
 
-程式碼放射性 <!-- term:CodeRadioactivity -->不僅在組織內部造成**技術債**（Technical Debt） <!-- term:TechnicalDebt -->累積，更向外衍生出一種全新的軟體供應鏈攻擊向量：**「**幻覺包搶註寄生**（Slopsquatting / Hallucinated Package Hijacking） <!-- term:Slopsquatting -->」**。
+程式碼放射性 <!-- term:CodeRadioactivity -->不僅在組織內部造成**技術債**（Technical Debt） <!-- term:TechnicalDebt -->累積，更向外衍生出一種全新的軟體供應鏈攻擊向量：**「幻覺包搶註寄生（Slopsquatting / Hallucinated Package Hijacking） <!-- term:Slopsquatting -->」**。
 
 > [!IMPORTANT]
 > **技術債** <!-- term:TechnicalDebt --> (Technical Debt): 程式碼中為求快速交付而妥協、待重構與修復的設計或品質缺陷。 <!-- anchor:TechnicalDebt -->

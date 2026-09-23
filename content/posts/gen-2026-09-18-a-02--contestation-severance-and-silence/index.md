@@ -38,14 +38,14 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 然而，當數位系統、會計軟體與演算法預測被全面嵌入組織運作時，法學與管理實務中悄然形成了一種極其危險的認識論特權：**將機器的輸出預設為客觀物理事實，並將舉證軟體出錯的全部責任倒置給最缺乏技術存取權的第一線個體**。
 
-在組織內部，這項特權直接摧毀了 OECD 與國際勞工組織（ILO）多年來所強調的員工參與、自治代表制與**獨立發聲**（Worker Voice） <!-- term:WorkerVoice -->通道。自治代表與工會的核心治理價值，從來不只是經濟利益的重分配，而是作為組織內部的**「獨立資訊通道、**反證權**（Right To Contest） <!-- term:RightToContest -->載體與權力制衡器」**。它的存在是為了降低第一線人員向管理層傳遞負面真實時所必須承受的個人報復成本。
+在組織內部，這項特權直接摧毀了 OECD 與國際勞工組織（ILO）多年來所強調的員工參與、自治代表制與**獨立發聲**（Worker Voice） <!-- term:WorkerVoice -->通道。自治代表與工會的核心治理價值，從來不只是經濟利益的重分配，而是作為組織內部的**「獨立資訊通道、反證權（Right To Contest） <!-- term:RightToContest -->載體與權力制衡器」**。它的存在是為了降低第一線人員向管理層傳遞負面真實時所必須承受的個人報復成本。
 
 > [!IMPORTANT]
 > **獨立發聲** <!-- term:WorkerVoice --> (Worker Voice): 第一線人員經由免於報復的獨立通道向上傳遞負面真實的發聲機制。 <!-- anchor:WorkerVoice -->
 > **反證權** <!-- term:RightToContest --> (Right To Contest): 第一線以獨立路徑阻斷非理性冒進、否定錯誤系統輸出的權利。 <!-- anchor:RightToContest -->
 
 
-當演算法看板被管理層單向賦予神諭般的不可質疑地位時，組織內部的反證拓樸被徹底物理閹割。第一線的「知情」無法轉化為系統的「修正」，組織陷入了由制度性恐懼所維繫的死寂——即**「**組織沉默**（Organizational Silence） <!-- term:OrganizationalSilence -->」**。
+當演算法看板被管理層單向賦予神諭般的不可質疑地位時，組織內部的反證拓樸被徹底物理閹割。第一線的「知情」無法轉化為系統的「修正」，組織陷入了由制度性恐懼所維繫的死寂——即**「組織沉默（Organizational Silence） <!-- term:OrganizationalSilence -->」**。
 
 > [!IMPORTANT]
 > **組織沉默** <!-- term:OrganizationalSilence --> (Organizational Silence): 第一線知情無法轉化為系統修正時，由制度性恐懼所維繫的發聲停滯。 <!-- anchor:OrganizationalSilence -->
@@ -57,7 +57,7 @@ series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
 
 ### 一、認識論特權與舉證責任的非對稱性倒置
 
-反證權 <!-- term:RightToContest -->被閹割的核心機制，源於法學與管理認知中對數位資訊的**「**假性本體論特權**（Spurious Ontological Privilege） <!-- term:SpuriousOntologicalPrivilege -->」**。
+反證權 <!-- term:RightToContest -->被閹割的核心機制，源於法學與管理認知中對數位資訊的**「假性本體論特權（Spurious Ontological Privilege） <!-- term:SpuriousOntologicalPrivilege -->」**。
 
 > [!IMPORTANT]
 > **假性本體論特權** <!-- term:SpuriousOntologicalPrivilege --> (Spurious Ontological Privilege): 把機器輸出預設為客觀物理事實，從而免除制度自行查驗義務的認識論特權。 <!-- anchor:SpuriousOntologicalPrivilege -->
@@ -137,7 +137,7 @@ flowchart TD
 
 - **拓樸閹割機制**：
   1. **消滅獨立反證路徑**：工會或現場代表的諮詢權被架空，管理層宣稱「系統數據是中立科學的，不需要政治協商」。獨立節點 $W$ 被物理拔除。
-  2. **確立單一**割點**（Cut Vertex） <!-- term:CutVertex -->**：軟體系統的數據庫日誌成為判定真實的唯一仲裁節點。在圖論視角下，割點 <!-- term:CutVertex --> $CV$ 的移除會使圖分裂為互不連通的分支。任何來自人類肉眼、紙本底根或現場經驗的抗辯，只要與數據庫記錄不符，一律在割點 <!-- term:CutVertex -->被判定為「無效雜訊」予以丟棄。
+  2. **確立單一割點（Cut Vertex） <!-- term:CutVertex -->**：軟體系統的數據庫日誌成為判定真實的唯一仲裁節點。在圖論視角下，割點 <!-- term:CutVertex --> $CV$ 的移除會使圖分裂為互不連通的分支。任何來自人類肉眼、紙本底根或現場經驗的抗辯，只要與數據庫記錄不符，一律在割點 <!-- term:CutVertex -->被判定為「無效雜訊」予以丟棄。
   3. **瓶頸傳導率（Conductance） <!-- term:Conductance -->趨零**：設第一線節點集合為 $S$，管理決策節點為 $\bar{S}$。組織反證網路的瓶頸傳導率 <!-- term:Conductance --> $\Phi(S)$ 滿足：
      $$
      \Phi(S) = \frac{\sum_{i \in S, j \in \bar{S}} A_{ij}}{\min(\operatorname{vol}(S), \operatorname{vol}(\bar{S}))} \to 0
@@ -200,7 +200,11 @@ flowchart TD
 
 ### 1. 證言不公（Testimonial Injustice）的制度化
 
-哲學家 Miranda Fricker 在其著作《認識論不公》（*Epistemic Injustice*）中指出，當一個說話者的證言因為體制的偏見而遭受信用降級（Credibility Deficit）時，便構成了認識論不公。
+哲學家 Miranda Fricker 在其著作《**認識論不公**（Epistemic Injustice） <!-- term:EpistemicInjustice -->》（*Epistemic Injustice*）中指出，當一個說話者的證言因為體制的偏見而遭受信用降級（Credibility Deficit）時，便構成了認識論不公 <!-- term:EpistemicInjustice -->。
+
+> [!IMPORTANT]
+> **認識論不公** <!-- term:EpistemicInjustice --> (Epistemic Injustice): 因制度位置而使主體證言被系統性降級、喪失被聽見資格的認識論傷害。 <!-- anchor:EpistemicInjustice -->
+
 
 在 Horizon 案中，我們目睹了**證言不公**（Testimonial Injustice） <!-- term:TestimonialInjustice -->的極端變態形式：
 - 一個工作了三十年、從未有任何瑕疵的資深郵政員工的人格與肉身證言，其信用權重被判定為 **0**；
@@ -266,6 +270,6 @@ flowchart TD
 4. Williams, W. (2024). *Post Office Horizon IT Inquiry: Transcripts, Evidence and Clarke Advice Records*. Official Inquiry Secretariat. [官方調查網站](https://www.postofficehorizoninquiry.org.uk/)
 5. Mill, J. S. (1859). *On Liberty*. John W. Parker and Son. （1859 年初版，John W. Parker and Son）
 6. Habermas, J. (1981). *Theorie des kommunikativen Handelns*. Suhrkamp Verlag. ISBN 978-3-518-28775-7
-7. Fricker, M. (2007). *Epistemic Injustice: Power and the Ethics of Knowing*. Oxford University Press. ISBN 978-0-19-823790-7
+7. Fricker, M. (2007). *認識論不公 <!-- term:EpistemicInjustice -->: Power and the Ethics of Knowing*. Oxford University Press. ISBN 978-0-19-823790-7
 8. Morrison, E. W., & Milliken, F. J. (2000). *Organizational silence: A barrier to change and development in a pluralistic world*. Academy of Management Review, 25(4), 706-725. [doi:10.5465/amr.2000.3707697](https://doi.org/10.5465/amr.2000.3707697)
 9. Citron, D. K. (2007). *Technological Due Process*. Washington University Law Review, 85(6), 1249-1313. [WU Open Scholarship](https://openscholarship.wustl.edu/law_lawreview/vol85/iss6/2/)

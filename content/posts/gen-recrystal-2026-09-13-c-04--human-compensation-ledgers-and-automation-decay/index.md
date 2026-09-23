@@ -12,7 +12,7 @@ tags = [
     "自動化反諷", # term:IroniesOfAutomation
     "狀況警覺", # term:SituationAwareness
     "迴路外部", # term:OutOfTheLoop
-    "制度性責任海綿", # term:MoralCrumpleZone
+    "責任去中心化洗滌槽", # term:MoralCrumpleZone
     "盲目放行", # term:RubberStamping
   ]
 series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無人負責的斷層"]
@@ -29,17 +29,17 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 
 ## 導言
 
-在高度自動化系統取代基層勞動力的進程中，由「**人工覆核**（Human-In-The-Loop） <!-- term:HumanInTheLoop -->」所引發的系統性潰敗，最震撼工程界的案例莫過於 2018 年 3 月 18 日晚間發生在亞利桑那州 Tempe 的 Uber 自動駕駛測試車撞死行人的慘劇。根據美國國家運輸安全委員會（NTSB）發布的最終調查報告（參見 [NTSB, 2019 / Highway Accident Report: Collision Between a Self-Driving Car and a Pedestrian (HAR-19/03)](https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1903.pdf)），自動駕駛感知系統在撞擊前 5.6 秒就已偵測到橫越馬路的行人，但演算法在無分類、車輛與自行車之間反覆搖擺，未能預測其會切入車道。更致命的是，為了避免車輛在誤報時急煞，工程師停用了富豪（Volvo）原廠的自動緊急煞車系統，並設定了 1 秒鐘的動作抑制期；而原本配置的兩名安全測試員在事故前被縮編為一人。坐在駕駛座上的安全員長達數分鐘低頭觀看手機，在撞擊前不到 1 秒才抬頭踩下煞車，但悲劇已無法挽回。
+在高度自動化系統取代基層勞動力的進程中，由「**人工覆核**（Human Review） <!-- term:HumanReview -->」所引發的系統性潰敗，最震撼工程界的案例莫過於 2018 年 3 月 18 日晚間發生在亞利桑那州 Tempe 的 Uber 自動駕駛測試車撞死行人的慘劇。根據美國國家運輸安全委員會（NTSB）發布的最終調查報告（參見 [NTSB, 2019 / Highway Accident Report: Collision Between a Self-Driving Car and a Pedestrian (HAR-19/03)](https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1903.pdf)），自動駕駛感知系統在撞擊前 5.6 秒就已偵測到橫越馬路的行人，但演算法在無分類、車輛與自行車之間反覆搖擺，未能預測其會切入車道。更致命的是，為了避免車輛在誤報時急煞，工程師停用了富豪（Volvo）原廠的自動緊急煞車系統，並設定了 1 秒鐘的動作抑制期；而原本配置的兩名安全測試員在事故前被縮編為一人。坐在駕駛座上的安全員長達數分鐘低頭觀看手機，在撞擊前不到 1 秒才抬頭踩下煞車，但悲劇已無法挽回。
 
 > [!IMPORTANT]
-> **人工覆核** <!-- term:HumanInTheLoop --> (Human-In-The-Loop): 在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。 <!-- anchor:HumanInTheLoop -->
+> **人工覆核** <!-- term:HumanReview --> (Human Review): 在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。 <!-- anchor:HumanReview -->
 
 
 類似的「監控者失能」在航空安全史上亦有痛徹心扉的紀錄。2009 年 6 月 1 日，法國航空 AF 447 號班機自里約熱內盧飛往巴黎途中墜毀於大西洋，造成 228 人遇難。法國航空事故調查局（BEA）的調查報告指陳（參見 [BEA France, 2012 / Final Report on Flight AF 447](https://bea.aero/docspa/2009/f-cp090601.en/pdf/f-cp090601.en.pdf)）：空速管在高空結冰導致儀表讀數失效，自動駕駛隨即自動斷開；從斷開到撞擊海面的 3 分 30 秒內，習慣了自動巡航的副駕駛在極度驚慌下，竟然大部分時間保持「機頭持續上仰」的錯誤操縱輸入，將飛機直接拉入深失速狀態。長期的自動化巡航剝奪了飛行員在高空手動操縱與識別失速的直覺本能。
 
 在知識工作與服務領域，大規模實證經濟學研究亦證實了類似的分化現象。麻省理工學院與史丹佛大學的經濟學家在對一家跨國軟體公司 5,000 多名客服人員進行生成式 AI 導入的實地研究中發現（參見 [Brynjolfsson 等人，2023 / Generative AI at Work, NBER / QJE](https://doi.org/10.3386/w31161)）：AI 輔助使每小時問題解決率平均提升了 14%，然而增益高度集中於經驗不足的新手（提升達 34%），資深熟練員工的生產力增益幾乎為 0%。更隱蔽的代價在於：當常規問題被演算法全數過濾後，流向資深員工的「殘餘佇列」全部變成前所未見的疑難雜症，工作認知負擔急遽極化。
 
-這三起橫跨自動駕駛、航空與知識服務的真實事件，共同指向了心理學家 Lisanne Bainbridge 早在 1983 年就提出的經典命題——**「**自動化反諷**（Ironies Of Automation） <!-- term:IroniesOfAutomation -->」**（參見 [Bainbridge, 1983 / Ironies of Automation, Automatica](https://doi.org/10.1016/0005-1098(83)90046-8)）：**設計者試圖透過自動化消除人類的脆弱性，卻將系統中最困難、最無法預測、演算法無法處理的極端狀況，全部丟給了因缺乏日常練習而技能嚴重退化的人類後盾**。而組織為了維持表面運轉所付出的**人工補償**（Human Compensation） <!-- term:HumanCompensation -->，被隱匿在四本互不流通的會計帳目之中，反噬了自動化的全部經濟效益。
+這三起橫跨自動駕駛、航空與知識服務的真實事件，共同指向了心理學家 Lisanne Bainbridge 早在 1983 年就提出的經典命題——**「自動化反諷（Ironies Of Automation） <!-- term:IroniesOfAutomation -->」**（參見 [Bainbridge, 1983 / Ironies of Automation, Automatica](https://doi.org/10.1016/0005-1098(83)90046-8)）：**設計者試圖透過自動化消除人類的脆弱性，卻將系統中最困難、最無法預測、演算法無法處理的極端狀況，全部丟給了因缺乏日常練習而技能嚴重退化的人類後盾**。而組織為了維持表面運轉所付出的**人工補償**（Human Compensation） <!-- term:HumanCompensation -->，被隱匿在四本互不流通的會計帳目之中，反噬了自動化的全部經濟效益。
 
 > [!IMPORTANT]
 > **自動化反諷** <!-- term:IroniesOfAutomation --> (Ironies Of Automation): 自動化接手例行工作後，留給人的案例更難且練習更少，反而更難在關鍵時刻接管的設計張力。 <!-- anchor:IroniesOfAutomation -->
@@ -91,7 +91,7 @@ $$\frac{dS(t)}{dt} = -\lambda S(t) + \gamma \cdot \mathbb{I}(\text{Manual Interv
 其中 $\lambda > 0$ 為自然遗忘率，$\gamma$ 為實踐反饋學習率，$\mathbb{I}(\cdot)$ 為人工手動介入的指示函數。
 
 自動化引發的衰退分為互為因果的兩階段：
-1. **第一段：**狀況警覺**（Situation Awareness） <!-- term:SituationAwareness -->與直覺中斷（短週期）**：
+1. **第一段：狀況警覺（Situation Awareness） <!-- term:SituationAwareness -->與直覺中斷（短週期）**：
    工作者從「控制迴路內部（In-the-loop）」被驅逐至「**迴路外部**（Out-Of-The-Loop） <!-- term:OutOfTheLoop -->」，喪失對系統微小狀態漂移的體感直覺。Uber 測試員低頭滑手機、AF 447 副駕駛無法感知失速，皆發生在此階段。
 2. **第二段：程序性肌肉記憶與深層推論衰退（長週期）**：
    由於手動介入次數 $\int \mathbb{I} dt \to 0$，技能穩態水平崩塌：
@@ -112,7 +112,7 @@ $$\frac{dS(t)}{dt} = -\lambda S(t) + \gamma \cdot \mathbb{I}(\text{Manual Interv
 $$C_{\text{true}} = C_{\text{vendor}} + C_{\text{audit}} + C_{\text{recovery}} + C_{\text{atrophy}}$$
 
 1. **外部採購帳（$C_{\text{vendor}}$）**：付給軟體供應商的授權費與伺服器算力成本。
-2. **名義審計帳（$C_{\text{audit}}$）**：分配給人工覆核 <!-- term:HumanInTheLoop -->員的名義工時成本。在組織預算中，覆核員常被視為「既有人力資源」，其機會成本被低估為零。
+2. **名義審計帳（$C_{\text{audit}}$）**：分配給人工覆核 <!-- term:HumanReview -->員的名義工時成本。在組織預算中，覆核員常被視為「既有人力資源」，其機會成本被低估為零。
 3. **災難修復帳（$C_{\text{recovery}}$）**：當覆核失守導致實體事故（如自動駕駛車禍、誤算稅額、醫療誤診）時，法務賠償、監管罰款與品牌公關危機的極端損失。
 4. **技能萎縮帳（$C_{\text{atrophy}}$）**：組織內部資深專家因長期缺乏高難度挑戰而離職，或基層新人因無常規案例磨練而無法晉升，導致組織能力斷層的長期隱性代價。
 
@@ -134,9 +134,9 @@ $$C_{\text{true}} = C_{\text{vendor}} + C_{\text{audit}} + C_{\text{recovery}} +
 
 ## 反思
 
-企業主管在導入生成式 AI 或自動化管線時，最常說的一句話是：「我們保留了人工覆核 <!-- term:HumanInTheLoop -->，所以絕對安全。」
+企業主管在導入生成式 AI 或自動化管線時，最常說的一句話是：「我們保留了人工覆核 <!-- term:HumanReview -->，所以絕對安全。」
 
-這種論調本質上是將人類操作員當成了**「**制度性責任海綿**（Moral Crumple Zone） <!-- term:MoralCrumpleZone -->」**。系統架構師心知肚明，在每天需要點擊核准數千次的作業線上，人類大腦的注意力資源在生理上根本無法維持超過 20 分鐘的高敏銳度審查。所謂的人工覆核 <!-- term:HumanInTheLoop -->，在實務中迅速退化為機械式的「**盲目放行**（Rubber-Stamping） <!-- term:RubberStamping -->」。而一旦發生法律訴訟或監管裁罰，管理層便能順理成章地將過失推給「該名操作員未依規定專心覆核」。
+這種論調本質上是將人類操作員當成了**「制度性責任海綿（Moral Crumple Zone） <!-- term:MoralCrumpleZone -->」**。系統架構師心知肚明，在每天需要點擊核准數千次的作業線上，人類大腦的注意力資源在生理上根本無法維持超過 20 分鐘的高敏銳度審查。所謂的人工覆核 <!-- term:HumanReview -->，在實務中迅速退化為機械式的「**盲目放行**（Rubber-Stamping） <!-- term:RubberStamping -->」。而一旦發生法律訴訟或監管裁罰，管理層便能順理成章地將過失推給「該名操作員未依規定專心覆核」。
 
 > [!IMPORTANT]
 > **制度性責任海綿** <!-- term:MoralCrumpleZone --> (Moral Crumple Zone): 把系統性失效的法律與道德責任吸收到最末端操作員身上的組織安排。 <!-- anchor:MoralCrumpleZone -->
@@ -145,13 +145,13 @@ $$C_{\text{true}} = C_{\text{vendor}} + C_{\text{audit}} + C_{\text{recovery}} +
 
 此處必須面對一個反例辯證：**「是否存在完全不需要人工補償 <!-- term:HumanCompensation -->的高效自動化？」**
 
-存在，但唯有當任務滿足**「環境可完全封閉約束、故障具備自動安全平穩降級（Fail-Safe Degradation）、且無生命與財產責任外溢」**的狹窄領域。例如全自動晶圓製造設備或現代電梯控制系統，其不依賴人類即時接管，而是依賴硬體**物理聯鎖**（Interlocks） <!-- term:Interlock -->直接停機。然而在自動駕駛、醫療診斷與金融風控等開放動態領域，軟體根本無法自發定義什麼是安全降級；此時若強行引入自動化卻不為人類後盾設計持續的警覺激勵與技能維護機制，人工覆核 <!-- term:HumanInTheLoop -->只是一場自我安慰的欺騙儀式。
+存在，但唯有當任務滿足**「環境可完全封閉約束、故障具備自動安全平穩降級（Fail-Safe Degradation）、且無生命與財產責任外溢」**的狹窄領域。例如全自動晶圓製造設備或現代電梯控制系統，其不依賴人類即時接管，而是依賴硬體**物理聯鎖**（Interlocks） <!-- term:Interlock -->直接停機。然而在自動駕駛、醫療診斷與金融風控等開放動態領域，軟體根本無法自發定義什麼是安全降級；此時若強行引入自動化卻不為人類後盾設計持續的警覺激勵與技能維護機制，人工覆核 <!-- term:HumanReview -->只是一場自我安慰的欺騙儀式。
 
 > [!IMPORTANT]
 > **物理聯鎖** <!-- term:Interlock --> (Interlock): 以硬體條件強制阻斷不安全動作的機制，不依賴軟體判斷或人員反應。 <!-- anchor:Interlock -->
 
 
-下表對照傳統「責任海綿式人工覆核 <!-- term:HumanInTheLoop -->」與新一代「認知工學組織互補架構」：
+下表對照傳統「責任海綿式人工覆核 <!-- term:HumanReview -->」與新一代「認知工學組織互補架構」：
 
 | 治理維度 | 表面讀數 / 舊代脆弱作法 | 底層物理 / 架構病灶 | 系統性破壞後果 | 新代嚴格工程防衛體系 (Go 遙測防線) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -334,7 +334,7 @@ func main() {
 
 ## 結論
 
-將人工覆核 <!-- term:HumanInTheLoop -->簡單視為自動化缺失的補丁，是**社會技術系統**（Sociotechnical System） <!-- term:SociotechnicalSystem -->設計中最普遍的自欺行為。正如 Uber Tempe 車禍中盲目依賴單一安全測試員、法航 AF 447 副駕駛在自動駕駛斷開後的致命混亂，以及生成式 AI 導入後資深客服面臨的殘餘佇列極化所展現的：人類從來就不是冷血、全天候無休且能瞬時切換情境的理想伺服器。
+將人工覆核 <!-- term:HumanReview -->簡單視為自動化缺失的補丁，是**社會技術系統**（Sociotechnical System） <!-- term:SociotechnicalSystem -->設計中最普遍的自欺行為。正如 Uber Tempe 車禍中盲目依賴單一安全測試員、法航 AF 447 副駕駛在自動駕駛斷開後的致命混亂，以及生成式 AI 導入後資深客服面臨的殘餘佇列極化所展現的：人類從來就不是冷血、全天候無休且能瞬時切換情境的理想伺服器。
 
 > [!IMPORTANT]
 > **社會技術系統** <!-- term:SociotechnicalSystem --> (Sociotechnical System): 由技術元件與組織安排共同構成、必須整體運作才產生價值的系統。 <!-- anchor:SociotechnicalSystem -->

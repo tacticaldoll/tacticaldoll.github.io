@@ -33,9 +33,13 @@ series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無
 
 2014 年發表於頂級科學期刊《Science》的著名調查報告《Google Flu 的寓言：大數據分析的陷阱》（參見 [Lazer 等人，2014 / The Parable of Google Flu: Traps in Big Data Analysis, Science](https://doi.org/10.1126/science.1248506)）揭示了失準背後最關鍵的動力學病灶：媒體對流感疫情與 Google 預測的高頻報導，徹底改變了普通民眾的搜尋行為；健康的使用者因恐慌而大量搜尋流感症狀，而 GFT 的輸入資料正是搜尋查詢本身。系統的介入改變了外部世界的行為模式，進而污染了模型賴以判斷的輸入特徵——**演算法預測並未反映客觀流感病毒的傳播，而是精確度量了系統自身所引發的集體恐慌**。
 
-在科學研究與效用宣稱的事前驗證領域，指標偷換與事後合理化則是另一種普遍的自欺行為。2016 年，牛津大學的研究團隊啟動了著名的 COMPare Trials 計畫，對發表在五份全球頂尖醫學期刊（包括 NEJM, Lancet, JAMA 等）上的 67 篇臨床試驗論文進行了嚴格的審計比對（參見 [Goldacre 等人，2016 / COMPare Trials Project, Trials](https://doi.org/10.1186/s13063-016-1668-3)）。審計結果令人震驚：僅有 9 篇試驗報告完全忠實地回報了在臨床試驗註冊庫中事前指定（Pre-specified）的結果指標；累計有高達 354 個事前登記的關鍵指標被研究者在最終報告中悄悄刪除，同時有 357 個未經事前登記的全新指標被事後偷渡進去，以迎合「顯著療效」的成功結論。
+在科學研究與效用宣稱的事前驗證領域，指標偷換與事後合理化則是另一種普遍的自欺行為。2016 年，牛津大學的研究團隊啟動了著名的 COMPare Trials 計畫，對發表在五份全球頂尖醫學期刊（包括 NEJM, Lancet, JAMA 等）上的 67 篇臨床試驗論文進行了嚴格的審計比對（參見 [Goldacre 等人，2016 / COMPare Trials Project, Trials](https://doi.org/10.1186/s13063-016-1668-3)）。審計結果令人震驚：僅有 9 篇試驗報告完全忠實地回報了在臨床試驗註冊庫中事前指定（Pre-specified）的結果指標；累計有高達 354 個**事前登記**（Pre-Registration） <!-- term:PreRegistration -->的關鍵指標被研究者在最終報告中悄悄刪除，同時有 357 個未經事前登記 <!-- term:PreRegistration -->的全新指標被事後偷渡進去，以迎合「顯著療效」的成功結論。
 
-這兩起重大事故共同確立了高階演算法系統的終極邊界：當模型從被動觀察者轉變為主動參與者時，資料分佈將內生化為系統決策的函數，引發**「**表演性預測**（Performative Prediction） <!-- term:PerformativePrediction -->」**的惡性反饋；而如果沒有一套嚴格的 **Popperian **可反駁性契約**（Refutability Contract） <!-- term:RefutabilityContract -->** 鎖死事前評估指標與否定條件，所有的驗證與監控最終都會退化為事後為錯誤塗脂抹粉的偽證儀式。
+> [!IMPORTANT]
+> **事前登記** <!-- term:PreRegistration --> (Pre-Registration): 在觀測或實驗執行前預先凍結假設、度量指標與反駁門檻，防止事後調整假說以符合資料的科學契約。 <!-- anchor:PreRegistration -->
+
+
+這兩起重大事故共同確立了高階演算法系統的終極邊界：當模型從被動觀察者轉變為主動參與者時，資料分佈將內生化為系統決策的函數，引發**「表演性預測（Performative Prediction） <!-- term:PerformativePrediction -->」**的惡性反饋；而如果沒有一套嚴格的 **Popperian 可反駁性契約（Refutability Contract） <!-- term:RefutabilityContract -->** 鎖死事前評估指標與否定條件，所有的驗證與監控最終都會退化為事後為錯誤塗脂抹粉的偽證儀式。
 
 > [!IMPORTANT]
 > **表演性預測** <!-- term:PerformativePrediction --> (Performative Prediction): 模型輸出影響人類行動，進而改變後續資料分佈的回饋情形。 <!-- anchor:PerformativePrediction -->
@@ -110,12 +114,16 @@ $$\mathbf{v}_{\text{contract}} = \langle M_0, M^*, \Delta_{\min}, \mathcal{B}_{\
 1. **核心基準指標（$M_0$）**：業務關心的端到端真實指標（嚴禁使用未經證成之中介代理量）。
 2. **宣稱目標數值（$M^*$）**：模型預期達到的指標水平。
 3. **最小實質效應量（$\Delta_{\min}$）**：排除統計微小擾動後，具備真實商業或臨床價值的最低門檻。
-4. **顯式可反駁條件（$\mathcal{B}_{\text{refute}}$）**：**若觀測到該條件成立，則無條件判定該宣稱破滅，立即回滾模型**。
+4. **顯式可反駁條件（$\mathcal{B}_{\text{refute}}$） <!-- term:Defeater -->**：**若觀測到該條件成立，則無條件判定該宣稱破滅，立即回滾模型**。
 5. **評估資料集指紋（$\mathcal{D}_{\text{eval}}$）**：事前鎖定之外部盲測資料集的密碼學雜湊值（SHA-256）。
-6. **指標凍結時間戳（$T_{\text{freeze}}$）**：在看到任何測試結果之前，由第三方公證或日誌鎖定的事前登記時間。
+6. **指標凍結時間戳（$T_{\text{freeze}}$）**：在看到任何測試結果之前，由第三方公證或日誌鎖定的事前登記 <!-- term:PreRegistration -->時間。
 7. **對照基線（$C_{\text{baseline}}$）**：非 AI 傳統啟發式或簡單邏輯回歸的效能基線。
 8. **第一型錯誤率上限（$\alpha$）**：通常鎖定 $\le 0.05$。
 9. **檢定力保障（$1 - \beta$）**：通常鎖定 $\ge 0.80$。
+
+> [!IMPORTANT]
+> **反駁條件** <!-- term:Defeater --> (Defeater): 在主張契約中明確定義的證偽觀測或環境條件，一旦在系統執行或審計中被觸發，即強制宣告該主張失效並啟動修訂或撤銷程序。 <!-- anchor:Defeater -->
+
 
 ### Wald 序貫機率比檢驗（SPRT）動態裁決
 
@@ -126,7 +134,11 @@ $$\mathbf{v}_{\text{contract}} = \langle M_0, M^*, \Delta_{\min}, \mathcal{B}_{\
 > **序貫機率比檢驗** <!-- term:SequentialProbabilityRatioTest --> (Sequential Probability Ratio Test): 每到達一筆觀測即更新對數似然比並與上下界比較的檢定，可在控制兩類錯誤率下提前判定。 <!-- anchor:SequentialProbabilityRatioTest -->
 
 
-定義虛無假設 $H_0: \theta = \theta_0$（模型無效或退化），備擇假設 $H_1: \theta = \theta_1$（模型達到宣稱目標）。在接收到第 $n$ 個連續樣本時，計算累積對數似然比：
+定義虛無假設 $H_0: \theta = \theta_0$（模型無效或退化），備擇假設 $H_1: \theta = \theta_1$（模型達到宣稱目標）。在接收到第 $n$ 個連續樣本時，計算累積對數**似然比**（Likelihood Ratio） <!-- term:LikelihoodRatio -->：
+
+> [!IMPORTANT]
+> **似然比** <!-- term:LikelihoodRatio --> (Likelihood Ratio): 在特定假設成立與不成立下觀測到同一徵候的條件機率之比，決定貝氏後驗更新的幅度。 <!-- anchor:LikelihoodRatio -->
+
 
 $$\Lambda_n = \sum_{i=1}^n \ln \frac{P(z_i \mid H_1)}{P(z_i \mid H_0)}$$
 
@@ -135,7 +147,7 @@ $$\Lambda_n = \sum_{i=1}^n \ln \frac{P(z_i \mid H_1)}{P(z_i \mid H_0)}$$
 $$A = \ln \left( \frac{1 - \beta}{\alpha} \right), \quad B = \ln \left( \frac{\beta}{1 - \alpha} \right)$$
 
 - 若 $\Lambda_n \ge A$：正式宣布採納 $H_1$，效用宣稱成立。
-- **若 $\Lambda_n \le B$：立即觸發可反駁條件，正式宣布宣稱被證偽，強制系統下線**。
+- **若 $\Lambda_n \le B$：立即觸發可反駁條件 <!-- term:Defeater -->，正式宣布宣稱被證偽，強制系統下線**。
 - 若 $B < \Lambda_n < A$：維持試驗狀態，嚴禁宣布任何成功結論。
 
 下表呈現了當線上觀測樣本持續湧入時，Wald SPRT **序貫檢定**（Sequential Test） <!-- term:SequentialTest -->的推演走一遍：
@@ -144,7 +156,7 @@ $$A = \ln \left( \frac{1 - \beta}{\alpha} \right), \quad B = \ln \left( \frac{\b
 > **序貫檢定** <!-- term:SequentialTest --> (Sequential Test): 每到達一筆新觀測即更新決策的統計檢定，可在控制兩類錯誤率的前提下，以較少樣本作出判定。 <!-- anchor:SequentialTest -->
 
 
-| 觀測批次 ($n$) | 單批實測勝率 / 表現 | 累積對數似然比 ($\Lambda_n$) | 決策邊界對照 ($B < \Lambda_n < A$) | 狀態機轉移與處置決策 |
+| 觀測批次 ($n$) | 單批實測勝率 / 表現 | 累積對數似然比($\Lambda_n$) <!-- term:LikelihoodRatio --> | 決策邊界對照 ($B < \Lambda_n < A$) | 狀態機轉移與處置決策 |
 | :--- | :--- | :--- | :--- | :--- |
 | **$n = 100$** | 51.0% (雜訊震盪) | +0.22 | $B = -2.94 < +0.22 < A = +2.77$ | 樣本不足，維持 `Evaluating` |
 | **$n = 500$** | 48.5% (微幅落後) | -0.85 | $B = -2.94 < -0.85 < A = +2.77$ | 趨向不佳，禁止發布中間捷報 |
@@ -163,7 +175,7 @@ $$A = \ln \left( \frac{1 - \beta}{\alpha} \right), \quad B = \ln \left( \frac{\b
 > **指標事後漂移** <!-- term:PostHocMetricDrift --> (Post-Hoc Metric Drift): 看過結果後才更換、刪除或放寬評估指標，使結論恆為成功的操作。 <!-- anchor:PostHocMetricDrift -->
 
 
-此處必須面臨一個工程實務的極限反思：**「嚴格的事前登記與**可證偽性**（Falsifiability） <!-- term:Falsifiability -->，是否會扼殺探索性研究的靈活性？」**
+此處必須面臨一個工程實務的極限反思：**「嚴格的事前登記 <!-- term:PreRegistration -->與可證偽性（Falsifiability） <!-- term:Falsifiability -->，是否會扼殺探索性研究的靈活性？」**
 
 > [!IMPORTANT]
 > **可證偽性** <!-- term:Falsifiability --> (Falsifiability): 宣稱必須事先指明何種觀測結果會推翻它；缺乏反駁條件的評估無法構成證據。 <!-- anchor:Falsifiability -->
@@ -180,10 +192,10 @@ $$A = \ln \left( \frac{1 - \beta}{\alpha} \right), \quad B = \ln \left( \frac{\b
 
 | 驗證維度 | 表面讀數 / 舊代脆弱作法 | 底層物理 / 架構病灶 | 系統性破壞後果 | 新代嚴格工程防衛體系 (POSIX Bash 證偽防線) |
 | :--- | :--- | :--- | :--- | :--- |
-| **指標約定** | 開發完成後自由挑選表現最佳的統計維度報告 | COMPare 式事後偷換指標與 cherry-picking | 系統部署至生產環境後真實效能全面破滅 | 九欄位事前登記向量，評估前密碼學鎖定雜湊 |
+| **指標約定** | 開發完成後自由挑選表現最佳的統計維度報告 | COMPare 式事後偷換指標與 cherry-picking | 系統部署至生產環境後真實效能全面破滅 | 九欄位事前登記 <!-- term:PreRegistration -->向量，評估前密碼學鎖定雜湊 |
 | **反饋處理** | 將線上使用者的所有互動數據直接回灌重訓 | 忽視表演性預測 <!-- term:PerformativePrediction -->引發的內生性資料漂移 | GFT 式自欺：模型把自身造成的恐慌當作客觀事實 | **表演性因果解耦**（Causal Disentanglement） <!-- term:CausalDisentanglement -->與盲樣隔離 |
 | **試驗監控** | 每天查看 A/B 測試儀表板，一旦顯著立即結束試驗 | 窺探性檢定 <!-- term:Peeking -->使真實偽陽性率飆升至 30%+ | 採納了純屬運氣的劣質演算法，損害線上業務 | 嚴格遵守 Wald 序貫檢定（SPRT） <!-- term:SequentialTest -->邊界，杜絕提早窺探 |
-| **失敗處置** | 指標不達標時尋求藉口修改測試樣本或重新詮釋 | 缺乏不可抵賴的可反駁條件（Refutation Criteria） | 「殭屍模型」長期滯留生產環境製造**技術債**（Technical Debt） <!-- term:TechnicalDebt --> | 滿足反駁條件時自動觸發 CI/CD 斷路器，不可旁路回滾 |
+| **失敗處置** | 指標不達標時尋求藉口修改測試樣本或重新詮釋 | 缺乏不可抵賴的可反駁條件（Refutation Criteria） <!-- term:Defeater --> | 「殭屍模型」長期滯留生產環境製造**技術債**（Technical Debt） <!-- term:TechnicalDebt --> | 滿足反駁條件 <!-- term:Defeater -->時自動觸發 CI/CD 斷路器，不可旁路回滾 |
 
 > [!IMPORTANT]
 > **表演性因果解耦** <!-- term:CausalDisentanglement --> (Causal Disentanglement): 以盲測隔離或隨機保留組，把系統自身誘發的分佈變化與外生變化分開估計。 <!-- anchor:CausalDisentanglement -->
@@ -194,7 +206,7 @@ $$A = \ln \left( \frac{1 - \beta}{\alpha} \right), \quad B = \ln \left( \frac{\b
 
 ## 實務對比
 
-為落實對效用宣稱的自動化證偽，以下提供基於 **POSIX 嚴格語法 Bash** 的自包含可反駁性契約 <!-- term:RefutabilityContract -->驗證器。腳本實現了九欄位事前登記檢查、Wald 序貫機率比檢驗（SPRT） <!-- term:SequentialProbabilityRatioTest -->累積對數似然比計算，以及不可旁路的證偽熔斷邏輯。程式碼零外部依賴，純 Shell 內建功能與 `bc` 數值計算，可在數秒內完成自我驗證。
+為落實對效用宣稱的自動化證偽，以下提供基於 **POSIX 嚴格語法 Bash** 的自包含可反駁性契約 <!-- term:RefutabilityContract -->驗證器。腳本實現了九欄位事前登記 <!-- term:PreRegistration -->檢查、Wald 序貫機率比檢驗（SPRT） <!-- term:SequentialProbabilityRatioTest -->累積對數似然比 <!-- term:LikelihoodRatio -->計算，以及不可旁路的證偽熔斷邏輯。程式碼零外部依賴，純 Shell 內建功能與 `bc` 數值計算，可在數秒內完成自我驗證。
 
 ```bash
 #!/usr/bin/env bash
@@ -350,4 +362,4 @@ run_verification
 
 演算法的本質是工具，而科學的本質是誠實。正如 Google Flu Trends 在大數據神話中被自身引發的反饋迴路擊潰、以及 COMPare Trials 審計中揭露的廣泛指標偷換所警示的：當評測的自由度完全掌握在宣稱利益關聯者手中時，所有的監控指標都會以極快的速度退化為自欺欺人的表演性裝飾。
 
-終結效用轉換鏈上的最後一道斷層，要求我們回歸最質樸的 Popperian 科學證偽紀律。任何人工智慧能力的主張，在未曾明確列出九欄位事前登記契約、未曾鎖死否定邊界、未曾在表演性反饋面前維持盲測隔離之前，都不具備被採信的資格。唯有當系統架構具備在實測退化時堅決自我證偽並強制跳脫的工程勇氣，機器學習 <!-- term:MachineLearning -->技術才能真正洗淨浮誇的宣傳泡沫，成為推動文明與產業進步的堅固基石。
+終結效用轉換鏈上的最後一道斷層，要求我們回歸最質樸的 Popperian 科學證偽紀律。任何人工智慧能力的主張，在未曾明確列出九欄位事前登記 <!-- term:PreRegistration -->契約、未曾鎖死否定邊界、未曾在表演性反饋面前維持盲測隔離之前，都不具備被採信的資格。唯有當系統架構具備在實測退化時堅決自我證偽並強制跳脫的工程勇氣，機器學習 <!-- term:MachineLearning -->技術才能真正洗淨浮誇的宣傳泡沫，成為推動文明與產業進步的堅固基石。

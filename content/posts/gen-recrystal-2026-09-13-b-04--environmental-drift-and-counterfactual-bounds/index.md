@@ -16,6 +16,7 @@ tags = [
     "經驗風險", # term:EmpiricalRisk
   ]
 series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界的工程重建"]
+term_exclude = ["Screening"]
 [ai_info]
     [ai_info.generation]
         model = "Gemini 3.8 Flash"
@@ -43,7 +44,7 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 > **執行性預測反饋迴路** <!-- term:PerformativeFeedbackLoop --> (Performative Feedback Loop): 模型的預測行為本身改寫了下游資料生成分佈，使後續資料不再獨立於模型決策。 <!-- anchor:PerformativeFeedbackLoop -->
 
 
-與此同時，金融信貸風控團隊在評估放款違約模型時面臨著認識論上的結構死局。模型被要求預測申請人的違約機率，但訓練資料集中的真實標籤永遠只存在於「被核准放款」的歷史客群中；所有被系統拒絕的申請人，由於從未獲得貸款，其真實還款能力永遠處於未觀測狀態。團隊長期在被核准樣本上計算各類受試者操作特徵曲線（ROC-AUC），並將指標穩定視為模型健康的鐵證。然而，當業務部門嘗試放寬核准門檻以擴大營收時，實際違約率驟升至原先預期的兩倍以上。**「非干預觀測下的**反事實**（Counterfactual） <!-- term:Counterfactual -->缺失（Missing Counterfactuals）」**在統計評估中製造了一個巨大的無知掩體。
+與此同時，金融信貸風控團隊在評估放款違約模型時面臨著認識論上的結構死局。模型被要求預測申請人的違約機率，但訓練資料集中的真實標籤永遠只存在於「被核准放款」的歷史客群中；所有被系統拒絕的申請人，由於從未獲得貸款，其真實還款能力永遠處於未觀測狀態。團隊長期在被核准樣本上計算各類受試者操作特徵曲線（ROC-AUC），並將指標穩定視為模型健康的鐵證。然而，當業務部門嘗試放寬核准門檻以擴大營收時，實際違約率驟升至原先預期的兩倍以上。**「非干預觀測下的反事實（Counterfactual） <!-- term:Counterfactual -->缺失（Missing Counterfactuals）」**在統計評估中製造了一個巨大的無知掩體。
 
 > [!IMPORTANT]
 > **反事實** <!-- term:Counterfactual --> (Counterfactual): 在未實際發生的處置下本應出現的結果，是因果宣稱的基準，也是觀測資料中永遠缺失的那一半。 <!-- anchor:Counterfactual -->
@@ -300,7 +301,7 @@ main();
 > **機器學習** <!-- term:MachineLearning --> (Machine Learning): 先界定可選函數的範圍，再以資料估計其中參數的建模方法。 <!-- anchor:MachineLearning -->
 
 
-構建具備真實抗逆力的工程架構，必須將**「**因果不變性**（Causal Invariance） <!-- term:CausalInvariance -->驗證」**與**「反事實 <!-- term:Counterfactual -->不確定性 <!-- term:Uncertainty -->界限」**制度化。工程團隊必須強制實施跨環境特徵不變性（ICP）篩查，主動剔除易碎的格式與版面特徵；在面臨政策篩選阻斷標籤時，必須使用 Manski 部分識別 <!-- term:PartialIdentification -->界限顯式披露未觀測盲區的真實寬度，並透過可控的小額隨機干預主動回收反事實 <!-- term:Counterfactual -->信號。唯有超越對純統計相關性的被動依賴，高維系統才能在動態演進的真實世界中確立其存在的邊界。
+構建具備真實抗逆力的工程架構，必須將**「因果不變性（Causal Invariance） <!-- term:CausalInvariance -->驗證」**與**「反事實 <!-- term:Counterfactual -->不確定性 <!-- term:Uncertainty -->界限」**制度化。工程團隊必須強制實施跨環境特徵不變性（ICP）篩查，主動剔除易碎的格式與版面特徵；在面臨政策篩選阻斷標籤時，必須使用 Manski 部分識別 <!-- term:PartialIdentification -->界限顯式披露未觀測盲區的真實寬度，並透過可控的小額隨機干預主動回收反事實 <!-- term:Counterfactual -->信號。唯有超越對純統計相關性的被動依賴，高維系統才能在動態演進的真實世界中確立其存在的邊界。
 
 > [!IMPORTANT]
 > **因果不變性** <!-- term:CausalInvariance --> (Causal Invariance): 特徵與標籤的條件分佈在跨環境時保持穩定的性質，是篩除非因果捷徑特徵的判準。 <!-- anchor:CausalInvariance -->
