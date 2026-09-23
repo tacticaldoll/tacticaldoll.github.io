@@ -9,11 +9,11 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "AI 治理", # term:AIGovernance
-    "知識管理", # term:KnowledgeManagement
     "權威漂移", # term:AuthorityDrift
     "知識萃取", # term:KnowledgeExtraction
-    "單一事實來源", # term:SingleSourceOfTruth
     "政策聲明模型", # term:PolicyDeclarationModel
+    "上下文壓縮", # term:ContextCompression
+    "個人記憶層", # term:PerUserMemory
   ]
 series = ["知識與意圖的治理：讓承載權威的載體回到能被驗證與退場的位置"]
 [ai_info]

@@ -8,12 +8,12 @@ description = "結合訊號賽局與貝氏推論，證明無檢查機制之惰�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "治理診斷", # term:GovernanceDiagnostics
-    "規則效力", # term:RuleEfficacy
-    "訊號賽局", # term:SignalingGame
     "可區分性", # term:Distinguishability
     "似然比", # term:LikelihoodRatio
     "互資訊", # term:MutualInformation
+    "不確定性", # term:Uncertainty
+    "惰性條文", # term:InertClause
+    "折扣率", # term:DiscountFactor
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
 [ai_info]

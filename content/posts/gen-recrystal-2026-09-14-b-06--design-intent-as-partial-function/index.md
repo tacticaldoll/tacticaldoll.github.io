@@ -8,12 +8,12 @@ description = "將設計理念形式化為定義於全情境的全函數，指�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "規格設計", # term:SpecificationDesign
     "概念完整性", # term:ConceptualIntegrity
     "偏函數", # term:PartialFunction
-    "窮盡性檢查", # term:ExhaustivenessCheck
-    "職責劃界", # term:ResponsibilityBoundary
     "流程設計", # term:ProcessDesign
+    "全函數", # term:TotalFunction
+    "知識管理", # term:KnowledgeManagement
+    "不變式", # term:Invariant
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
 [ai_info]

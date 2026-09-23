@@ -8,12 +8,12 @@ description = "AI agent 進入工程系統後，最危險的誤解是把模型�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
-    "AI 治理", # term:AIGovernance
     "單一事實來源", # term:SingleSourceOfTruth
     "決定性管線", # term:DeterministicPipeline
-    "領域驅動設計", # term:DomainDrivenDesign
-    "技術債", # term:TechnicalDebt
     "確定性邊界", # term:DeterministicTrustBoundary
+    "約束性規格", # term:Spec
+    "結構合約", # term:Schema
+    "認知壓縮", # term:CognitiveCompression
   ]
 series = ["結構與邊界：當權威必須落成程式與核心都會拒絕的約束"]
 [ai_info]

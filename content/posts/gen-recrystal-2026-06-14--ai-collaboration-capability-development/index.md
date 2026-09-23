@@ -13,6 +13,7 @@ tags = [
     "團隊擴散", # term:TeamDiffusion
     "驗證能力", # term:VerificationSkill
     "技術技能", # term:TechnicalSkill
+    "設問式操作", # term:SocraticPrompting
   ]
 [ai_info]
     [ai_info.generation]

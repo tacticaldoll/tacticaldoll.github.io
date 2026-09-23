@@ -8,10 +8,8 @@ description = "藉由固定交易成本與持有延遲成本的對偶推導平�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "批量經濟", # term:BatchEconomics
     "交易成本", # term:TransactionCost
     "回饋延遲", # term:FeedbackDelay
-    "流程設計", # term:ProcessDesign
     "平方根律", # term:SquareRootLaw
     "不變式", # term:Invariant
   ]

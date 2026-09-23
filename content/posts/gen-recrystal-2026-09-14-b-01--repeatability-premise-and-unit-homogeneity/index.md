@@ -8,15 +8,15 @@ description = "探討研發團隊指標全綠但交付週期反常拉長的根�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "研發流程", # term:RDProcess
-    "可重複性前提", # term:RepeatabilityPremise
     "充分統計量", # term:SufficientStatistic
     "資訊增益", # term:InformationGain
-    "度量設計", # term:MetricDesign
     "單位同質性", # term:UnitHomogeneity
+    "不確定性", # term:Uncertainty
+    "資訊理論", # term:InformationTheory
+    "互資訊", # term:MutualInformation
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
-term_exclude = ["Screening"]
+term_exclude = ["Quantization", "Screening"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

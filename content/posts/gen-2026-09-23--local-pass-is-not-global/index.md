@@ -15,6 +15,7 @@ tags = [
     "亞利安五號", # term:Ariane5
     "慣性參考系統", # term:InertialReferenceSystem
   ]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Grok 4.7"

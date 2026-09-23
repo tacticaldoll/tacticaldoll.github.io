@@ -96,7 +96,11 @@ flowchart TD
 
 $$CM(q) = P_{\text{sub}} - q \cdot \left[ L \cdot c_{\text{token}} + c_{\text{overhead}} \right] - c_{\text{audit}}$$
 
-當供應商透過演算法最佳化（如推論量化、投機取樣 Speculative Decoding）將單次推論成本 $c_{\text{infer}} = L \cdot c_{\text{token}}$ 降低至原本的 $\alpha$ 倍（$\alpha < 1$）時，常規思維認為毛利必然改善。然而，根據傑文斯悖論 <!-- term:JevonsParadox -->，運算價格的下降會激發更廣泛的高頻自動化場景（如 Agent 內部反思循環、全自動程式碼重構），其需求價格彈性 $\epsilon$ 定義為：
+當供應商透過演算法最佳化（如推論**量化**（Quantization） <!-- term:Quantization -->、投機取樣 Speculative Decoding）將單次推論成本 $c_{\text{infer}} = L \cdot c_{\text{token}}$ 降低至原本的 $\alpha$ 倍（$\alpha < 1$）時，常規思維認為毛利必然改善。然而，根據傑文斯悖論 <!-- term:JevonsParadox -->，運算價格的下降會激發更廣泛的高頻自動化場景（如 Agent 內部反思循環、全自動程式碼重構），其需求價格彈性 $\epsilon$ 定義為：
+
+> [!IMPORTANT]
+> **量化** <!-- term:Quantization --> (Quantization): 以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。 <!-- anchor:Quantization -->
+
 
 $$\epsilon = - \frac{\partial \ln q}{\partial \ln c_{\text{infer}}} = - \frac{c_{\text{infer}}}{q} \frac{\partial q}{\partial c_{\text{infer}}}$$
 

@@ -8,7 +8,6 @@ description = "分析驗證拓撲中「一致性」與「外部有效性」的�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "軟體工程與規格", # term:SoftwareEngineeringSpecifications
-    "封閉驗證", # term:ClosedLoopVerification
     "外部有效性", # term:ExternalValidity
     "異源證據", # term:HeterogeneousEvidence
     "資訊增益", # term:InformationGain

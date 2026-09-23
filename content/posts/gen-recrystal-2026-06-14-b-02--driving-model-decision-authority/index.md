@@ -12,8 +12,8 @@ tags = [
     "決策權威", # term:DecisionAuthority
     "能力邊界", # term:CapabilityBoundary
     "層疊共存", # term:LayeredCoexistence
-    "遷移反模式", # term:MigrationAntiPattern
     "行為偶然化", # term:BehavioralAccidentalization
+    "準則驅動", # term:GuidelineDriven
   ]
 series = ["信任與權威的成立：可信不是輸出屬性，而是被非同源裁決授權的狀態"]
 [ai_info]

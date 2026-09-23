@@ -8,14 +8,15 @@ description = "從控制理論與投影梯度出發，證明系統中缺乏觀�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "度量治理", # term:MetricGovernance
     "可觀測性", # term:Observability
     "目標函數", # term:ObjectiveFunction
     "投影梯度", # term:ProjectedGradient
-    "資訊理論", # term:InformationTheory
     "可觀測性矩陣", # term:ObservabilityMatrix
+    "佇列長度", # term:QueueLength
+    "在製品", # term:WorkInProgress
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

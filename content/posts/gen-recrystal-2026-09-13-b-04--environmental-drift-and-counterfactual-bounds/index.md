@@ -16,7 +16,7 @@ tags = [
     "經驗風險", # term:EmpiricalRisk
   ]
 series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界的工程重建"]
-term_exclude = ["Screening"]
+term_exclude = ["Quantization", "Screening"]
 [ai_info]
     [ai_info.generation]
         model = "Gemini 3.8 Flash"

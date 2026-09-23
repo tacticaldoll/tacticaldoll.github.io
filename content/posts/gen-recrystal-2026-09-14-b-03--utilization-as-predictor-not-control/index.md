@@ -8,14 +8,14 @@ description = "透過 Kingman VUT 公式與佇列敏感度發散推導，解析�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "流動治理", # term:FlowGovernance
-    "排隊論", # term:QueueingTheory
     "控制訊號", # term:ControlSignal
     "在製品", # term:WorkInProgress
-    "敏感度分析", # term:SensitivityAnalysis
     "佇列長度", # term:QueueLength
+    "產能利用率", # term:CapacityUtilization
+    "不變式", # term:Invariant
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

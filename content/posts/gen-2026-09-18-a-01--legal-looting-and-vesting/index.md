@@ -16,6 +16,7 @@ tags = [
     "結構約束", # term:StructuralConstraint
   ]
 series = ["演算法資本主義：權力、代理與合法掠奪的拓樸"]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Gemini 3.8 Flash"

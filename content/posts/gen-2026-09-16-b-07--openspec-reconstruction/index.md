@@ -10,8 +10,9 @@ tags = [
     "軟體工程與規格", # term:SoftwareEngineeringSpecifications
     "變更帳本", # term:ChangeLedger
     "認識論角色", # term:EpistemologicalRole
-    "外部有效性", # term:ExternalValidity
     "擴充點", # term:ExtensionPoint
+    "結構合約", # term:Schema
+    "衝突封存", # term:Archive
   ]
 series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 [ai_info]

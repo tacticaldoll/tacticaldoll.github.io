@@ -11,9 +11,9 @@ tags = [
     "研究者自由度", # term:ResearcherDegreesOfFreedom
     "事前註冊", # term:Preregistration
     "可證偽性", # term:Falsifiability
-    "時序污染", # term:TemporalContamination
     "選擇偏差", # term:SelectionBias
     "物理隔離", # term:PhysicalIsolation
+    "事前登記", # term:PreRegistration
   ]
 series = ["代理讀數與能力本體：六種指標失真機制與可驗證的工程防線"]
 [ai_info]

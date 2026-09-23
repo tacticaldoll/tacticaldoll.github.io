@@ -9,14 +9,14 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "負回饋", # term:NegativeFeedback
     "隨機逼近", # term:StochasticApproximation
-    "品質漂移", # term:QualityDrift
     "反事實", # term:Counterfactual
     "摩擦判別", # term:FrictionDiscriminator
     "檢查強度階梯", # term:InspectionIntensityLadder
     "場景綁定", # term:ScenarioBinding
+    "拒絕算子", # term:Rejector
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
-term_exclude = ["Screening"]
+term_exclude = ["Quantization", "Screening"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

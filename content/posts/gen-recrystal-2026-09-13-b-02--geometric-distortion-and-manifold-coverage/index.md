@@ -12,7 +12,7 @@ tags = [
     "後驗坍縮", # term:PosteriorCollapse
     "分佈覆蓋", # term:DistributionCoverage
     "變分自動編碼器", # term:VariationalAutoencoder
-    "模型量化", # term:Quantization
+    "量化", # term:Quantization
     "剪枝", # term:Pruning
   ]
 series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界的工程重建"]
@@ -43,9 +43,10 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 > **後驗坍縮** <!-- term:PosteriorCollapse --> (Posterior Collapse): 近似後驗退化為先驗、潛在變數不再攜帶輸入資訊的失效現象。 <!-- anchor:PosteriorCollapse -->
 
 
-而在邊緣硬體部署場景中，一套原本在平衡測試集上擁有 91.2% Top-1 準確率的電腦視覺模型，經過混合量化、非結構化**剪枝**（Pruning） <!-- term:Pruning -->與**知識蒸餾**（Knowledge Distillation） <!-- term:KnowledgeDistillation -->三重壓縮後，測試集準確率為 91.0%。0.2 個百分點的微小差異被判定為「處於隨機噪聲範圍內無損批准上線」。然而上線首週，自動駕駛邊緣推論節點在黃昏低對比度與逆光情境下發生了多起非預期誤判。壓縮演算法並未「均勻地縮小模型」，而是在參數空間中對高維流形的法向邊界進行了劇烈的幾何剪裁與譜半徑截斷。
+而在邊緣硬體部署場景中，一套原本在平衡測試集上擁有 91.2% Top-1 準確率的電腦視覺模型，經過混合**量化**（Quantization） <!-- term:Quantization -->、非結構化**剪枝**（Pruning） <!-- term:Pruning -->與**知識蒸餾**（Knowledge Distillation） <!-- term:KnowledgeDistillation -->三重壓縮後，測試集準確率為 91.0%。0.2 個百分點的微小差異被判定為「處於隨機噪聲範圍內無損批准上線」。然而上線首週，自動駕駛邊緣推論節點在黃昏低對比度與逆光情境下發生了多起非預期誤判。壓縮演算法並未「均勻地縮小模型」，而是在參數空間中對高維流形的法向邊界進行了劇烈的幾何剪裁與譜半徑截斷。
 
 > [!IMPORTANT]
+> **量化** <!-- term:Quantization --> (Quantization): 以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。 <!-- anchor:Quantization -->
 > **剪枝** <!-- term:Pruning --> (Pruning): 移除模型中影響較小的連接或結構，以縮減規模的壓縮方法。 <!-- anchor:Pruning -->
 > **知識蒸餾** <!-- term:KnowledgeDistillation --> (Knowledge Distillation): 以較大模型的輸出分佈為目標，訓練較小模型重新估計其行為的壓縮方法。 <!-- anchor:KnowledgeDistillation -->
 
@@ -61,7 +62,7 @@ series = ["能力失效歸因：模型評估盲區、幾何失真與因果邊界
 
 ## 分析
 
-從高維機率幾何的角度審視，真實資料往往分佈於嵌入在歐幾里得空間 $\mathbb{R}^D$ 內的低維緊緻流形 $\mathcal{M}$ 上。設真實資料生成測度為 $P$，模型生成的誘導測度為 $Q$。無論是透過變分潛在變數 $z \in \mathbb{R}^d$（$d \ll D$）進行資訊瓶頸約束，還是透過低位元量化矩陣 $\hat{W}$ 逼近原權重 $W$，本質上都是在受限的容量預算下重構流形 $\mathcal{M}$。
+從高維機率幾何的角度審視，真實資料往往分佈於嵌入在歐幾里得空間 $\mathbb{R}^D$ 內的低維緊緻流形 $\mathcal{M}$ 上。設真實資料生成測度為 $P$，模型生成的誘導測度為 $Q$。無論是透過變分潛在變數 $z \in \mathbb{R}^d$（$d \ll D$）進行資訊瓶頸約束，還是透過低位元量化 <!-- term:Quantization -->矩陣 $\hat{W}$ 逼近原權重 $W$，本質上都是在受限的容量預算下重構流形 $\mathcal{M}$。
 
 ```mermaid
 flowchart TD
@@ -130,7 +131,7 @@ $$\mathcal{L}_{\text{ELBO}}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\
 ### 3. 三類近似壓縮的幾何失真帳本
 
 模型壓縮 <!-- term:ModelCompression -->在硬體算力預算約束下進行，但三種主流技術在流形上刻下的疤痕完全不同：
-- 量化：將連續權重投影至離散網格。其本質是在特徵空間施加均勻噪聲，導致微小梯度被截斷，造成高曲率區域的決策邊界發生鋸齒狀抖動。
+- 量化 <!-- term:Quantization -->：將連續權重投影至離散網格。其本質是在特徵空間施加均勻噪聲，導致微小梯度被截斷，造成高曲率區域的決策邊界發生鋸齒狀抖動。
 - **剪枝** <!-- term:Pruning -->：將權重矩陣強制投影至低維座標子空間（Coordinate Subspace）。根據 Eckart-Young-Mirsky 定理，非結構化剪枝 <!-- term:Pruning -->相當於對權重算子進行非最佳奇異值截斷，摧毀了低能量但高特異性的長尾特徵正交基。
 - **知識蒸餾** <!-- term:KnowledgeDistillation -->：透過最小化學生與教師輸出分佈的交叉熵進行引導。**軟標籤**（Soft Labels） <!-- term:SoftLabels -->的熵平滑效應，人為擴大了決策邊界的過渡帶，稀釋了原始流形上的拓撲邊界。
 
@@ -143,8 +144,8 @@ $$\mathcal{L}_{\text{ELBO}}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\
 | 壓縮階段與參數規模 | 奇異值譜半徑能量佔比 $\frac{\sum_{i=1}^k \sigma_i^2}{\sum \sigma_i^2}$ | **分佈精度**（Prd Precision） <!-- term:PrdPrecision --> | **分佈召回率**（Prd Recall） <!-- term:PrdRecall --> | 潛在維度平均互資訊 <!-- term:MutualInformation --> $I(X; Z_i)$ | 綜合評估讀數 (Top-1 Acc) | 流形幾何實質狀態 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **全精度基準 (FP32)** | $100.0\%$ | $0.94$ | $0.92$ | $1.85 \text{ nats}$ | **$91.2\%$** | 完整高維流形，模式覆蓋完備 |
-| **階段一：8-bit 權重量化** | $98.2\%$ | $0.93$ | $0.91$ | $1.82 \text{ nats}$ | **$91.1\%$** | 均勻微小擾動，決策邊界微幅抖動 |
-| **階段二：4-bit 量化 + 50% 剪枝 <!-- term:Pruning -->** | $84.5\%$ | $0.95$ ($\uparrow$) | $0.62$ ($\downarrow 30\%$) | $0.41 \text{ nats}$ | **$91.0\%$** | **幾何斷裂**：高頻特徵湮滅，長尾模式被剔除，但主流類別樣本因過擬合更加清晰 |
+| **階段一：8-bit 權重量化 <!-- term:Quantization -->** | $98.2\%$ | $0.93$ | $0.91$ | $1.82 \text{ nats}$ | **$91.1\%$** | 均勻微小擾動，決策邊界微幅抖動 |
+| **階段二：4-bit 量化 <!-- term:Quantization --> + 50% 剪枝 <!-- term:Pruning -->** | $84.5\%$ | $0.95$ ($\uparrow$) | $0.62$ ($\downarrow 30\%$) | $0.41 \text{ nats}$ | **$91.0\%$** | **幾何斷裂**：高頻特徵湮滅，長尾模式被剔除，但主流類別樣本因過擬合更加清晰 |
 | **階段三：極限蒸餾 + 旁路坍縮** | $62.1\%$ | $0.98$ ($\uparrow$) | $0.21$ ($\downarrow 71\%$) | $0.002 \text{ nats}$ | **$88.4\%$** | **模式崩潰**：潛在空間徹底失用，生成分佈退化為單點高密度尖峰 |
 
 > [!IMPORTANT]
@@ -158,7 +159,7 @@ $$\mathcal{L}_{\text{ELBO}}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\
 | :--- | :--- | :--- | :--- | :--- |
 | **生成品質評審** | 簡報抽樣圖形清晰逼真，專家評分穩步上升。 | **支援集**（Support） <!-- term:Support -->劇烈萎縮，模型發生模式遺失 <!-- term:ModeDropping -->，僅在局部極值過擬合。 | 人工肉眼抽查 16 張最優樣本。 | **PRD 分佈凸包檢定**：監控雙軸曲線，強制要求召回率不得低於既定閾值。 |
 | **潛在通道失用** | VAE 訓練中 KL 散度貼地（$< 0.005$），重建損失平緩。 | 強自回歸解碼器 <!-- term:AutoregressiveDecoder -->引發資訊旁路，互資訊 <!-- term:MutualInformation --> $I(X; Z) \to 0$。 | 盲目調降 KL 權重 $\beta$ 或進行任意退火。 | **自由位元約束（Free Bits） <!-- term:FreeBits -->與解碼器容量瓶頸化**：強制保留最小 KL 預算，削弱局部旁路路徑。 |
-| **壓縮邊緣部署** | 量化與剪枝 <!-- term:Pruning -->後 Top-1 準確率僅下降 $0.2\%$。 | 奇異值譜長尾被截斷，決策流形在低密度邊緣區域劇烈扭曲。 | 宣告「噪聲範圍內無損」並直接發布。 | **譜半徑條件數（Condition Number） <!-- term:ConditionNumber -->監控與極限幾何壓力測試**：在特徵算子奇異值衰減處設置硬性截斷守門。 |
+| **壓縮邊緣部署** | 量化 <!-- term:Quantization -->與剪枝 <!-- term:Pruning -->後 Top-1 準確率僅下降 $0.2\%$。 | 奇異值譜長尾被截斷，決策流形在低密度邊緣區域劇烈扭曲。 | 宣告「噪聲範圍內無損」並直接發布。 | **譜半徑條件數（Condition Number） <!-- term:ConditionNumber -->監控與極限幾何壓力測試**：在特徵算子奇異值衰減處設置硬性截斷守門。 |
 
 > [!IMPORTANT]
 > **支援集** <!-- term:Support --> (Support): 機率分佈中密度非零的區域，是判定生成樣本是否落在真實流形上的依據。 <!-- anchor:Support -->
@@ -172,14 +173,14 @@ $$\mathcal{L}_{\text{ELBO}}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\
 
 幾何壓縮防線的架構張力，在於**「真實流形維度未知」**與**「計算資源物理邊界」**之間的不可調和性。
 
-在理想的流形學習理論中，若已知流形的**內在維度**（Intrinsic Dimension） <!-- term:IntrinsicDimension -->為 $d$，只需將表徵空間維度嚴格壓縮至 $d$ 即可達到最優**泛化**（Generalization） <!-- term:Generalization -->。然而在實務中，複雜多模態資料的流形往往具有多尺度特性（Multiscale Structure）：在粗粒度下維度較低（例如宏觀語義分類），但在細粒度幾何細節上維度極高（例如微小幾何紋理、罕見物理反射）。任何有限的量化位元寬度或剪枝 <!-- term:Pruning -->比率，本質上都是對多尺度幾何結構的一次人為裁切。
+在理想的流形學習理論中，若已知流形的**內在維度**（Intrinsic Dimension） <!-- term:IntrinsicDimension -->為 $d$，只需將表徵空間維度嚴格壓縮至 $d$ 即可達到最優**泛化**（Generalization） <!-- term:Generalization -->。然而在實務中，複雜多模態資料的流形往往具有多尺度特性（Multiscale Structure）：在粗粒度下維度較低（例如宏觀語義分類），但在細粒度幾何細節上維度極高（例如微小幾何紋理、罕見物理反射）。任何有限的量化 <!-- term:Quantization -->位元寬度或剪枝 <!-- term:Pruning -->比率，本質上都是對多尺度幾何結構的一次人為裁切。
 
 > [!IMPORTANT]
 > **內在維度** <!-- term:IntrinsicDimension --> (Intrinsic Dimension): 資料流形實際所需的最小座標數，決定表徵壓縮在不撕裂幾何結構下的下限。 <!-- anchor:IntrinsicDimension -->
 > **泛化** <!-- term:Generalization --> (Generalization): 模型在訓練樣本以外的資料上維持表現的能力。 <!-- anchor:Generalization -->
 
 
-此外，邊緣硬體的推論延遲往往受限於記憶體頻寬而非計算單元。非結構化剪枝 <!-- term:Pruning -->雖然在數學上清除了大量奇異值正交基，但在通用硬體架構上無法獲得實際加速，迫使工程師採用粗暴的「**結構化通道剪枝**（Structured Channel Pruning） <!-- term:StructuredChannelPruning -->」。結構化剪枝 <!-- term:Pruning -->直接移除整個特徵維度，相當於在幾何流形上進行硬性超平面投影（Hyperplane Projection），這對流形拓撲結構的破壞遠甚於等方差的量化噪聲。
+此外，邊緣硬體的推論延遲往往受限於記憶體頻寬而非計算單元。非結構化剪枝 <!-- term:Pruning -->雖然在數學上清除了大量奇異值正交基，但在通用硬體架構上無法獲得實際加速，迫使工程師採用粗暴的「**結構化通道剪枝**（Structured Channel Pruning） <!-- term:StructuredChannelPruning -->」。結構化剪枝 <!-- term:Pruning -->直接移除整個特徵維度，相當於在幾何流形上進行硬性超平面投影（Hyperplane Projection），這對流形拓撲結構的破壞遠甚於等方差的量化 <!-- term:Quantization -->噪聲。
 
 > [!IMPORTANT]
 > **結構化通道剪枝** <!-- term:StructuredChannelPruning --> (Structured Channel Pruning): 整條移除特徵通道的剪枝方式，硬體加速明確，但對流形拓撲的破壞遠大於等方差的量化噪聲。 <!-- anchor:StructuredChannelPruning -->
@@ -299,7 +300,7 @@ if __name__ == "__main__":
     main()
 ```
 
-此腳本在純 Python 標準函式庫環境下可在 50 毫秒內執行完畢。它將流形覆蓋率以 PRD 形式進行嚴格投影量化，並對潛在維度的自由位元進行了不可妥協的**不變式**（Invariant） <!-- term:Invariant -->約束，徹底杜絕了將「單點高保真」誤判為「整體無損壓縮」的系統盲區。
+此腳本在純 Python 標準函式庫環境下可在 50 毫秒內執行完畢。它將流形覆蓋率以 PRD 形式進行嚴格投影量化 <!-- term:Quantization -->，並對潛在維度的自由位元進行了不可妥協的**不變式**（Invariant） <!-- term:Invariant -->約束，徹底杜絕了將「單點高保真」誤判為「整體無損壓縮」的系統盲區。
 
 > [!IMPORTANT]
 > **不變式** <!-- term:Invariant --> (Invariant): 系統在任何合法狀態下都必須成立的斷言，是把評估規則寫成可執行檢查的基本單位。 <!-- anchor:Invariant -->

@@ -12,7 +12,7 @@ tags = [
     "自動化反諷", # term:IroniesOfAutomation
     "狀況警覺", # term:SituationAwareness
     "迴路外部", # term:OutOfTheLoop
-    "責任去中心化洗滌槽", # term:MoralCrumpleZone
+    "制度性責任海綿", # term:MoralCrumpleZone
     "盲目放行", # term:RubberStamping
   ]
 series = ["效用宣稱的轉換鏈：從評測讀數到資本回報，六道無人負責的斷層"]

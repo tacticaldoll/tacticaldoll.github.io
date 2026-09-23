@@ -9,11 +9,11 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 代理人", # term:AiAgent
     "信任邊界", # term:TrustBoundary
-    "驗證瓶頸", # term:VerificationBottleneck
     "外部裁決", # term:ExternalArbitration
     "確定性邊界", # term:DeterministicTrustBoundary
     "知識幻覺", # term:KnowledgeHallucination
     "規格驅動開發", # term:SpecDrivenDevelopment
+    "閉環自洽", # term:ClosedLoopSelfConsistency
   ]
 series = ["信任與權威的成立：可信不是輸出屬性，而是被非同源裁決授權的狀態"]
 [ai_info]

@@ -12,6 +12,8 @@ tags = [
     "反駁條件", # term:Defeater
     "不變式", # term:Invariant
     "身分", # term:Identity
+    "約束性規格", # term:Spec
+    "變更提案", # term:Proposal
   ]
 series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 [ai_info]

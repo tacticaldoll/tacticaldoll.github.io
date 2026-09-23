@@ -16,6 +16,7 @@ tags = [
     "驗證覆蓋", # term:VerificationCoverage
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

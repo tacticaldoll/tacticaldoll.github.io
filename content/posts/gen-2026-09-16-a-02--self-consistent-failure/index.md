@@ -7,8 +7,6 @@ isCJKLanguage = true
 description = "分析同源多模型驗證中因共用假設而導致的自洽失敗，提出以獨立錯誤模式、外部 Oracle 與可證偽觀察構建的異源拒絕機制，阻斷同質模型相互驗證的盲區。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "自洽失敗", # term:SelfConsistentFailure
-    "異源驗證", # term:DiverseSourceVerification
     "多代理", # term:MultiAgent
     "不同模型", # term:DifferentModels
     "選擇偏差", # term:SelectionBias

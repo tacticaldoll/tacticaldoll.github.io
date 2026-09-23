@@ -12,6 +12,7 @@ tags = [
     "認識論角色", # term:EpistemologicalRole
     "不變式", # term:Invariant
     "依賴圖", # term:DependencyGraph
+    "約束性規格", # term:Spec
   ]
 series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 [ai_info]

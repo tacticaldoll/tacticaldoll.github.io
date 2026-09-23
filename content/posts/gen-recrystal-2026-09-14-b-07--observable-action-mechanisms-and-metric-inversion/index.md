@@ -11,9 +11,9 @@ tags = [
     "機制設計", # term:MechanismDesign
     "可稽核性", # term:Auditability
     "誘因相容", # term:IncentiveCompatibility
-    "指標反轉", # term:MetricInversion
-    "狀態約束", # term:StateConstraint
     "確定性邊界", # term:DeterministicTrustBoundary
+    "程式碼審查", # term:CodeReview
+    "可見性", # term:Visibility
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
 [ai_info]

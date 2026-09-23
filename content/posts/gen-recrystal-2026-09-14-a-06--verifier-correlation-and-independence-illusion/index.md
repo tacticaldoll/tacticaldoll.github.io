@@ -8,12 +8,12 @@ description = "多重審查與多模型交叉驗證通常假定失效相互獨�
 tags = [
     "分析論述", # term:AnalyticalEssay
     "大型語言模型", # term:LargeLanguageModel
-    "相關失效", # term:CorrelatedFailure
     "多版本程式設計", # term:MultiversionProgramming
     "有效偵測器數", # term:EffectiveNumberOfDetectors
     "單邊效力", # term:OneSidedEfficacy
     "確定性邊界", # term:DeterministicTrustBoundary
     "不變式", # term:Invariant
+    "似然比", # term:LikelihoodRatio
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]

@@ -8,14 +8,13 @@ description = "依據瓶頸理論與 Amdahl 定律證明串聯系統吞吐受限
 tags = [
     "分析論述", # term:AnalyticalEssay
     "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "瓶頸理論", # term:TheoryOfConstraints
-    "吞吐守恆", # term:ThroughputConservation
-    "在製品位移", # term:WipDisplacement
-    "Amdahl 定律", # term:AmdahlSLaw
-    "效能宣告", # term:PerformanceClaim
     "在製品", # term:WorkInProgress
+    "前置條件", # term:Prerequisite
+    "無狀態", # term:Stateless
+    "不變式", # term:Invariant
   ]
 series = ["進不了控制迴路的量：研發治理中的可重複性前提、流動守恆與文字效力"]
+term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Claude Opus 5"

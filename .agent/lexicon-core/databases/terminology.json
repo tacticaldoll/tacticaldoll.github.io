@@ -6124,15 +6124,6 @@
     "forbidden": [],
     "level": 1
   },
-  "Quantization": {
-    "zh": "模型量化",
-    "en": [
-      "Quantization"
-    ],
-    "description": "以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。",
-    "forbidden": [],
-    "level": 2
-  },
   "ImpactScope": {
     "zh": "波及範圍",
     "en": [
@@ -6865,6 +6856,21 @@
     "description": "整體評價中只在兩個以上決策交會時才出現的項；各局部評價只計算自身項，因此交叉項不會出現在任何單一局部的函數裡。",
     "forbidden": [],
     "level": 1
+  },
+  "Quantization": {
+    "zh": "量化",
+    "en": [
+      "Quantization"
+    ],
+    "description": "以較少位元表示權重或啟動值，改變數值格點以降低記憶體與計算成本的近似方法。",
+    "forbidden": [],
+    "level": 2,
+    "not_within": [
+      "量化寬鬆",
+      "輕量化",
+      "可量化",
+      "被量化"
+    ]
   },
   "Data": {
     "zh": "數據",

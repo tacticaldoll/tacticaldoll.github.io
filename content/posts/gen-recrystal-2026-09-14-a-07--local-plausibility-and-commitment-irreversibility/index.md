@@ -9,11 +9,11 @@ tags = [
     "分析論述", # term:AnalyticalEssay
     "大型語言模型", # term:LargeLanguageModel
     "局部似真", # term:LocalPlausibility
-    "自回歸分解", # term:AutoregressiveDecomposition
     "承諾不可逆", # term:CommitmentIrreversibility
     "連貫不動點", # term:CoherentFixedPoint
-    "濾過單調性", # term:FiltrationMonotonicity
     "均值回歸", # term:RegressionToTheMean
+    "單邊效力", # term:OneSidedEfficacy
+    "目標函數", # term:ObjectiveFunction
   ]
 series = ["可失敗性工程：從拒絕算子、成本位移到驗證獨立性與可證偽契約"]
 [ai_info]

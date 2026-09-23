@@ -11,6 +11,9 @@ tags = [
     "不變式", # term:Invariant
     "外部有效性", # term:ExternalValidity
     "反駁條件", # term:Defeater
+    "約束性規格", # term:Spec
+    "結構合約", # term:Schema
+    "衝突封存", # term:Archive
   ]
 series = ["OpenSpec 的權威邊界：從文件一致到可撤銷承諾"]
 [ai_info]
