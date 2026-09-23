@@ -40,6 +40,8 @@ class Lexicon:
         self.levels = {}       # ZH -> level (1-3)
         self.descriptions = {} # ZH -> desc
         self.keys = {}         # ZH -> CamelCase key
+        self.canonical = {}    # alias ZH -> canonical ZH
+        self.not_within = {}   # ZH -> longer strings in which it is not the term
         self.items = []        # Raw items list
         
         # Build-time regex patterns
@@ -94,6 +96,8 @@ class Lexicon:
             self.levels = {}
             self.descriptions = {}
             self.keys = {}
+            self.canonical = {}
+            self.not_within = {}
         
         def make_camel_case_key(en_str, zh_str):
             if not en_str or en_str == "Unknown":
@@ -122,6 +126,21 @@ class Lexicon:
                 self.en_exact_to_zh[e] = zh
             for f_term in item.get('forbidden', []):
                 self.forbidden[f_term] = zh
+            # An alias is a second legitimate rendering of the same term: it anchors
+            # under the canonical key, and is never rewritten the way a forbidden
+            # variant is.
+            for alias in item.get('aliases', []):
+                self.mapping[alias] = en_list[0]
+                self.mapping_lower[alias.lower()] = zh
+                self.levels[alias] = level
+                self.zh_to_ens[alias] = en_list
+                self.descriptions[alias] = self.descriptions[zh]
+                self.keys[alias] = self.keys[zh]
+                self.canonical[alias] = zh
+            for form in [zh] + item.get('aliases', []):
+                shadows = [s for s in item.get('not_within', []) if form in s and s != form]
+                if shadows:
+                    self.not_within[form] = shadows
 
         self._rebuild_regex()
 
@@ -140,6 +159,35 @@ class Lexicon:
             return text
         return self.forbidden_regex.sub(lambda m: self.forbidden[m.group(0)], text)
 
+    def is_shadowed(self, zh, text, start):
+        """True when the occurrence of `zh` at `start` lies inside one of its declared
+        `not_within` strings, i.e. the characters belong to a longer word that is not
+        this term (政策篩選, 輕量化). Chinese has no orthographic word boundary, so the
+        boundary is data a human wrote down, not something inferred here."""
+        for s in self.not_within.get(zh, ()):
+            off = s.find(zh)
+            while off != -1:
+                begin = start - off
+                if begin >= 0 and text.startswith(s, begin):
+                    return True
+                off = s.find(zh, off + 1)
+        return False
+
+    def find_hits(self, zh, text):
+        """Start offsets where `zh` occurs in `text` as the term. The single matching
+        rule every consumer uses, so anchoring, tag harvest and audit cannot disagree
+        about where a term is."""
+        hits, pos = [], text.find(zh)
+        while pos != -1:
+            if not self.is_shadowed(zh, text, pos):
+                hits.append(pos)
+            pos = text.find(zh, pos + 1)
+        return hits
+
+    def contains(self, zh, text):
+        """True when `zh` occurs in `text` at least once as the term."""
+        return bool(self.find_hits(zh, text))
+
     def lint(self, data=None):
         """Lints terminology for self-contradictions, banned terms, and placeholder descriptions."""
         target_data = data if data is not None else self.items
@@ -151,6 +199,23 @@ class Lexicon:
                 
         errors = []
         banned_words = set(forbidden_map.keys())
+
+        # Every zh-bearing surface: a string may name one term only.
+        owners = {}
+        for item in target_data:
+            for form in [item['zh']] + item.get('aliases', []):
+                owners.setdefault(form, []).append(item['zh'])
+        for form, zhs in owners.items():
+            if len(zhs) > 1:
+                errors.append(f"'{form}' is claimed as zh or alias by {zhs}")
+            if form in forbidden_map and form != zhs[0]:
+                errors.append(f"Alias '{form}' of {zhs} is also a forbidden variant of {forbidden_map[form]}")
+        for item in target_data:
+            forms = [item['zh']] + item.get('aliases', [])
+            for s in item.get('not_within', []):
+                if s in forms or not any(f in s for f in forms):
+                    errors.append(f"Term '{item['zh']}' not_within entry '{s}' must be a longer "
+                                  f"string containing the term or one of its aliases")
         placeholder_patterns = ["TODO", "待完善", "PENDING_REFINEMENT", "PENDING_NLP_DIGESTION", "自動萃取術語待校正"]
         # zh-TW maintenance defence line (GUIDE §3.1): mainland-usage words that have an
         # unambiguous Traditional-Chinese equivalent. Physicalised as data in rules.json so

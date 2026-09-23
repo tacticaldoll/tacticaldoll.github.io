@@ -159,15 +159,20 @@ class PostAuditor:
         paragraphs = re.split(r'\n\s*\n', text_no_headers)
         
         mapping = getattr(engine, 'mapping', {}) or {}
+        keys = getattr(engine, 'keys', {}) or {}
+        excluded = set(metadata.get('term_exclude') or ())
+        find_hits = getattr(engine, 'find_hits', None) or (
+            lambda z, t: [m.start() for m in re.finditer(re.escape(z), t)])
         for zh, en_primary in mapping.items():
-            if zh not in text_no_headers: continue
+            if keys.get(zh) in excluded or not find_hits(zh, text_no_headers): continue
             
             # Find the first paragraph containing the term
             # IMPORTANT: We only care about the FIRST paragraph where it appears
             first_para_idx = -1
             first_match_obj = None
             for idx, para in enumerate(paragraphs):
-                m = re.search(re.escape(zh), para)
+                hits = find_hits(zh, para)
+                m = re.compile(re.escape(zh)).search(para, hits[0]) if hits else None
                 if m:
                     # Filter out overlapping terms
                     is_overlap = any(len(oz) > len(zh) and zh in oz and oz in para for oz in mapping.keys() if len(oz) > len(zh))

@@ -67,6 +67,8 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 | `metadata.posts[].domain_tag` | `/init-handoff` NLP | `pipeline.py` | NLP 依巨觀問題域宣告（閉聯集或 ""），由 Linter 雙軌驗證。 |
 | `metadata.posts[].rules.redactions` / `.sublimations` | `/init-handoff` NLP | `pipeline.py` | NLP 寫入語意脫敏與敘事昇華；pipeline 只消費。 |
 | `metadata.posts[].rules.headers` | `prepare_handoff.py` | `formatter.py` | 由 `taxonomy.json` 的 `header_normalization` 推導，非 NLP 撰寫。標頭詞彙的 SSOT 是 taxonomy，不是逐 session 的判斷。 |
+| `metadata.posts[].term_review` | `refine_handoff.py` 列候選 + NLP 填 disposition | `pipeline.py` | 留空即阻斷；「排除」併入 `term_exclude`。 |
+| 貼文 front matter `term_exclude` | `/init-handoff` NLP（經 pipeline）或人工 | injector、assembler、reanchor、auditor | 該篇同字異義的永久紀錄；reanchor 原樣保留並遵守。 |
 | `terms.declared` | `/init-handoff` NLP | `refine_handoff.py` | 享有 declaration immunity，但不得含敘事雜訊。 |
 | `terms.discovered/existing/forbidden_found` | `prepare_handoff.py` | `refine_handoff.py` | Script-managed。 |
 | `terms.locked` | `refine_handoff.py` + NLP description | `pipeline.py` | description 不得為空或含 placeholder。 |
@@ -89,7 +91,9 @@ Agent 冷啟動時以 `GUIDE.md` 為入口；`GUIDE.md` 再引用本檔作為 Ag
 - Agent 操作意圖只能有一個 active reference：`.agent/reference/agent-operating-guideline.md`，並必須由 `GUIDE.md` 明確引用。
 - 領域分類由 `/init-handoff` NLP 基於全文巨觀問題域宣告，並由 Linter 透過 `taxonomy.json` 進行封閉枚舉與雙軌證據檢驗。若未宣告或未定義，`TaxonomyEngine` 依分類順序（取首個命中者）提供初始建議；歧義以 `classify_domain_evidence` 的旗標曝光。
 - 引擎宣告的契約由引擎保證，不由呼叫點各自記得。呼叫點不得取消引擎已決定的政策。
-- 術語錨定對中文不設字界，因此短鍵會匹配到更長詞的內部（`量化` 落在「輕量化」、`技術債` 落在「技術債務」、`導讀` 落在「誤導讀者」）。英文別名以 `\b` 防住同一類破壞，中文沒有對應機制：中文無正字法字界，`\b` 不適用，正確的防護需要分詞或最長匹配排除表，兩者皆不存在。因此**降級判定不得只檢視定義，必須檢視命中位置**；此判定無機械解（真陽性率不可機械判定：「輕量化」是撞名，「擁有權是核心自己長出來」是正確用法），故它是操作規則而非稽核項。
+- 術語錯定對中文不設正字法字界，因此短鍵會匹配到更長詞的內部（`量化` 落在「輕量化」、`技術債` 落在「技術債務」、`導讀` 落在「誤導讀者」）。字界是人寫下的資料而非推導：落在較長詞內的命中列入該術語的 `not_within`，由 `Lexicon.find_hits` 單一定義，錯定、標籤採收與稽核共用；同字異義的獨立命中（「無法量化」不是 Quantization）沒有字界可言，由貼文 front matter 的 `term_exclude` 記錄。兩者都是人的判讀結果，機制只負責保存與執行；**降級或收錄判定仍必須檢視命中位置**，發布時由 `term_review` 閘門要求逐條判讀。
+- 一個鍵是一個概念。同概念的第二種正當譯法列為 `aliases`（錯定在同鍵、不改寫原文、標籤顯示正名）；概念不同則另立鍵。晉升時同鍵異 zh 會被擋下，不得以覆蓋解決。
+- 錯定不得落在作者的粗體範圍內。作者把「動詞＋術語（註記）」整段加粗時，那是作者的單位；在裡面錯定會切斷粗體並把作者的註記交給另一個術語。
 - 作者撰寫的 `> [!IMPORTANT]` 定義框不得取得 `<!-- term:/anchor: -->` 標記。標記是「機器產物」的唯一判準，移除端據此整塊清除，所以一旦作者的行取得標記，下一輪就會連同作者文字被刪除——這正是 reanchor 造成已發布內容遺失的機制。`（English）` 註記只在後接標記時才算機器產物；無標記的註記是作者文字，消除它會讓該行掉出 `protected_alert_patterns` 而失去保護。
 - 錨定不得重排行序。受保護行必須留在原位，前置會讓區塊末尾的標題與下一段首字黏成一行。
 - 可驗證規則必須下沉到 schema、script 或 audit；本檔只保留意圖與邊界。

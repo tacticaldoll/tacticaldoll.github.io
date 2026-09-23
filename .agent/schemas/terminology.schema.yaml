@@ -33,7 +33,22 @@ patternProperties:
         type: array
         items:
           type: string
-        description: "嚴禁在此專案中使用的近似詞或區域方言（如：智能體、程序員）。"
+        description: "嚴禁在此專案中使用的近似詞或區域方言（如：智能體、程序員）。命中時會改寫原文。"
+      aliases:
+        type: array
+        items:
+          type: string
+        description: >
+          同一術語的其他正當中文譯法。以原文錯定在同一個鍵下、不改寫（與 forbidden
+          相反）；標籤一律顯示 zh。一個字串只能屬於一個術語的 zh 或 aliases。
+      not_within:
+        type: array
+        items:
+          type: string
+        description: >
+          中文字界：包含 zh（或其別名）但不是此術語的較長字串（政策篩選、輕量化）。
+          落在其中的命中不錯定、不採收為標籤、不計入稽核，由 Lexicon.find_hits
+          單一定義。列出的是人讀過命中位置後的判斷，不是推導。
       level:
         type: integer
         enum: [1, 2, 3]
@@ -55,7 +70,8 @@ maintenance_rules:
     - "強制脫敏：術語定義中必須移除所有專案專屬路徑、Commit ID 與日期。"
     - "通用化限制：定義應描述『技術本質』，使其可遷移至其他專案使用。"
   admission:
-    - "字界審查：中文主鍵無正字法字界，短鍵會命中更長詞的內部（量化 落在「輕量化」）。收錄前必須檢視語料中的實際命中位置，不得只檢視定義。"
+    - "字界審查：中文主鍵無正字法字界，短鍵會命中更長詞的內部（量化 落在「輕量化」）。收錄前必須檢視語料中的實際命中位置，不得只檢視定義；落在較長詞內的命中寫入 not_within，同字異義的獨立命中則由貼文的 term_exclude 記錄。"
+    - "譯法並存：同一概念在已發布貼文中有兩種正當譯法時，後者列為 aliases；區域方言或錯詞才列 forbidden。概念不同時另立鍵，不得共用。"
   forbidden_criteria:
     - "區域方言：嚴禁使用非專業之區域慣用語（如：程序員 -> 工程師）。"
     - "語意坍縮：嚴禁使用容易產生岐義的簡稱。"

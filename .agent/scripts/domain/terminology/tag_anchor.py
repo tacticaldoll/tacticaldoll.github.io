@@ -38,8 +38,10 @@ class TagAnchorer:
 
     def __init__(self, lexicon):
         self.lexicon = lexicon
-        # term key -> canonical ZH (reverse of lexicon.keys: ZH -> key)
-        self.term_key_to_zh = {key: zh for zh, key in lexicon.keys.items()}
+        # term key -> canonical ZH (reverse of lexicon.keys: ZH -> key); an alias shares
+        # its term's key and must not become the tag's display
+        canonical = getattr(lexicon, "canonical", {})
+        self.term_key_to_zh = {key: zh for zh, key in lexicon.keys.items() if zh not in canonical}
         # genre key -> canonical display ZH, from taxonomy.json (the genre SSOT, not hardcoded)
         self.genre_key_to_zh = {}
         for en, zh in lexicon.taxonomy.get("genres", {}).items():

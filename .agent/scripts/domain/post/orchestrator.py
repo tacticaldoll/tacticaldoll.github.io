@@ -30,7 +30,8 @@ class PostOrchestrator:
             injector = TerminologyInjector()
             temp_post = HugoPost()
             temp_post.body = refined_content
-            injector.apply_lexicon(temp_post, lexicon)
+            injector.apply_lexicon(temp_post, lexicon,
+                                   exclude_keys=post.metadata.get("term_exclude"))
             refined_content = temp_post.body
 
         # 3. Formatting Phase

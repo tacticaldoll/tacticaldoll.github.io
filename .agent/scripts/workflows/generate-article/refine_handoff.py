@@ -39,6 +39,65 @@ class TerminologyRefiner:
         with open(self.terms_handoff_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
+    TERM_DISPOSITIONS = ("錨定", "排除")
+
+    def refine_term_review(self, dry_run=False):
+        """Lists, per post, every EXISTING lexicon term the injector would anchor in the
+        report, with the words around its first anchor, so a human reads the hit
+        position before it ships. A term this session locked was chosen from this
+        report and is not listed; the risk is a core term landing by coincidence
+        (量化 in 量化的社會指標, 篩選 in 演化篩選). Each entry needs a disposition:
+        錨定 keeps it, 排除 records the key in the post's term_exclude. Prior
+        dispositions survive a rerun."""
+        from domain.post.post import HugoPost
+        from domain.terminology.injector import TerminologyInjector
+        from infra.utils import strip_report_provenance
+
+        posts_path = os.path.join(self.scratch_dir, "handoff.posts.json")
+        terms = self.load_terms() or {}
+        if not os.path.exists(posts_path):
+            return
+        with open(posts_path, 'r', encoding='utf-8') as f:
+            posts_data = json.load(f)
+        session_zh = {t.get("zh") for t in terms.get("terms", {}).get("locked", [])}
+        lexicon = self.engine.lexicon
+        pending = 0
+        for post in posts_data.get("metadata", {}).get("posts", []):
+            report = os.path.join(self.scratch_dir, post.get("report_rel", ""))
+            if not os.path.isfile(report):
+                continue
+            with open(report, 'r', encoding='utf-8') as f:
+                tmp = HugoPost()
+                tmp.body = strip_report_provenance(f.read())
+            TerminologyInjector().apply_lexicon(tmp, lexicon, mode="anchor_first")
+            key_to_zh = {k: z for z, k in lexicon.keys.items() if z not in lexicon.canonical}
+            prior = {r.get("key"): r.get("disposition", "") for r in post.get("term_review", [])}
+            review, seen = [], set()
+            for m in re.finditer(r'<!--\s*term:([A-Za-z0-9_]+)\s*-->', tmp.body):
+                key = m.group(1)
+                zh = key_to_zh.get(key)
+                if key in seen or zh is None or zh in session_zh:
+                    continue
+                seen.add(key)
+                head = tmp.body[:m.start()].rsplit('\n', 1)[-1]
+                head = re.sub(r'<!--.*?-->|（[A-Za-z0-9 ,./&\'\-]*）|\*\*', '', head).strip()
+                review.append({"key": key, "zh": zh, "context": head[-30:],
+                               "disposition": prior.get(key, "")})
+            if review:
+                post["term_review"] = review
+            else:
+                post.pop("term_review", None)
+            pending += sum(1 for r in review if r["disposition"] not in self.TERM_DISPOSITIONS)
+        if pending:
+            log_info("=" * 54)
+            log_info(f"  [WARNING] {pending} existing-term hits need a disposition")
+            log_info("  Read each term_review context in handoff.posts.json and set")
+            log_info("  disposition to 錨定 or 排除 before running pipeline.py")
+            log_info("=" * 54)
+        if not dry_run:
+            with open(posts_path, 'w', encoding='utf-8') as f:
+                json.dump(posts_data, f, indent=4, ensure_ascii=False)
+
     def is_obvious_junk(self, term):
         """Second-pass strict filtering for pseudo-terms and sentence fragments."""
         zh = term.get("zh", "")
@@ -308,6 +367,7 @@ def main():
         log_error("Refinement failed. Skipping telemetry write to prevent inconsistent state.")
         return
     refiner.refine_telemetry(args.model, args.agent, dry_run=args.dry_run)
+    refiner.refine_term_review(dry_run=args.dry_run)
 
 if __name__ == "__main__":
     main()

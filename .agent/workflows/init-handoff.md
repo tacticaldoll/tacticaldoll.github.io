@@ -55,6 +55,15 @@ spec: "../reference/agent-operating-guideline.md"
 > [!IMPORTANT]
 > 出路 1 修改草稿是本工作流的例外授權，且僅限圖表記法轉換。**嚴禁**藉此改寫任何散文——「散文只寫一次」仍然有效，見 GUIDE.md §發布分工。
 
+### 0-E. 既有術語命中判讀 (Existing-Term Hit Adjudication)
+
+`refine_handoff.py` 會在每篇的 `term_review` 列出報告將錯定的「既有」術語與其首次錯點前文。中文沒有字界，核心詞庫的短詞會偶然落進不相關的句子（「一個量化的社會指標」就不是 Quantization）。逐條閱讀前文，將 `disposition` 填為：
+
+1. **錯定**：命中確實是該術語。
+2. **排除**：同字異義，鍵會寫入貼文的 `term_exclude`，重新錯定也沿用。若命中是落在較長的詞裡（政策篩選），除了排除，還應在交接報告中提議把該詞加入術語的 `not_within`，由術語庫流程收錄。
+
+留空會被 `/publish-article` 擋下。
+
 ## 1. 第一階段：封裝交接 (Halt & Handoff)
 
 當你完成 `handoff.posts.json` 的建立，並確保 `handoff.terms.json` 中的 `PENDING_REFINEMENT` 都已解決後，**工作流即刻終止**。

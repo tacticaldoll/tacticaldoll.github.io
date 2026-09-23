@@ -192,7 +192,7 @@ class LexiconManager:
     # without editing terminology.json by hand (which governance forbids). These
     # methods close that gap. The CamelCase key is the identity and is NOT changed
     # here; a rename is modelled as remove() + add_term().
-    EDITABLE_FIELDS = {"zh", "en", "description", "level", "forbidden"}
+    EDITABLE_FIELDS = {"zh", "en", "description", "level", "forbidden", "aliases", "not_within"}
 
     def _write_core(self, core_data):
         """Sorts (by zh length desc, for regex perf), persists, and reloads the lexicon."""

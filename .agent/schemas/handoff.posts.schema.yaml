@@ -64,6 +64,17 @@ metadata:
       #         "disposition": "已改為 flowchart TD" }]
       review_flags: []
 
+      # [script-owned 候選 + NLP 判讀] 既有術語命中判讀。
+      # refine_handoff.py 列出該篇報告會錯定的每個「既有」術語（本 session locked 的除外）
+      # 與其首次錯點前文。/init-handoff 必須逐條將 disposition 填為「錯定」或「排除」；
+      # 留空會被 pipeline.py 擋下。「排除」的鍵寫入貼文 front matter 的 term_exclude。
+      # 範例: [{"key": "Screening", "zh": "篩選", "context": "與演化", "disposition": "排除"}]
+      term_review: []
+
+      # [NLP-owned，選填] 本篇不錯定的術語鍵（同字異義）。與 term_review 的「排除」合併後
+      # 寫入貼文 front matter，reanchor 永遠沿用。
+      term_exclude: []
+
       ai_info:
         # 原始輸入源：記錄最初「發明」原始報告的環境
         generation:

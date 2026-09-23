@@ -21,6 +21,7 @@ class PostAssembler:
         self._ai_info = {}
         self._series = None
         self._is_series = False
+        self._term_exclude = []
 
     def with_base_meta(self, post_meta, handoff_meta=None, lexicon=None):
         """Assembles Title, Description, Date, and Draft status."""
@@ -30,6 +31,7 @@ class PostAssembler:
         if lexicon:
             self._title = lexicon.replace_forbidden(self._title)
             self._desc = lexicon.replace_forbidden(self._desc)
+        self._term_exclude = sorted(set(post_meta.get("term_exclude") or ()))
         
         # Date resolution
         date_str = post_meta.get("date")
@@ -144,11 +146,13 @@ class PostAssembler:
         # Harvesting it anyway spent scan budget on candidates that could not become
         # tags, pushed eligible terms past TAG_SCAN_LIMIT, and put 錯誤 / 差異 / 行為 into
         # the discard report of every post as though something had been lost.
+        excluded = set(post_meta.get("term_exclude") or ())
         sorted_terms = sorted(
-            (str(k) for k in lexicon.mapping.keys() if lexicon.levels.get(str(k), 1) < 3),
+            (str(k) for k in lexicon.mapping.keys() if lexicon.levels.get(str(k), 1) < 3
+             and lexicon.keys.get(str(k)) not in excluded),
             key=len, reverse=True)
         for zh in sorted_terms:
-            if zh in body_content:
+            if lexicon.contains(zh, body_content):
                 is_substring = any(zh in h for h in harvested_tags)
                 if not is_substring:
                     clean_zh = self._get_clean_tag(zh)
@@ -316,5 +320,8 @@ class PostAssembler:
         
         if self._is_series and self._series:
             self.post.metadata["series"] = [self._series]
+        # Persisted so reanchor keeps honoring the publish-time judgment.
+        if self._term_exclude:
+            self.post.metadata["term_exclude"] = self._term_exclude
             
         return self.post

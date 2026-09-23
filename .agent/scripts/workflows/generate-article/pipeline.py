@@ -169,6 +169,20 @@ class ProductionPipeline:
                         f"{(flag or {}).get('finding', flag)} — record a disposition in "
                         f"handoff.posts.json before publishing")
 
+            # Same shape as the figure gate: refine_handoff lists each existing term the
+            # report would anchor, and someone must have read where it lands. 排除 is
+            # carried to the post as term_exclude, which reanchor keeps honoring.
+            review = p.get("term_review", []) or []
+            for r in review:
+                if not isinstance(r, dict) or r.get("disposition") not in ("錨定", "排除"):
+                    invalid_elements.append(
+                        f"Unadjudicated term hit (Post: {p['slug']}): "
+                        f"{(r or {}).get('zh')} …{(r or {}).get('context', '')} — set disposition "
+                        f"to 錨定 or 排除 in handoff.posts.json")
+            p["term_exclude"] = sorted(set(p.get("term_exclude") or ())
+                                       | {r["key"] for r in review
+                                          if isinstance(r, dict) and r.get("disposition") == "排除"})
+
             # Check domain_tag validity against taxonomy closed set
             d_tag = p.get("domain_tag", "")
             if d_tag:

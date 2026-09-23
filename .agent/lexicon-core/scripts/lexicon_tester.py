@@ -116,11 +116,26 @@ def test_promote_refuses_key_collision():
         print("  Colliding draft left in draft; core term intact.")
 
 
+def test_lint_aliases_and_boundaries():
+    """An alias may name one term only, and a not_within entry must be a longer string
+    containing the term; otherwise the boundary can never fire or fires on the wrong term."""
+    print("Testing alias / not_within lint...")
+    base = {"zh": "甲乙丙", "en": ["Foo Bar"], "description": "測試定義。", "forbidden": [], "level": 1}
+    lx = Lexicon(json_path=os.devnull)
+    assert lx.lint([dict(base, aliases=["丁戊己"], not_within=["庚甲乙丙"])]), "a valid entry must pass"
+    assert not lx.lint([dict(base, aliases=["壬癸"]), dict(base, zh="壬癸", en=["Baz"])]), \
+        "an alias that is another term's zh must fail"
+    assert not lx.lint([dict(base, not_within=["庚辛"])]), \
+        "a not_within entry that does not contain the term must fail"
+    print("  Alias and boundary lint enforced.")
+
+
 if __name__ == "__main__":
     try:
         lexicon = test_json_loading()
         test_replenish_and_promote()
         test_promote_refuses_key_collision()
+        test_lint_aliases_and_boundaries()
         print("\nALL TESTS PASSED!")
     except Exception as e:
         print(f"\nTEST FAILED: {e}")

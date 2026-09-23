@@ -45,11 +45,11 @@ def _count_anchors(text):
     return len(re.findall(r'<!--\s*term:', text)), len(re.findall(r'<!--\s*anchor:', text))
 
 
-def reanchor_body(body, lexicon):
+def reanchor_body(body, lexicon, exclude_keys=None):
     """Returns the body with anchors stripped and re-applied from lexicon."""
     tmp = HugoPost()
     tmp.body = body
-    TerminologyInjector().apply_lexicon(tmp, lexicon, mode="anchor_first")
+    TerminologyInjector().apply_lexicon(tmp, lexicon, mode="anchor_first", exclude_keys=exclude_keys)
     return tmp.body
 
 
@@ -115,9 +115,12 @@ def process_post(path, lexicon, tag_anchorer):
         log_error(f"  [SKIP] No parseable front matter: {os.path.relpath(path, config.POSTS_DIR)}")
         return None
 
+    excluded = set(post.metadata.get("term_exclude") or ())
     new_entries, tag_stats = tag_anchorer.reanchor_entries(post.tag_entries)
+    kept = [e for e in new_entries if e[1] not in excluded]
+    tag_stats["dropped"] += len(new_entries) - len(kept)
     if post.tag_entries is not None:
-        post.set_tag_entries(new_entries)
+        post.set_tag_entries(kept)
 
     # Published scalar front matter is corrected, never anchored. Correction rewrites a
     # known variant to its canonical form and leaves nothing behind; anchoring would put
@@ -136,7 +139,7 @@ def process_post(path, lexicon, tag_anchorer):
 
     before_t, before_a = _count_anchors(post.body)
     body = post.body
-    new_body = reanchor_body(body, lexicon)
+    new_body = reanchor_body(body, lexicon, excluded)
     after_t, after_a = _count_anchors(new_body)
     post.body = new_body
 

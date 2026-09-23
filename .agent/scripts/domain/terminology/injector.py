@@ -21,7 +21,7 @@ _RM_ANCHOR_BLOCK = re.compile(
 # first cell and run to a marker near the row's end, taking every cell between them —
 # which is exactly what collapsed one row to `| **3. 種子規格。 |`.
 _ANCHOR_TAIL = (r'(?:(?:[ \t]*([\(（][^()（）|\r\n]*[\)）]))?'
-                r'[ \t]*<!--\s*(?:anchor|term):.*?\s*-->)?')
+                r'[ \t]*<!--\s*(?:anchor|term):([A-Za-z0-9_]*).*?\s*-->)?')
 
 # Orphan sweep: terms removed from the lexicon leave a marker the term-driven cleanup
 # can no longer find. Their gloss is machine output and always plain ASCII, so keep the
@@ -33,6 +33,22 @@ _ORPHAN_SWEEP = re.compile(r"(?:[ \t]*[\(（][A-Za-z0-9 ,./&'\-]*[\)）])?"
 # removed term and the bold it carried is first-occurrence residue, as for L3 demotion.
 _ORPHAN_BOLD = re.compile(r"\*\*([^*\n]+?)\*\*(?=(?:[ \t]*[\(（][A-Za-z0-9 ,./&'\-]*[\)）])?"
                           r'[ \t]*<!--\s*(?:anchor|term):)')
+
+# The first-use emphasis **術語** used to be emitted inside an author's bold span,
+# splitting it: **那項能力是碰得到的** became **那項能力是**碰得到**（Reachable） <!-- term -->的**.
+# Bold does not nest in Markdown, so a **…** that opens at odd parity on its line is
+# always that machine split; unwrapping it restores the author's span.
+_NESTED_ANCHOR = re.compile(r'\*\*([^*\n]+?)\*\*([ \t]*[\(（][^\)）\n]*[\)）])?'
+                            r'([ \t]*<!--\s*term:[A-Za-z0-9_]+\s*-->)')
+
+
+def _unwrap_nested_anchors(text):
+    def fix(m):
+        head = m.string[:m.start()].rsplit('\n', 1)[-1]
+        if head.count('**') % 2 == 1:
+            return m.group(1) + (m.group(2) or "") + m.group(3)
+        return m.group(0)
+    return _NESTED_ANCHOR.sub(fix, text)
 
 
 _MERMAID_FENCE = re.compile(r'^```mermaid[^\n]*\n[\s\S]*?^```', re.MULTILINE)
@@ -51,23 +67,29 @@ def correct_mermaid_fences(body, lexicon):
         body)
 
 
-def _build_deanchor(lexicon):
+def _build_deanchor(lexicon, exclude_keys=frozenset()):
     """Returns (pattern, cleaner) stripping a machine anchor back to its bare term."""
     sorted_zh = sorted(lexicon.mapping.keys(), key=len, reverse=True)
     pattern = re.compile(
         r'([\*_]{1,2})?(' + '|'.join(re.escape(z) for z in sorted_zh) + r')([\*_]{1,2})?'
         + _ANCHOR_TAIL)
 
+    key_ens = {k: lexicon.zh_to_ens.get(z, []) for z, k in lexicon.keys.items()}
+
     def cleaner(m):
         pre, zh, post_val = m.group(1) or "", m.group(2), m.group(3) or ""
         paren = m.group(4) or ""
-        aliases = {a.strip().lower() for a in lexicon.zh_to_ens.get(zh, []) if a}
+        # The marker names the term that wrote the gloss. When a word moved to another
+        # key (人工覆核: HumanInTheLoop -> HumanReview) the gloss is the old term's.
+        ens = lexicon.zh_to_ens.get(zh, []) + key_ens.get(m.group(5) or "", [])
+        aliases = {a.strip().lower() for a in ens if a}
         kept = "" if paren and paren[1:-1].strip().lower() in aliases else paren
         # A standalone **L3term** is orphan first-occurrence bold left when the term was
         # demoted to level 3 (IGNORE_LIST): level-3 terms are never anchored, so that
         # emphasis is residue. Symmetric markers only — one-sided means it is the edge of
         # a longer author bold span.
-        if pre and pre == post_val and lexicon.levels.get(zh, 1) >= 3:
+        if pre and pre == post_val and (lexicon.levels.get(zh, 1) >= 3
+                                        or lexicon.keys.get(zh) in exclude_keys):
             return zh + kept
         return f"{pre}{zh}{post_val}{kept}"
 
@@ -77,14 +99,16 @@ def _build_deanchor(lexicon):
 class TerminologyInjector:
     """Handles terminology anchoring and glossary injection into post text."""
     
-    def apply_lexicon(self, post, lexicon, mode="anchor_first"):
+    def apply_lexicon(self, post, lexicon, mode="anchor_first", exclude_keys=None):
         """
         Applies terminology rules from a Lexicon to the post body.
         Handles paragraph-based processing, code block protection, and anchor injection.
-        Modifies post.body directly.
+        Modifies post.body directly. Terms whose key is in exclude_keys are de-anchored
+        and not re-anchored: the post's own record that the word means something else.
         """
         if not post.body:
             return False
+        exclude_keys = set(exclude_keys or ())
 
         # Globally remove standalone terminology definition boxes (including mutated/legacy ones)
         # to ensure perfect idempotency before processing paragraphs. Each generated box line
@@ -151,7 +175,8 @@ class TerminologyInjector:
 
         # If in anchor_first mode, first perform a complete cleanup on protected body to ensure idempotency
         if mode == "anchor_first":
-            cleanup_pattern, cleaner = _build_deanchor(lexicon)
+            protected_body = _unwrap_nested_anchors(protected_body)
+            cleanup_pattern, cleaner = _build_deanchor(lexicon, exclude_keys)
             protected_body = cleanup_pattern.sub(cleaner, protected_body)
             protected_body = _ORPHAN_BOLD.sub(r'\1', protected_body)
             protected_body = _ORPHAN_SWEEP.sub('', protected_body)
@@ -171,7 +196,7 @@ class TerminologyInjector:
                 processed_blocks.append(block)
                 continue
             
-            processed_block, newly_anchored = self._process_paragraph(block, lexicon, mode, found_globally, first_use_terms)
+            processed_block, newly_anchored = self._process_paragraph(block, lexicon, mode, found_globally, first_use_terms, exclude_keys)
             processed_blocks.append(processed_block)
 
         # 4. Preview Area: Only forbidden replacements, no anchors
@@ -200,7 +225,7 @@ class TerminologyInjector:
         post.body = new_body
         return True
 
-    def _process_paragraph(self, block, lexicon, mode, found_globally, first_use_terms):
+    def _process_paragraph(self, block, lexicon, mode, found_globally, first_use_terms, exclude_keys=frozenset()):
         """Internal helper to process a single paragraph using lexicon regex."""
         if not lexicon.terms_regex and mode != "remove_all":
             return block, []
@@ -280,7 +305,7 @@ class TerminologyInjector:
             # only lets them greedily consume the ** of an ADJACENT term's bold —
             # "發現**受污染**" → 發現 eats the "**", the real term re-bolds →
             # "發現****受污染**" — which breaks reanchor idempotency. Exclude them.
-            if lexicon.levels.get(zh, 1) < 3:
+            if lexicon.levels.get(zh, 1) < 3 and lexicon.keys.get(zh) not in exclude_keys:
                 patterns.append(re.escape(zh))
                 for en in lexicon.zh_to_ens.get(zh, []):
                     if len(en) > 3 or en.lower() == "react":
@@ -289,18 +314,16 @@ class TerminologyInjector:
                         # was the root cause of systematic English-word corruption on
                         # every reanchor.
                         #
-                        # The CJK zh above gets NO equivalent guard, and that is a known
-                        # gap rather than a safe asymmetry: 量化 matches inside 輕量化,
-                        # 技術債 inside 技術債務, 導讀 inside 誤導讀者. Chinese has no
-                        # orthographic word boundary, so \b is unavailable and a correct
-                        # guard would need segmentation or a longest-match exclusion set.
-                        # Neither exists here, so the mitigation is a review rule, not
-                        # code: see agent-operating-guideline.md §6 — a demotion decision
-                        # must inspect match POSITIONS, not just definitions, because the
-                        # true-positive rate is not mechanically decidable.
+                        # The CJK zh above has no \b; its boundary is the term's
+                        # `not_within` list, checked per match in replacer() through
+                        # Lexicon.is_shadowed. That list is written by a human who read
+                        # the hit positions (agent-operating-guideline.md §6).
                         patterns.append(r'\b' + re.escape(en) + r'\b')
         
         patterns.sort(key=len, reverse=True)
+        if not patterns:
+            # An empty alternation matches the empty string at every position.
+            return _restore_protected(text), []
         
         # The trailing parenthetical is CAPTURED, not blindly eaten. It used to be
         # consumed and replaced by the canonical gloss whatever it held, so everything
@@ -321,6 +344,15 @@ class TerminologyInjector:
             
             # Resolve to primary ZH
             zh = lexicon.en_to_zh.get(matched_text.lower(), matched_text)
+            src = match.string
+
+            if matched_text == zh and lexicon.is_shadowed(zh, src, match.start(2)):
+                return match.group(0)
+            # Inside an author's bold span the text is already bold, and Markdown bold
+            # does not nest: adding **…** there splits the author's span. A `pre` at odd
+            # parity is that span's closer, so the term itself is outside it.
+            line_head = src[:match.start()].rsplit('\n', 1)[-1]
+            in_bold = line_head.count('**') % 2 == 1 and not match.group(1)
 
             # An EN alias carries \b, which stops a match INSIDE a word but not one
             # inside a longer English PHRASE. 泛化有效性（Generalization Viability）
@@ -329,7 +361,6 @@ class TerminologyInjector:
             # on its own, so an adjacent English word means leave the author's text
             # exactly as it is — the anchor's job never includes editing prose.
             if matched_text != zh:
-                src = match.string
                 if (re.match(r'[ \t]+[A-Za-z]', src[match.end(2):])
                         or re.search(r'[A-Za-z][ \t]+$', src[:match.start(2)])):
                     return match.group(0)
@@ -343,12 +374,13 @@ class TerminologyInjector:
                 if re.search(r'[\(（][^\)）]*$', head):
                     return match.group(0)
             
-            is_first = zh not in found_globally
             level = lexicon.levels.get(zh, 1)
             en_primary = lexicon.mapping.get(zh, "Unknown")
             key_val = lexicon.keys.get(zh) if hasattr(lexicon, 'keys') else zh
             if not key_val:
                 key_val = zh
+            # One definition per term: an alias and its canonical form share the key.
+            is_first = key_val not in found_globally
                 
             clean_zh = re.sub(r'\s*[\(（].*?[\)）]\s*', '', zh).strip()
             clean_en = re.sub(r'^[\(（]+|[\)）]+$', '', en_primary.strip()) if en_primary else ""
@@ -382,7 +414,7 @@ class TerminologyInjector:
             symmetric = pre == post_val
 
             if mode == "anchor_first" and is_first and level < 3:
-                found_globally.add(zh)
+                found_globally.add(key_val)
                 first_use_terms.append(zh)
                 newly_anchored_info.append({
                     "zh": clean_zh, 
@@ -391,6 +423,8 @@ class TerminologyInjector:
                     "key": key_val
                 })
                 gloss = authors_paren or f"（{clean_en}）"
+                if in_bold:
+                    return f"{clean_zh}{gloss} <!-- term:{key_val} -->{post_val}{tail_emph}"
                 if symmetric:
                     return f"**{clean_zh}**{gloss} <!-- term:{key_val} -->{tail_emph}"
                 return f"{pre}{clean_zh}{gloss} <!-- term:{key_val} -->{post_val}{tail_emph}"

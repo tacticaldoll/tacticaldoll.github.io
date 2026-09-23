@@ -17,6 +17,8 @@
 import os
 import sys
 import io
+import json
+import tempfile
 
 # UTF-8 stdout so Traditional-Chinese fixtures print correctly on Windows consoles.
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
@@ -33,8 +35,19 @@ for p in (SCRIPTS_ROOT, LEXICON_CORE_SCRIPTS):
 from lexicon import Lexicon
 from domain.post.post import HugoPost
 from domain.terminology.injector import TerminologyInjector
+from domain.terminology.tag_anchor import TagAnchorer
 
 LEXICON = Lexicon()
+
+# Hermetic fixture for the boundary/alias contracts: synthetic strings that no live
+# term contains, so the assertions cannot depend on the state of the real lexicon.
+_FIXTURE = {"FooBar": {"zh": "甲乙丙", "en": ["Foo Bar"], "description": "測試定義。",
+                       "forbidden": [], "level": 1, "aliases": ["丁戊己"],
+                       "not_within": ["庚甲乙丙"]}}
+with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as _f:
+    json.dump(_FIXTURE, _f, ensure_ascii=False)
+FIXTURE = Lexicon(json_path=_f.name, include_draft=False)
+os.unlink(_f.name)
 
 
 def _pick_anchorable_term():
@@ -56,10 +69,11 @@ def _pick_l3_term():
     raise RuntimeError("No clean level>=3 term available to drive the bold-strip test.")
 
 
-def _reanchor(body):
+def _reanchor(body, lexicon=None, exclude_keys=None):
     post = HugoPost()
     post.body = body
-    TerminologyInjector().apply_lexicon(post, LEXICON, mode="anchor_first")
+    TerminologyInjector().apply_lexicon(post, lexicon or LEXICON, mode="anchor_first",
+                                        exclude_keys=exclude_keys)
     return post.body
 
 
@@ -300,6 +314,60 @@ def test_gap10_mermaid_labels_are_corrected():
     )
 
 
+# --- Gap 11: a term inside a declared longer word is not the term -------------
+# Chinese has no word boundary, so 篩選 anchored inside 政策篩選 and 量化 inside
+# 輕量化. `not_within` is the human-written boundary; a standalone use still anchors.
+def test_gap11_not_within_is_a_boundary():
+    out = _reanchor("前段提到庚甲乙丙這個詞。\n\n後段才談甲乙丙。\n", FIXTURE)
+    assert "庚甲乙丙這個詞" in out, "Gap 11: a hit inside a not_within word was anchored."
+    assert "**甲乙丙**（Foo Bar） <!-- term:FooBar -->" in out, (
+        "Gap 11: the standalone occurrence must still take the first anchor.")
+    assert FIXTURE.find_hits("甲乙丙", "庚甲乙丙與甲乙丙") == [5], \
+        "Gap 11: find_hits must skip the shadowed occurrence and keep the standalone one."
+
+
+# --- Gap 12: anchoring never splits an author's bold span ---------------------
+# **那項能力是碰得到的** came out as **那項能力是**碰得到**（Reachable） <!-- term -->的**:
+# the first-use emphasis was nested in bold, which Markdown cannot nest.
+def test_gap12_author_bold_span_is_not_split():
+    out = _reanchor("**壬癸甲乙丙是作者強調的句子。**\n", FIXTURE)
+    assert "**壬癸甲乙丙（Foo Bar） <!-- term:FooBar -->是作者強調的句子。**" in out, (
+        "Gap 12: the term must anchor inside the span without adding emphasis.")
+    assert all(ln.count("**") % 2 == 0 for ln in out.splitlines()), "Gap 12: bold was unbalanced."
+    assert _reanchor(out, FIXTURE) == out, "Gap 12: in-bold anchoring is not idempotent."
+
+
+# --- Gap 13: the split-bold shape already published is folded back ------------
+def test_gap13_split_bold_is_repaired():
+    broken = ("**壬癸**甲乙丙**（Foo Bar） <!-- term:FooBar -->的，不是**丁戊己** <!-- term:FooBar -->的。**\n"
+              "\n> [!IMPORTANT]\n> **甲乙丙** <!-- term:FooBar --> (Foo Bar): 測試定義。 <!-- anchor:FooBar -->\n")
+    out = _reanchor(broken, FIXTURE)
+    first = out.splitlines()[0]
+    assert first.startswith("**壬癸甲乙丙（Foo Bar） <!-- term:FooBar -->的，不是丁戊己") and first.count("**") == 2, (
+        "Gap 13: the split author span was not restored to a single bold span.")
+    assert _reanchor(out, FIXTURE) == out, "Gap 13: the repair is not idempotent."
+
+
+# --- Gap 14: a post's term_exclude de-anchors and keeps it de-anchored --------
+def test_gap14_excluded_key_is_not_anchored():
+    once = _reanchor("正文提到甲乙丙。\n", FIXTURE)
+    assert "<!-- term:FooBar -->" in once, "fixture invalid: the term must anchor by default"
+    out = _reanchor(once, FIXTURE, exclude_keys={"FooBar"})
+    assert "FooBar" not in out and "甲乙丙" in out and "**甲乙丙**" not in out, (
+        "Gap 14: an excluded key kept its anchor, definition box or first-use bold.")
+
+
+# --- Gap 15: an alias anchors under the canonical key, one definition per key --
+def test_gap15_alias_shares_the_key():
+    out = _reanchor("前段提到丁戊己。\n\n後段提到甲乙丙。\n", FIXTURE)
+    assert "**丁戊己**（Foo Bar） <!-- term:FooBar -->" in out, (
+        "Gap 15: the alias must anchor as written, under the canonical key.")
+    assert out.count("<!-- anchor:FooBar -->") == 1, "Gap 15: one term must get one definition box."
+    assert FIXTURE.lookup("丁戊己")["zh"] == "甲乙丙", "Gap 15: lookup must resolve an alias to canonical."
+    assert TagAnchorer(FIXTURE).reanchor_entry("丁戊己", "FooBar") == ("甲乙丙", "FooBar"), (
+        "Gap 15: a tag displays the canonical zh, never an alias.")
+
+
 TESTS = [
     ("Gap 1  author [!IMPORTANT] survives", test_gap1_author_important_block_survives),
     ("Gap 2  orphan anchor cleaned",        test_gap2_orphan_anchor_of_removed_term_is_cleaned),
@@ -311,6 +379,11 @@ TESTS = [
     ("Gap 8  math not anchored",            test_gap8_math_is_not_anchored),
     ("Gap 9  inline code not anchored",     test_gap9_inline_code_is_not_anchored),
     ("Gap 10 mermaid labels corrected",     test_gap10_mermaid_labels_are_corrected),
+    ("Gap 11 not_within boundary",          test_gap11_not_within_is_a_boundary),
+    ("Gap 12 author bold span kept",        test_gap12_author_bold_span_is_not_split),
+    ("Gap 13 split bold repaired",          test_gap13_split_bold_is_repaired),
+    ("Gap 14 term_exclude honored",         test_gap14_excluded_key_is_not_anchored),
+    ("Gap 15 alias shares key",             test_gap15_alias_shares_the_key),
     ("control idempotency",                 test_control_idempotent_on_clean_body),
 ]
 

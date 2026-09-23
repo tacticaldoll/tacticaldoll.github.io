@@ -36,6 +36,7 @@ template: |
     - **純化與離手原則**：確保術語為「純淨名詞」（無過渡贅字）。若有贅字請直接在 `handoff.terms.json` 中修改 `zh` 欄位為純淨名詞，**嚴禁修改原始的 `.md` 報告檔案**。只要純化的名詞是原文字串的子字串即可通過。
   - `[ ]` **Task 10: 確認精煉通關 (Pass Quality Gate)**
     - 再次執行 `python3 .agent/scripts/workflows/generate-article/refine_handoff.py <session_id>`，確認無 `PENDING terms need description` 與 `0 locked terms` 警告，全部術語鎖定成功。
+    - **既有術語命中判讀**：逐條閱讀 `handoff.posts.json` 各篇 `term_review` 的前文，將 `disposition` 填為「錯定」或「排除」（見 workflow 0-E），直到不再印出 `existing-term hits need a disposition`。
   - `[ ]` **Task 11: 篩選術語標籤 (Tag Filtering)**
     - 依據 1+1+6 協議標籤為每篇文章配置 `tags`（文體分類 + 核心領域 + 最多 6 個技術細節）。
     - **NLP 宣告領域標籤**：依報告全文巨觀問題域於 `domain_tag` 宣告合法領域分類（taxonomy 封閉枚舉之一）或留空 `""`，受 Linter 閉聯集與雙軌證據檢驗。

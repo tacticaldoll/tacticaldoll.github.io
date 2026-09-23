@@ -107,6 +107,17 @@ class KBAuditor:
                     errors.append(f"[{rel_path}] Header '## {h_clean}' should be "
                                   f"normalized to '## {standard}' per taxonomy.json")
 
+            # 3. A term_exclude naming no live key excludes nothing, so the post's
+            # recorded judgment has silently lapsed (the term was renamed or removed).
+            fm = re.match(r'\+\+\+(.*?)\n\+\+\+', content, re.DOTALL)
+            ex = re.search(r'^term_exclude[ \t]*=[ \t]*\[(.*?)\]', fm.group(1) if fm else "",
+                           re.MULTILINE | re.DOTALL)
+            live = set(self.lexicon.keys.values())
+            for key in re.findall(r'"([^"]+)"', ex.group(1) if ex else ""):
+                if key not in live:
+                    errors.append(f"[{rel_path}] term_exclude names '{key}', which is not a "
+                                  f"term key in terminology.json")
+
         return errors
 
     def _check_unit_suites(self):
