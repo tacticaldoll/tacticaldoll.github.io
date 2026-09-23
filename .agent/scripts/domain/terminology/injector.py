@@ -29,6 +29,27 @@ _ANCHOR_TAIL = (r'(?:(?:[ \t]*([\(（][^()（）|\r\n]*[\)）]))?'
 _ORPHAN_SWEEP = re.compile(r"(?:[ \t]*[\(（][A-Za-z0-9 ,./&'\-]*[\)）])?"
                            r'[ \t]*<!--\s*(?:anchor|term):.*?-->')
 
+# Runs after the term-driven cleanup, so a marker still here belongs to a renamed or
+# removed term and the bold it carried is first-occurrence residue, as for L3 demotion.
+_ORPHAN_BOLD = re.compile(r"\*\*([^*\n]+?)\*\*(?=(?:[ \t]*[\(（][A-Za-z0-9 ,./&'\-]*[\)）])?"
+                          r'[ \t]*<!--\s*(?:anchor|term):)')
+
+
+_MERMAID_FENCE = re.compile(r'^```mermaid[^\n]*\n[\s\S]*?^```', re.MULTILINE)
+
+
+def correct_mermaid_fences(body, lexicon):
+    """Corrects variant spellings inside mermaid fences, whose labels render as prose.
+
+    Every other fence stays verbatim, and nothing is anchored here: a marker inside a
+    diagram would render as literal text.
+    """
+    if not body or not lexicon.forbidden_regex:
+        return body
+    return _MERMAID_FENCE.sub(
+        lambda m: lexicon.forbidden_regex.sub(lambda f: lexicon.forbidden[f.group(0)], m.group(0)),
+        body)
+
 
 def _build_deanchor(lexicon):
     """Returns (pattern, cleaner) stripping a machine anchor back to its bare term."""
@@ -70,6 +91,7 @@ class TerminologyInjector:
         # carries a <!-- term:/anchor: --> marker; requiring it prevents deleting author-written
         # [!IMPORTANT] callouts that merely start with bold text.
         body = _RM_ANCHOR_BLOCK.sub('', post.body)
+        body = correct_mermaid_fences(body, lexicon)
 
         # 1. Temporarily extract/protect code blocks
         code_blocks = []
@@ -131,6 +153,7 @@ class TerminologyInjector:
         if mode == "anchor_first":
             cleanup_pattern, cleaner = _build_deanchor(lexicon)
             protected_body = cleanup_pattern.sub(cleaner, protected_body)
+            protected_body = _ORPHAN_BOLD.sub(r'\1', protected_body)
             protected_body = _ORPHAN_SWEEP.sub('', protected_body)
 
         # 2. Split by <!--more--> to protect preview area from heavy anchoring

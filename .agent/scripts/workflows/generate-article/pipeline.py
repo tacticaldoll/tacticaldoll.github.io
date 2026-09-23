@@ -219,7 +219,7 @@ class ProductionPipeline:
             
             # 1.5. Inject TOML Frontmatter Metadata
             post = (PostAssembler(post)
-                    .with_base_meta(post_meta, handoff.get("metadata"))
+                    .with_base_meta(post_meta, handoff.get("metadata"), lexicon)
                     .with_author(os.path.join(config.ROOT_DIR, "hugo.toml"))
                     .with_tags(post_meta, lexicon)
                     .with_telemetry(post_meta)

@@ -3,7 +3,7 @@
 
 from domain.post.protector import BlockProtector
 from domain.post.formatter import PostFormatter
-from domain.terminology.injector import TerminologyInjector
+from domain.terminology.injector import TerminologyInjector, correct_mermaid_fences
 from domain.post.post import HugoPost
 
 class PostOrchestrator:
@@ -14,6 +14,10 @@ class PostOrchestrator:
         protector = BlockProtector()
         formatter = PostFormatter()
         
+        # 0. Fences are protected below, so mermaid labels are corrected before extraction
+        if lexicon:
+            post.body = correct_mermaid_fences(post.body, lexicon)
+
         # 1. Protection Phase
         protected_content, protected_blocks = protector.extract(post.body)
 

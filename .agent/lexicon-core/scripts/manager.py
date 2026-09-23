@@ -113,7 +113,15 @@ class LexiconManager:
         core_data = self._migrate_to_dict(core_raw)
         
         promoted = 0
+        collisions = {}
         for key, item in draft_data.items():
+             existing = core_data.get(key)
+             if existing and existing.get("zh") != item.get("zh"):
+                 # The key is the identity; promoting would silently overwrite the core term.
+                 log_error(f"  Key collision: draft '{item.get('zh')}' and core "
+                           f"'{existing.get('zh')}' both key to '{key}'. Left in draft.")
+                 collisions[key] = item
+                 continue
              item.pop("source_session", None)
              core_data[key] = item
              promoted += 1
@@ -131,9 +139,9 @@ class LexiconManager:
             with open(self.core_path, 'w', encoding='utf-8') as f:
                 json.dump(core_data, f, indent=2, ensure_ascii=False)
                 
-            # Clear draft
+            # Clear draft, keeping collisions so the non-empty draft blocks submission
             with open(self.draft_path, 'w', encoding='utf-8') as f:
-                json.dump({}, f, indent=2)
+                json.dump(collisions, f, indent=2, ensure_ascii=False)
                 
             log_info(f"SUCCESS: Promoted {promoted} terms to Core SSOT.")
             self.lexicon.load(self.core_path) # Refresh lexicon

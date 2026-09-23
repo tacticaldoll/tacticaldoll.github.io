@@ -91,10 +91,36 @@ def test_replenish_and_promote():
         print("  Refined draft promoted successfully to core.")
 
 
+def test_promote_refuses_key_collision():
+    """A draft whose English name keys onto an existing core term with a different zh
+    (人類在迴路中 vs 人在迴路, both HumanInTheLoop) must not overwrite that term."""
+    print("Testing Promote Key Collision...")
+    with tempfile.TemporaryDirectory() as tmp:
+        core_path = os.path.join(tmp, "terminology.json")
+        draft_path = os.path.join(tmp, "terminology.draft.json")
+        shutil.copyfile(TERMINOLOGY_JSON, core_path)
+        core = _load(core_path)
+        key, original = next(iter(core.items()))
+        _dump(draft_path, {key: {
+            "zh": original["zh"] + "變體", "en": original["en"],
+            "description": "測試用術語，用於驗證鍵衝突不會覆蓋核心術語。",
+            "forbidden": [], "level": 2,
+        }})
+
+        assert LexiconManager(db_dir=tmp).promote_all_drafts() == 0, \
+            "A colliding draft must not be promoted"
+        assert _load(core_path)[key]["zh"] == original["zh"], \
+            "Promotion overwrote an existing core term that shares its key"
+        assert key in _load(draft_path), \
+            "The colliding draft must stay in the draft so the empty-draft gate blocks submission"
+        print("  Colliding draft left in draft; core term intact.")
+
+
 if __name__ == "__main__":
     try:
         lexicon = test_json_loading()
         test_replenish_and_promote()
+        test_promote_refuses_key_collision()
         print("\nALL TESTS PASSED!")
     except Exception as e:
         print(f"\nTEST FAILED: {e}")

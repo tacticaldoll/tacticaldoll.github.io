@@ -22,10 +22,14 @@ class PostAssembler:
         self._series = None
         self._is_series = False
 
-    def with_base_meta(self, post_meta, handoff_meta=None):
+    def with_base_meta(self, post_meta, handoff_meta=None, lexicon=None):
         """Assembles Title, Description, Date, and Draft status."""
         self._title = post_meta.get("title", self.post.metadata.get("title", "Untitled"))
         self._desc = post_meta.get("description", self.post.metadata.get("description", ""))
+        # NLP writes both after prepare_handoff's correction ran, so correct them again here.
+        if lexicon:
+            self._title = lexicon.replace_forbidden(self._title)
+            self._desc = lexicon.replace_forbidden(self._desc)
         
         # Date resolution
         date_str = post_meta.get("date")

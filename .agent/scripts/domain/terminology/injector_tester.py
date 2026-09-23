@@ -104,6 +104,10 @@ def test_gap2_orphan_anchor_of_removed_term_is_cleaned():
         "Gap 2: orphan inline anchor of a removed term survived "
         "(cleanup is driven by the current term list instead of the anchor marker)."
     )
+    assert f"**{orphan_zh}**" not in out and orphan_zh in out, (
+        "Gap 2: the orphan's first-occurrence bold survived de-anchoring; like L3 "
+        "demotion, a term that is no longer anchored must not stay emphasised."
+    )
 
 
 # --- Gap 3': the summary/preview area must not be anchored --------------------
@@ -280,6 +284,22 @@ def test_gap9_inline_code_is_not_anchored():
     )
 
 
+# --- Gap 10: variant spellings in mermaid labels must be corrected ------------
+# Fences are protected wholesale, so a mermaid label kept its regional variant
+# (惡意代碼) while the surrounding prose was corrected. Labels render as prose; other
+# fences quote code and must stay verbatim, and no marker may enter either.
+def test_gap10_mermaid_labels_are_corrected():
+    variant, canonical = next(iter(LEXICON.forbidden.items()))
+    mermaid = f"```mermaid\nflowchart TD\n    A[\"{variant}節點\"] --> B\n```"
+    code = f"```text\n{variant}逐字輸出\n```"
+    out = _reanchor(f"正文。\n\n{mermaid}\n\n{code}\n")
+    assert f"{canonical}節點" in out, "Gap 10: a variant spelling survived inside a mermaid label."
+    assert code in out, "Gap 10: a non-mermaid fence was rewritten; only mermaid labels are prose."
+    assert "<!-- term:" not in out.split("```mermaid", 1)[1].split("```", 1)[0], (
+        "Gap 10: an anchor marker was injected into a mermaid diagram."
+    )
+
+
 TESTS = [
     ("Gap 1  author [!IMPORTANT] survives", test_gap1_author_important_block_survives),
     ("Gap 2  orphan anchor cleaned",        test_gap2_orphan_anchor_of_removed_term_is_cleaned),
@@ -290,6 +310,7 @@ TESTS = [
     ("Gap 7  idempotent w/ author block",   test_gap7_idempotent_with_author_definition_block),
     ("Gap 8  math not anchored",            test_gap8_math_is_not_anchored),
     ("Gap 9  inline code not anchored",     test_gap9_inline_code_is_not_anchored),
+    ("Gap 10 mermaid labels corrected",     test_gap10_mermaid_labels_are_corrected),
     ("control idempotency",                 test_control_idempotent_on_clean_body),
 ]
 
