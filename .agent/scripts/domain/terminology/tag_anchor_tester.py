@@ -116,7 +116,28 @@ def test_no_entries_untouched():
     assert kept == [] and stats == {"refreshed": 0, "dropped": 0}
 
 
+# --- a tech tag shows the form its term takes in the prose, or is dropped -----
+# GUIDE's rule that a tag's term occurs in the post was task-list prose only; 44 published
+# tags had drifted from it. body_form is the single rule publish, reanchor and audit use.
+def test_body_form_follows_prose():
+    import json, tempfile
+    fx = {"FooBar": {"zh": "甲乙丙", "en": ["Foo Bar"], "description": "測試定義。",
+                     "forbidden": [], "level": 1, "aliases": ["丁戊己"], "not_within": ["庚甲乙丙"]}}
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
+        json.dump(fx, f, ensure_ascii=False)
+    a = TagAnchorer(Lexicon(json_path=f.name, include_draft=False))
+    os.unlink(f.name)
+    assert a.body_form("FooBar", "正文談甲乙丙。") == "甲乙丙", "canonical in prose -> canonical"
+    assert a.body_form("FooBar", "正文談丁戊己。") == "丁戊己", "only the alias in prose -> alias"
+    assert a.body_form("FooBar", "正文只有庚甲乙丙。") is None, "a shadowed hit is not the term"
+    assert a.body_form("FooBar", "正文談甲乙丙。", {"FooBar"}) is None, "an excluded key is dropped"
+    boxed = "正文無關。\n\n> [!IMPORTANT]\n> **別的** <!-- term:X --> (X): 提到甲乙丙。 <!-- anchor:X -->\n"
+    from domain.terminology.tag_anchor import prose_of
+    assert a.body_form("FooBar", prose_of(boxed)) is None, "a definition box does not license a tag"
+
+
 TESTS = [
+    ("body form follows prose",        test_body_form_follows_prose),
     ("genre display refreshed by key", test_genre_display_refreshed_by_key),
     ("tech term refreshed by key",     test_tech_term_refreshed_by_key),
     ("downgraded term dropped",        test_downgraded_term_dropped),

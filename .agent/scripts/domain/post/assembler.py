@@ -201,7 +201,8 @@ class PostAssembler:
         clean_display = re.sub(r'\s*[(（].*?[)）]', '', domain_tag).strip()
         return (clean_display, fallback_key)
 
-    def _apply_tag_limits(self, final_tags, tech_tags, anchorer, lexicon, dedupe_against):
+    def _apply_tag_limits(self, final_tags, tech_tags, anchorer, lexicon, dedupe_against,
+                          prose="", exclude_keys=(), report_losses=True):
         """Appends candidates to final_tags within TAG_SCAN_LIMIT and TAG_CAP, naming
         every candidate the limits discard."""
         # Both limits discard candidates, and both used to do it in silence: a post
@@ -236,6 +237,12 @@ class PostAssembler:
             if not anchored[1]:
                 raise ValueError(f"Tag '{t}' generated an empty key. An English translation is required.")
 
+            form = anchorer.body_form(anchored[1], prose, exclude_keys)
+            if form is None:
+                dropped.append(f"{t} (its term does not occur in the post body)")
+                continue
+            anchored = (form, anchored[1])
+
             clean_anchored = self._get_clean_tag(anchored[0])
             if clean_anchored in dedupe_against:
                 continue
@@ -251,13 +258,13 @@ class PostAssembler:
                                    f"({', '.join(remaining)})")
                 break
 
-        if dropped:
+        if dropped and report_losses:
             log_error(f"  [TAGS DROPPED] {self._title}: " + "; ".join(dropped))
         return final_tags
 
     def with_tags(self, post_meta, lexicon):
         """Synthesizes Genre, Domain, user-defined tech tags, and auto-harvests tags from body."""
-        from domain.terminology.tag_anchor import TagAnchorer
+        from domain.terminology.tag_anchor import TagAnchorer, prose_of
         anchorer = TagAnchorer(lexicon)
         # Read the body once, so the fallback classification and the term harvest cannot
         # end up reading different text.
@@ -277,7 +284,8 @@ class PostAssembler:
             final_tags.append(anchored_domain)
 
         self._tags = self._apply_tag_limits(final_tags, tech_tags, anchorer, lexicon,
-                                            dedupe_against)
+                                            dedupe_against, prose_of(body_content),
+                                            set(post_meta.get("term_exclude") or ()))
         return self
 
     def with_telemetry(self, post_meta):

@@ -29,7 +29,8 @@ from infra.utils import log_info, log_error
 from lexicon import Lexicon
 from domain.post.post import HugoPost
 from domain.terminology.injector import TerminologyInjector
-from domain.terminology.tag_anchor import TagAnchorer
+from domain.terminology.tag_anchor import TagAnchorer, prose_of
+from domain.post.assembler import PostAssembler
 
 REPORT_PATH = os.path.join(config.SCRATCH_DIR, "reanchor-report.md")
 
@@ -38,7 +39,7 @@ REPORT_PATH = os.path.join(config.SCRATCH_DIR, "reanchor-report.md")
 # the report's flagged filter, once the run log, which then announced a warning
 # count that was really the number of corrected front matter fields.
 Row = namedtuple("Row", "slug term_delta anchor_delta tag_refreshed tag_dropped "
-                        "fm_corrected warnings")
+                        "tag_added fm_corrected warnings")
 
 
 def _count_anchors(text):
@@ -116,11 +117,6 @@ def process_post(path, lexicon, tag_anchorer):
         return None
 
     excluded = set(post.metadata.get("term_exclude") or ())
-    new_entries, tag_stats = tag_anchorer.reanchor_entries(post.tag_entries)
-    kept = [e for e in new_entries if e[1] not in excluded]
-    tag_stats["dropped"] += len(new_entries) - len(kept)
-    if post.tag_entries is not None:
-        post.set_tag_entries(kept)
 
     # Published scalar front matter is corrected, never anchored. Correction rewrites a
     # known variant to its canonical form and leaves nothing behind; anchoring would put
@@ -143,6 +139,30 @@ def process_post(path, lexicon, tag_anchorer):
     after_t, after_a = _count_anchors(new_body)
     post.body = new_body
 
+    # Tags follow the publish rule exactly, through the assembler's own methods: the
+    # post's tech tags stand first as the curated set, body terms fill the free slots,
+    # and every tag must show the form its term takes in the prose. Otherwise a tag set
+    # could only ever decay after publication while the lexicon grows.
+    tag_stats = {"refreshed": 0, "dropped": 0, "added": 0}
+    if post.tag_entries is not None:
+        original_tags = dict((k, d) for d, k in post.tag_entries)
+        refreshed, stats = tag_anchorer.reanchor_entries(post.tag_entries)
+        structural = [e for e in refreshed if tag_anchorer.is_structural(e[1])]
+        prose = prose_of(new_body)
+        asm = PostAssembler(post)
+        asm._title = post.metadata.get("title", "")
+        dedupe = [asm._get_clean_tag(d) for d, _ in structural]
+        meta = {"tags": [d for d, k in refreshed if not tag_anchorer.is_structural(k)],
+                "term_exclude": sorted(excluded)}
+        candidates = asm._harvest_candidates(meta, lexicon, prose, dedupe)
+        kept = asm._apply_tag_limits(list(structural), candidates, tag_anchorer, lexicon,
+                                     dedupe, prose, excluded, report_losses=False)
+        kept_keys = {k for _, k in kept}
+        tag_stats["dropped"] = sum(1 for k in original_tags if k not in kept_keys)
+        tag_stats["added"] = sum(1 for k in kept_keys if k not in original_tags)
+        tag_stats["refreshed"] = sum(1 for d, k in kept if k in original_tags and original_tags[k] != d)
+        post.set_tag_entries(kept)
+
     new_content = post.save_to_string()
     changed = new_content != original
     return {
@@ -151,6 +171,7 @@ def process_post(path, lexicon, tag_anchorer):
         "anchor_delta": after_a - before_a,
         "tag_refreshed": tag_stats["refreshed"],
         "tag_dropped": tag_stats["dropped"],
+        "tag_added": tag_stats["added"],
         "fm_corrected": fm_corrected,
         "warnings": diagnose(body, new_body) if changed else [],
         "new_content": new_content,
@@ -179,7 +200,7 @@ def run(apply, slug_filter, force=False):
             changed += 1
             warnings = res["warnings"]
             rows.append(Row(slug, res["term_delta"], res["anchor_delta"],
-                            res["tag_refreshed"], res["tag_dropped"],
+                            res["tag_refreshed"], res["tag_dropped"], res["tag_added"],
                             res["fm_corrected"], warnings))
             if apply:
                 # SAFETY GATE: a flagged post is quarantined (not written) unless --force,
@@ -213,7 +234,8 @@ def _write_report(rows, apply, force=False):
         "# 貼文再錨定報告 (Re-anchor " + ("Apply" if apply else "Scan") + ")",
         "",
         f"> {'已套用' if apply else 'Dry-run（未寫入）'}。term = 內文 `<!-- term -->` 錨點，anchor = 定義框，"
-        "tag刷新 = 標籤顯示值依鍵刷新數，tag刪除 = 孤兒/降級標籤刪除數，"
+        "tag刷新 = 標籤顯示值依鍵刷新數，tag刪除 = 孤兒/降級/正文無此術語的標籤刪除數，"
+        "tag新增 = 依發布規則從正文補上的標籤數，"
         "前綴校正 = 標題/描述套用禁用詞校正的欄位數（校正無標記，不是錨定）。",
         "",
         f"變更貼文數：**{len(rows)}**　|　帶警告：**{len(flagged)}**"
@@ -223,11 +245,11 @@ def _write_report(rows, apply, force=False):
     if not rows:
         out.append("（無貼文需變更——術語庫、內文與標籤已一致，冪等 no-op。）")
     else:
-        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | 前綴校正 | ⚠ |")
-        out.append("|---|---:|---:|---:|---:|:--:|:--|")
+        out.append("| 貼文 | term Δ | anchor Δ | tag刷新 | tag刪除 | tag新增 | 前綴校正 | ⚠ |")
+        out.append("|---|---:|---:|---:|---:|---:|:--:|:--|")
         for r in rows:
             out.append(f"| {r.slug} | {r.term_delta:+d} | {r.anchor_delta:+d} | "
-                       f"{r.tag_refreshed} | {r.tag_dropped} | {r.fm_corrected or ''} | "
+                       f"{r.tag_refreshed} | {r.tag_dropped} | {r.tag_added} | {r.fm_corrected or ''} | "
                        f"{'⚠×'+str(len(r.warnings)) if r.warnings else ''} |")
     if flagged:
         out += ["", "## ⚠ 安全防線警告（apply 時除非 --force 否則跳過寫入）", ""]

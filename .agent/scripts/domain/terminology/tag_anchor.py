@@ -14,6 +14,17 @@ import re
 
 from infra.utils import log_error
 
+# Machine definition boxes quote other terms in their descriptions; a tag is licensed
+# by the author's prose, not by a neighbour's definition.
+_DEFINITION_BOX = re.compile(
+    r'[\r\n]+>[ \t]*\[!IMPORTANT\]\r?\n'
+    r'(?:>[ \t]*\*\*.*?\*\*[^\r\n]*<!--[ \t]*(?:anchor|term):[^\r\n]*(?:\r?\n)?)+')
+
+
+def prose_of(body):
+    """The body without machine definition boxes: the text a tag must be found in."""
+    return _DEFINITION_BOX.sub('\n', body or "")
+
 
 def clean_tag(tag):
     """Strips a trailing parenthetical gloss; returns the bare display text."""
@@ -51,6 +62,13 @@ class TagAnchorer:
         for c in lexicon.taxonomy.get("ai_taxonomy", {}).get("categories", []):
             m = re.search(r'\((.*?)\)', c)
             self.domain_key_to_disp[camel_key(m.group(1)) if m else camel_key(c)] = clean_tag(c)
+        # The assembler keys a domain tag by the lexicon's own key when the category is a
+        # term (大型語言模型 -> LargeLanguageModel, not Llm); both keys are the domain.
+        self.structural_keys = set(self.genre_key_to_zh) | set(self.domain_key_to_disp)
+        for disp in list(self.domain_key_to_disp.values()):
+            res = lexicon.lookup(disp)
+            if res and res.get("key"):
+                self.structural_keys.add(res["key"])
 
     def _canonical_term_display(self, zh):
         """Display rule shared with the legacy assembler: prefer the English primary when
@@ -94,6 +112,44 @@ class TagAnchorer:
                 return (zh, key)
             return (self._canonical_term_display(zh), key)
         return None
+
+    def is_structural(self, key):
+        """Genre and domain tags classify the post; they are not words of its prose."""
+        return key in self.structural_keys
+
+    def body_form(self, key, prose, exclude_keys=()):
+        """The display a tech tag must carry in this post, or None to drop it.
+
+        GUIDE's rule is that a tag's term appears in the post. The display is therefore
+        the form the prose uses: the canonical zh when present, else the first alias
+        present. None when no form occurs as the term (Lexicon.find_hits, so word
+        boundaries apply) or the post excludes the key.
+        """
+        if key in exclude_keys:
+            return None
+        canonical = self.term_key_to_zh.get(key)
+        if canonical is None:
+            return None
+        if self.lexicon.contains(canonical, prose):
+            return self._canonical_term_display(canonical)
+        for alias, zh in getattr(self.lexicon, "canonical", {}).items():
+            if zh == canonical and self.lexicon.contains(alias, prose):
+                return alias
+        return None
+
+    def fit_to_body(self, entries, prose, exclude_keys=()):
+        """Applies body_form to a `[(display, key)]` set. Returns (kept, dropped_displays)."""
+        kept, dropped = [], []
+        for disp, key in entries or []:
+            if self.is_structural(key):
+                kept.append((disp, key))
+                continue
+            form = self.body_form(key, prose, exclude_keys)
+            if form is None:
+                dropped.append(disp)
+            else:
+                kept.append((form, key))
+        return kept, dropped
 
     def reanchor_entry(self, display, key):
         """Maintenance time: refresh an existing (display, key) BY KEY.

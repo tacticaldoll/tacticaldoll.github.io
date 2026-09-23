@@ -40,7 +40,7 @@ patternProperties:
           type: string
         description: >
           同一術語的其他正當中文譯法。以原文錯定在同一個鍵下、不改寫（與 forbidden
-          相反）；標籤一律顯示 zh。一個字串只能屬於一個術語的 zh 或 aliases。
+          相反）；標籤顯示該篇正文實際使用的形式（zh 優先）。一個字串只能屬於一個術語的 zh 或 aliases。
       not_within:
         type: array
         items:

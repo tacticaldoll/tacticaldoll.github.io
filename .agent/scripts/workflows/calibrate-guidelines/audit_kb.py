@@ -118,6 +118,22 @@ class KBAuditor:
                     errors.append(f"[{rel_path}] term_exclude names '{key}', which is not a "
                                   f"term key in terminology.json")
 
+            # 4. Every tech tag shows the form its term takes in the prose. This rule was
+            # task-list prose only, and 44 tags had drifted from it; publish and reanchor
+            # now enforce it through TagAnchorer.body_form, and this pins the corpus.
+            from domain.post.post import HugoPost
+            from domain.terminology.tag_anchor import TagAnchorer, prose_of
+            post = HugoPost()
+            post.load(content=content)
+            anchorer = TagAnchorer(self.lexicon)
+            excluded = set(post.metadata.get("term_exclude") or ())
+            for disp, key in post.tag_entries or []:
+                if anchorer.is_structural(key) or key not in anchorer.term_key_to_zh:
+                    continue
+                if anchorer.body_form(key, prose_of(post.body), excluded) != disp:
+                    errors.append(f"[{rel_path}] Tag '{disp}' ({key}) is not the form its term "
+                                  f"takes in the prose; run reanchor-posts")
+
         return errors
 
     def _check_unit_suites(self):
@@ -1096,8 +1112,8 @@ class KBAuditor:
             return errors
 
         class _TagStub:
-            def __init__(self):
-                self.body = ""
+            def __init__(self, body=""):
+                self.body = body
                 self.metadata = {}
 
         tag_lex = Lexicon(self.terminology_path)
@@ -1141,8 +1157,11 @@ class KBAuditor:
             # audit_governance would now confine it to this check, but naming the
             # cause here is what makes the failure actionable.
             try:
+                # A tag whose term is absent from the body is dropped by rule, which is
+                # not the truncation this probe measures; the body carries every tag.
+                stub = _TagStub("。".join(meta["tags"]))
                 with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-                    built = PostAssembler(_TagStub()).with_tags(meta, tag_lex)
+                    built = PostAssembler(stub).with_tags(meta, tag_lex)
             except Exception as exc:
                 return [], buf.getvalue(), str(exc)
             return built._tags, buf.getvalue(), None
