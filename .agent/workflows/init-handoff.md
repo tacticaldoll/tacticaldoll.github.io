@@ -57,10 +57,10 @@ spec: "../reference/agent-operating-guideline.md"
 
 ### 0-E. 既有術語命中判讀 (Existing-Term Hit Adjudication)
 
-`refine_handoff.py` 會在每篇的 `term_review` 列出報告將錯定的「既有」術語與其首次錯點前文。中文沒有字界，核心詞庫的短詞會偶然落進不相關的句子（「一個量化的社會指標」就不是 Quantization）。逐條閱讀前文，將 `disposition` 填為：
+`refine_handoff.py` 會在每篇的 `term_review` 列出報告將錨定的「既有」術語與其首次錨點前文。中文沒有字界，核心詞庫的短詞會偶然落進不相關的句子（「一個量化的社會指標」就不是 Quantization）。逐條閱讀前文，將 `disposition` 填為：
 
-1. **錯定**：命中確實是該術語。
-2. **排除**：同字異義，鍵會寫入貼文的 `term_exclude`，重新錯定也沿用。若命中是落在較長的詞裡（政策篩選），除了排除，還應在交接報告中提議把該詞加入術語的 `not_within`，由術語庫流程收錄。
+1. **錨定**：命中確實是該術語。
+2. **排除**：同字異義，鍵會寫入貼文的 `term_exclude`，重新錨定也沿用。若命中是落在較長的詞裡（政策篩選），除了排除，還應在交接報告中提議把該詞加入術語的 `not_within`，由術語庫流程收錄。
 
 留空會被 `/publish-article` 擋下。
 

@@ -39,7 +39,7 @@ patternProperties:
         items:
           type: string
         description: >
-          同一術語的其他正當中文譯法。以原文錯定在同一個鍵下、不改寫（與 forbidden
+          同一術語的其他正當中文譯法。以原文錨定在同一個鍵下、不改寫（與 forbidden
           相反）；標籤顯示該篇正文實際使用的形式（zh 優先）。一個字串只能屬於一個術語的 zh 或 aliases。
       not_within:
         type: array
@@ -47,7 +47,7 @@ patternProperties:
           type: string
         description: >
           中文字界：包含 zh（或其別名）但不是此術語的較長字串（政策篩選、輕量化）。
-          落在其中的命中不錯定、不採收為標籤、不計入稽核，由 Lexicon.find_hits
+          落在其中的命中不錨定、不採收為標籤、不計入稽核，由 Lexicon.find_hits
           單一定義。列出的是人讀過命中位置後的判斷，不是推導。
       level:
         type: integer

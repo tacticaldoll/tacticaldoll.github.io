@@ -103,7 +103,7 @@ class PostAssembler:
                 return canonical
 
         # Fallback path: reached only when post_meta had no domain_tag at all.
-        evidence = tax_engine.classify_domain_evidence(body_content)
+        evidence = tax_engine.classify_domain_evidence(body_content, post_meta.get("term_exclude"))
         domain_tag = evidence["domain"] or ""
         if domain_tag and evidence["flags"]:
             report = (f"  [DOMAIN AMBIGUITY] {self._title}: {domain_tag} on "

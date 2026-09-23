@@ -98,6 +98,20 @@ class TaxonomyTester(unittest.TestCase):
         # Single hit noise is correctly suppressed, no warning
         self.assertIsNone(res["warning"])
 
+    def test_keyword_obeys_lexicon_boundaries(self):
+        # A keyword that is a term follows the term's not_within and the post's
+        # term_exclude, the same rule anchoring and tags use.
+        lx = self.engine._boundaries()
+        kw = next((k for k, v in lx.not_within.items()
+                   if any(k in kws for kws in self.engine.data["ai_taxonomy"]["detection_keywords"].values())),
+                  None)
+        if kw is None:
+            self.skipTest("no detection keyword with a not_within boundary")
+        shadow = lx.not_within[kw][0]
+        self.assertIsNone(self.engine.classify_domain(f"本文只談{shadow}。"))
+        self.assertIsNotNone(self.engine.classify_domain(f"本文談{kw}。"))
+        self.assertIsNone(self.engine.classify_domain(f"本文談{kw}。", {lx.keys[kw]}))
+
     def test_verify_domain_declaration_warns_on_omission(self):
         strong_ml_text = "神經網路中的反向傳播與梯度下降決定了經驗風險最小化下的泛化表現。"
         res = self.engine.verify_domain_declaration("", strong_ml_text)

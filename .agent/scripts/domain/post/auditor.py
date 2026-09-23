@@ -90,7 +90,7 @@ class PostAuditor:
 
         # 2. Terminology Compliance
         if self.engine:
-            self._audit_terminology(tgt_stats['text'], post.metadata, report)
+            self._audit_terminology(tgt_stats['text'], post.metadata, report, post.body)
 
         # 3. Content Purity & Formatting
         self._audit_fences(post.save_to_string(), "post", report)
@@ -136,7 +136,7 @@ class PostAuditor:
         if src_l > 0 and (tgt_l / src_l) < 0.9:
             report.add_issue(f"Density below 90% gate! ({tgt_l/src_l:.2%})", "FAILURE")
 
-    def _audit_terminology(self, text, metadata, report):
+    def _audit_terminology(self, text, metadata, report, body=None):
         engine = self.engine
         if hasattr(engine, 'lexicon'):
             engine = engine.lexicon
@@ -150,65 +150,30 @@ class PostAuditor:
             if f_term in text:
                 report.add_issue(f"Found forbidden term '{f_term}' in body, use '{correct_zh}' instead.", "ALERT")
 
-        # 2. First-use anchoring (Support for [!IMPORTANT] blocks)
-        # Strip headers but KEEP alert blocks for anchor verification
-        text_no_headers = re.sub(r"^#+\s+.*$", "", text, flags=re.MULTILINE)
-        
-        # Split text into logical paragraphs to check local anchoring
-        # We split by double newline to treat paragraphs and their trailing callouts as one unit if not separated
-        paragraphs = re.split(r'\n\s*\n', text_no_headers)
-        
-        mapping = getattr(engine, 'mapping', {}) or {}
-        keys = getattr(engine, 'keys', {}) or {}
+        # 2. Anchoring is checked against the injector's own contract. The heuristic that
+        # stood here expected the definition inside the first paragraph and called every
+        # inline gloss a defect, while the injector emits exactly that shape (gloss at
+        # first use, box after the paragraph), so it raised an alert on every anchor in
+        # the corpus and buried the real ones. The contract: the body is what the injector
+        # makes of it under the current lexicon, and each anchored key is defined once.
         excluded = set(metadata.get('term_exclude') or ())
-        find_hits = getattr(engine, 'find_hits', None) or (
-            lambda z, t: [m.start() for m in re.finditer(re.escape(z), t)])
-        for zh, en_primary in mapping.items():
-            if keys.get(zh) in excluded or not find_hits(zh, text_no_headers): continue
-            
-            # Find the first paragraph containing the term
-            # IMPORTANT: We only care about the FIRST paragraph where it appears
-            first_para_idx = -1
-            first_match_obj = None
-            for idx, para in enumerate(paragraphs):
-                hits = find_hits(zh, para)
-                m = re.compile(re.escape(zh)).search(para, hits[0]) if hits else None
-                if m:
-                    # Filter out overlapping terms
-                    is_overlap = any(len(oz) > len(zh) and zh in oz and oz in para for oz in mapping.keys() if len(oz) > len(zh))
-                    if not is_overlap:
-                        first_para_idx = idx
-                        first_match_obj = m
-                        break
-            
-            if first_para_idx == -1 or first_match_obj is None: continue
-            
-            levels = getattr(engine, 'levels', {}) or {}
-            level = levels.get(zh, 1)
-            if level >= 3: continue
-            
-            para = paragraphs[first_para_idx]
-            res = engine.lookup(zh)
-            key = res.get("key") if res else zh
-            if not key:
-                key = zh
-            
-            # Check for block anchor at the end of this paragraph/unit (supporting both legacy ZH and CamelCase key)
-            block_anchor = re.search(f'<!--\\s*anchor:(?:{re.escape(zh)}|{re.escape(key)})\\s*-->', para)
-            
-            # Check for deprecated inline anchor
-            suffix = para[first_match_obj.end():first_match_obj.end()+100]
-            inline_anchor = re.search(r'^[\s\*_]*[\(（](.*?)[\)）]', suffix)
-            
-            if not block_anchor and not inline_anchor:
-                report.add_issue(f"First use of '{zh}' (Level {level}) must be anchored in an [!IMPORTANT] block.", "ALERT")
-            elif inline_anchor:
-                # Flag inline anchors for relocation unless it's a Level 3 term (already skipped)
-                report.add_issue(f"Inline anchor for '{zh}' should be moved to an [!IMPORTANT] block at the end of the paragraph.", "ALERT")
-            
-            # Verify if it's inside an IMPORTANT block
-            if block_anchor and "> [!IMPORTANT]" not in para:
-                report.add_issue(f"Anchor for '{zh}' found but its [!IMPORTANT] block is missing or malformed.", "ALERT")
+        if body and hasattr(engine, 'find_hits'):
+            from domain.post.post import HugoPost
+            from domain.terminology.injector import TerminologyInjector
+            probe = HugoPost()
+            probe.body = body
+            TerminologyInjector().apply_lexicon(probe, engine, mode="anchor_first",
+                                                exclude_keys=excluded)
+            if probe.body != body:
+                report.add_issue("Anchors are not the current lexicon's projection of this "
+                                 "body; run reanchor-posts.", "ALERT")
+        if body:
+            marked = set(re.findall(r'<!--\s*term:([A-Za-z0-9_]+)\s*-->', body))
+            defined = re.findall(r'<!--\s*anchor:([A-Za-z0-9_]+)\s*-->', body)
+            for key in sorted(marked - set(defined)):
+                report.add_issue(f"'{key}' is anchored but has no definition block.", "ALERT")
+            for key in sorted({k for k in defined if defined.count(k) > 1}):
+                report.add_issue(f"'{key}' has more than one definition block.", "ALERT")
 
         # 3. Metadata Tags
         tag_issues = engine.validate_tags(metadata.get('tags', []))

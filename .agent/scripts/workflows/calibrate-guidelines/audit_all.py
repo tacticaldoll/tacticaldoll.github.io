@@ -102,8 +102,11 @@ def main():
                 report_lines.append(f"| {session_id} | {article_id} | 🟡 SKIP | — | Missing Target ({target_path}) |")
                 continue
 
+            with open(target_path, "r", encoding="utf-8") as f:
+                m = re.search(r'^term_exclude[ \t]*=[ \t]*\[(.*?)\]', f.read(), re.MULTILINE)
+            excluded = re.findall(r'"([^"]+)"', m.group(1)) if m else []
             with open(source_report, "r", encoding="utf-8") as f:
-                computed = engine.classify_domain(f.read())
+                computed = engine.classify_domain(f.read(), excluded)
             shipped = published_domain(target_path, bare_to_category)
             short = lambda c: (c.split(" (")[0] if c else "(none)")
             if shipped == computed:

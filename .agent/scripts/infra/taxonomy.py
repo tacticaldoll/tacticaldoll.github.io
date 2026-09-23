@@ -15,6 +15,20 @@ class TaxonomyEngine:
     def __init__(self, taxonomy_path=None):
         self.taxonomy_path = taxonomy_path or config.TAXONOMY_JSON
         self.data = self._load()
+        self._lexicon = None
+
+    def _boundaries(self):
+        """The lexicon, for its word boundaries. A keyword that is also a term obeys the
+        same not_within and term_exclude as anchoring and tags, or the three disagree
+        about where the term is."""
+        if self._lexicon is None:
+            import sys
+            path = config.LEXICON_SCRIPTS_DIR
+            if path not in sys.path:
+                sys.path.append(path)
+            from lexicon import Lexicon
+            self._lexicon = Lexicon(config.TERMINOLOGY_JSON)
+        return self._lexicon
         
     def _load(self):
         if not os.path.exists(self.taxonomy_path):
@@ -29,7 +43,7 @@ class TaxonomyEngine:
             print(f"[WARNING] TaxonomyEngine: failed to load taxonomy: {e}. Domain classification will return None.", file=sys.stderr)
             return {}
 
-    def classify_domain(self, content):
+    def classify_domain(self, content, exclude_keys=()):
         """
         Classifies the AI domain of a given text content.
         Uses hierarchical matching defined in taxonomy.json.
@@ -50,7 +64,7 @@ class TaxonomyEngine:
         keywords — the title of a report on boundary governance contains 治理, which
         decides a domain. `audit_kb.py` probes both shapes.
         """
-        return self.classify_domain_evidence(content)["domain"]
+        return self.classify_domain_evidence(content, exclude_keys)["domain"]
 
     # Flags on an evidenced classification. Not verdicts — the answer is already
     # correct — but reasons a human might want to look.
@@ -58,7 +72,7 @@ class TaxonomyEngine:
     WEAK_WINNER = "WEAK_WINNER"
     SINGLE_HIT = "SINGLE_HIT"
 
-    def classify_domain_evidence(self, content):
+    def classify_domain_evidence(self, content, exclude_keys=()):
         """Returns classify_domain's answer together with the evidence behind it.
 
         Categories are priority-ordered and the first hit wins. That is deliberate:
@@ -83,12 +97,23 @@ class TaxonomyEngine:
         detection = ai_tax.get("detection_keywords", {})
 
         content_lower = content.lower()
+        lexicon = self._boundaries()
+        exclude_keys = set(exclude_keys or ())
+
+        def first_hit(kw):
+            needle = kw.lower()
+            if lexicon.keys.get(kw) in exclude_keys:
+                return -1
+            pos = content_lower.find(needle)
+            while pos >= 0 and lexicon.is_shadowed(kw, content_lower, pos):
+                pos = content_lower.find(needle, pos + 1)
+            return pos
 
         hits = {}
         for category in categories:
             found = []
             for kw in detection.get(category, []):
-                pos = content_lower.find(kw.lower())
+                pos = first_hit(kw)
                 if pos >= 0:
                     found.append({"keyword": kw, "position": pos,
                                   "end": pos + len(kw)})
@@ -230,6 +255,7 @@ class TaxonomyEngine:
         """Persists the in-memory taxonomy back to taxonomy.json (utf-8, indent 2)."""
         with open(self.taxonomy_path, 'w', encoding='utf-8') as f:
             json.dump(self.data, f, indent=2, ensure_ascii=False)
+            f.write("\n")
 
     def rename_genre_value(self, old_zh, new_zh):
         """Sanctioned in-place edit of a genre's Chinese display value.
