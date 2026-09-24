@@ -1,26 +1,28 @@
 +++
 title = "不容易被機器處理的認知，不是應該消除的摩擦"
-date = "2026-09-23T13:40:01+08:00"
+date = "2026-09-23T16:40:04+08:00"
 author = "梅乾"
 draft = false
 isCJKLanguage = true
-description = "猶豫、未定、暫時矛盾因為不易被機器處理，被記成應該消除的摩擦，人於是被裁成提示、情境、批准與責任四個節點。本文指出這次誤分類如何讓確認層只能證明在場，而不能證明理解。"
+description = "把猶豫與未定誤認成摩擦，會讓人只剩提示、情境、批准與責任節點。確認有人在場，不代表曾有獨立判斷。"
 tags = [
     "分析論述", # term:AnalyticalEssay
     "AI 經濟與社會", # term:AiEconomics
     "確認層", # term:ConfirmationLayer
+    "認知厚度", # term:CognitiveThickness
     "誤分類", # term:Misclassification
     "方便梯度", # term:ConvenienceGradient
-    "認知厚度", # term:CognitiveThickness
+    "人類在迴路中", # term:PresenceOnlyHumanInTheLoop
     "明文自動化", # term:ExplicitAutomation
-    "活性訊號", # term:LivenessSignal
   ]
+series = ["切在不同邊界上：局部可證明，全域不可維持"]
+term_exclude = ["ProcessDesign"]
 [ai_info]
     [ai_info.generation]
         model = "Grok 4.7"
         agent = "GitHub Copilot Chat v0.66.0"
     [ai_info.refinement]
-        model = "Claude Opus 5.5"
+        model = "GPT-6 Sol"
         agent = "GitHub Copilot Chat v0.66.0"
 +++
 
@@ -95,7 +97,11 @@ tags = [
 
 ### 確認層只能看見在場
 
-四個節點都就位之後，迴路仍可以畫成人類在迴路中（human-in-the-loop）：
+四個節點都就位之後，迴路仍可以畫成**人類在迴路中**（Human-In-The-Loop） <!-- term:PresenceOnlyHumanInTheLoop -->：
+
+> [!IMPORTANT]
+> **人類在迴路中** <!-- term:PresenceOnlyHumanInTheLoop --> (Presence-Only Human-In-The-Loop): 在提案與行動之間安排人類確認的流程形狀；人被等待，不等於已形成獨立判斷。 <!-- anchor:PresenceOnlyHumanInTheLoop -->
+
 
 $$
 \text{提案} \rightarrow \text{人類確認} \rightarrow \text{行動}
@@ -117,11 +123,7 @@ $$
 
 ### 在場不是這次分類的另一種病
 
-在場被當成理解，容易被寫成確認**流程設計**（Process Design） <!-- term:ProcessDesign -->錯了：按鈕不夠嚴格、紀錄不夠完整、確認者不夠資深。這些都不是本文的成因。
-
-> [!IMPORTANT]
-> **流程設計** <!-- term:ProcessDesign --> (Process Design): 規劃組織活動的流轉順序、產出標準、驗證關卡與責任劃界的架構工程。 <!-- anchor:ProcessDesign -->
-
+在場被當成理解，容易被寫成確認流程設計錯了：按鈕不夠嚴格、紀錄不夠完整、確認者不夠資深。這些都不是本文的成因。
 
 按鈕再嚴格，若文本在到達確認層 <!-- term:ConfirmationLayer -->之前已經被收成單義句子，確認者面對的就不是還能反悔的分岔。他面對的是一份好處理的文本。紀錄再完整，記錄的仍是這份文本被接受。資深改變的是經驗，不是被檢查的謂詞。謂詞若仍是在場，資深的通過與資淺的通過是同一種通過。
 
@@ -168,6 +170,6 @@ $$
 
 ## 來源
 
-- 本文的現場是一段討論確認層 <!-- term:ConfirmationLayer -->的對話，不是一次公共事故的調查。對話裡明示的句子包括：人仍保留責任，但失去形成獨立判斷的認知厚度 <!-- term:CognitiveThickness -->；人類在迴路中不夠，人必須帶着自己的模型；人被裁成提供提示、供應情境、批准與承擔責任；被適配的是人，不是工具；不容易被機器處理的認知形式被誤認成應消除的摩擦。對話並把後續哲學問題降成四個可操作問題，本文把那四個問題保持為出口。
-- 人類在迴路中（human-in-the-loop）在本文只作迴路形狀的名字：提案、人類確認、行動。本文不用它指任何特定產品或標準。
+- 本文的現場是一段討論確認層 <!-- term:ConfirmationLayer -->的對話，不是一次公共事故的調查。對話裡明示的句子包括：人仍保留責任，但失去形成獨立判斷的認知厚度 <!-- term:CognitiveThickness -->；人類在迴路中 <!-- term:PresenceOnlyHumanInTheLoop -->不夠，人必須帶着自己的模型；人被裁成提供提示、供應情境、批准與承擔責任；被適配的是人，不是工具；不容易被機器處理的認知形式被誤認成應消除的摩擦。對話並把後續哲學問題降成四個可操作問題，本文把那四個問題保持為出口。
+- 人類在迴路中 <!-- term:PresenceOnlyHumanInTheLoop -->在本文只作迴路形狀的名字：提案、人類確認、行動。本文不用它指任何特定產品或標準。
 - Goodhart, C. A. E. (1984). Problems of Monetary Management: The UK Experience. In *Monetary Theory and Practice: The UK Experience* (pp. 91–121). Macmillan. ISBN 9780333360606. [https://doi.org/10.1007/978-1-349-17295-5_4](https://doi.org/10.1007/978-1-349-17295-5_4). 此為 1975 年論文的重印。本文不把它當作主機制。若有人把「已確認」本身當成理解的量測，那個量測會以這個形狀失效；那是後續風險，不是這次分類的成因。

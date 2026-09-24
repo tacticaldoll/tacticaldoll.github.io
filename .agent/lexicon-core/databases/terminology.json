@@ -1388,6 +1388,24 @@
     "forbidden": [],
     "level": 2
   },
+  "ImplicitVoiceTheories": {
+    "zh": "內隱發聲理論",
+    "en": [
+      "Implicit Voice Theories"
+    ],
+    "description": "工作場域中對哪些話不能說的理所當然信念，會使成員預先自我審查。",
+    "forbidden": [],
+    "level": 2
+  },
+  "PresenceOnlyHumanInTheLoop": {
+    "zh": "人類在迴路中",
+    "en": [
+      "Presence-Only Human-In-The-Loop"
+    ],
+    "description": "在提案與行動之間安排人類確認的流程形狀；人被等待，不等於已形成獨立判斷。",
+    "forbidden": [],
+    "level": 2
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -2843,6 +2861,15 @@
       "Ariane 5"
     ],
     "description": "歐洲太空總署的重型運載火箭，1996 年首次飛行因慣性參考系統軟體的規格與設計錯誤失敗。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ContextMap": {
+    "zh": "上下文映射",
+    "en": [
+      "Context Map"
+    ],
+    "description": "在領域驅動設計中指名各界限上下文之間的關係與整合方式。",
     "forbidden": [],
     "level": 2
   },
@@ -6141,6 +6168,15 @@
     "description": "在自動化流程中保留人類確認環節；其有效性取決於該人是否仍具備判讀能力、權限與時間。",
     "forbidden": [],
     "level": 1
+  },
+  "PsychologicalSafety": {
+    "zh": "心理安全",
+    "en": [
+      "Psychological Safety"
+    ],
+    "description": "團隊成員相信承擔人際風險、提出異議或回報錯誤不會遭羞辱的共同預期。",
+    "forbidden": [],
+    "level": 2
   },
   "Requirements": {
     "zh": "需求層",

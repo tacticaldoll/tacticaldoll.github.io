@@ -1,27 +1,27 @@
 +++
 title = "局部通過，不是整體通過"
-date = "2026-09-23T16:10:03+08:00"
+date = "2026-09-23T16:10:01+08:00"
 author = "梅乾"
 draft = false
 isCJKLanguage = true
-description = "每個局部檢查都通過，推不出整體通過：錯誤住在沒被放進任何評價函數的交叉項。本文以亞利安五號首飛失敗說明加總成立的三個條件，以及整體負責人為何只是多一層局部通過。"
+description = "局部評價全為正，不代表整體通過。從交叉項與亞利安五號事故檢視為何彙總局部通過不足以證明系統有效。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "系統工程與研發治理", # term:SystemsGovernanceOperations
-    "局部自洽", # term:LocalCoherence
-    "交叉項", # term:CrossTerm
     "評價函數", # term:EvaluationFunction
-    "全局審視", # term:GlobalReview
+    "交叉項", # term:CrossTerm
+    "局部自洽", # term:LocalCoherence
     "亞利安五號", # term:Ariane5
+    "全局審視", # term:GlobalReview
     "慣性參考系統", # term:InertialReferenceSystem
   ]
+series = ["切在不同邊界上：局部可證明，全域不可維持"]
 term_exclude = ["Quantization"]
 [ai_info]
     [ai_info.generation]
         model = "Grok 4.7"
         agent = "GitHub Copilot Chat v0.66.0"
     [ai_info.refinement]
-        model = "Claude Opus 5.5"
+        model = "GPT-6 Sol"
         agent = "GitHub Copilot Chat v0.66.0"
 +++
 

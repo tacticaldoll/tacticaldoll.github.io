@@ -4,23 +4,24 @@ date = "2026-09-23T16:20:02+08:00"
 author = "梅乾"
 draft = false
 isCJKLanguage = true
-description = "局部評價為正，若主要後果由別的局部承受，只證明成本離開了評價函數。本文以後果測試區分外部性與轉嫁，並以火星氣候軌道器說明契約寫明單位，仍不使後果回到產出端。"
+description = "局部決定的主要後果若由別處承受，局部為正就不是品質訊號。辨別外部性與轉嫁，並檢視跨界契約的界限。"
 tags = [
     "分析論述", # term:AnalyticalEssay
-    "系統工程與研發治理", # term:SystemsGovernanceOperations
+    "局部自洽", # term:LocalCoherence
     "後果測試", # term:ConsequenceTest
     "外部性", # term:Externality
-    "局部自洽", # term:LocalCoherence
-    "共變判準", # term:CoChangeCriterion
     "最小可閉合單元", # term:MinimalClosableUnit
+    "火星氣候軌道器", # term:MarsClimateOrbiter
+    "共變判準", # term:CoChangeCriterion
     "評價函數", # term:EvaluationFunction
   ]
+series = ["切在不同邊界上：局部可證明，全域不可維持"]
 [ai_info]
     [ai_info.generation]
         model = "Grok 4.7"
         agent = "GitHub Copilot Chat v0.66.0"
     [ai_info.refinement]
-        model = "Claude Opus 5.5"
+        model = "GPT-6 Sol"
         agent = "GitHub Copilot Chat v0.66.0"
 +++
 
