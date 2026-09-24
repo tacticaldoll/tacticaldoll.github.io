@@ -1406,6 +1406,15 @@
     "forbidden": [],
     "level": 2
   },
+  "FlightReadinessReview": {
+    "zh": "飛行準備審查",
+    "en": [
+      "Flight Readiness Review"
+    ],
+    "description": "太空梭計畫中供不同層級檢視發射條件、限制與疑慮的審查程序。",
+    "forbidden": [],
+    "level": 2
+  },
   "Spec": {
     "zh": "約束性規格",
     "en": [
@@ -2772,7 +2781,10 @@
     ],
     "description": "當一項度量變成目標時，它便不再是好的度量；官僚演算法把代理變數當成犯罪傾向本身。",
     "forbidden": [],
-    "level": 1
+    "level": 1,
+    "aliases": [
+      "古德哈特定律"
+    ]
   },
   "CampbellSLaw": {
     "zh": "坎貝爾定律",
@@ -2870,6 +2882,33 @@
       "Context Map"
     ],
     "description": "在領域驅動設計中指名各界限上下文之間的關係與整合方式。",
+    "forbidden": [],
+    "level": 2
+  },
+  "AcquiescentSilence": {
+    "zh": "順從性沉默",
+    "en": [
+      "Acquiescent Silence"
+    ],
+    "description": "因認為發聲也不會改變結果而放棄表達的沉默。",
+    "forbidden": [],
+    "level": 2
+  },
+  "DefensiveSilence": {
+    "zh": "防衛性沉默",
+    "en": [
+      "Defensive Silence"
+    ],
+    "description": "因擔心發聲的後果而主動保留工作相關資訊的沉默。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProsocialSilence": {
+    "zh": "親社會沉默",
+    "en": [
+      "Prosocial Silence"
+    ],
+    "description": "為保護同事或組織而有意保留資訊的沉默，即使動機善意仍可能截斷回報。",
     "forbidden": [],
     "level": 2
   },
@@ -6178,6 +6217,51 @@
     "forbidden": [],
     "level": 2
   },
+  "Challenger": {
+    "zh": "挑戰者號",
+    "en": [
+      "Challenger"
+    ],
+    "description": "1986 年發射失事的太空梭；其調查紀錄用於檢視豁免、摘要與資訊回報的失效。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ClimateOfSilence": {
+    "zh": "沉默氛圍",
+    "en": [
+      "Climate of Silence"
+    ],
+    "description": "組織成員共享的信念：談論問題徒勞無功，或可能帶來負面後果。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProxyMetric": {
+    "zh": "代理指標",
+    "en": [
+      "Proxy Metric"
+    ],
+    "description": "用可觀察的量或摘要代替無法直接觀察的真實狀態，可能在被用於控制後與狀態脫鉤。",
+    "forbidden": [],
+    "level": 2
+  },
+  "ProceduralJustice": {
+    "zh": "程序正義",
+    "en": [
+      "Procedural Justice"
+    ],
+    "description": "決策程序納入意見、保持一致且可修正，使提出異議的人相信意見會受到公平處理。",
+    "forbidden": [],
+    "level": 1
+  },
+  "InteractionalJustice": {
+    "zh": "互動正義",
+    "en": [
+      "Interactional Justice"
+    ],
+    "description": "執行決策時以尊重對待當事人，並提供充分的資訊與解釋。",
+    "forbidden": [],
+    "level": 1
+  },
   "Requirements": {
     "zh": "需求層",
     "en": [
@@ -7326,5 +7410,32 @@
     "description": "缺了它核心承諾就當場不成立的能力。與「碰得到」相對：後者與核心相鄰、可被想到且每項都有用，但缺席並不致命。",
     "forbidden": [],
     "level": 1
+  },
+  "Compliance": {
+    "zh": "合規",
+    "en": [
+      "Compliance"
+    ],
+    "description": "決定或行動符合明文規則與程序的狀態，不等於實質上正確。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Judgment": {
+    "zh": "判斷",
+    "en": [
+      "Judgment"
+    ],
+    "description": "面對規則未覆蓋或情境已改變時，根據脈絡評估決定的實質後果。",
+    "forbidden": [],
+    "level": 2
+  },
+  "Waiver": {
+    "zh": "豁免",
+    "en": [
+      "Waiver"
+    ],
+    "description": "經批准而不適用特定限制的例外處置；形式上的批准不代表原本的風險已消失。",
+    "forbidden": [],
+    "level": 2
   }
 }
